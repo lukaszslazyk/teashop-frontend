@@ -1,5 +1,5 @@
 import React from "react";
-import { Product } from "../types";
+import { Product } from "../../models";
 import {
     Box,
     Card,
@@ -9,7 +9,7 @@ import {
     Divider,
     Typography,
 } from "@material-ui/core";
-import useStyles from "../styles";
+import useStyles from "./styles";
 
 interface Props {
     product: Product;

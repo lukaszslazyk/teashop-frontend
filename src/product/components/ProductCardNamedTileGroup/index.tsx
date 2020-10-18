@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Divider, Typography } from "@material-ui/core";
-import ProductCardTileGroup from "./ProductCardTileGroup";
-import { Product } from "../types";
+import ProductCardTileGroup from "../ProductCardTileGroup";
+import { Product } from "../../models";
 
 interface Props {
     name: string;

@@ -1,4 +1,9 @@
-import { ProductState, ProductActionTypes, GET_ALL_PRODUCTS } from "./types";
+import { Product } from "./models";
+import { GET_ALL_PRODUCTS, ProductActionTypes } from "./actions"
+
+export interface ProductState {
+    products: Product[];
+}
 
 const initialState: ProductState = {
     products: [],

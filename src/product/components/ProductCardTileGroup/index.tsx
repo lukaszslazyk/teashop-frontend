@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
-import ProductCard from "./ProductCard";
-import { Product } from "../types";
+import ProductCard from "../ProductCard";
+import { Product } from "../../models";
 
 interface Props {
     products: Product[];

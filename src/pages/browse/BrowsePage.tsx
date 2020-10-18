@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import MainLayout from "../../layout/components/MainLayout";
-import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
-import { Product } from "../../domain/product/types";
+import ProductCardTileGroup from "../../product/components/ProductCardTileGroup";
+import { Product } from "../../product/models";
 
 interface Props {
     products: Product[];
