@@ -1,8 +1,8 @@
-import React from "react";
 import { Container, CssBaseline } from "@material-ui/core";
-import TopAppBar from "./TopAppBar";
-import Sidebar from "./Sidebar";
+import React from "react";
 import useStyles from "../styles/mainLayoutStyles";
+import Sidebar from "./Sidebar";
+import TopAppBar from "./TopAppBar";
 
 interface Props {
     children: React.ReactNode;

@@ -1,7 +1,7 @@
-import React from "react";
 import { Box, Divider, Typography } from "@material-ui/core";
-import ProductCardTileGroup from "../ProductCardTileGroup";
+import React from "react";
 import { Product } from "../../models";
+import ProductCardTileGroup from "../ProductCardTileGroup";
 
 interface Props {
     name: string;
@@ -14,7 +14,9 @@ const ProductCardNamedTileGroup = (props: Props) => {
             <Typography variant="h6" align="center" gutterBottom>
                 {props.name}
             </Typography>
-            <Box mb={3}><Divider /></Box>
+            <Box mb={3}>
+                <Divider />
+            </Box>
             <ProductCardTileGroup products={props.products} />
         </div>
     );

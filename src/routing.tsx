@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import BrowsePageContainer from "./pages/browse/BrowsePageContainer";
-import HomePage from "./pages/home/HomePage";
+import BrowsePageContainer from "./pages/browse/container";
+import HomePage from "./pages/home";
 
 const Routing = () => {
     return (

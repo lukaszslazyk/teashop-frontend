@@ -1,8 +1,8 @@
-import React from "react";
-import SidebarContent from "./SidebarContent";
-import { useTheme } from "@material-ui/core/styles";
 import { Drawer } from "@material-ui/core";
+import { useTheme } from "@material-ui/core/styles";
+import React from "react";
 import useStyles from "../styles/mainLayoutStyles";
+import SidebarContent from "./SidebarContent";
 
 interface Props {
     mobileOpen: boolean;
