@@ -1,7 +1,8 @@
 import axios from "axios";
 import { AppThunk } from "../common/types";
-import { API_ROOT } from "../config";
 import { Product } from "./models";
+
+const API_ROOT = process.env.REACT_APP_API_ROOT;
 
 export const REQUEST_ALL_PRODUCTS = "GET_ALL_PRODUCTS";
 export const RECEIVE_ALL_PRODUCTS = "RECEIVE_ALL_PRODUCTS";
