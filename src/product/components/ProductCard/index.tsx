@@ -1,5 +1,3 @@
-import React from "react";
-import { Product } from "../../models";
 import {
     Box,
     Card,
@@ -9,6 +7,8 @@ import {
     Divider,
     Typography,
 } from "@material-ui/core";
+import React from "react";
+import { Product } from "../../models";
 import useStyles from "./styles";
 
 interface Props {
@@ -27,12 +27,20 @@ const ProductCard = (props: Props) => {
                     title="Tea"
                 />
                 <CardContent>
-                    <Typography align="center" gutterBottom variant="h6" component="h2">
+                    <Typography
+                        align="center"
+                        gutterBottom
+                        variant="h6"
+                        component="h2"
+                    >
                         {props.product.name}
                     </Typography>
-                    <Box mb={1}><Divider /></Box>
+                    <Box mb={1}>
+                        <Divider />
+                    </Box>
                     <Typography align="center" variant="body2" component="p">
-                       {props.product.pricePerReference} {props.product.currency} / {props.product.referenceValue}{props.product.unit}
+                        {props.product.referencePrice} EUR /{" "}
+                        {props.product.referenceGrams}g
                     </Typography>
                 </CardContent>
             </CardActionArea>

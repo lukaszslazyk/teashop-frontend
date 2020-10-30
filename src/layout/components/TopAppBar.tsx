@@ -1,9 +1,9 @@
-import React from "react";
 import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
 import EcoIcon from "@material-ui/icons/Eco";
-import useStyles from "../styles/mainLayoutStyles";
+import MenuIcon from "@material-ui/icons/Menu";
+import React from "react";
 import { Link } from "react-router-dom";
+import useStyles from "../styles/mainLayoutStyles";
 
 interface Props {
     handleDrawerToggle: () => void;
