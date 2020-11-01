@@ -1,6 +1,6 @@
 export interface Product {
     id: number;
     name: string;
-    referencePrice: number;
-    referenceGrams: number;
+    price: number;
+    quantityPerPrice: number;
 }
