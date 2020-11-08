@@ -3,7 +3,7 @@ import EcoIcon from "@material-ui/icons/Eco";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
-import useStyles from "../styles/mainLayoutStyles";
+import useStyles from "../styles";
 
 interface Props {
     handleDrawerToggle: () => void;

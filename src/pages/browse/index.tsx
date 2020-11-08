@@ -1,7 +1,7 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect } from "react";
 import useErrorSnackbar from "../../common/hooks/useErrorSnackbar";
-import MainLayout from "../../layout/components/MainLayout";
+import MainLayout from "../../layout/main";
 import ProductCardTileGroup from "../../product/components/ProductCardTileGroup";
 import { Product } from "../../product/models";
 import useStyles from "./styles";

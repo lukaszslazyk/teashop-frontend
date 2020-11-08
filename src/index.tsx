@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { ThemeProvider } from "@material-ui/core";
-import { mainTheme } from "./layout/themes";
+import { mainTheme } from "./layout/main/themes";
 import { Provider } from "react-redux";
 import configureStore from "./redux_setup/configureStore";
 import { SnackbarProvider } from "notistack";
@@ -23,7 +23,4 @@ ReactDOM.render(
     document.getElementById("root")
 );
 
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();

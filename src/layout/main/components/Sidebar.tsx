@@ -1,7 +1,7 @@
 import { Drawer } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
-import useStyles from "../styles/mainLayoutStyles";
+import useStyles from "../styles";
 import SidebarContent from "./SidebarContent";
 
 interface Props {
