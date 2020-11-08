@@ -39,8 +39,8 @@ const ProductCard = (props: Props) => {
                         <Divider />
                     </Box>
                     <Typography align="center" variant="body2" component="p">
-                        {props.product.referencePrice} EUR /{" "}
-                        {props.product.referenceGrams}g
+                        {props.product.price} EUR /{" "}
+                        {props.product.quantityPerPrice}g
                     </Typography>
                 </CardContent>
             </CardActionArea>
