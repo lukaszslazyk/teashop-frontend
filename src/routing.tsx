@@ -8,7 +8,19 @@ const Routing = () => {
         <BrowserRouter>
             <Switch>
                 <Route exact path="/" component={HomePage} />
-                <Route path="/browse" component={BrowsePageContainer} />
+                <Route
+                    exact
+                    path={[
+                        "/browse",
+                        "/browse/GreenTea",
+                        "/browse/BlackTea",
+                        "/browse/RedTea",
+                        "/browse/WhiteTea",
+                        "/browse/Herbs",
+                        "/browse/Accessories",
+                    ]}
+                    component={BrowsePageContainer}
+                />
             </Switch>
         </BrowserRouter>
     );

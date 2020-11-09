@@ -1,3 +1,4 @@
+import { green, red } from "@material-ui/core/colors";
 import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 
 const drawerWidth = 300;
@@ -37,6 +38,21 @@ const useStyles = makeStyles((theme: Theme) =>
             flexGrow: 1,
             padding: theme.spacing(3),
         },
+        nestedListItem: {
+            paddingLeft: theme.spacing(4),
+        },
+        listItemIcon: {
+            marginRight: theme.spacing(1),
+        },
+        greenTeaIcon: {
+            color: green[500]
+        },
+        redTeaIcon: {
+            color: red[500]
+        },
+        herbsIcon: {
+            color: green[800]
+        }
     })
 );
 
