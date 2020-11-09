@@ -11,6 +11,8 @@ import React from "react";
 import { Product } from "../../models";
 import useStyles from "./styles";
 
+const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
+
 interface Props {
     product: Product;
 }
@@ -21,9 +23,10 @@ const ProductCard = (props: Props) => {
     return (
         <Card className={classes.card}>
             <CardActionArea>
+                {/* TODO Add default image if product's imagePath is empty */}
                 <CardMedia
                     className={classes.cardMedia}
-                    image="images/leaves_example.jpg"
+                    image={`${IMAGES_ROOT}/${props.product.imagePath}`}
                     title="Tea"
                 />
                 <CardContent>
