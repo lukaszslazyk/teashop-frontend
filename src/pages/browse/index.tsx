@@ -1,3 +1,4 @@
+import { Grid, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
@@ -24,18 +25,17 @@ const BrowsePage = (props: Props) => {
     const loadProductsInCategory = props.loadProductsInCategory;
     useEffect(() => {
         if (location.pathname.includes("browse/")) {
-            let categoryName = location.pathname.split('/').slice(-1)[0]
+            let categoryName = location.pathname.split("/").slice(-1)[0];
             loadProductsInCategory(categoryName);
-        } else
-            loadProducts();
+        } else loadProducts();
     }, [location, loadProducts, loadProductsInCategory]);
 
     useEffect(() => {
         setTimeoutPassed(false);
         setTimeout(() => {
             setTimeoutPassed(true);
-        }, 1000)
-    }, [location, setTimeoutPassed])
+        }, 1000);
+    }, [location, setTimeoutPassed]);
 
     useErrorSnackbar(props.error);
 
@@ -46,7 +46,21 @@ const BrowsePage = (props: Props) => {
                     <CircularProgress />
                 </div>
             )}
-            <ProductCardTileGroup products={props.products} />
+            {!props.isFetching && props.products.length === 0 && (
+                <Grid container justify="center">
+                    <Grid item className={classes.emptyProductsInfo}>
+                        <Typography variant="h3">
+                            Sorry
+                        </Typography>
+                        <Typography variant="h6">
+                            No product in this category is currently available.
+                        </Typography>
+                    </Grid>
+                </Grid>
+            )}
+            {!props.isFetching && props.products.length > 0 && (
+                <ProductCardTileGroup products={props.products} />
+            )}
         </MainLayout>
     );
 };
