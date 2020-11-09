@@ -40,6 +40,9 @@ export const fetchAllProducts = (): AppThunk<void> => {
         await axios
             .get(`${API_ROOT}/products`)
             .then(response => dispatch(receiveAllProducts(response.data)))
-            .catch(error => dispatch(receiveAllProducts([], true)));
+            .catch((error) => {
+                console.error("Error occurred during fetching products");
+                dispatch(receiveAllProducts([], true));
+            });
     };
 };

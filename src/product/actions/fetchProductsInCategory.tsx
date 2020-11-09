@@ -42,6 +42,9 @@ export const fetchProductsInCategory = (
         await axios
             .get(`${API_ROOT}/products/${categoryName}`)
             .then((response) => dispatch(receiveProductsInCategory(response.data)))
-            .catch((error) => dispatch(receiveProductsInCategory([], true)));
+            .catch((error) => {
+                console.error("Error occurred during fetching products");
+                dispatch(receiveProductsInCategory([], true));
+            });
     };
 };

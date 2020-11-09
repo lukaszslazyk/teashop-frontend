@@ -2,7 +2,6 @@ import { Grid, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
-import useErrorSnackbar from "../../common/hooks/useErrorSnackbar";
 import MainLayout from "../../layout/main";
 import ProductCardTileGroup from "../../product/components/ProductCardTileGroup";
 import { Product } from "../../product/models";
@@ -36,8 +35,6 @@ const BrowsePage = (props: Props) => {
             setTimeoutPassed(true);
         }, 1000);
     }, [location, setTimeoutPassed]);
-
-    useErrorSnackbar(props.error);
 
     return (
         <MainLayout>
