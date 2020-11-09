@@ -1,6 +1,6 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
-import MainLayout from "../../layout/components/MainLayout";
+import MainLayout from "../../layout/main";
 
 const HomePage = () => {
     return (

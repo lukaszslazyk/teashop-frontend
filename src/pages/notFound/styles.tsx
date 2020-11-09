@@ -3,14 +3,9 @@ import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        progressContainer: {
-            display: "flex",
-            justifyContent: "center",
-            padding: theme.spacing(3),
+        notFoundInfo: {
+            color: grey[500],
         },
-        emptyProductsInfo: {
-            color: grey[500]
-        }
     })
 );
 

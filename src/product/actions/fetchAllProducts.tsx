@@ -1,6 +1,6 @@
 import axios from "axios";
-import { AppThunk } from "../common/types";
-import { Product } from "./models";
+import { AppThunk } from "../../common/types";
+import { Product } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -17,18 +17,18 @@ interface ReceiveAllProductsAction {
     error: boolean;
 }
 
-export type ProductActionTypes =
+export type FetchAllProductsActionTypes =
     | RequestAllProductsAction
     | ReceiveAllProductsAction;
 
-export const requestAllProducts = (): ProductActionTypes => ({
+export const requestAllProducts = (): FetchAllProductsActionTypes => ({
     type: REQUEST_ALL_PRODUCTS,
 });
 
 export const receiveAllProducts = (
     products: Product[],
     error: boolean = false
-): ProductActionTypes => ({
+): FetchAllProductsActionTypes => ({
     type: RECEIVE_ALL_PRODUCTS,
     products: products,
     error: error,
@@ -40,6 +40,9 @@ export const fetchAllProducts = (): AppThunk<void> => {
         await axios
             .get(`${API_ROOT}/products`)
             .then(response => dispatch(receiveAllProducts(response.data)))
-            .catch(error => dispatch(receiveAllProducts([], true)));
+            .catch((error) => {
+                console.error("Error occurred during fetching products");
+                dispatch(receiveAllProducts([], true));
+            });
     };
 };
