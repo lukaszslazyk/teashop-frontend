@@ -18,6 +18,7 @@ interface Props {
 const BrowsePage = (props: Props) => {
     const classes = useStyles();
     const location = useLocation();
+    const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
     const loadProducts = props.loadProducts;
     const loadProductsInCategory = props.loadProductsInCategory;
@@ -29,11 +30,18 @@ const BrowsePage = (props: Props) => {
             loadProducts();
     }, [location, loadProducts, loadProductsInCategory]);
 
+    useEffect(() => {
+        setTimeoutPassed(false);
+        setTimeout(() => {
+            setTimeoutPassed(true);
+        }, 1000)
+    }, [location, setTimeoutPassed])
+
     useErrorSnackbar(props.error);
 
     return (
         <MainLayout>
-            {props.isFetching && (
+            {props.isFetching && timeoutPassed && (
                 <div className={classes.progressContainer}>
                     <CircularProgress />
                 </div>
