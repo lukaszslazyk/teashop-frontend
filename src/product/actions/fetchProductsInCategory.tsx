@@ -40,7 +40,7 @@ export const fetchProductsInCategory = (
     return async (dispatch) => {
         dispatch(requestProductsInCategory());
         await axios
-            .get(`${API_ROOT}/products/${categoryName}`)
+            .get(`${API_ROOT}/products/categories/${categoryName}`)
             .then((response) => dispatch(receiveProductsInCategory(response.data)))
             .catch((error) => {
                 console.error("Error occurred during fetching products");

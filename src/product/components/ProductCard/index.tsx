@@ -8,6 +8,7 @@ import {
     Typography,
 } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
 import { Product } from "../../models";
 import useStyles from "./styles";
 
@@ -22,7 +23,10 @@ const ProductCard = (props: Props) => {
 
     return (
         <Card className={classes.card}>
-            <CardActionArea>
+            <CardActionArea
+                component={Link}
+                to={`/product/${props.product.id}`}
+            >
                 {/* TODO Add default image if product's imagePath is empty */}
                 <CardMedia
                     className={classes.cardMedia}
