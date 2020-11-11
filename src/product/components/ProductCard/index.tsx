@@ -19,19 +19,34 @@ interface Props {
 }
 
 const ProductCard = (props: Props) => {
+    const product = props.product;
     const classes = useStyles();
+
+    const getPriceTag = () => {
+        if (categoriesIntersect(product.categories, ["Tea", "Herbs"]))
+            return `${product.price} EUR / ${product.quantityPerPrice}g`;
+
+        return `${product.price} EUR`;
+    };
+
+    const categoriesIntersect = (
+        categories1: string[],
+        categories2: string[]
+    ): boolean => {
+        return (
+            categories1.filter((category) => categories2.includes(category))
+                .length !== 0
+        );
+    };
 
     return (
         <Card className={classes.card}>
-            <CardActionArea
-                component={Link}
-                to={`/product/${props.product.id}`}
-            >
+            <CardActionArea component={Link} to={`/product/${product.id}`}>
                 {/* TODO Add default image if product's imagePath is empty */}
                 <CardMedia
                     className={classes.cardMedia}
-                    image={`${IMAGES_ROOT}/${props.product.imagePath}`}
-                    title="Tea"
+                    image={`${IMAGES_ROOT}/${product.imagePath}`}
+                    title="Product"
                 />
                 <CardContent>
                     <Typography
@@ -40,14 +55,13 @@ const ProductCard = (props: Props) => {
                         variant="h6"
                         component="h2"
                     >
-                        {props.product.name}
+                        {product.name}
                     </Typography>
                     <Box mb={1}>
                         <Divider />
                     </Box>
                     <Typography align="center" variant="body2" component="p">
-                        {props.product.price} EUR /{" "}
-                        {props.product.quantityPerPrice}g
+                        {getPriceTag()}
                     </Typography>
                 </CardContent>
             </CardActionArea>
