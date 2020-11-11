@@ -1,7 +1,7 @@
-import { Grid, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
+import ErrorInfo from "../../common/components/ErrorInfo";
 import MainLayout from "../../layout/main";
 import { Product } from "../../product/models";
 import useStyles from "./styles";
@@ -42,16 +42,7 @@ const ProductDetailsPage = (props: Props) => {
                 </div>
             )}
             {!props.isFetching && props.error && (
-                <Grid container justify="center">
-                    <Grid item className={classes.emptyProductsInfo}>
-                        <Typography variant="h3">
-                            Sorry
-                        </Typography>
-                        <Typography variant="h6">
-                            Product is currently unavailable.
-                        </Typography>
-                    </Grid>
-                </Grid>
+                <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
             {!props.isFetching && !props.error && (
                 <div>

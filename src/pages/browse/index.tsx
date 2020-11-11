@@ -1,7 +1,7 @@
-import { Grid, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect } from "react";
 import { useLocation } from "react-router";
+import ErrorInfo from "../../common/components/ErrorInfo";
 import MainLayout from "../../layout/main";
 import ProductCardTileGroup from "../../product/components/ProductCardTileGroup";
 import { Product } from "../../product/models";
@@ -44,16 +44,7 @@ const BrowsePage = (props: Props) => {
                 </div>
             )}
             {!props.isFetching && props.products.length === 0 && (
-                <Grid container justify="center">
-                    <Grid item className={classes.emptyProductsInfo}>
-                        <Typography variant="h3">
-                            Sorry
-                        </Typography>
-                        <Typography variant="h6">
-                            No product in this category is currently available.
-                        </Typography>
-                    </Grid>
-                </Grid>
+                <ErrorInfo errorMessage="No product in this category is currently available." />
             )}
             {!props.isFetching && props.products.length > 0 && (
                 <ProductCardTileGroup products={props.products} />
