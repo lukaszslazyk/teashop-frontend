@@ -12,18 +12,13 @@ const Routing = () => {
                 <Route exact path="/" component={HomePage} />
                 <Route
                     exact
-                    path={[
-                        "/browse",
-                        "/browse/GreenTea",
-                        "/browse/BlackTea",
-                        "/browse/RedTea",
-                        "/browse/WhiteTea",
-                        "/browse/Herbs",
-                        "/browse/Accessories",
-                    ]}
+                    path="/browse/:categoryName?"
                     component={BrowsePageContainer}
                 />
-                <Route path="/product/:id" component={ProductDetailsPageContainer}/>
+                <Route
+                    path="/product/:productId"
+                    component={ProductDetailsPageContainer}
+                />
                 <Route component={NotFoundPage} />
             </Switch>
         </BrowserRouter>

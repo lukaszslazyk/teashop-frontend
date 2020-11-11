@@ -14,18 +14,18 @@ interface Props {
 }
 
 interface Params {
-    id: string;
+    productId: string;
 }
 
 const ProductDetailsPage = (props: Props) => {
     const classes = useStyles();
-    const params: Params = useParams();
+    const {productId}: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
-        loadProduct(params.id);
-    }, [loadProduct]);
+        loadProduct(productId);
+    }, [productId, loadProduct]);
 
     useEffect(() => {
         setTimeoutPassed(false);
