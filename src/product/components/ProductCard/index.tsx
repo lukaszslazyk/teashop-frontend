@@ -23,20 +23,14 @@ const ProductCard = (props: Props) => {
     const classes = useStyles();
 
     const getPriceTag = () => {
-        if (categoriesIntersect(product.categories, ["Tea", "Herbs"]))
+        if (productPricedByWeight())
             return `${product.price} EUR / ${product.quantityPerPrice}g`;
-
-        return `${product.price} EUR`;
+        else
+            return `${product.price} EUR`;
     };
 
-    const categoriesIntersect = (
-        categories1: string[],
-        categories2: string[]
-    ): boolean => {
-        return (
-            categories1.filter((category) => categories2.includes(category))
-                .length !== 0
-        );
+    const productPricedByWeight = (): boolean => {
+        return product.quantityPerPrice > 1;
     };
 
     return (

@@ -36,7 +36,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         content: {
             flexGrow: 1,
-            padding: theme.spacing(3),
+            padding: theme.spacing(1),
+            paddingTop: theme.spacing(3),
+            paddingBottom: theme.spacing(3),
         },
         nestedListItem: {
             paddingLeft: theme.spacing(4),
