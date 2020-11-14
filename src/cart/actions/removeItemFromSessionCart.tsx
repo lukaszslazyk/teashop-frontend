@@ -1,0 +1,52 @@
+import axios from "axios";
+import { AppThunk } from "../../common/types";
+
+const API_ROOT = process.env.REACT_APP_API_ROOT;
+
+export const REQUEST_REMOVE_ITEM_FROM_SESSION_CART =
+    "REQUEST_REMOVE_ITEM_FROM_SESSION_CART";
+export const RECEIVE_REMOVE_ITEM_FROM_SESSION_CART =
+    "RECEIVE_REMOVE_ITEM_FROM_SESSION_CART";
+
+interface RequestRemoveItemFromSessionCartAction {
+    type: typeof REQUEST_REMOVE_ITEM_FROM_SESSION_CART;
+}
+
+interface ReceiveRemoveItemFromSessionCartAction {
+    type: typeof RECEIVE_REMOVE_ITEM_FROM_SESSION_CART;
+    errorMessage: string;
+}
+
+export type RemoveItemFromSessionCartActionTypes =
+    | RequestRemoveItemFromSessionCartAction
+    | ReceiveRemoveItemFromSessionCartAction;
+
+export const requestRemoveItemFromSessionCart = (): RemoveItemFromSessionCartActionTypes => ({
+    type: REQUEST_REMOVE_ITEM_FROM_SESSION_CART,
+});
+
+export const receiveRemoveItemFromSessionCart = (
+    errorMessage: string = ""
+): RemoveItemFromSessionCartActionTypes => ({
+    type: RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
+    errorMessage: errorMessage,
+});
+
+export const removeItemFromSessionCart = (
+    productId: string
+): AppThunk<void> => {
+    return async (dispatch) => {
+        dispatch(requestRemoveItemFromSessionCart());
+        await axios
+            .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`)
+            .then((response) => dispatch(receiveRemoveItemFromSessionCart()))
+            .catch((error) => {
+                dispatch(
+                    receiveRemoveItemFromSessionCart(
+                        "Error occurred while removing item from your cart. " +
+                            "Please try again later."
+                    )
+                );
+            });
+    };
+};

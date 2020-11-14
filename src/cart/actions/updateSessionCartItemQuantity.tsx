@@ -1,0 +1,55 @@
+import axios from "axios";
+import { AppThunk } from "../../common/types";
+
+const API_ROOT = process.env.REACT_APP_API_ROOT;
+
+export const REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY =
+    "REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY";
+export const RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY =
+    "RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY";
+
+interface RequestUpdateSessionCartItemQuantityAction {
+    type: typeof REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY;
+}
+
+interface ReceiveUpdateSessionCartItemQuantityAction {
+    type: typeof RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY;
+    errorMessage: string;
+}
+
+export type UpdateSessionCartItemQuantityActionTypes =
+    | RequestUpdateSessionCartItemQuantityAction
+    | ReceiveUpdateSessionCartItemQuantityAction;
+
+export const requestUpdateSessionCartItemQuantity = (): UpdateSessionCartItemQuantityActionTypes => ({
+    type: REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY,
+});
+
+export const receiveUpdateSessionCartItemQuantity = (
+    errorMessage: string = ""
+): UpdateSessionCartItemQuantityActionTypes => ({
+    type: RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
+    errorMessage: errorMessage,
+});
+
+export const updateSessionCartItemQuantity = (
+    productId: string,
+    quantity: number,
+): AppThunk<void> => {
+    return async (dispatch) => {
+        dispatch(requestUpdateSessionCartItemQuantity());
+        await axios
+            .patch(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
+                quantity: quantity
+            })
+            .then((response) => dispatch(receiveUpdateSessionCartItemQuantity()))
+            .catch((error) => {
+                dispatch(
+                    receiveUpdateSessionCartItemQuantity(
+                        "Error occurred while updating item in your cart. " +
+                            "Please try again later."
+                    )
+                );
+            });
+    };
+};

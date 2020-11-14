@@ -1,14 +1,12 @@
 import {
     ProductActionTypes,
-    RECEIVE_ALL_PRODUCTS,
     REQUEST_ALL_PRODUCTS,
+    RECEIVE_ALL_PRODUCTS,
     REQUEST_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_IN_CATEGORY,
-} from "./actions";
-import {
-    RECEIVE_PRODUCT_BY_ID,
     REQUEST_PRODUCT_BY_ID,
-} from "./actions/fetchProductById";
+    RECEIVE_PRODUCT_BY_ID,
+} from "./actions";
 import { Product } from "./models";
 
 export interface ProductState {
@@ -51,7 +49,7 @@ export function productReducer(
                 isFetching: false,
                 product: action.product,
                 error: action.error,
-            }
+            };
         default:
             return state;
     }
