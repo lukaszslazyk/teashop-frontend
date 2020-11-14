@@ -24,7 +24,7 @@ const MainLayout = (props: Props) => {
                 mobileOpen={mobileOpen}
                 handleDrawerToggle={handleDrawerToggle}
             />
-            <Container>
+            <Container disableGutters>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     {props.children}

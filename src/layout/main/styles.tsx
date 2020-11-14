@@ -36,9 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         content: {
             flexGrow: 1,
-            padding: theme.spacing(1),
-            paddingTop: theme.spacing(3),
-            paddingBottom: theme.spacing(3),
+            padding: theme.spacing(3),
         },
         nestedListItem: {
             paddingLeft: theme.spacing(4),
@@ -47,14 +45,14 @@ const useStyles = makeStyles((theme: Theme) =>
             marginRight: theme.spacing(1),
         },
         greenTeaIcon: {
-            color: green[500]
+            color: green[500],
         },
         redTeaIcon: {
-            color: red[500]
+            color: red[500],
         },
         herbsIcon: {
-            color: green[800]
-        }
+            color: green[800],
+        },
     })
 );
 
