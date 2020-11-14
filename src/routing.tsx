@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import BrowsePageContainer from "./pages/browse/container";
 import HomePage from "./pages/home";
 import NotFoundPage from "./pages/notFound";
+import ProductDetailsPageContainer from "./pages/productDetails/container";
 
 const Routing = () => {
     return (
@@ -11,16 +12,12 @@ const Routing = () => {
                 <Route exact path="/" component={HomePage} />
                 <Route
                     exact
-                    path={[
-                        "/browse",
-                        "/browse/GreenTea",
-                        "/browse/BlackTea",
-                        "/browse/RedTea",
-                        "/browse/WhiteTea",
-                        "/browse/Herbs",
-                        "/browse/Accessories",
-                    ]}
+                    path="/browse/:categoryName?"
                     component={BrowsePageContainer}
+                />
+                <Route
+                    path="/product/:productId"
+                    component={ProductDetailsPageContainer}
                 />
                 <Route component={NotFoundPage} />
             </Switch>

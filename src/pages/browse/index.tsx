@@ -1,7 +1,7 @@
-import { Grid, Typography } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect } from "react";
-import { useLocation } from "react-router";
+import { useParams } from "react-router";
+import ErrorInfo from "../../common/components/ErrorInfo";
 import MainLayout from "../../layout/main";
 import ProductCardTileGroup from "../../product/components/ProductCardTileGroup";
 import { Product } from "../../product/models";
@@ -15,26 +15,29 @@ interface Props {
     loadProductsInCategory: (categoryName: string) => void;
 }
 
+interface Params {
+    categoryName: string | undefined;
+}
+
 const BrowsePage = (props: Props) => {
     const classes = useStyles();
-    const location = useLocation();
+    const {categoryName}: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
     const loadProducts = props.loadProducts;
     const loadProductsInCategory = props.loadProductsInCategory;
     useEffect(() => {
-        if (location.pathname.includes("browse/")) {
-            let categoryName = location.pathname.split("/").slice(-1)[0];
-            loadProductsInCategory(categoryName);
-        } else loadProducts();
-    }, [location, loadProducts, loadProductsInCategory]);
+        categoryName
+            ? loadProductsInCategory(categoryName)
+            : loadProducts();
+    }, [categoryName, loadProducts, loadProductsInCategory]);
 
     useEffect(() => {
         setTimeoutPassed(false);
         setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
-    }, [location, setTimeoutPassed]);
+    }, [setTimeoutPassed]);
 
     return (
         <MainLayout>
@@ -44,16 +47,7 @@ const BrowsePage = (props: Props) => {
                 </div>
             )}
             {!props.isFetching && props.products.length === 0 && (
-                <Grid container justify="center">
-                    <Grid item className={classes.emptyProductsInfo}>
-                        <Typography variant="h3">
-                            Sorry
-                        </Typography>
-                        <Typography variant="h6">
-                            No product in this category is currently available.
-                        </Typography>
-                    </Grid>
-                </Grid>
+                <ErrorInfo errorMessage="No product in this category is currently available." />
             )}
             {!props.isFetching && props.products.length > 0 && (
                 <ProductCardTileGroup products={props.products} />

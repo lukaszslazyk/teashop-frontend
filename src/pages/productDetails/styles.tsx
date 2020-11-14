@@ -7,6 +7,9 @@ const useStyles = makeStyles((theme: Theme) =>
             justifyContent: "center",
             padding: theme.spacing(3),
         },
+        cardMedia: {
+            height: 350,
+        }
     })
 );
 

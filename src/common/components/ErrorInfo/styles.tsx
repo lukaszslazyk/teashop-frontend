@@ -1,12 +1,10 @@
 import { makeStyles } from "@material-ui/core";
+import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles({
-    card: {
-        width: 250,
-    },
-    cardMedia: {
-        height: 200,
-    },
+    root: {
+        color: grey[500]
+    }
 });
 
 export default useStyles;
