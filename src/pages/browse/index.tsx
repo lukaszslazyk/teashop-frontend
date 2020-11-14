@@ -21,23 +21,22 @@ interface Params {
 
 const BrowsePage = (props: Props) => {
     const classes = useStyles();
-    const {categoryName}: Params = useParams();
+    const { categoryName }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
-    const loadProducts = props.loadProducts;
-    const loadProductsInCategory = props.loadProductsInCategory;
+    const { loadProducts, loadProductsInCategory } = props;
     useEffect(() => {
+        setTimeoutPassed(false);
         categoryName
             ? loadProductsInCategory(categoryName)
             : loadProducts();
     }, [categoryName, loadProducts, loadProductsInCategory]);
 
     useEffect(() => {
-        setTimeoutPassed(false);
         setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
-    }, [setTimeoutPassed]);
+    }, [timeoutPassed]);
 
     return (
         <MainLayout>

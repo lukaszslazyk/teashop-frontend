@@ -42,11 +42,11 @@ const ProductDetailsPage = (props: Props) => {
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
+        setTimeoutPassed(false);
         loadProduct(productId);
     }, [productId, loadProduct]);
 
     useEffect(() => {
-        setTimeoutPassed(false);
         setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
