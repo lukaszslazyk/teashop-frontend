@@ -49,13 +49,7 @@ export const updateSessionCartItemQuantity = (
                 dispatch(receiveUpdateSessionCartItemQuantity())
             )
             .catch((error) => {
-                dispatch(
-                    receiveUpdateSessionCartItemQuantity(
-                        true,
-                        "Error occurred while updating item in your cart. " +
-                            "Please try again later."
-                    )
-                );
+                dispatch(receiveUpdateSessionCartItemQuantity(true));
             });
     };
 };

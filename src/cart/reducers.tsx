@@ -12,14 +12,14 @@ import { Cart } from "./models";
 
 export interface CartState {
     cart: Cart | null;
-    isProcessing: boolean;
+    isSending: boolean;
     errorOccurred: boolean;
     errorMessage: string;
 }
 
 const initialStete: CartState = {
     cart: null,
-    isProcessing: false,
+    isSending: false,
     errorOccurred: false,
     errorMessage: "",
 };
@@ -34,7 +34,7 @@ export function cartReducer(
         case REQUEST_REMOVE_ITEM_FROM_SESSION_CART:
             return {
                 ...state,
-                isProcessing: true,
+                isSending: true,
             };
         case RECEIVE_SESSION_CART:
             return {
@@ -47,9 +47,8 @@ export function cartReducer(
         case RECEIVE_REMOVE_ITEM_FROM_SESSION_CART:
             return {
                 ...state,
-                isProcessing: false,
+                isSending: false,
                 errorOccurred: action.errorOccurred,
-                errorMessage: action.errorMessage,
             };
         default:
             return state;

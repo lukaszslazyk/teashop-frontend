@@ -7,11 +7,10 @@ import ProductDetailsPage from "./index";
 
 const mapStateToProps = (state: RootState) => ({
     product: state.product.product,
-    isFetching: state.product.isFetching,
-    productActionErrorOccurred: state.product.errorOccurred,
-    cartActionIsProcessing: state.cart.isProcessing,
-    cartActionErrorOccurred: state.cart.errorOccurred,
-    cartActionErrorMessage: state.cart.errorMessage,
+    productIsFetching: state.product.isFetching,
+    productErrorOccurred: state.product.errorOccurred,
+    cartIsSending: state.cart.isSending,
+    cartErrorOccurred: state.cart.errorOccurred,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -8,14 +8,14 @@ import { Product } from "../../product/models";
 import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
 import useStyles from "./styles";
+import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
 
 interface Props {
     product: Product | null;
-    isFetching: boolean;
-    productActionErrorOccurred: boolean;
-    cartActionIsProcessing: boolean;
-    cartActionErrorOccurred: boolean;
-    cartActionErrorMessage: string;
+    productIsFetching: boolean;
+    productErrorOccurred: boolean;
+    cartIsSending: boolean;
+    cartErrorOccurred: boolean;
     loadProduct: (productId: string) => void;
     addItemToSessionCart: (productId: string, quantity: number) => void;
 }
@@ -29,12 +29,16 @@ const ProductDetailsPage = (props: Props) => {
     const { productId }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
     const [quantity, setQuantity] = React.useState(0);
+    useAddItemToCartResponseNotifyEffect(
+        props.cartIsSending,
+        props.cartErrorOccurred
+    );
 
     const addItemToSessionCartCallback = () => {
         if (props.product) {
             props.addItemToSessionCart(props.product.id, quantity);
         }
-    }
+    };
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
@@ -50,23 +54,25 @@ const ProductDetailsPage = (props: Props) => {
 
     return (
         <MainLayout>
-            {props.isFetching && timeoutPassed && (
+            {props.productIsFetching && timeoutPassed && (
                 <div className={classes.progressContainer}>
                     <CircularProgress />
                 </div>
             )}
-            {!props.isFetching && props.productActionErrorOccurred && (
+            {!props.productIsFetching && props.productErrorOccurred && (
                 <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
-            {!props.isFetching && !props.productActionErrorOccurred && (
+            {!props.productIsFetching && !props.productErrorOccurred && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <ProductDetailsContentHeader
                             product={props.product}
                             quantity={quantity}
-                            isProcessing={props.cartActionIsProcessing}
+                            isProcessing={props.cartIsSending}
                             setQuantityCallback={setQuantity}
-                            addItemToSessionCartCallback={addItemToSessionCartCallback}
+                            addItemToSessionCartCallback={
+                                addItemToSessionCartCallback
+                            }
                         />
                     </Grid>
                     <Grid item xs={12}>

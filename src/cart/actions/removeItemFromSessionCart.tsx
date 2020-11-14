@@ -15,7 +15,6 @@ interface RequestRemoveItemFromSessionCartAction {
 interface ReceiveRemoveItemFromSessionCartAction {
     type: typeof RECEIVE_REMOVE_ITEM_FROM_SESSION_CART;
     errorOccurred: boolean;
-    errorMessage: string;
 }
 
 export type RemoveItemFromSessionCartActionTypes =
@@ -27,12 +26,10 @@ export const requestRemoveItemFromSessionCart = (): RemoveItemFromSessionCartAct
 });
 
 export const receiveRemoveItemFromSessionCart = (
-    errorOccurred: boolean = false,
-    errorMessage: string = ""
+    errorOccurred: boolean = false
 ): RemoveItemFromSessionCartActionTypes => ({
     type: RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
     errorOccurred: errorOccurred,
-    errorMessage: errorMessage,
 });
 
 export const removeItemFromSessionCart = (
@@ -44,13 +41,7 @@ export const removeItemFromSessionCart = (
             .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`)
             .then((response) => dispatch(receiveRemoveItemFromSessionCart()))
             .catch((error) => {
-                dispatch(
-                    receiveRemoveItemFromSessionCart(
-                        true,
-                        "Error occurred while removing item from your cart. " +
-                            "Please try again later."
-                    )
-                );
+                dispatch(receiveRemoveItemFromSessionCart(true));
             });
     };
 };

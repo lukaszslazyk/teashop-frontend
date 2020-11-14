@@ -6,6 +6,7 @@ import { ThemeProvider } from "@material-ui/core";
 import { mainTheme } from "./layout/main/themes";
 import { Provider } from "react-redux";
 import configureStore from "./redux_setup/configureStore";
+import { SnackbarProvider } from "notistack";
 
 const store = configureStore();
 
@@ -13,7 +14,9 @@ ReactDOM.render(
     <React.StrictMode>
         <Provider store={store}>
             <ThemeProvider theme={mainTheme}>
+                <SnackbarProvider maxSnack={1}>
                     <App />
+                </SnackbarProvider>
             </ThemeProvider>
         </Provider>
     </React.StrictMode>,
