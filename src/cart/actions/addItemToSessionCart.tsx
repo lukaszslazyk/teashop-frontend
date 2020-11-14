@@ -14,6 +14,7 @@ interface RequestAddItemToSessionCartAction {
 
 interface ReceiveAddItemToSessionCartAction {
     type: typeof RECEIVE_ADD_ITEM_TO_SESSION_CART;
+    errorOccurred: boolean;
     errorMessage: string;
 }
 
@@ -26,9 +27,11 @@ export const requestAddItemToSessionCart = (): AddItemToSessionCartActionTypes =
 });
 
 export const receiveAddItemToSessionCart = (
+    errorOccurred: boolean = false,
     errorMessage: string = ""
 ): AddItemToSessionCartActionTypes => ({
     type: RECEIVE_ADD_ITEM_TO_SESSION_CART,
+    errorOccurred: errorOccurred,
     errorMessage: errorMessage,
 });
 
@@ -47,8 +50,9 @@ export const addItemToSessionCart = (
             .catch((error) => {
                 dispatch(
                     receiveAddItemToSessionCart(
-                        "Error occurred while adding item to your cart. "
-                        + "Please try again later."
+                        true,
+                        "Error occurred while adding item to your cart. " +
+                            "Please try again later."
                     )
                 );
             });

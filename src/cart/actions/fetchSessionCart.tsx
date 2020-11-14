@@ -14,7 +14,7 @@ interface RequestSessionCartAction {
 interface ReceiveSessionCartAction {
     type: typeof RECEIVE_SESSION_CART;
     cart: Cart | null;
-    error: boolean;
+    errorOccurred: boolean;
 }
 
 export type FetchSessionCartActionTypes =
@@ -27,11 +27,11 @@ export const requestSessionCart = (): FetchSessionCartActionTypes => ({
 
 export const receiveSessionCart = (
     cart: Cart | null,
-    error: boolean = false
+    errorOccurred: boolean = false
 ): FetchSessionCartActionTypes => ({
     type: RECEIVE_SESSION_CART,
     cart: cart,
-    error: error,
+    errorOccurred: errorOccurred,
 });
 
 export const fetchSessionCart = (): AppThunk<void> => {

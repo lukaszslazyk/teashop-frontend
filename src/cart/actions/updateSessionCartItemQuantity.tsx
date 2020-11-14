@@ -14,6 +14,7 @@ interface RequestUpdateSessionCartItemQuantityAction {
 
 interface ReceiveUpdateSessionCartItemQuantityAction {
     type: typeof RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY;
+    errorOccurred: boolean;
     errorMessage: string;
 }
 
@@ -26,26 +27,31 @@ export const requestUpdateSessionCartItemQuantity = (): UpdateSessionCartItemQua
 });
 
 export const receiveUpdateSessionCartItemQuantity = (
+    errorOccurred: boolean = false,
     errorMessage: string = ""
 ): UpdateSessionCartItemQuantityActionTypes => ({
     type: RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
+    errorOccurred: errorOccurred,
     errorMessage: errorMessage,
 });
 
 export const updateSessionCartItemQuantity = (
     productId: string,
-    quantity: number,
+    quantity: number
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestUpdateSessionCartItemQuantity());
         await axios
             .patch(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
-                quantity: quantity
+                quantity: quantity,
             })
-            .then((response) => dispatch(receiveUpdateSessionCartItemQuantity()))
+            .then((response) =>
+                dispatch(receiveUpdateSessionCartItemQuantity())
+            )
             .catch((error) => {
                 dispatch(
                     receiveUpdateSessionCartItemQuantity(
+                        true,
                         "Error occurred while updating item in your cart. " +
                             "Please try again later."
                     )

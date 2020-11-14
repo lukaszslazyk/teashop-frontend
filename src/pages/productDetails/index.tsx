@@ -12,7 +12,7 @@ import useStyles from "./styles";
 interface Props {
     product: Product | null;
     isFetching: boolean;
-    error: boolean;
+    errorOccurred: boolean;
     loadProduct: (productId: string) => void;
 }
 
@@ -45,10 +45,10 @@ const ProductDetailsPage = (props: Props) => {
                     <CircularProgress />
                 </div>
             )}
-            {!props.isFetching && props.error && (
+            {!props.isFetching && props.errorOccurred && (
                 <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
-            {!props.isFetching && !props.error && (
+            {!props.isFetching && !props.errorOccurred && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <ProductDetailsContentHeader

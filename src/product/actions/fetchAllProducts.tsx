@@ -14,7 +14,7 @@ interface RequestAllProductsAction {
 interface ReceiveAllProductsAction {
     type: typeof RECEIVE_ALL_PRODUCTS;
     products: Product[];
-    error: boolean;
+    errorOccurred: boolean;
 }
 
 export type FetchAllProductsActionTypes =
@@ -27,11 +27,11 @@ export const requestAllProducts = (): FetchAllProductsActionTypes => ({
 
 export const receiveAllProducts = (
     products: Product[],
-    error: boolean = false
+    errorOccurred: boolean = false
 ): FetchAllProductsActionTypes => ({
     type: RECEIVE_ALL_PRODUCTS,
     products: products,
-    error: error,
+    errorOccurred: errorOccurred,
 });
 
 export const fetchAllProducts = (): AppThunk<void> => {

@@ -13,14 +13,14 @@ export interface ProductState {
     products: Product[];
     product: Product | null;
     isFetching: boolean;
-    error: boolean;
+    errorOccurred: boolean;
 }
 
 const initialState: ProductState = {
     products: [],
     product: null,
     isFetching: false,
-    error: false,
+    errorOccurred: false,
 };
 
 export function productReducer(
@@ -41,14 +41,14 @@ export function productReducer(
                 ...state,
                 isFetching: false,
                 products: action.products,
-                error: action.error,
+                errorOccurred: action.errorOccurred,
             };
         case RECEIVE_PRODUCT_BY_ID:
             return {
                 ...state,
                 isFetching: false,
                 product: action.product,
-                error: action.error,
+                errorOccurred: action.errorOccurred,
             };
         default:
             return state;

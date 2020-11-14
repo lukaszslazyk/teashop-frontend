@@ -10,7 +10,7 @@ import useStyles from "./styles";
 interface Props {
     products: Product[];
     isFetching: boolean;
-    error: boolean;
+    errorOccurred: boolean;
     loadProducts: () => void;
     loadProductsInCategory: (categoryName: string) => void;
 }

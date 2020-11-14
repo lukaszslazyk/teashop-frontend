@@ -14,7 +14,7 @@ interface RequestProductsInCategoryAction {
 interface ReceiveProductsInCategoryAction {
     type: typeof RECEIVE_PRODUCTS_IN_CATEGORY;
     products: Product[];
-    error: boolean;
+    errorOccurred: boolean;
 }
 
 export type FetchProductsInCategoryActionTypes = 
@@ -27,11 +27,11 @@ export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes 
     
 export const receiveProductsInCategory = (
     products: Product[],
-    error: boolean = false
+    errorOccurred: boolean = false
 ): FetchProductsInCategoryActionTypes => ({
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: products,
-    error: error,
+    errorOccurred: errorOccurred,
 });
 
 export const fetchProductsInCategory = (

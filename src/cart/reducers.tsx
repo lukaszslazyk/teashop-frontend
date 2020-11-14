@@ -9,13 +9,13 @@ import { Cart } from "./models";
 
 export interface CartState {
     cart: Cart | null;
-    error: boolean;
+    errorOccurred: boolean;
     errorMessage: string;
 }
 
 const initialStete: CartState = {
     cart: null,
-    error: false,
+    errorOccurred: false,
     errorMessage: "",
 };
 
@@ -28,13 +28,14 @@ export function cartReducer(
             return {
                 ...state,
                 cart: action.cart,
-                error: action.error,
+                errorOccurred: action.errorOccurred,
             };
         case RECEIVE_ADD_ITEM_TO_SESSION_CART:
         case RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY:
         case RECEIVE_REMOVE_ITEM_FROM_SESSION_CART:
             return {
                 ...state,
+                errorOccurred: action.errorOccurred,
                 errorMessage: action.errorMessage,
             };
         default:

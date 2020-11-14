@@ -14,6 +14,7 @@ interface RequestRemoveItemFromSessionCartAction {
 
 interface ReceiveRemoveItemFromSessionCartAction {
     type: typeof RECEIVE_REMOVE_ITEM_FROM_SESSION_CART;
+    errorOccurred: boolean;
     errorMessage: string;
 }
 
@@ -26,9 +27,11 @@ export const requestRemoveItemFromSessionCart = (): RemoveItemFromSessionCartAct
 });
 
 export const receiveRemoveItemFromSessionCart = (
+    errorOccurred: boolean = false,
     errorMessage: string = ""
 ): RemoveItemFromSessionCartActionTypes => ({
     type: RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
+    errorOccurred: errorOccurred,
     errorMessage: errorMessage,
 });
 
@@ -43,6 +46,7 @@ export const removeItemFromSessionCart = (
             .catch((error) => {
                 dispatch(
                     receiveRemoveItemFromSessionCart(
+                        true,
                         "Error occurred while removing item from your cart. " +
                             "Please try again later."
                     )
