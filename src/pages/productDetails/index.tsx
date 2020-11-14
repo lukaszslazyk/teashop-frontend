@@ -12,8 +12,12 @@ import useStyles from "./styles";
 interface Props {
     product: Product | null;
     isFetching: boolean;
-    errorOccurred: boolean;
+    productActionErrorOccurred: boolean;
+    cartActionIsProcessing: boolean;
+    cartActionErrorOccurred: boolean;
+    cartActionErrorMessage: string;
     loadProduct: (productId: string) => void;
+    addItemToSessionCart: (productId: string, quantity: number) => void;
 }
 
 interface Params {
@@ -25,6 +29,12 @@ const ProductDetailsPage = (props: Props) => {
     const { productId }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
     const [quantity, setQuantity] = React.useState(0);
+
+    const addItemToSessionCartCallback = () => {
+        if (props.product) {
+            props.addItemToSessionCart(props.product.id, quantity);
+        }
+    }
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
@@ -45,22 +55,22 @@ const ProductDetailsPage = (props: Props) => {
                     <CircularProgress />
                 </div>
             )}
-            {!props.isFetching && props.errorOccurred && (
+            {!props.isFetching && props.productActionErrorOccurred && (
                 <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
-            {!props.isFetching && !props.errorOccurred && (
+            {!props.isFetching && !props.productActionErrorOccurred && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <ProductDetailsContentHeader
                             product={props.product}
                             quantity={quantity}
-                            setQuantity={setQuantity}
+                            isProcessing={props.cartActionIsProcessing}
+                            setQuantityCallback={setQuantity}
+                            addItemToSessionCartCallback={addItemToSessionCartCallback}
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <ProductDetailsContentBody
-                            product={props.product} 
-                        />
+                        <ProductDetailsContentBody product={props.product} />
                     </Grid>
                 </Grid>
             )}
