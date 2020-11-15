@@ -44,10 +44,14 @@ export const addItemToSessionCart = (
     return async (dispatch) => {
         dispatch(requestAddItemToSessionCart());
         await axios
-            .post(`${API_ROOT}/carts/sessionCart/items`, {
-                productId: product.id,
-                quantity: quantity,
-            })
+            .post(
+                `${API_ROOT}/carts/sessionCart/items`,
+                {
+                    productId: product.id,
+                    quantity: quantity,
+                },
+                { withCredentials: true }
+            )
             .then((response) =>
                 dispatch(
                     receiveAddItemToSessionCart({

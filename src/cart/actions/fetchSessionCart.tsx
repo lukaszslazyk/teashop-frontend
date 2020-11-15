@@ -38,7 +38,7 @@ export const fetchSessionCart = (): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestSessionCart());
         await axios
-            .get(`${API_ROOT}/carts/sessionCart`)
+            .get(`${API_ROOT}/carts/sessionCart`, { withCredentials: true })
             .then((response) => dispatch(receiveSessionCart(response.data)))
             .catch((error) => {
                 console.error("Error occurred during fetching session cart");

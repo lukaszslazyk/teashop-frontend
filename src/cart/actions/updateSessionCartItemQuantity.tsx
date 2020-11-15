@@ -42,9 +42,11 @@ export const updateSessionCartItemQuantity = (
     return async (dispatch) => {
         dispatch(requestUpdateSessionCartItemQuantity());
         await axios
-            .patch(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
-                quantity: quantity,
-            })
+            .patch(
+                `${API_ROOT}/carts/sessionCart/items/${productId}`,
+                { quantity: quantity },
+                { withCredentials: true }
+            )
             .then((response) =>
                 dispatch(receiveUpdateSessionCartItemQuantity())
             )

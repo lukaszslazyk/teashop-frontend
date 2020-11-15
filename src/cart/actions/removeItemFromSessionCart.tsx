@@ -38,7 +38,9 @@ export const removeItemFromSessionCart = (
     return async (dispatch) => {
         dispatch(requestRemoveItemFromSessionCart());
         await axios
-            .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`)
+            .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
+                withCredentials: true,
+            })
             .then((response) => dispatch(receiveRemoveItemFromSessionCart()))
             .catch((error) => {
                 dispatch(receiveRemoveItemFromSessionCart(true));
