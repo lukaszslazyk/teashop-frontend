@@ -2,11 +2,11 @@ FROM node:12.19.0-alpine AS build-env
 WORKDIR /app
 ENV PATH /app/node_modules/.bin:$PATH
 
-COPY package.json ./
-COPY package-lock.json ./
+COPY teashop_frontend/package.json ./
+COPY teashop_frontend/package-lock.json ./
 RUN npm ci
 
-COPY . ./
+COPY teashop_frontend/ ./
 RUN npm run build
 
 FROM nginx:stable-alpine

@@ -17,7 +17,7 @@ This application is a part of Teashop application environment. To see the detail
 
 ### Local
 
-To setup the application with default local server, in project directory run:
+To setup the application with default local server, go to teashop_frontend directory and run:
 
 ```
 npm install
@@ -33,7 +33,7 @@ The application will run on: [http://localhost:3000](http://localhost:3000)
 
 ### Docker container
 
-To setup the application on docker container, first build the container image by running the following command in project directory:
+To setup the application on docker container, first build container image by running the following command in main project directory:
 
 ```
 docker build -t teashop_frontend .
