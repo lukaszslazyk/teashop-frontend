@@ -7,7 +7,7 @@ import BrowsePage from "./index";
 const mapStateToProps = (state: RootState) => ({
     products: state.product.products,
     isFetching: state.product.isFetching,
-    error: state.product.error,
+    errorOccurred: state.product.errorOccurred,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

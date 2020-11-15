@@ -14,7 +14,7 @@ interface RequestProductByIdAction {
 interface ReceiveProductByIdAction {
     type: typeof RECEIVE_PRODUCT_BY_ID;
     product: Product | null;
-    error: boolean;
+    errorOccurred: boolean;
 }
 
 export type FetchProductByIdActionTypes =
@@ -27,11 +27,11 @@ export const requestProductById = (): FetchProductByIdActionTypes => ({
 
 export const receiveProductById = (
     product: Product | null,
-    error: boolean = false
+    errorOccurred: boolean = false
 ): FetchProductByIdActionTypes => ({
     type: RECEIVE_PRODUCT_BY_ID,
     product: product,
-    error: error,
+    errorOccurred: errorOccurred,
 });
 
 export const fetchProductById = (productId: string): AppThunk<void> => {

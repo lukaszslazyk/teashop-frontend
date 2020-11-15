@@ -4,6 +4,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
 import useStyles from "../styles";
+import CartIconContainer from "./CartIcon/container"
 
 interface Props {
     handleDrawerToggle: () => void;
@@ -30,6 +31,8 @@ const TopAppBar = (props: Props) => {
                         Tea Shop
                     </Typography>
                 </Link>
+                <div className={classes.grow} />
+                <CartIconContainer />
             </Toolbar>
         </AppBar>
     );

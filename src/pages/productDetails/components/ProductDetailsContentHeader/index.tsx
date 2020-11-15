@@ -1,6 +1,7 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect } from "react";
 import { Product } from "../../../../product/models";
+import AddToCartButton from "../AddToCartButton";
 import ProductQuantityPicker from "../ProductQuantityPicker";
 import useStyles from "./styles";
 
@@ -9,13 +10,15 @@ const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
 interface Props {
     product: Product | null;
     quantity: number;
-    setQuantity: (value: number) => void;
+    isProcessing: boolean;
+    setQuantityCallback: (value: number) => void;
+    addItemToSessionCartCallback: () => void;
 }
 
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();    
     const product = props.product;
-    const setQuantity = props.setQuantity;
+    const setQuantity = props.setQuantityCallback;
 
     const calculatePrice = (): number => {
         if (props.product)
@@ -88,7 +91,19 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 <ProductQuantityPicker
                                     initialValue={props.product.quantityPerPrice}
                                     pricedByWeight={productPricedByWeight()}
-                                    setQuantityCallback={props.setQuantity}
+                                    setQuantityCallback={
+                                        props.setQuantityCallback
+                                    }
+                                />
+                            </Grid>
+                        )}
+                        {props.product && (
+                            <Grid item xs={12}>
+                                <AddToCartButton
+                                    isProcessing={props.isProcessing}
+                                    addItemToSessionCartCallback={
+                                        props.addItemToSessionCartCallback
+                                    }
                                 />
                             </Grid>
                         )}
