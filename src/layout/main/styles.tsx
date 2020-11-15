@@ -53,6 +53,9 @@ const useStyles = makeStyles((theme: Theme) =>
         herbsIcon: {
             color: green[800],
         },
+        grow: {
+            flexGrow: 1,
+        },
     })
 );
 

@@ -1,5 +1,7 @@
 import axios from "axios";
 import { AppThunk } from "../../common/types";
+import { Product } from "../../product/models";
+import { CartItem } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -14,6 +16,7 @@ interface RequestAddItemToSessionCartAction {
 
 interface ReceiveAddItemToSessionCartAction {
     type: typeof RECEIVE_ADD_ITEM_TO_SESSION_CART;
+    addedItem: CartItem | null;
     errorOccurred: boolean;
 }
 
@@ -26,26 +29,35 @@ export const requestAddItemToSessionCart = (): AddItemToSessionCartActionTypes =
 });
 
 export const receiveAddItemToSessionCart = (
+    addedItem: CartItem | null,
     errorOccurred: boolean = false
 ): AddItemToSessionCartActionTypes => ({
     type: RECEIVE_ADD_ITEM_TO_SESSION_CART,
+    addedItem: addedItem,
     errorOccurred: errorOccurred,
 });
 
 export const addItemToSessionCart = (
-    productId: string,
+    product: Product,
     quantity: number
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestAddItemToSessionCart());
         await axios
             .post(`${API_ROOT}/carts/sessionCart/items`, {
-                productId: productId,
+                productId: product.id,
                 quantity: quantity,
             })
-            .then((response) => dispatch(receiveAddItemToSessionCart()))
+            .then((response) =>
+                dispatch(
+                    receiveAddItemToSessionCart({
+                        product: product,
+                        quantity: quantity,
+                    })
+                )
+            )
             .catch((error) => {
-                dispatch(receiveAddItemToSessionCart(true));
+                dispatch(receiveAddItemToSessionCart(null, true));
             });
     };
 };

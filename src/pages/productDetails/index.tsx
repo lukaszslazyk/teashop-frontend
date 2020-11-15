@@ -17,7 +17,7 @@ interface Props {
     cartIsSending: boolean;
     cartErrorOccurred: boolean;
     loadProduct: (productId: string) => void;
-    addItemToSessionCart: (productId: string, quantity: number) => void;
+    addItemToSessionCart: (product: Product, quantity: number) => void;
 }
 
 interface Params {
@@ -36,7 +36,7 @@ const ProductDetailsPage = (props: Props) => {
 
     const addItemToSessionCartCallback = () => {
         if (props.product) {
-            props.addItemToSessionCart(props.product.id, quantity);
+            props.addItemToSessionCart(props.product, quantity);
         }
     };
 
