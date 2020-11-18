@@ -5,6 +5,7 @@ interface Props {
     initialValue: number,
     pricedByWeight: boolean
     setQuantityCallback: (value: number) => void;
+    interactionDisabled?: boolean;
 }
 
 const ProductQuantityPicker = (props: Props) => (
@@ -16,6 +17,7 @@ const ProductQuantityPicker = (props: Props) => (
                 lowThreshold={50}
                 step={25}
                 setQuantityCallback={props.setQuantityCallback}
+                interactionDisabled={props.interactionDisabled}
             />
         ) : (
             <QuantityPicker
@@ -24,6 +26,7 @@ const ProductQuantityPicker = (props: Props) => (
                 lowThreshold={0}
                 step={1}
                 setQuantityCallback={props.setQuantityCallback}
+                interactionDisabled={props.interactionDisabled}
             />
         )}
     </div>

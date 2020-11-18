@@ -1,5 +1,5 @@
 import { createStyles, makeStyles, Theme } from "@material-ui/core";
-import { red } from "@material-ui/core/colors";
+import { grey, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,6 +24,9 @@ const useStyles = makeStyles((theme: Theme) =>
         removeButton: {
             "&.MuiFab-root": {
                 backgroundColor: red[600],
+                "&.Mui-disabled": {
+                    backgroundColor: grey[300],
+                }
             },
             color: "white",
         },

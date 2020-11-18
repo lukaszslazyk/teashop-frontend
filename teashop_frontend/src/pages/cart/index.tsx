@@ -13,14 +13,16 @@ interface Props {
     isSending: boolean;
     errorOccurred: boolean;
     getSessionCart: () => void;
+    removeItemFromCart: (productId: string) => void;
 }
 
 const CartPage = (props: Props) => {
     const classes = useStyles();
     const [backdropOpen, setBackdropOpen] = React.useState(false);
+    const [disableInteraction, setDisableInteraction] = React.useState(false);
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
+    const { isFetching, isSending, getSessionCart } = props;
 
-    const getSessionCart = props.getSessionCart;
     useEffect(() => {
         setTimeoutPassed(false);
         getSessionCart();
@@ -32,30 +34,53 @@ const CartPage = (props: Props) => {
         }, 1000);
     }, [timeoutPassed]);
 
-    const isFetching = props.isFetching;
     useEffect(() => {
-        if (isFetching && timeoutPassed) setBackdropOpen(true);
-        if (!isFetching) setBackdropOpen(false);
-    }, [isFetching, timeoutPassed, setBackdropOpen]);
+        if (timeoutPassed) {
+            if (isFetching || isSending)
+                setBackdropOpen(true);
+        }
+    }, [timeoutPassed, isFetching, isSending]);
+
+    useEffect(() => {
+        if (!isFetching && !isSending) {
+            setBackdropOpen(false);
+            setDisableInteraction(false);
+        }
+    }, [isFetching, isSending, setBackdropOpen]);
+
+    const removeItemFromCartCallback = (productId: string) => {
+        setDisableInteraction(true);
+        setTimeoutPassed(false);
+        props.removeItemFromCart(productId);
+    };
 
     return (
-        <MainLayout>
-            <Backdrop open={backdropOpen}>
+        <div>
+            <Backdrop
+                open={backdropOpen}
+                className={classes.backdropProgressContainer}
+            >
                 <CircularProgress className={classes.backdropProgress} />
             </Backdrop>
-            {!props.isFetching && props.errorOccurred && (
-                <ErrorInfo errorMessage="Your cart is currently unavailable. Please try again later." />
-            )}
-            {!props.isFetching && !props.errorOccurred && (
-                <div>
-                    {props.cart.items.length > 0 ? (
-                        <CartView cart={props.cart} />
-                    ) : (
-                        <EmptyCartView />
-                    )}
-                </div>
-            )}
-        </MainLayout>
+            <MainLayout>
+                {!props.isFetching && props.errorOccurred && (
+                    <ErrorInfo errorMessage="Your cart is currently unavailable. Please try again later." />
+                )}
+                {!props.isFetching && !props.errorOccurred && (
+                    <div>
+                        {props.cart.items.length > 0 ? (
+                            <CartView
+                                cart={props.cart}
+                                interactionDisabled={disableInteraction}
+                                removeItemFromCartCallback={removeItemFromCartCallback}
+                            />
+                        ) : (
+                            <EmptyCartView />
+                        )}
+                    </div>
+                )}
+            </MainLayout>
+        </div>
     );
 };
 

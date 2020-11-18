@@ -1,20 +1,23 @@
-import { ClickAwayListener, Fab, Popper, TextField }from "@material-ui/core";
+import { ClickAwayListener, Fab, Popper, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React from "react";
 import useStyles from "./styles";
 
 interface Props {
-    inputLabel: string,
-    initialValue: number,
-    lowThreshold: number,
-    step: number,
+    inputLabel: string;
+    initialValue: number;
+    lowThreshold: number;
+    step: number;
     setQuantityCallback: (value: number) => void;
+    interactionDisabled?: boolean;
 }
 
 const QuantityPicker = (props: Props) => {
     const classes = useStyles();
-    const [quantityText, setQuantityText] = React.useState(props.initialValue.toString());
+    const [quantityText, setQuantityText] = React.useState(
+        props.initialValue.toString()
+    );
     const [quantityErrorText, setQuantityErrorText] = React.useState("");
     const [anchorEl, setAnchorEl]: any = React.useState(null);
 
@@ -25,8 +28,7 @@ const QuantityPicker = (props: Props) => {
         setQuantityText(value);
         if (empty(value) || !validNumber(value))
             setQuantityErrorText("Please provide a number");
-        else
-            setQuantityErrorText("");
+        else setQuantityErrorText("");
         setAnchorEl(event.target);
     };
 
@@ -35,9 +37,7 @@ const QuantityPicker = (props: Props) => {
             if (!greaterThanLowThreshold(quantityText)) {
                 setQuantityText(props.lowThreshold.toString());
                 props.setQuantityCallback(props.lowThreshold);
-            }
-            else
-                props.setQuantityCallback(+quantityText);
+            } else props.setQuantityCallback(+quantityText);
         }
     };
 
@@ -69,7 +69,12 @@ const QuantityPicker = (props: Props) => {
 
     return (
         <form className={classes.root}>
-            <Fab size="small" color="primary" onClick={handleSubtractClicked}>
+            <Fab
+                size="small"
+                color="primary"
+                onClick={handleSubtractClicked}
+                disabled={props.interactionDisabled}
+            >
                 <RemoveIcon />
             </Fab>
             <ClickAwayListener onClickAway={handleQuantityClickAway}>
@@ -81,9 +86,15 @@ const QuantityPicker = (props: Props) => {
                     onChange={handleQuantityChange}
                     error={quantityErrorText !== ""}
                     className={classes.quantityInput}
+                    disabled={props.interactionDisabled}
                 />
             </ClickAwayListener>
-            <Fab size="small" color="primary" onClick={handleAddClicked}>
+            <Fab
+                size="small"
+                color="primary"
+                onClick={handleAddClicked}
+                disabled={props.interactionDisabled}
+            >
                 <AddIcon />
             </Fab>
             <Popper

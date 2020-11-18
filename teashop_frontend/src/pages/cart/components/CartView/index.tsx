@@ -5,6 +5,8 @@ import CartItemList from "../CartItemList";
 
 interface Props {
     cart: Cart;
+    interactionDisabled: boolean;
+    removeItemFromCartCallback: (productId: string) => void;
 }
 
 const CartView = (props: Props) => {
@@ -19,7 +21,13 @@ const CartView = (props: Props) => {
                 </Box>
             </Grid>
             <Grid item xs={12}>
-                <CartItemList cart={props.cart} />
+                <CartItemList
+                    cart={props.cart}
+                    interactionDisabled={props.interactionDisabled}
+                    removeItemFromCartCallback={
+                        props.removeItemFromCartCallback
+                    }
+                />
             </Grid>
         </Grid>
     );

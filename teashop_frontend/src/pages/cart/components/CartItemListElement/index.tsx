@@ -1,5 +1,5 @@
 import { Fab, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { CartItem } from "../../../../domain/cart/models";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useStyles from "./styles";
@@ -8,10 +8,13 @@ import { getImageFullUrl } from "../../../../shared/services/imageService";
 
 interface Props {
     cartItem: CartItem;
+    interactionDisabled: boolean;
+    removeItemFromCartCallback: (productId: string) => void;
 }
 
 const CartItemListElement = (props: Props) => {
     const classes = useStyles();
+    const [ownInteractionDisabled, setOwnInteractionDisabled] = React.useState(false);
 
     const calculatePrice = (): number => {
         return (
@@ -20,7 +23,18 @@ const CartItemListElement = (props: Props) => {
         );
     };
 
+    const handleRemoveButtonClick = () => {
+        setOwnInteractionDisabled(true);
+        props.removeItemFromCartCallback(props.cartItem.product.id);
+    }
+
     const sample = () => {};
+
+    const interactionDisabled = props.interactionDisabled;
+    useEffect(() => {
+        if (!interactionDisabled)
+            setOwnInteractionDisabled(false);
+    }, [interactionDisabled, setOwnInteractionDisabled]);
 
     return (
         <Grid
@@ -63,11 +77,14 @@ const CartItemListElement = (props: Props) => {
                                         props.cartItem.product.quantityPerPrice > 1
                                     }
                                     setQuantityCallback={sample}
+                                    interactionDisabled={ownInteractionDisabled}
                                 />
                             </Grid>
                             <Grid item>
                                 <Fab
                                     size="small"
+                                    onClick={handleRemoveButtonClick}
+                                    disabled={ownInteractionDisabled}
                                     className={classes.removeButton}
                                 >
                                     <DeleteIcon />
