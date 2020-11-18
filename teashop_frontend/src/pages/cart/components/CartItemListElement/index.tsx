@@ -4,8 +4,7 @@ import { CartItem } from "../../../../domain/cart/models";
 import DeleteIcon from "@material-ui/icons/Delete";
 import useStyles from "./styles";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
-
-const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
+import { getImageFullUrl } from "../../../../shared/services/imageService";
 
 interface Props {
     cartItem: CartItem;
@@ -33,7 +32,7 @@ const CartItemListElement = (props: Props) => {
         >
             <Grid item>
                 <img
-                    src={`${IMAGES_ROOT}/${props.cartItem.product.imagePath}`}
+                    src={getImageFullUrl(props.cartItem.product.imagePath)}
                     alt="product"
                     className={classes.image}
                 />
@@ -44,14 +43,19 @@ const CartItemListElement = (props: Props) => {
                         <Typography variant="h6">
                             {props.cartItem.product.name}
                         </Typography>
-                    </Grid>                        
+                    </Grid>
                     <Grid item>
                         <Typography variant="h6">
                             {calculatePrice().toFixed(2)} EUR
                         </Typography>
                     </Grid>
                     <Grid item>
-                        <Grid container alignItems="center" spacing={3} className={classes.buttonsContainer}>
+                        <Grid
+                            container
+                            alignItems="center"
+                            spacing={3}
+                            className={classes.buttonsContainer}
+                        >
                             <Grid item>
                                 <ProductQuantityPicker
                                     initialValue={props.cartItem.quantity}
@@ -62,7 +66,10 @@ const CartItemListElement = (props: Props) => {
                                 />
                             </Grid>
                             <Grid item>
-                                <Fab size="small" className={classes.removeButton}>
+                                <Fab
+                                    size="small"
+                                    className={classes.removeButton}
+                                >
                                     <DeleteIcon />
                                 </Fab>
                             </Grid>
