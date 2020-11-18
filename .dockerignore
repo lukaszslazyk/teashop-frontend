@@ -1,6 +1,6 @@
 .git/
-node_modules/
-build/
+teashop_frontend/node_modules/
+teashop_frontend/build/
 .dockerignore
 Dockerfile
 README.md
