@@ -11,8 +11,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Product } from "../../models";
 import useStyles from "./styles";
-
-const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
+import { getImageFullUrl } from "../../../../shared/services/imageService";
 
 interface Props {
     product: Product;
@@ -25,8 +24,7 @@ const ProductCard = (props: Props) => {
     const getPriceTag = () => {
         if (productPricedByWeight())
             return `${product.price} EUR / ${product.quantityPerPrice}g`;
-        else
-            return `${product.price} EUR`;
+        else return `${product.price} EUR`;
     };
 
     const productPricedByWeight = (): boolean => {
@@ -36,10 +34,9 @@ const ProductCard = (props: Props) => {
     return (
         <Card className={classes.card}>
             <CardActionArea component={Link} to={`/product/${product.id}`}>
-                {/* TODO Add default image if product's imagePath is empty */}
                 <CardMedia
                     className={classes.cardMedia}
-                    image={`${IMAGES_ROOT}/${product.imagePath}`}
+                    image={getImageFullUrl(product.imagePath)}
                     title="Product"
                 />
                 <CardContent>

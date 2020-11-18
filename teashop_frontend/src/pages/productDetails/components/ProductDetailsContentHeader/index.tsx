@@ -2,7 +2,7 @@ import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect } from "react";
 import { Product } from "../../../../domain/product/models";
 import AddToCartButton from "../AddToCartButton";
-import ProductQuantityPicker from "../ProductQuantityPicker";
+import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import useStyles from "./styles";
 
 const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
@@ -11,14 +11,14 @@ interface Props {
     product: Product | null;
     quantity: number;
     isProcessing: boolean;
-    setQuantityCallback: (value: number) => void;
+    quantityChangedCallback: (value: number) => void;
     addItemToSessionCartCallback: () => void;
 }
 
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();    
     const product = props.product;
-    const setQuantity = props.setQuantityCallback;
+    const setQuantity = props.quantityChangedCallback;
 
     const calculatePrice = (): number => {
         if (props.product)
@@ -91,8 +91,8 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 <ProductQuantityPicker
                                     initialValue={props.product.quantityPerPrice}
                                     pricedByWeight={productPricedByWeight()}
-                                    setQuantityCallback={
-                                        props.setQuantityCallback
+                                    quantityChangedCallback={
+                                        props.quantityChangedCallback
                                     }
                                 />
                             </Grid>

@@ -4,7 +4,8 @@ import QuantityPicker from "../QuantityPicker";
 interface Props {
     initialValue: number,
     pricedByWeight: boolean
-    setQuantityCallback: (value: number) => void;
+    quantityChangedCallback: (value: number) => void;
+    interactionDisabled?: boolean;
 }
 
 const ProductQuantityPicker = (props: Props) => (
@@ -15,7 +16,8 @@ const ProductQuantityPicker = (props: Props) => (
                 initialValue={props.initialValue}
                 lowThreshold={50}
                 step={25}
-                setQuantityCallback={props.setQuantityCallback}
+                quantityChangedCallback={props.quantityChangedCallback}
+                interactionDisabled={props.interactionDisabled}
             />
         ) : (
             <QuantityPicker
@@ -23,7 +25,8 @@ const ProductQuantityPicker = (props: Props) => (
                 initialValue={props.initialValue}
                 lowThreshold={0}
                 step={1}
-                setQuantityCallback={props.setQuantityCallback}
+                quantityChangedCallback={props.quantityChangedCallback}
+                interactionDisabled={props.interactionDisabled}
             />
         )}
     </div>

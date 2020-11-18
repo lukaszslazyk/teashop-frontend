@@ -4,6 +4,7 @@ import BrowsePageContainer from "../pages/browse/container";
 import HomePage from "../pages/home";
 import NotFoundPage from "../pages/notFound";
 import ProductDetailsPageContainer from "../pages/productDetails/container";
+import CartContainer from "../pages/cart/container";
 
 const Routing = () => {
     return (
@@ -16,9 +17,11 @@ const Routing = () => {
                     component={BrowsePageContainer}
                 />
                 <Route
+                    exact
                     path="/product/:productId"
                     component={ProductDetailsPageContainer}
                 />
+                <Route exact path="/cart" component={CartContainer} />
                 <Route component={NotFoundPage} />
             </Switch>
         </BrowserRouter>

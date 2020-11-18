@@ -34,6 +34,7 @@ export function productReducer(
             return {
                 ...state,
                 isFetching: true,
+                errorOccurred: false,
             };
         case RECEIVE_ALL_PRODUCTS:
         case RECEIVE_PRODUCTS_IN_CATEGORY:
