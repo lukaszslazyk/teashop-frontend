@@ -2,7 +2,7 @@ import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect } from "react";
 import { Product } from "../../../../domain/product/models";
 import AddToCartButton from "../AddToCartButton";
-import ProductQuantityPicker from "../ProductQuantityPicker";
+import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import useStyles from "./styles";
 
 const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
