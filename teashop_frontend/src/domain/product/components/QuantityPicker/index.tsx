@@ -9,7 +9,7 @@ interface Props {
     initialValue: number;
     lowThreshold: number;
     step: number;
-    setQuantityCallback: (value: number) => void;
+    quantityChangedCallback: (value: number) => void;
     interactionDisabled?: boolean;
 }
 
@@ -18,6 +18,7 @@ const QuantityPicker = (props: Props) => {
     const [quantityText, setQuantityText] = React.useState(
         props.initialValue.toString()
     );
+    const [quantityTextChanged, setQuantityTextChanged] = React.useState(false);
     const [quantityErrorText, setQuantityErrorText] = React.useState("");
     const [anchorEl, setAnchorEl]: any = React.useState(null);
 
@@ -26,6 +27,7 @@ const QuantityPicker = (props: Props) => {
     ) => {
         let value = event.target.value;
         setQuantityText(value);
+        setQuantityTextChanged(true);
         if (empty(value) || !validNumber(value))
             setQuantityErrorText("Please provide a number");
         else setQuantityErrorText("");
@@ -33,25 +35,28 @@ const QuantityPicker = (props: Props) => {
     };
 
     const handleQuantityClickAway = () => {
-        if (quantityErrorText === "") {
-            if (!greaterThanLowThreshold(quantityText)) {
-                setQuantityText(props.lowThreshold.toString());
-                props.setQuantityCallback(props.lowThreshold);
-            } else props.setQuantityCallback(+quantityText);
+        if (quantityTextChanged) {
+            setQuantityTextChanged(false);
+            if (quantityErrorText === "") {
+                if (!greaterThanLowThreshold(quantityText)) {
+                    setQuantityText(props.lowThreshold.toString());
+                    props.quantityChangedCallback(props.lowThreshold);
+                } else props.quantityChangedCallback(+quantityText);
+            }
         }
     };
 
     const handleAddClicked = () => {
         if (quantityErrorText === "") {
             setQuantityText((+quantityText + props.step).toString());
-            props.setQuantityCallback(+quantityText + props.step);
+            props.quantityChangedCallback(+quantityText + props.step);
         }
     };
 
     const handleSubtractClicked = () => {
         if (quantityErrorText === "" && greaterThanLowThreshold(quantityText)) {
             setQuantityText((+quantityText - props.step).toString());
-            props.setQuantityCallback(+quantityText - props.step);
+            props.quantityChangedCallback(+quantityText - props.step);
         }
     };
 

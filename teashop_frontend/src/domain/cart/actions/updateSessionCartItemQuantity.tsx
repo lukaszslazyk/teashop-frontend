@@ -14,8 +14,9 @@ interface RequestUpdateSessionCartItemQuantityAction {
 
 interface ReceiveUpdateSessionCartItemQuantityAction {
     type: typeof RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY;
+    productId: string;
+    quantity: number;
     errorOccurred: boolean;
-    errorMessage: string;
 }
 
 export type UpdateSessionCartItemQuantityActionTypes =
@@ -27,12 +28,14 @@ export const requestUpdateSessionCartItemQuantity = (): UpdateSessionCartItemQua
 });
 
 export const receiveUpdateSessionCartItemQuantity = (
+    productId: string,
+    quantity: number,
     errorOccurred: boolean = false,
-    errorMessage: string = ""
 ): UpdateSessionCartItemQuantityActionTypes => ({
     type: RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
+    productId: productId,
+    quantity: quantity,
     errorOccurred: errorOccurred,
-    errorMessage: errorMessage,
 });
 
 export const updateSessionCartItemQuantity = (
@@ -48,10 +51,10 @@ export const updateSessionCartItemQuantity = (
                 { withCredentials: true }
             )
             .then((response) =>
-                dispatch(receiveUpdateSessionCartItemQuantity())
+                dispatch(receiveUpdateSessionCartItemQuantity(productId, quantity))
             )
             .catch((error) => {
-                dispatch(receiveUpdateSessionCartItemQuantity(true));
+                dispatch(receiveUpdateSessionCartItemQuantity(productId, quantity, true));
             });
     };
 };

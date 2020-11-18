@@ -6,6 +6,7 @@ import CartItemList from "../CartItemList";
 interface Props {
     cart: Cart;
     interactionDisabled: boolean;
+    updateItemQuantityCallback: (productId: string, quantity: number) => void;
     removeItemFromCartCallback: (productId: string) => void;
 }
 
@@ -24,6 +25,9 @@ const CartView = (props: Props) => {
                 <CartItemList
                     cart={props.cart}
                     interactionDisabled={props.interactionDisabled}
+                    updateItemQuantityCallback={
+                        props.updateItemQuantityCallback
+                    }
                     removeItemFromCartCallback={
                         props.removeItemFromCartCallback
                     }

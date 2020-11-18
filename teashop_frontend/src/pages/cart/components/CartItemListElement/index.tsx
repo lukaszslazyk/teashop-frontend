@@ -9,6 +9,7 @@ import { getImageFullUrl } from "../../../../shared/services/imageService";
 interface Props {
     cartItem: CartItem;
     interactionDisabled: boolean;
+    updateItemQuantityCallback: (productId: string, quantity: number) => void;
     removeItemFromCartCallback: (productId: string) => void;
 }
 
@@ -23,17 +24,20 @@ const CartItemListElement = (props: Props) => {
         );
     };
 
+    const handleQuantityChanged = (value: number) => {
+        setOwnInteractionDisabled(true);
+        props.updateItemQuantityCallback(props.cartItem.product.id, value);
+    }
+
     const handleRemoveButtonClick = () => {
         setOwnInteractionDisabled(true);
         props.removeItemFromCartCallback(props.cartItem.product.id);
     }
 
-    const sample = () => {};
-
     const interactionDisabled = props.interactionDisabled;
     useEffect(() => {
         if (!interactionDisabled)
-            setOwnInteractionDisabled(false);
+            setOwnInteractionDisabled(false);            
     }, [interactionDisabled, setOwnInteractionDisabled]);
 
     return (
@@ -76,7 +80,7 @@ const CartItemListElement = (props: Props) => {
                                     pricedByWeight={
                                         props.cartItem.product.quantityPerPrice > 1
                                     }
-                                    setQuantityCallback={sample}
+                                    quantityChangedCallback={handleQuantityChanged}
                                     interactionDisabled={ownInteractionDisabled}
                                 />
                             </Grid>

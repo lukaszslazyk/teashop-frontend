@@ -13,6 +13,7 @@ interface Props {
     isSending: boolean;
     errorOccurred: boolean;
     getSessionCart: () => void;
+    updateItemQuantity: (productId: string, quantity: number) => void;
     removeItemFromCart: (productId: string) => void;
 }
 
@@ -48,6 +49,12 @@ const CartPage = (props: Props) => {
         }
     }, [isFetching, isSending, setBackdropOpen]);
 
+    const updateItemQuantityCallback = (productId: string, quantity: number) => {
+        setDisableInteraction(true);
+        setTimeoutPassed(false);
+        props.updateItemQuantity(productId, quantity);
+    }
+    
     const removeItemFromCartCallback = (productId: string) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
@@ -72,6 +79,7 @@ const CartPage = (props: Props) => {
                             <CartView
                                 cart={props.cart}
                                 interactionDisabled={disableInteraction}
+                                updateItemQuantityCallback={updateItemQuantityCallback}
                                 removeItemFromCartCallback={removeItemFromCartCallback}
                             />
                         ) : (

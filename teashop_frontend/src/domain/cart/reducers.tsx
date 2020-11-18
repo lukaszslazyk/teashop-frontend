@@ -62,6 +62,8 @@ export function cartReducer(
                 errorOccurred: action.errorOccurred,
             };
         case RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY:
+            if (!action.errorOccurred)
+                updateItemQuantity(state, action.productId, action.quantity);
             return {
                 ...state,
                 isSending: false,
@@ -82,10 +84,16 @@ export function cartReducer(
 
 function addItemToCart(state: CartState, item: CartItem) {
     let found = state.cart.items.find((i) => i.product.id === item.product.id);
-    if (found === undefined)
-        state.cart.items = [...state.cart.items, item];
-    else
+    if (found)
         found.quantity += item.quantity;
+    else
+        state.cart.items = [...state.cart.items, item];
+}
+
+function updateItemQuantity(state: CartState, productId: string, quantity: number) {
+    let found = state.cart.items.find((i) => i.product.id === productId);
+    if (found)
+        found.quantity = quantity;
 }
 
 function removeItemFromCart(state: CartState, productId: string) {

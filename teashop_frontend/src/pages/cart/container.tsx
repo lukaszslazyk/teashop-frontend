@@ -2,6 +2,7 @@ import { Dispatch } from "react";
 import { connect } from "react-redux";
 import {
     fetchSessionCart,
+    updateSessionCartItemQuantity,
     removeItemFromSessionCart,
 } from "../../domain/cart/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
@@ -16,6 +17,8 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     getSessionCart: () => dispatch(fetchSessionCart()),
+    updateItemQuantity: (productId: string, quantity: number) =>
+        dispatch(updateSessionCartItemQuantity(productId, quantity)),
     removeItemFromCart: (productId: string) =>
         dispatch(removeItemFromSessionCart(productId)),
 });

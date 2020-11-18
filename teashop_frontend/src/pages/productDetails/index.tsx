@@ -35,9 +35,8 @@ const ProductDetailsPage = (props: Props) => {
     );
 
     const addItemToSessionCartCallback = () => {
-        if (props.product) {
+        if (props.product)
             props.addItemToSessionCart(props.product, quantity);
-        }
     };
 
     const loadProduct = props.loadProduct;
@@ -69,7 +68,7 @@ const ProductDetailsPage = (props: Props) => {
                             product={props.product}
                             quantity={quantity}
                             isProcessing={props.cartIsSending}
-                            setQuantityCallback={setQuantity}
+                            quantityChangedCallback={setQuantity}
                             addItemToSessionCartCallback={
                                 addItemToSessionCartCallback
                             }

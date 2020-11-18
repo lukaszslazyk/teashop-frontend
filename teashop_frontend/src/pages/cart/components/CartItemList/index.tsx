@@ -6,17 +6,21 @@ import CartItemListElement from "../CartItemListElement";
 interface Props {
     cart: Cart;
     interactionDisabled: boolean;
+    updateItemQuantityCallback: (productId: string, quantity: number) => void;
     removeItemFromCartCallback: (productId: string) => void;
 }
 
 const CartItemList = (props: Props) => (
     <Grid container spacing={5}>
         {props.cart.items.map((cartItem) => (
-            <Grid item xs={12}>
+            <Grid item key={cartItem.product.id} xs={12}>
                 <Paper>
                     <CartItemListElement
                         cartItem={cartItem}
                         interactionDisabled={props.interactionDisabled}
+                        updateItemQuantityCallback={
+                            props.updateItemQuantityCallback
+                        }
                         removeItemFromCartCallback={
                             props.removeItemFromCartCallback
                         }

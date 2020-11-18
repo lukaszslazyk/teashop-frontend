@@ -11,14 +11,14 @@ interface Props {
     product: Product | null;
     quantity: number;
     isProcessing: boolean;
-    setQuantityCallback: (value: number) => void;
+    quantityChangedCallback: (value: number) => void;
     addItemToSessionCartCallback: () => void;
 }
 
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();    
     const product = props.product;
-    const setQuantity = props.setQuantityCallback;
+    const setQuantity = props.quantityChangedCallback;
 
     const calculatePrice = (): number => {
         if (props.product)
@@ -91,8 +91,8 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 <ProductQuantityPicker
                                     initialValue={props.product.quantityPerPrice}
                                     pricedByWeight={productPricedByWeight()}
-                                    setQuantityCallback={
-                                        props.setQuantityCallback
+                                    quantityChangedCallback={
+                                        props.quantityChangedCallback
                                     }
                                 />
                             </Grid>
