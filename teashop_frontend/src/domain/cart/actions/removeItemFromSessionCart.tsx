@@ -1,5 +1,6 @@
-import axios, { CancelTokenSource } from "axios";
+import axios from "axios";
 import { AppThunk } from "../../../shared/types";
+import { CancelToken } from "../../../shared/utils/cancelToken";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -37,13 +38,13 @@ export const receiveRemoveItemFromSessionCart = (
 
 export const removeItemFromSessionCart = (
     productId: string,
-    cancelToken: CancelTokenSource
+    cancelToken: CancelToken
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestRemoveItemFromSessionCart());
         await axios
             .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
-                cancelToken: cancelToken.token,
+                cancelToken: cancelToken.tokenSource.token,
                 withCredentials: true,
             })
             .then((response) =>

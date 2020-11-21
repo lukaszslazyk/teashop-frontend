@@ -9,7 +9,7 @@ import ProductDetailsContentHeader from "./components/ProductDetailsContentHeade
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
 import useStyles from "./styles";
 import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
-import axios, { CancelTokenSource } from "axios";
+import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
 
 interface Props {
     product: Product | null;
@@ -17,11 +17,11 @@ interface Props {
     productErrorOccurred: boolean;
     cartIsSending: boolean;
     cartErrorOccurred: boolean;
-    loadProduct: (productId: string, cancelToken: CancelTokenSource) => void;
+    loadProduct: (productId: string, cancelToken: CancelToken) => void;
     addItemToSessionCart: (
         product: Product,
         quantity: number,
-        cancelToken: CancelTokenSource
+        cancelToken: CancelToken
     ) => void;
 }
 
@@ -44,13 +44,13 @@ const ProductDetailsPage = (props: Props) => {
             props.addItemToSessionCart(
                 props.product,
                 quantity,
-                axios.CancelToken.source()
+                createCancelToken()
             );
     };
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
-        const cancelToken = axios.CancelToken.source();
+        const cancelToken = createCancelToken();
         setTimeoutPassed(false);
         loadProduct(productId, cancelToken);
         return () => cancelToken.cancel();

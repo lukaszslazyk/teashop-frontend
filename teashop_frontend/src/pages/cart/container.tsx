@@ -7,7 +7,7 @@ import {
 } from "../../domain/cart/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import CartPage from ".";
-import { CancelTokenSource } from "axios";
+import { CancelToken } from "../../shared/utils/cancelToken";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,
@@ -17,10 +17,10 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    getSessionCart: (cancelToken: CancelTokenSource) => dispatch(fetchSessionCart(cancelToken)),
-    updateItemQuantity: (productId: string, quantity: number, cancelToken: CancelTokenSource) =>
+    getSessionCart: (cancelToken: CancelToken) => dispatch(fetchSessionCart(cancelToken)),
+    updateItemQuantity: (productId: string, quantity: number, cancelToken: CancelToken) =>
         dispatch(updateSessionCartItemQuantity(productId, quantity, cancelToken)),
-    removeItemFromCart: (productId: string, cancelToken: CancelTokenSource) =>
+    removeItemFromCart: (productId: string, cancelToken: CancelToken) =>
         dispatch(removeItemFromSessionCart(productId, cancelToken)),
 });
 

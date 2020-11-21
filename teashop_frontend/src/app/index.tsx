@@ -2,13 +2,13 @@ import React, { useEffect } from "react";
 import Routing from "./routing";
 import { useDispatch } from "react-redux";
 import { fetchSessionCart } from "../domain/cart/actions";
-import axios, { CancelTokenSource } from "axios";
+import { createCancelToken } from "../shared/utils/cancelToken";
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        let cancelToken = axios.CancelToken.source();
+        let cancelToken = createCancelToken();
         dispatch(fetchSessionCart(cancelToken));
         return () => cancelToken.cancel();
     }, [dispatch]);

@@ -3,25 +3,25 @@ import React, { useEffect } from "react";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
+import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
 import useStyles from "./styles";
-import axios, { CancelTokenSource } from "axios";
 
 interface Props {
     cart: Cart;
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
-    getSessionCart: (cancelToken: CancelTokenSource) => void;
+    getSessionCart: (cancelToken: CancelToken) => void;
     updateItemQuantity: (
         productId: string,
         quantity: number,
-        cancelToken: CancelTokenSource
+        cancelToken: CancelToken
     ) => void;
     removeItemFromCart: (
         productId: string,
-        cancelToken: CancelTokenSource
+        cancelToken: CancelToken
     ) => void;
 }
 
@@ -33,7 +33,7 @@ const CartPage = (props: Props) => {
     const { isFetching, isSending, getSessionCart } = props;
 
     useEffect(() => {
-        let cancelToken = axios.CancelToken.source();
+        let cancelToken = createCancelToken();
         setTimeoutPassed(false);
         getSessionCart(cancelToken);
         return () => cancelToken.cancel();
@@ -68,14 +68,14 @@ const CartPage = (props: Props) => {
         props.updateItemQuantity(
             productId,
             quantity,
-            axios.CancelToken.source()
+            createCancelToken()
         );
     };
 
     const removeItemFromCartCallback = (productId: string) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
-        props.removeItemFromCart(productId, axios.CancelToken.source());
+        props.removeItemFromCart(productId, createCancelToken());
     };
 
     return (

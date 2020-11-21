@@ -1,5 +1,6 @@
-import axios, { CancelTokenSource } from "axios";
+import axios from "axios";
 import { AppThunk } from "../../../shared/types";
+import { CancelToken } from "../../../shared/utils/cancelToken";
 import { Cart } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -35,13 +36,13 @@ export const receiveSessionCart = (
 });
 
 export const fetchSessionCart = (
-    cancelToken: CancelTokenSource
+    cancelToken: CancelToken
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestSessionCart());
         await axios
             .get(`${API_ROOT}/carts/sessionCart`, {
-                cancelToken: cancelToken.token,
+                cancelToken: cancelToken.tokenSource.token,
                 withCredentials: true,
             })
             .then((response) => dispatch(receiveSessionCart(response.data)))

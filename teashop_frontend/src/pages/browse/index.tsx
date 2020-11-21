@@ -6,7 +6,7 @@ import MainLayout from "../../layouts/main";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
 import { Product } from "../../domain/product/models";
 import useStyles from "./styles";
-import axios, { CancelTokenSource } from "axios";
+import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
 
 interface Props {
     products: Product[];
@@ -15,7 +15,7 @@ interface Props {
     loadProducts: () => void;
     loadProductsInCategory: (
         categoryName: string,
-        cancelToken: CancelTokenSource
+        cancelToken: CancelToken
     ) => void;
 }
 
@@ -30,7 +30,7 @@ const BrowsePage = (props: Props) => {
 
     const { loadProducts, loadProductsInCategory } = props;
     useEffect(() => {
-        const cancelToken = axios.CancelToken.source();
+        const cancelToken = createCancelToken();
         setTimeoutPassed(false);
         categoryName
             ? loadProductsInCategory(categoryName, cancelToken)

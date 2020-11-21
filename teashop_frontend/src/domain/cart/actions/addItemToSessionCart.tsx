@@ -1,5 +1,6 @@
-import axios, { CancelTokenSource } from "axios";
+import axios from "axios";
 import { AppThunk } from "../../../shared/types";
+import { CancelToken } from "../../../shared/utils/cancelToken";
 import { Product } from "../../product/models";
 import { CartItem } from "../models";
 
@@ -40,7 +41,7 @@ export const receiveAddItemToSessionCart = (
 export const addItemToSessionCart = (
     product: Product,
     quantity: number,
-    cancelToken: CancelTokenSource
+    cancelToken: CancelToken
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestAddItemToSessionCart());
@@ -52,7 +53,7 @@ export const addItemToSessionCart = (
                     quantity: quantity,
                 },
                 {
-                    cancelToken: cancelToken.token,
+                    cancelToken: cancelToken.tokenSource.token,
                     withCredentials: true,
                 }
             )

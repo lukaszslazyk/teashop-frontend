@@ -1,5 +1,6 @@
-import axios, { CancelTokenSource } from "axios";
+import axios from "axios";
 import { AppThunk } from "../../../shared/types";
+import { CancelToken } from "../../../shared/utils/cancelToken";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -41,7 +42,7 @@ export const receiveUpdateSessionCartItemQuantity = (
 export const updateSessionCartItemQuantity = (
     productId: string,
     quantity: number,
-    cancelToken: CancelTokenSource
+    cancelToken: CancelToken
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestUpdateSessionCartItemQuantity());
@@ -50,7 +51,7 @@ export const updateSessionCartItemQuantity = (
                 `${API_ROOT}/carts/sessionCart/items/${productId}`,
                 { quantity: quantity },
                 {
-                    cancelToken: cancelToken.token,
+                    cancelToken: cancelToken.tokenSource.token,
                     withCredentials: true,
                 }
             )
