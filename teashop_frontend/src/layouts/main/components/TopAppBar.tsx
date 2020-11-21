@@ -1,4 +1,4 @@
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@material-ui/core";
 import EcoIcon from "@material-ui/icons/Eco";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
@@ -16,20 +16,23 @@ const TopAppBar = (props: Props) => {
     return (
         <AppBar position="fixed" className={classes.appBar}>
             <Toolbar>
-                <IconButton
-                    color="inherit"
-                    aria-label="open drawer"
-                    edge="start"
-                    onClick={props.handleDrawerToggle}
-                    className={classes.menuButton}
-                >
-                    <MenuIcon />
-                </IconButton>
+                <Box mr={2}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={props.handleDrawerToggle}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </Box>
                 <Link to="/" className={classes.titleLink}>
-                    <EcoIcon className={classes.logoIcon} />
-                    <Typography variant="h6" noWrap>
-                        Tea Shop
-                    </Typography>
+                    <EcoIcon/>
+                    <Box ml={1}>
+                        <Typography variant="h6" noWrap>
+                            Tea Shop
+                        </Typography>
+                    </Box>
                 </Link>
                 <div className={classes.grow} />
                 <CartIconContainer />
