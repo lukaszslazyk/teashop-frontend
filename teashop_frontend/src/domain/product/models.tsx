@@ -15,3 +15,12 @@ export interface BrewingInfo {
     timeInfo: string;
     numberOfBrewingsInfo: string;
 }
+
+export const availableProductCategories = [
+    "GreenTea",
+    "BlackTea",
+    "RedTea",
+    "WhiteTea",
+    "Herbs",
+    "Accessories",
+];

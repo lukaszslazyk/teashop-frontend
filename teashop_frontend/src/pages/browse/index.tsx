@@ -1,18 +1,18 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import MainLayout from "../../layouts/main";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
-import { Product } from "../../domain/product/models";
+import { Product, availableProductCategories } from "../../domain/product/models";
 import useStyles from "./styles";
 import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
+import NotFoundPage from "../notFound";
 
 interface Props {
     products: Product[];
     isFetching: boolean;
     errorOccurred: boolean;
-    loadProducts: () => void;
     loadProductsInCategory: (
         categoryName: string,
         cancelToken: CancelToken
@@ -28,15 +28,19 @@ const BrowsePage = (props: Props) => {
     const { categoryName }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
-    const { loadProducts, loadProductsInCategory } = props;
+    const categoryIsAvailable = useCallback((): boolean => {
+        return categoryName !== undefined 
+            && availableProductCategories.includes(categoryName);
+    }, [categoryName])
+
+    const loadProductsInCategory = props.loadProductsInCategory;
     useEffect(() => {
         const cancelToken = createCancelToken();
         setTimeoutPassed(false);
-        categoryName
-            ? loadProductsInCategory(categoryName, cancelToken)
-            : loadProducts();
+        if (categoryName && categoryIsAvailable())
+            loadProductsInCategory(categoryName, cancelToken);
         return () => cancelToken.cancel();
-    }, [categoryName, loadProducts, loadProductsInCategory]);
+    }, [categoryName, categoryIsAvailable, loadProductsInCategory]);
 
     useEffect(() => {
         let timer = setTimeout(() => {
@@ -44,6 +48,9 @@ const BrowsePage = (props: Props) => {
         }, 1000);
         return () => clearTimeout(timer);
     }, [timeoutPassed]);
+
+    if (!categoryIsAvailable())
+        return <NotFoundPage />
 
     return (
         <MainLayout>
