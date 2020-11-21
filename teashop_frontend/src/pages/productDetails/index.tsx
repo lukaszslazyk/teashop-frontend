@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import MainLayout from "../../layouts/main";
@@ -48,6 +48,14 @@ const ProductDetailsPage = (props: Props) => {
             );
     };
 
+    const product = props.product;
+    const productPricedByWeight = useCallback((): boolean => {
+        if (product)
+            return product.quantityPerPrice > 1;
+        else
+            return false;
+    }, [product]);
+
     const loadProduct = props.loadProduct;
     useEffect(() => {
         const cancelToken = createCancelToken();
@@ -62,6 +70,15 @@ const ProductDetailsPage = (props: Props) => {
         }, 1000);
         return () => clearTimeout(timer);
     }, [setTimeoutPassed]);
+    
+    useEffect(() => {
+        if (product) {
+            if (productPricedByWeight())
+                setQuantity(100);
+            else
+                setQuantity(1);
+        }
+    }, [product, setQuantity, productPricedByWeight]);
 
     return (
         <MainLayout>

@@ -1,5 +1,5 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Product } from "../../../../domain/product/models";
 import AddToCartButton from "../AddToCartButton";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
@@ -18,8 +18,8 @@ interface Props {
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();    
     const product = props.product;
-    const setQuantity = props.quantityChangedCallback;
-
+    const [addToCartButtonDisabled, setAddToCartButtonDisabled] = React.useState(false);
+    
     const calculatePrice = (): number => {
         if (props.product)
             return (
@@ -36,14 +36,14 @@ const ProductDetailsContentHeader = (props: Props) => {
             return false;
     }, [product]);
 
-    useEffect(() => {
-        if (product) {
-            if (productPricedByWeight())
-                setQuantity(100);
-            else
-                setQuantity(1);
-        }
-    }, [product, setQuantity, productPricedByWeight]);
+    const quantityInvalidCallback = () => {
+        setAddToCartButtonDisabled(true);
+    }
+
+    const quantityChangedCallback = (value: number) => {
+        setAddToCartButtonDisabled(false);
+        props.quantityChangedCallback(value);
+    }
 
     const ProductName = () => (
         <Grid item xs={12}>
@@ -94,7 +94,10 @@ const ProductDetailsContentHeader = (props: Props) => {
                                     initialValue={props.product.quantityPerPrice}
                                     pricedByWeight={productPricedByWeight()}
                                     quantityChangedCallback={
-                                        props.quantityChangedCallback
+                                        quantityChangedCallback
+                                    }
+                                    quantityInvalidCallback={
+                                        quantityInvalidCallback
                                     }
                                 />
                             </Grid>
@@ -107,6 +110,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                                     addItemToSessionCartCallback={
                                         props.addItemToSessionCartCallback
                                     }
+                                    interactionDisabled={addToCartButtonDisabled}
                                 />
                             </Grid>
                         )}

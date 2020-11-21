@@ -6,6 +6,7 @@ import useStyles from "./styles";
 interface Props {
     isProcessing: boolean;
     addItemToSessionCartCallback: () => void;
+    interactionDisabled?: boolean;
 }
 
 const AddToCartButton = (props: Props) => {
@@ -17,7 +18,7 @@ const AddToCartButton = (props: Props) => {
             color="primary"
             className={classes.root}
             onClick={props.addItemToSessionCartCallback}
-            disabled={props.isProcessing}
+            disabled={props.isProcessing || props.interactionDisabled}
         >
             {props.isProcessing ? (
                 <CircularProgress

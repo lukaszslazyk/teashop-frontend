@@ -10,6 +10,7 @@ interface Props {
     lowThreshold: number;
     step: number;
     quantityChangedCallback: (value: number) => void;
+    quantityInvalidCallback?: () => void;
     interactionDisabled?: boolean;
 }
 
@@ -28,8 +29,11 @@ const QuantityPicker = (props: Props) => {
         let value = event.target.value;
         setQuantityText(value);
         setQuantityTextChanged(true);
-        if (empty(value) || !validNumber(value))
+        if (empty(value) || !validNumber(value)) {
             setQuantityErrorText("Please provide a number");
+            if (props.quantityInvalidCallback)
+                props.quantityInvalidCallback();
+        }
         else setQuantityErrorText("");
         setAnchorEl(event.target);
     };
@@ -47,18 +51,22 @@ const QuantityPicker = (props: Props) => {
     };
 
     const handleAddClicked = () => {
-        if (quantityErrorText === "") {
-            setQuantityText((+quantityText + props.step).toString());
-            props.quantityChangedCallback(+quantityText + props.step);
-        }
+        setQuantityText((+quantityText + props.step).toString());
+        props.quantityChangedCallback(+quantityText + props.step);
     };
 
     const handleSubtractClicked = () => {
-        if (quantityErrorText === "" && greaterThanLowThreshold(quantityText)) {
-            setQuantityText((+quantityText - props.step).toString());
-            props.quantityChangedCallback(+quantityText - props.step);
-        }
+        setQuantityText((+quantityText - props.step).toString());
+        props.quantityChangedCallback(+quantityText - props.step);
     };
+
+    const canAdd = ():boolean => {
+        return quantityErrorText === "";
+    }
+
+    const canSubtract = ():boolean => {
+        return quantityErrorText === "" && greaterThanLowThreshold(quantityText)
+    }
 
     const validNumber = (input: string): boolean => {
         return !isNaN(+input);
@@ -78,7 +86,7 @@ const QuantityPicker = (props: Props) => {
                 size="small"
                 color="primary"
                 onClick={handleSubtractClicked}
-                disabled={props.interactionDisabled}
+                disabled={props.interactionDisabled || !canSubtract()}
             >
                 <RemoveIcon />
             </Fab>
@@ -98,7 +106,7 @@ const QuantityPicker = (props: Props) => {
                 size="small"
                 color="primary"
                 onClick={handleAddClicked}
-                disabled={props.interactionDisabled}
+                disabled={props.interactionDisabled || !canAdd()}
             >
                 <AddIcon />
             </Fab>
