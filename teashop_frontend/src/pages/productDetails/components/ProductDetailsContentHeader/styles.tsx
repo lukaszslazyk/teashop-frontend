@@ -15,6 +15,16 @@ const useStyles = makeStyles((theme: Theme) =>
                 textAlign: "center",
             },
         },
+        productQuantityPickerContainer: {
+            [theme.breakpoints.down("sm")]: {
+                justifyContent: "center",
+            },
+        },
+        addToCartButtonContainer: {
+            [theme.breakpoints.down("sm")]: {
+                justifyContent: "center",
+            },
+        },
     })
 );
 

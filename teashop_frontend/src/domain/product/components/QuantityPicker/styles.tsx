@@ -5,9 +5,6 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: "flex",
             alignItems: "center",
-            [theme.breakpoints.down("sm")]: {
-                justifyContent: "center",
-            },
         },
         quantityInput: {
             width: 75,

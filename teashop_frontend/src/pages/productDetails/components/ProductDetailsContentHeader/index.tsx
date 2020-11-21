@@ -87,7 +87,9 @@ const ProductDetailsContentHeader = (props: Props) => {
                             </Typography>
                         </Grid>
                         {props.product && (
-                            <Grid item xs={12}>
+                            <Grid item xs={12} container
+                                className={classes.productQuantityPickerContainer}
+                            >
                                 <ProductQuantityPicker
                                     initialValue={props.product.quantityPerPrice}
                                     pricedByWeight={productPricedByWeight()}
@@ -98,7 +100,8 @@ const ProductDetailsContentHeader = (props: Props) => {
                             </Grid>
                         )}
                         {props.product && (
-                            <Grid item xs={12}>
+                            <Grid item xs={12} container
+                                className={classes.addToCartButtonContainer}>
                                 <AddToCartButton
                                     isProcessing={props.isProcessing}
                                     addItemToSessionCartCallback={
