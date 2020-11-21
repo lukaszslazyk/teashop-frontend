@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { fetchAllProducts, fetchProductsInCategory } from "../../domain/product/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import BrowsePage from "./index";
+import { CancelTokenSource } from "axios";
 
 const mapStateToProps = (state: RootState) => ({
     products: state.product.products,
@@ -12,8 +13,8 @@ const mapStateToProps = (state: RootState) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     loadProducts: () => dispatch(fetchAllProducts()),
-    loadProductsInCategory: (categoryName: string) =>
-        dispatch(fetchProductsInCategory(categoryName)),
+    loadProductsInCategory: (categoryName: string, cancelToken: CancelTokenSource) =>
+        dispatch(fetchProductsInCategory(categoryName, cancelToken)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(BrowsePage);

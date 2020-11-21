@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { AppThunk } from "../../../shared/types";
 import { Product } from "../models";
 
@@ -17,14 +17,14 @@ interface ReceiveProductsInCategoryAction {
     errorOccurred: boolean;
 }
 
-export type FetchProductsInCategoryActionTypes = 
+export type FetchProductsInCategoryActionTypes =
     | RequestProductsInCategoryAction
     | ReceiveProductsInCategoryAction;
 
 export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes => ({
-        type: REQUEST_PRODUCTS_IN_CATEGORY,
-    });
-    
+    type: REQUEST_PRODUCTS_IN_CATEGORY,
+});
+
 export const receiveProductsInCategory = (
     products: Product[],
     errorOccurred: boolean = false
@@ -35,16 +35,23 @@ export const receiveProductsInCategory = (
 });
 
 export const fetchProductsInCategory = (
-    categoryName: string
+    categoryName: string,
+    cancelToken: CancelTokenSource
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestProductsInCategory());
         await axios
-            .get(`${API_ROOT}/products/categories/${categoryName}`)
-            .then((response) => dispatch(receiveProductsInCategory(response.data)))
+            .get(`${API_ROOT}/products/categories/${categoryName}`, {
+                cancelToken: cancelToken.token,
+            })
+            .then((response) =>
+                dispatch(receiveProductsInCategory(response.data))
+            )
             .catch((error) => {
-                console.error("Error occurred during fetching products");
-                dispatch(receiveProductsInCategory([], true));
+                if (!axios.isCancel(error)) {
+                    console.error("Error occurred during fetching products");
+                    dispatch(receiveProductsInCategory([], true));
+                }
             });
     };
 };

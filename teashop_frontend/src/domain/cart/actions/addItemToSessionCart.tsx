@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { AppThunk } from "../../../shared/types";
 import { Product } from "../../product/models";
 import { CartItem } from "../models";
@@ -39,7 +39,8 @@ export const receiveAddItemToSessionCart = (
 
 export const addItemToSessionCart = (
     product: Product,
-    quantity: number
+    quantity: number,
+    cancelToken: CancelTokenSource
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestAddItemToSessionCart());
@@ -50,7 +51,10 @@ export const addItemToSessionCart = (
                     productId: product.id,
                     quantity: quantity,
                 },
-                { withCredentials: true }
+                {
+                    cancelToken: cancelToken.token,
+                    withCredentials: true,
+                }
             )
             .then((response) =>
                 dispatch(
@@ -61,7 +65,8 @@ export const addItemToSessionCart = (
                 )
             )
             .catch((error) => {
-                dispatch(receiveAddItemToSessionCart(null, true));
+                if (!axios.isCancel(error))
+                    dispatch(receiveAddItemToSessionCart(null, true));
             });
     };
 };

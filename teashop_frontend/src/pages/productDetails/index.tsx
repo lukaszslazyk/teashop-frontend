@@ -9,6 +9,7 @@ import ProductDetailsContentHeader from "./components/ProductDetailsContentHeade
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
 import useStyles from "./styles";
 import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
+import axios, { CancelTokenSource } from "axios";
 
 interface Props {
     product: Product | null;
@@ -16,8 +17,12 @@ interface Props {
     productErrorOccurred: boolean;
     cartIsSending: boolean;
     cartErrorOccurred: boolean;
-    loadProduct: (productId: string) => void;
-    addItemToSessionCart: (product: Product, quantity: number) => void;
+    loadProduct: (productId: string, cancelToken: CancelTokenSource) => void;
+    addItemToSessionCart: (
+        product: Product,
+        quantity: number,
+        cancelToken: CancelTokenSource
+    ) => void;
 }
 
 interface Params {
@@ -36,19 +41,26 @@ const ProductDetailsPage = (props: Props) => {
 
     const addItemToSessionCartCallback = () => {
         if (props.product)
-            props.addItemToSessionCart(props.product, quantity);
+            props.addItemToSessionCart(
+                props.product,
+                quantity,
+                axios.CancelToken.source()
+            );
     };
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
+        const cancelToken = axios.CancelToken.source();
         setTimeoutPassed(false);
-        loadProduct(productId);
+        loadProduct(productId, cancelToken);
+        return () => cancelToken.cancel();
     }, [productId, loadProduct]);
 
     useEffect(() => {
-        setTimeout(() => {
+        let timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+        return () => clearTimeout(timer);
     }, [setTimeoutPassed]);
 
     return (

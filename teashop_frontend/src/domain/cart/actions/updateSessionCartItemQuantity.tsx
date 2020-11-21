@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { AppThunk } from "../../../shared/types";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -30,7 +30,7 @@ export const requestUpdateSessionCartItemQuantity = (): UpdateSessionCartItemQua
 export const receiveUpdateSessionCartItemQuantity = (
     productId: string,
     quantity: number,
-    errorOccurred: boolean = false,
+    errorOccurred: boolean = false
 ): UpdateSessionCartItemQuantityActionTypes => ({
     type: RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
     productId: productId,
@@ -40,7 +40,8 @@ export const receiveUpdateSessionCartItemQuantity = (
 
 export const updateSessionCartItemQuantity = (
     productId: string,
-    quantity: number
+    quantity: number,
+    cancelToken: CancelTokenSource
 ): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestUpdateSessionCartItemQuantity());
@@ -48,13 +49,21 @@ export const updateSessionCartItemQuantity = (
             .patch(
                 `${API_ROOT}/carts/sessionCart/items/${productId}`,
                 { quantity: quantity },
-                { withCredentials: true }
+                {
+                    cancelToken: cancelToken.token,
+                    withCredentials: true,
+                }
             )
             .then((response) =>
-                dispatch(receiveUpdateSessionCartItemQuantity(productId, quantity))
+                dispatch(
+                    receiveUpdateSessionCartItemQuantity(productId, quantity)
+                )
             )
             .catch((error) => {
-                dispatch(receiveUpdateSessionCartItemQuantity(productId, quantity, true));
+                if (!axios.isCancel(error))
+                    dispatch(
+                        receiveUpdateSessionCartItemQuantity(productId, quantity, true)
+                    );
             });
     };
 };

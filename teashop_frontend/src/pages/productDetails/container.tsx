@@ -5,6 +5,7 @@ import { Product } from "../../domain/product/models";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import ProductDetailsPage from "./index";
 import { fetchProductById } from "../../domain/product/actions";
+import { CancelTokenSource } from "axios";
 
 const mapStateToProps = (state: RootState) => ({
     product: state.product.product,
@@ -15,9 +16,13 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    loadProduct: (productId: string) => dispatch(fetchProductById(productId)),
-    addItemToSessionCart: (product: Product, quantity: number) =>
-        dispatch(addItemToSessionCart(product, quantity)),
+    loadProduct: (productId: string, cancelToken: CancelTokenSource) =>
+        dispatch(fetchProductById(productId, cancelToken)),
+    addItemToSessionCart: (
+        product: Product,
+        quantity: number,
+        cancelToken: CancelTokenSource
+    ) => dispatch(addItemToSessionCart(product, quantity, cancelToken)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductDetailsPage);

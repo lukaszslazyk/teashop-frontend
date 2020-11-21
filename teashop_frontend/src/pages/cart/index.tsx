@@ -6,15 +6,23 @@ import ErrorInfo from "../../shared/components/ErrorInfo";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
 import useStyles from "./styles";
+import axios, { CancelTokenSource } from "axios";
 
 interface Props {
     cart: Cart;
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
-    getSessionCart: () => void;
-    updateItemQuantity: (productId: string, quantity: number) => void;
-    removeItemFromCart: (productId: string) => void;
+    getSessionCart: (cancelToken: CancelTokenSource) => void;
+    updateItemQuantity: (
+        productId: string,
+        quantity: number,
+        cancelToken: CancelTokenSource
+    ) => void;
+    removeItemFromCart: (
+        productId: string,
+        cancelToken: CancelTokenSource
+    ) => void;
 }
 
 const CartPage = (props: Props) => {
@@ -25,20 +33,22 @@ const CartPage = (props: Props) => {
     const { isFetching, isSending, getSessionCart } = props;
 
     useEffect(() => {
+        let cancelToken = axios.CancelToken.source();
         setTimeoutPassed(false);
-        getSessionCart();
+        getSessionCart(cancelToken);
+        return () => cancelToken.cancel();
     }, [getSessionCart]);
 
     useEffect(() => {
-        setTimeout(() => {
+        let timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+        return () => clearTimeout(timer);
     }, [timeoutPassed]);
 
     useEffect(() => {
         if (timeoutPassed) {
-            if (isFetching || isSending)
-                setBackdropOpen(true);
+            if (isFetching || isSending) setBackdropOpen(true);
         }
     }, [timeoutPassed, isFetching, isSending]);
 
@@ -49,16 +59,23 @@ const CartPage = (props: Props) => {
         }
     }, [isFetching, isSending, setBackdropOpen]);
 
-    const updateItemQuantityCallback = (productId: string, quantity: number) => {
+    const updateItemQuantityCallback = (
+        productId: string,
+        quantity: number
+    ) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
-        props.updateItemQuantity(productId, quantity);
-    }
-    
+        props.updateItemQuantity(
+            productId,
+            quantity,
+            axios.CancelToken.source()
+        );
+    };
+
     const removeItemFromCartCallback = (productId: string) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
-        props.removeItemFromCart(productId);
+        props.removeItemFromCart(productId, axios.CancelToken.source());
     };
 
     return (
@@ -79,8 +96,12 @@ const CartPage = (props: Props) => {
                             <CartView
                                 cart={props.cart}
                                 interactionDisabled={disableInteraction}
-                                updateItemQuantityCallback={updateItemQuantityCallback}
-                                removeItemFromCartCallback={removeItemFromCartCallback}
+                                updateItemQuantityCallback={
+                                    updateItemQuantityCallback
+                                }
+                                removeItemFromCartCallback={
+                                    removeItemFromCartCallback
+                                }
                             />
                         ) : (
                             <EmptyCartView />

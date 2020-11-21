@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { CancelTokenSource } from "axios";
 import { AppThunk } from "../../../shared/types";
 import { Product } from "../models";
 
@@ -34,15 +34,22 @@ export const receiveProductById = (
     errorOccurred: errorOccurred,
 });
 
-export const fetchProductById = (productId: string): AppThunk<void> => {
+export const fetchProductById = (
+    productId: string,
+    cancelToken: CancelTokenSource
+): AppThunk<void> => {
     return async (dispatch) => {
         dispatch(requestProductById());
         await axios
-            .get(`${API_ROOT}/products/${productId}`)
+            .get(`${API_ROOT}/products/${productId}`, {
+                cancelToken: cancelToken.token,
+            })
             .then((response) => dispatch(receiveProductById(response.data)))
             .catch((error) => {
-                console.error("Error occurred during fetching product");
-                dispatch(receiveProductById(null, true));
+                if (!axios.isCancel(error)) {
+                    console.error("Error occurred during fetching product");
+                    dispatch(receiveProductById(null, true));
+                }
             });
     };
 };
