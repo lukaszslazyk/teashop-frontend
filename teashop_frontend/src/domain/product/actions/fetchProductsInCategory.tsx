@@ -38,21 +38,15 @@ export const receiveProductsInCategory = (
 export const fetchProductsInCategory = (
     categoryName: string,
     cancelToken: CancelToken
-): AppThunk<void> => {
-    return async (dispatch) => {
-        dispatch(requestProductsInCategory());
-        await axios
-            .get(`${API_ROOT}/products/categories/${categoryName}`, {
-                cancelToken: cancelToken.tokenSource.token,
-            })
-            .then((response) =>
-                dispatch(receiveProductsInCategory(response.data))
-            )
-            .catch((error) => {
-                if (!axios.isCancel(error)) {
-                    console.error("Error occurred during fetching products");
-                    dispatch(receiveProductsInCategory([], true));
-                }
-            });
-    };
+): AppThunk<void> => async dispatch => {
+    dispatch(requestProductsInCategory());
+    await axios
+        .get(`${API_ROOT}/products/categories/${categoryName}`, {
+            cancelToken: cancelToken.tokenSource.token,
+        })
+        .then(response => dispatch(receiveProductsInCategory(response.data)))
+        .catch(error => {
+            if (!axios.isCancel(error))
+                dispatch(receiveProductsInCategory([], true));
+        });
 };

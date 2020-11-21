@@ -39,20 +39,16 @@ export const receiveRemoveItemFromSessionCart = (
 export const removeItemFromSessionCart = (
     productId: string,
     cancelToken: CancelToken
-): AppThunk<void> => {
-    return async (dispatch) => {
-        dispatch(requestRemoveItemFromSessionCart());
-        await axios
-            .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
-                cancelToken: cancelToken.tokenSource.token,
-                withCredentials: true,
-            })
-            .then((response) =>
-                dispatch(receiveRemoveItemFromSessionCart(productId))
-            )
-            .catch((error) => {
-                if (!axios.isCancel(error))
-                    dispatch(receiveRemoveItemFromSessionCart(productId, true));
-            });
-    };
+): AppThunk<void> => async dispatch => {
+    dispatch(requestRemoveItemFromSessionCart());
+    await axios
+        .delete(`${API_ROOT}/carts/sessionCart/items/${productId}`, {
+            cancelToken: cancelToken.tokenSource.token,
+            withCredentials: true,
+        })
+        .then(response => dispatch(receiveRemoveItemFromSessionCart(productId)))
+        .catch(error => {
+            if (!axios.isCancel(error))
+                dispatch(receiveRemoveItemFromSessionCart(productId, true));
+        });
 };

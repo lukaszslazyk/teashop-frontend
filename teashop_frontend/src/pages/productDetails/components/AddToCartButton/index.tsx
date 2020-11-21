@@ -11,7 +11,7 @@ interface Props {
 
 const AddToCartButton = (props: Props) => {
     const classes = useStyles();
-    
+
     return (
         <Button
             variant="contained"

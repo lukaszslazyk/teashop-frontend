@@ -4,7 +4,10 @@ import { useParams } from "react-router";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import MainLayout from "../../layouts/main";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
-import { Product, availableProductCategories } from "../../domain/product/models";
+import {
+    Product,
+    availableProductCategories,
+} from "../../domain/product/models";
 import useStyles from "./styles";
 import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
 import NotFoundPage from "../notFound";
@@ -28,10 +31,12 @@ const BrowsePage = (props: Props) => {
     const { categoryName }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
-    const categoryIsAvailable = useCallback((): boolean => {
-        return categoryName !== undefined 
-            && availableProductCategories.includes(categoryName);
-    }, [categoryName])
+    const categoryIsAvailable = useCallback(
+        (): boolean =>
+            categoryName !== undefined &&
+            availableProductCategories.includes(categoryName),
+        [categoryName]
+    );
 
     const loadProductsInCategory = props.loadProductsInCategory;
     useEffect(() => {
@@ -39,18 +44,20 @@ const BrowsePage = (props: Props) => {
         setTimeoutPassed(false);
         if (categoryName && categoryIsAvailable())
             loadProductsInCategory(categoryName, cancelToken);
+
         return () => cancelToken.cancel();
     }, [categoryName, categoryIsAvailable, loadProductsInCategory]);
 
     useEffect(() => {
-        let timer = setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+
         return () => clearTimeout(timer);
     }, [timeoutPassed]);
 
     if (!categoryIsAvailable())
-        return <NotFoundPage />
+        return <NotFoundPage />;
 
     return (
         <MainLayout>

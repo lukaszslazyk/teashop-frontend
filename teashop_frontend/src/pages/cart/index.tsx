@@ -33,23 +33,25 @@ const CartPage = (props: Props) => {
     const { isFetching, isSending, getSessionCart } = props;
 
     useEffect(() => {
-        let cancelToken = createCancelToken();
+        const cancelToken = createCancelToken();
         setTimeoutPassed(false);
         getSessionCart(cancelToken);
+
         return () => cancelToken.cancel();
     }, [getSessionCart]);
 
     useEffect(() => {
-        let timer = setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+
         return () => clearTimeout(timer);
     }, [timeoutPassed]);
 
     useEffect(() => {
-        if (timeoutPassed) {
-            if (isFetching || isSending) setBackdropOpen(true);
-        }
+        if (timeoutPassed)
+            if (isFetching || isSending)
+                setBackdropOpen(true);
     }, [timeoutPassed, isFetching, isSending]);
 
     useEffect(() => {

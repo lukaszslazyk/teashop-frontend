@@ -42,32 +42,30 @@ export const addItemToSessionCart = (
     product: Product,
     quantity: number,
     cancelToken: CancelToken
-): AppThunk<void> => {
-    return async (dispatch) => {
-        dispatch(requestAddItemToSessionCart());
-        await axios
-            .post(
-                `${API_ROOT}/carts/sessionCart/items`,
-                {
-                    productId: product.id,
+): AppThunk<void> => async dispatch => {
+    dispatch(requestAddItemToSessionCart());
+    await axios
+        .post(
+            `${API_ROOT}/carts/sessionCart/items`,
+            {
+                productId: product.id,
+                quantity: quantity,
+            },
+            {
+                cancelToken: cancelToken.tokenSource.token,
+                withCredentials: true,
+            }
+        )
+        .then(response =>
+            dispatch(
+                receiveAddItemToSessionCart({
+                    product: product,
                     quantity: quantity,
-                },
-                {
-                    cancelToken: cancelToken.tokenSource.token,
-                    withCredentials: true,
-                }
+                })
             )
-            .then((response) =>
-                dispatch(
-                    receiveAddItemToSessionCart({
-                        product: product,
-                        quantity: quantity,
-                    })
-                )
-            )
-            .catch((error) => {
-                if (!axios.isCancel(error))
-                    dispatch(receiveAddItemToSessionCart(null, true));
-            });
-    };
+        )
+        .catch(error => {
+            if (!axios.isCancel(error))
+                dispatch(receiveAddItemToSessionCart(null, true));
+        });
 };

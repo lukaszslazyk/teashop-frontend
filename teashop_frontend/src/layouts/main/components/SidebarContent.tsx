@@ -4,7 +4,7 @@ import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import EcoIcon from "@material-ui/icons/Eco";
 import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
 import EcoTwoToneIcon from "@material-ui/icons/EcoTwoTone";
-import EmojiFoodBeverageTwoToneIcon from '@material-ui/icons/EmojiFoodBeverageTwoTone';
+import EmojiFoodBeverageTwoToneIcon from "@material-ui/icons/EmojiFoodBeverageTwoTone";
 import Collapse from "@material-ui/core/Collapse";
 import React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
@@ -16,9 +16,8 @@ function SidebarContent(props: Props) {
     const classes = useStyles();
     const [open, setOpen] = React.useState(true);
 
-    const isCurrentLocation = (location: string): boolean => {
-        return location === props.history.location.pathname;
-    };
+    const isCurrentLocation = (location: string): boolean =>
+        location === props.history.location.pathname;
 
     const handleClick = () => {
         setOpen(!open);
@@ -109,7 +108,9 @@ function SidebarContent(props: Props) {
                     component={Link}
                     to="/browse/Accessories"
                 >
-                    <EmojiFoodBeverageTwoToneIcon className={classes.listItemIcon} />
+                    <EmojiFoodBeverageTwoToneIcon
+                        className={classes.listItemIcon}
+                    />
                     <ListItemText primary="Accessories" />
                 </ListItem>
             </List>

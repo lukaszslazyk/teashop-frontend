@@ -38,19 +38,15 @@ export const receiveProductById = (
 export const fetchProductById = (
     productId: string,
     cancelToken: CancelToken
-): AppThunk<void> => {
-    return async (dispatch) => {
-        dispatch(requestProductById());
-        await axios
-            .get(`${API_ROOT}/products/${productId}`, {
-                cancelToken: cancelToken.tokenSource.token,
-            })
-            .then((response) => dispatch(receiveProductById(response.data)))
-            .catch((error) => {
-                if (!axios.isCancel(error)) {
-                    console.error("Error occurred during fetching product");
-                    dispatch(receiveProductById(null, true));
-                }
-            });
-    };
+): AppThunk<void> => async dispatch => {
+    dispatch(requestProductById());
+    await axios
+        .get(`${API_ROOT}/products/${productId}`, {
+            cancelToken: cancelToken.tokenSource.token,
+        })
+        .then(response => dispatch(receiveProductById(response.data)))
+        .catch(error => {
+            if (!axios.isCancel(error))
+                dispatch(receiveProductById(null, true));
+        });
 };

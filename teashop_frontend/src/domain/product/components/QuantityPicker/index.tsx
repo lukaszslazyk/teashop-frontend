@@ -26,59 +26,54 @@ const QuantityPicker = (props: Props) => {
     const handleQuantityChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        let value = event.target.value;
+        const value = event.target.value;
         setQuantityText(value);
         setQuantityTextChanged(true);
         if (empty(value) || !validNumber(value)) {
             setQuantityErrorText("Please provide a number");
             if (props.quantityInvalidCallback)
                 props.quantityInvalidCallback();
-        }
-        else setQuantityErrorText("");
+        } else
+            setQuantityErrorText("");
         setAnchorEl(event.target);
     };
 
     const handleQuantityClickAway = () => {
         if (quantityTextChanged) {
             setQuantityTextChanged(false);
-            if (quantityErrorText === "") {
+            if (quantityErrorText === "")
                 if (!greaterThanLowThreshold(quantityText)) {
                     setQuantityText(props.lowThreshold.toString());
                     props.quantityChangedCallback(props.lowThreshold);
-                } else props.quantityChangedCallback(+quantityText);
-            }
+                } else
+                    props.quantityChangedCallback(Number(quantityText));
         }
     };
 
     const handleAddClicked = () => {
-        setQuantityText((+quantityText + props.step).toString());
-        props.quantityChangedCallback(+quantityText + props.step);
+        setQuantityText((Number(quantityText) + props.step).toString());
+        props.quantityChangedCallback(Number(quantityText) + props.step);
     };
 
     const handleSubtractClicked = () => {
-        setQuantityText((+quantityText - props.step).toString());
-        props.quantityChangedCallback(+quantityText - props.step);
+        setQuantityText((Number(quantityText) - props.step).toString());
+        props.quantityChangedCallback(Number(quantityText) - props.step);
     };
 
-    const canAdd = ():boolean => {
-        return quantityErrorText === "";
-    }
+    const canAdd = (): boolean =>
+        quantityErrorText === "";
 
-    const canSubtract = ():boolean => {
-        return quantityErrorText === "" && greaterThanLowThreshold(quantityText)
-    }
+    const canSubtract = (): boolean =>
+        quantityErrorText === "" && greaterThanLowThreshold(quantityText);
 
-    const validNumber = (input: string): boolean => {
-        return !isNaN(+input);
-    };
+    const validNumber = (input: string): boolean =>
+        !isNaN(Number(input));
 
-    const empty = (input: string): boolean => {
-        return input.length === 0;
-    };
+    const empty = (input: string): boolean =>
+        input.length === 0;
 
-    const greaterThanLowThreshold = (input: string) => {
-        return +input > props.lowThreshold;
-    };
+    const greaterThanLowThreshold = (input: string) =>
+        Number(input) > props.lowThreshold;
 
     return (
         <form className={classes.root}>

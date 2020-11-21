@@ -43,28 +43,30 @@ export const updateSessionCartItemQuantity = (
     productId: string,
     quantity: number,
     cancelToken: CancelToken
-): AppThunk<void> => {
-    return async (dispatch) => {
-        dispatch(requestUpdateSessionCartItemQuantity());
-        await axios
-            .patch(
-                `${API_ROOT}/carts/sessionCart/items/${productId}`,
-                { quantity: quantity },
-                {
-                    cancelToken: cancelToken.tokenSource.token,
-                    withCredentials: true,
-                }
-            )
-            .then((response) =>
+): AppThunk<void> => async dispatch => {
+    dispatch(requestUpdateSessionCartItemQuantity());
+    await axios
+        .patch(
+            `${API_ROOT}/carts/sessionCart/items/${productId}`,
+            {
+                quantity: quantity,
+            },
+            {
+                cancelToken: cancelToken.tokenSource.token,
+                withCredentials: true,
+            }
+        )
+        .then(response =>
+            dispatch(receiveUpdateSessionCartItemQuantity(productId, quantity))
+        )
+        .catch(error => {
+            if (!axios.isCancel(error))
                 dispatch(
-                    receiveUpdateSessionCartItemQuantity(productId, quantity)
-                )
-            )
-            .catch((error) => {
-                if (!axios.isCancel(error))
-                    dispatch(
-                        receiveUpdateSessionCartItemQuantity(productId, quantity, true)
-                    );
-            });
-    };
+                    receiveUpdateSessionCartItemQuantity(
+                        productId,
+                        quantity,
+                        true
+                    )
+                );
+        });
 };

@@ -6,10 +6,10 @@ export interface CancelToken {
 }
 
 export function createCancelToken(): CancelToken {
-    let token: CancelToken = {
+    const token: CancelToken = {
         tokenSource: axios.CancelToken.source(),
         cancel: () => token.tokenSource.cancel(),
-    }
+    };
 
     return token;
 }

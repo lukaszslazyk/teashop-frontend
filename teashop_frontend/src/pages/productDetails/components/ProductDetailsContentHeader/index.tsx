@@ -16,34 +16,33 @@ interface Props {
 }
 
 const ProductDetailsContentHeader = (props: Props) => {
-    const classes = useStyles();    
+    const classes = useStyles();
     const product = props.product;
     const [addToCartButtonDisabled, setAddToCartButtonDisabled] = React.useState(false);
-    
+
     const calculatePrice = (): number => {
         if (props.product)
-            return (
-                (props.product.price * props.quantity) /
-                props.product.quantityPerPrice
-            );
+            return props.product.price * props.quantity /
+                props.product.quantityPerPrice;
+
         return 0;
     };
 
     const productPricedByWeight = useCallback((): boolean => {
         if (product)
             return product.quantityPerPrice > 1;
-        else
-            return false;
+
+        return false;
     }, [product]);
 
     const quantityInvalidCallback = () => {
         setAddToCartButtonDisabled(true);
-    }
+    };
 
     const quantityChangedCallback = (value: number) => {
         setAddToCartButtonDisabled(false);
         props.quantityChangedCallback(value);
-    }
+    };
 
     const ProductName = () => (
         <Grid item xs={12}>
@@ -75,7 +74,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                         {/*
                             Bug in Material-UI library: should be smDown,
                             but Hidden's Down prop behaves as one size larger
-                            than declared, that's why xsDown is used here 
+                            than declared, that's why xsDown is used here
                         */}
                         <Hidden xsDown>{ProductName()}</Hidden>
                         <Grid item xs={12}>

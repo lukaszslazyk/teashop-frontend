@@ -33,6 +33,6 @@ const ProductQuantityPicker = (props: Props) => (
             />
         )}
     </div>
-)
+);
 
 export default ProductQuantityPicker;

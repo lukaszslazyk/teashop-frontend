@@ -52,8 +52,8 @@ const ProductDetailsPage = (props: Props) => {
     const productPricedByWeight = useCallback((): boolean => {
         if (product)
             return product.quantityPerPrice > 1;
-        else
-            return false;
+
+        return false;
     }, [product]);
 
     const loadProduct = props.loadProduct;
@@ -61,23 +61,24 @@ const ProductDetailsPage = (props: Props) => {
         const cancelToken = createCancelToken();
         setTimeoutPassed(false);
         loadProduct(productId, cancelToken);
+
         return () => cancelToken.cancel();
     }, [productId, loadProduct]);
 
     useEffect(() => {
-        let timer = setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+
         return () => clearTimeout(timer);
     }, [setTimeoutPassed]);
-    
+
     useEffect(() => {
-        if (product) {
+        if (product)
             if (productPricedByWeight())
                 setQuantity(100);
             else
                 setQuantity(1);
-        }
     }, [product, setQuantity, productPricedByWeight]);
 
     return (

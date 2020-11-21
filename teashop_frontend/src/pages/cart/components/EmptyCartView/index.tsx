@@ -1,7 +1,7 @@
-import { Button, Grid } from '@material-ui/core';
-import React from 'react'
-import { Link } from 'react-router-dom';
-import ErrorInfo from '../../../../shared/components/ErrorInfo';
+import { Button, Grid } from "@material-ui/core";
+import React from "react";
+import { Link } from "react-router-dom";
+import ErrorInfo from "../../../../shared/components/ErrorInfo";
 
 const EmptyCartView = () => (
     <Grid container spacing={3}>
@@ -23,10 +23,9 @@ const EmptyCartView = () => (
                         Back to main page
                     </Button>
                 </Grid>
-            </Grid>                                
+            </Grid>
         </Grid>
-    </Grid>    
-)
-
+    </Grid>
+);
 
 export default EmptyCartView;

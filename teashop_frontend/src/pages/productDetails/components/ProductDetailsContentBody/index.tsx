@@ -8,9 +8,8 @@ interface Props {
 }
 
 const ProductDetailsContentBody = (props: Props) => {
-    const nullOrEmpty = (input: string | undefined): boolean => {
-        return !input || input.trim().length === 0;
-    };
+    const nullOrEmpty = (input: string | undefined): boolean =>
+        !input || input.trim().length === 0;
 
     return (
         <Grid container spacing={3}>

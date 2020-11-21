@@ -1,9 +1,9 @@
 import {
     ProductActionTypes,
-    REQUEST_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_IN_CATEGORY,
-    REQUEST_PRODUCT_BY_ID,
     RECEIVE_PRODUCT_BY_ID,
+    REQUEST_PRODUCTS_IN_CATEGORY,
+    REQUEST_PRODUCT_BY_ID,
 } from "./actions";
 import { Product } from "./models";
 
@@ -22,8 +22,8 @@ const initialState: ProductState = {
 };
 
 export function productReducer(
-    state = initialState,
-    action: ProductActionTypes
+    action: ProductActionTypes,
+    state = initialState
 ): ProductState {
     switch (action.type) {
         case REQUEST_PRODUCTS_IN_CATEGORY:

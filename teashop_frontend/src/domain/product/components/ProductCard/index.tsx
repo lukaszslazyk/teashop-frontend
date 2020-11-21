@@ -24,12 +24,12 @@ const ProductCard = (props: Props) => {
     const getPriceTag = () => {
         if (productPricedByWeight())
             return `${product.price} EUR / ${product.quantityPerPrice}g`;
-        else return `${product.price} EUR`;
+
+        return `${product.price} EUR`;
     };
 
-    const productPricedByWeight = (): boolean => {
-        return product.quantityPerPrice > 1;
-    };
+    const productPricedByWeight = (): boolean =>
+        product.quantityPerPrice > 1;
 
     return (
         <Card className={classes.card}>

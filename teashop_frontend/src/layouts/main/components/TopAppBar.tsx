@@ -4,7 +4,7 @@ import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
 import useStyles from "../styles";
-import CartIconContainer from "./CartIcon/container"
+import CartIconContainer from "./CartIcon/container";
 
 interface Props {
     handleDrawerToggle: () => void;

@@ -1,13 +1,13 @@
 import {
     FetchProductsInCategoryActionTypes,
-    REQUEST_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_IN_CATEGORY,
+    REQUEST_PRODUCTS_IN_CATEGORY,
     fetchProductsInCategory,
 } from "./fetchProductsInCategory";
 import {
     FetchProductByIdActionTypes,
-    REQUEST_PRODUCT_BY_ID,
     RECEIVE_PRODUCT_BY_ID,
+    REQUEST_PRODUCT_BY_ID,
     fetchProductById,
 } from "./fetchProductById";
 

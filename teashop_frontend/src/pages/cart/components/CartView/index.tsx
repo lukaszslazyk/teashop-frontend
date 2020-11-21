@@ -14,15 +14,12 @@ interface Props {
 const CartView = (props: Props) => {
     const classes = useStyles();
 
-    const calculatePrice = (): number => {
-        return props.cart.items
-            .map(
-                (item) =>
-                    (item.product.price * item.quantity) /
-                    item.product.quantityPerPrice
-            )
-            .reduce((x, y) => x + y, 0);
-    };
+    const calculatePrice = (): number => props.cart.items
+        .map(item =>
+            item.product.price * item.quantity /
+                item.product.quantityPerPrice
+        )
+        .reduce((x, y) => x + y, 0);
 
     return (
         <Grid container spacing={3}>

@@ -1,13 +1,13 @@
 import {
     CartActionTypes,
-    RECEIVE_SESSION_CART,
     RECEIVE_ADD_ITEM_TO_SESSION_CART,
-    RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
     RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
+    RECEIVE_SESSION_CART,
+    RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
     REQUEST_ADD_ITEM_TO_SESSION_CART,
-    REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY,
     REQUEST_REMOVE_ITEM_FROM_SESSION_CART,
     REQUEST_SESSION_CART,
+    REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY,
 } from "./actions";
 import { Cart, CartItem } from "./models";
 
@@ -28,8 +28,8 @@ const initialState: CartState = {
 };
 
 export function cartReducer(
-    state = initialState,
-    action: CartActionTypes
+    action: CartActionTypes,
+    state = initialState
 ): CartState {
     switch (action.type) {
         case REQUEST_SESSION_CART:
@@ -56,6 +56,7 @@ export function cartReducer(
         case RECEIVE_ADD_ITEM_TO_SESSION_CART:
             if (!action.errorOccurred && action.addedItem)
                 addItemToCart(state, action.addedItem);
+
             return {
                 ...state,
                 isSending: false,
@@ -64,14 +65,16 @@ export function cartReducer(
         case RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY:
             if (!action.errorOccurred)
                 updateItemQuantity(state, action.productId, action.quantity);
+
             return {
                 ...state,
                 isSending: false,
                 errorOccurred: action.errorOccurred,
-            }
+            };
         case RECEIVE_REMOVE_ITEM_FROM_SESSION_CART:
             if (!action.errorOccurred)
                 removeItemFromCart(state, action.removedItemProductId);
+
             return {
                 ...state,
                 isSending: false,
@@ -83,7 +86,7 @@ export function cartReducer(
 }
 
 function addItemToCart(state: CartState, item: CartItem) {
-    let found = state.cart.items.find((i) => i.product.id === item.product.id);
+    const found = state.cart.items.find(i => i.product.id === item.product.id);
     if (found)
         found.quantity += item.quantity;
     else
@@ -91,7 +94,7 @@ function addItemToCart(state: CartState, item: CartItem) {
 }
 
 function updateItemQuantity(state: CartState, productId: string, quantity: number) {
-    let found = state.cart.items.find((i) => i.product.id === productId);
+    const found = state.cart.items.find(i => i.product.id === productId);
     if (found)
         found.quantity = quantity;
 }

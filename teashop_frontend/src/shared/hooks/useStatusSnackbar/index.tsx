@@ -18,7 +18,7 @@ const useStatusSnackbar = (status: Status) => {
                 horizontal: "center",
             },
             autoHideDuration: 3000,
-            action: (key) => (
+            action: key => (
                 <Button
                     className={classes.snackBarCloseButton}
                     onClick={() => {

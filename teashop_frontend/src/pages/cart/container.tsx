@@ -2,8 +2,8 @@ import { Dispatch } from "react";
 import { connect } from "react-redux";
 import {
     fetchSessionCart,
-    updateSessionCartItemQuantity,
     removeItemFromSessionCart,
+    updateSessionCartItemQuantity,
 } from "../../domain/cart/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import CartPage from ".";

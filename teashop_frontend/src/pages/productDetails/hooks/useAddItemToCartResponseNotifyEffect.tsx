@@ -10,9 +10,9 @@ const useAddItemToCartResponseNotifyEffect = (
     const enqueueErrorSnackbar = useStatusSnackbar("error");
 
     useEffect(() => {
-        if (requestIsProcessing) {
+        if (requestIsProcessing)
             setAwaitingResponse(true);
-        } else if (!requestIsProcessing && awaitingResponse) {
+        else if (!requestIsProcessing && awaitingResponse) {
             if (responseErrorOccurred)
                 enqueueErrorSnackbar(
                     "Error occurred while adding item to your cart. Please try again later."

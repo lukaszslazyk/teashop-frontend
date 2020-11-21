@@ -37,20 +37,16 @@ export const receiveSessionCart = (
 
 export const fetchSessionCart = (
     cancelToken: CancelToken
-): AppThunk<void> => {
-    return async (dispatch) => {
-        dispatch(requestSessionCart());
-        await axios
-            .get(`${API_ROOT}/carts/sessionCart`, {
-                cancelToken: cancelToken.tokenSource.token,
-                withCredentials: true,
-            })
-            .then((response) => dispatch(receiveSessionCart(response.data)))
-            .catch((error) => {
-                if (!axios.isCancel(error)) {
-                    console.error("Error occurred during fetching session cart");
-                    dispatch(receiveSessionCart(null, true));
-                }
-            });
-    };
+): AppThunk<void> => async dispatch => {
+    dispatch(requestSessionCart());
+    await axios
+        .get(`${API_ROOT}/carts/sessionCart`, {
+            cancelToken: cancelToken.tokenSource.token,
+            withCredentials: true,
+        })
+        .then(response => dispatch(receiveSessionCart(response.data)))
+        .catch(error => {
+            if (!axios.isCancel(error))
+                dispatch(receiveSessionCart(null, true));
+        });
 };

@@ -15,29 +15,27 @@ interface Props {
 
 const CartItemListElement = (props: Props) => {
     const classes = useStyles();
-    const [ownInteractionDisabled, setOwnInteractionDisabled] = React.useState(false);
+    const [ownInteractionDisabled, setOwnInteractionDisabled] =
+        React.useState(false);
 
-    const calculatePrice = (): number => {
-        return (
-            (props.cartItem.product.price * props.cartItem.quantity) /
-            props.cartItem.product.quantityPerPrice
-        );
-    };
+    const calculatePrice = (): number =>
+        props.cartItem.product.price * props.cartItem.quantity /
+        props.cartItem.product.quantityPerPrice;
 
     const handleQuantityChanged = (value: number) => {
         setOwnInteractionDisabled(true);
         props.updateItemQuantityCallback(props.cartItem.product.id, value);
-    }
+    };
 
     const handleRemoveButtonClick = () => {
         setOwnInteractionDisabled(true);
         props.removeItemFromCartCallback(props.cartItem.product.id);
-    }
+    };
 
     const interactionDisabled = props.interactionDisabled;
     useEffect(() => {
         if (!interactionDisabled)
-            setOwnInteractionDisabled(false);            
+            setOwnInteractionDisabled(false);
     }, [interactionDisabled, setOwnInteractionDisabled]);
 
     return (
@@ -78,9 +76,12 @@ const CartItemListElement = (props: Props) => {
                                 <ProductQuantityPicker
                                     initialValue={props.cartItem.quantity}
                                     pricedByWeight={
-                                        props.cartItem.product.quantityPerPrice > 1
+                                        props.cartItem.product
+                                            .quantityPerPrice > 1
                                     }
-                                    quantityChangedCallback={handleQuantityChanged}
+                                    quantityChangedCallback={
+                                        handleQuantityChanged
+                                    }
                                     interactionDisabled={ownInteractionDisabled}
                                 />
                             </Grid>

@@ -1,5 +1,5 @@
 import { green, red } from "@material-ui/core/colors";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
+import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 
 const drawerWidth = 300;
 
