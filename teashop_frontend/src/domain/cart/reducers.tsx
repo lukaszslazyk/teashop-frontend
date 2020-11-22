@@ -28,8 +28,8 @@ const initialState: CartState = {
 };
 
 export function cartReducer(
+    state = initialState,
     action: CartActionTypes,
-    state = initialState
 ): CartState {
     switch (action.type) {
         case REQUEST_SESSION_CART:

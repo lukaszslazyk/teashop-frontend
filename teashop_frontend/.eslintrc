@@ -11,7 +11,6 @@
         "consistent-return": "warn",
         "curly": ["warn", "multi"],
         "default-case-last": "warn",
-        "default-param-last": "warn",
         "dot-location": "warn",
         "dot-notation": "warn",
         "eqeqeq": "warn",

@@ -22,8 +22,8 @@ const initialState: ProductState = {
 };
 
 export function productReducer(
+    state = initialState,
     action: ProductActionTypes,
-    state = initialState
 ): ProductState {
     switch (action.type) {
         case REQUEST_PRODUCTS_IN_CATEGORY:
