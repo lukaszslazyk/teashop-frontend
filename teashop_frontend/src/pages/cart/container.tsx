@@ -7,7 +7,7 @@ import {
 } from "../../domain/cart/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import CartPage from ".";
-import { CancelToken } from "../../shared/utils/cancelToken";
+import { CancelToken } from "../../shared/services/cancelTokenService";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,

@@ -2,14 +2,15 @@ import { Grid } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
-import ErrorInfo from "../../shared/components/ErrorInfo";
-import MainLayout from "../../layouts/main";
 import { Product } from "../../domain/product/models";
-import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
+import { pricedByWeight } from "../../domain/product/services/productService";
+import MainLayout from "../../layouts/main";
+import ErrorInfo from "../../shared/components/ErrorInfo";
+import { CancelToken, createCancelToken } from "../../shared/services/cancelTokenService";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
-import useStyles from "./styles";
+import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
 import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
-import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
+import useStyles from "./styles";
 
 interface Props {
     product: Product | null;
@@ -51,7 +52,7 @@ const ProductDetailsPage = (props: Props) => {
     const product = props.product;
     const productPricedByWeight = useCallback((): boolean => {
         if (product)
-            return product.quantityPerPrice > 1;
+            return pricedByWeight(product);
 
         return false;
     }, [product]);

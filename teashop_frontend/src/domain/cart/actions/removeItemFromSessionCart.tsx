@@ -1,6 +1,6 @@
 import axios from "axios";
+import { CancelToken } from "../../../shared/services/cancelTokenService";
 import { AppThunk } from "../../../shared/types";
-import { CancelToken } from "../../../shared/utils/cancelToken";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 

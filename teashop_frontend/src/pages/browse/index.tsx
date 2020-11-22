@@ -9,7 +9,10 @@ import {
     availableProductCategories,
 } from "../../domain/product/models";
 import useStyles from "./styles";
-import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
+import {
+    CancelToken,
+    createCancelToken,
+} from "../../shared/services/cancelTokenService";
 import NotFoundPage from "../notFound";
 
 interface Props {

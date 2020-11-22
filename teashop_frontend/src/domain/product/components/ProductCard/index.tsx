@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { Product } from "../../models";
 import useStyles from "./styles";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { pricedByWeight } from "../../services/productService";
 
 interface Props {
     product: Product;
@@ -22,14 +23,11 @@ const ProductCard = (props: Props) => {
     const classes = useStyles();
 
     const getPriceTag = () => {
-        if (productPricedByWeight())
+        if (pricedByWeight(product))
             return `${product.price} EUR / ${product.quantityPerPrice}g`;
 
         return `${product.price} EUR`;
     };
-
-    const productPricedByWeight = (): boolean =>
-        product.quantityPerPrice > 1;
 
     return (
         <Card className={classes.card}>

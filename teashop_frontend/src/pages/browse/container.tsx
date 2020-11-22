@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { fetchProductsInCategory } from "../../domain/product/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import BrowsePage from "./index";
-import { CancelToken } from "../../shared/utils/cancelToken";
+import { CancelToken } from "../../shared/services/cancelTokenService";
 
 const mapStateToProps = (state: RootState) => ({
     products: state.product.products,

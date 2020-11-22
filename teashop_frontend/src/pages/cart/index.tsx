@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import { CancelToken, createCancelToken } from "../../shared/utils/cancelToken";
+import { CancelToken, createCancelToken } from "../../shared/services/cancelTokenService";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
 import useStyles from "./styles";

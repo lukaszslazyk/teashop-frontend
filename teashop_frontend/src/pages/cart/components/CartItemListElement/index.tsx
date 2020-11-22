@@ -5,6 +5,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import useStyles from "./styles";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 
 interface Props {
     cartItem: CartItem;
@@ -17,11 +18,7 @@ const CartItemListElement = (props: Props) => {
     const classes = useStyles();
     const [ownInteractionDisabled, setOwnInteractionDisabled] =
         React.useState(false);
-
-    const calculatePrice = (): number =>
-        props.cartItem.product.price * props.cartItem.quantity /
-        props.cartItem.product.quantityPerPrice;
-
+    
     const handleQuantityChanged = (value: number) => {
         setOwnInteractionDisabled(true);
         props.updateItemQuantityCallback(props.cartItem.product.id, value);
@@ -62,7 +59,7 @@ const CartItemListElement = (props: Props) => {
                     </Grid>
                     <Grid item>
                         <Typography variant="h6">
-                            {calculatePrice().toFixed(2)} EUR
+                            {calculateItemPrice(props.cartItem).toFixed(2)} EUR
                         </Typography>
                     </Grid>
                     <Grid item>

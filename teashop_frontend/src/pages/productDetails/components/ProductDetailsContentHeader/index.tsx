@@ -1,11 +1,12 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
-import { Product } from "../../../../domain/product/models";
-import AddToCartButton from "../AddToCartButton";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
+import { Product } from "../../../../domain/product/models";
+import { pricedByWeight } from "../../../../domain/product/services/productService";
+import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
+import AddToCartButton from "../AddToCartButton";
 import useStyles from "./styles";
-
-const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
 
 interface Props {
     product: Product | null;
@@ -22,15 +23,14 @@ const ProductDetailsContentHeader = (props: Props) => {
 
     const calculatePrice = (): number => {
         if (props.product)
-            return props.product.price * props.quantity /
-                props.product.quantityPerPrice;
+            return calculateItemPriceWith(props.product, props.quantity);
 
         return 0;
     };
 
     const productPricedByWeight = useCallback((): boolean => {
         if (product)
-            return product.quantityPerPrice > 1;
+            return pricedByWeight(product);
 
         return false;
     }, [product]);
@@ -62,11 +62,13 @@ const ProductDetailsContentHeader = (props: Props) => {
                 <Hidden smUp>{ProductName()}</Hidden>
                 <Grid item md={4} sm={6} xs={12}>
                     <Card square>
-                        <CardMedia
-                            className={classes.cardMedia}
-                            image={`${IMAGES_ROOT}/${props.product?.imagePath}`}
-                            title="Product"
-                        />
+                        {props.product &&
+                            <CardMedia
+                                className={classes.cardMedia}
+                                image={getImageFullUrl(props.product.imagePath)}
+                                title="Product"
+                            />
+                        }
                     </Card>
                 </Grid>
                 <Grid item md={8} sm={6} xs={12}>

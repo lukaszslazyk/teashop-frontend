@@ -5,7 +5,7 @@ import { Product } from "../../domain/product/models";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import ProductDetailsPage from "./index";
 import { fetchProductById } from "../../domain/product/actions";
-import { CancelToken } from "../../shared/utils/cancelToken";
+import { CancelToken } from "../../shared/services/cancelTokenService";
 
 const mapStateToProps = (state: RootState) => ({
     product: state.product.product,

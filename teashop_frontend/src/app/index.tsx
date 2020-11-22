@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchSessionCart } from "../domain/cart/actions";
-import { createCancelToken } from "../shared/utils/cancelToken";
+import { createCancelToken } from "../shared/services/cancelTokenService";
 import Routing from "./routing";
 
 function App() {
