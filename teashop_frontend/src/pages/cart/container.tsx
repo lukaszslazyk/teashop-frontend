@@ -1,13 +1,13 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
+import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import {
     fetchSessionCart,
     removeItemFromSessionCart,
-    updateSessionCartItemQuantity,
+    updateSessionCartItemQuantity
 } from "../../domain/cart/actions";
-import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import CartPage from ".";
 import { RequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import CartPage from ".";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,

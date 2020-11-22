@@ -1,11 +1,11 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
-import { addItemToSessionCart } from "../../domain/cart/actions";
-import { Product } from "../../domain/product/models";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import ProductDetailsPage from "./index";
+import { addItemToSessionCart } from "../../domain/cart/actions";
 import { fetchProductById } from "../../domain/product/actions";
+import { Product } from "../../domain/product/models";
 import { RequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import ProductDetailsPage from "./index";
 
 const mapStateToProps = (state: RootState) => ({
     product: state.product.product,

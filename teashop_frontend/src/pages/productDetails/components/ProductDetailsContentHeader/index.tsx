@@ -1,10 +1,10 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
+import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { Product } from "../../../../domain/product/models";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
-import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
 import AddToCartButton from "../AddToCartButton";
 import useStyles from "./styles";
 

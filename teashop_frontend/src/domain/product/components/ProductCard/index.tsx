@@ -9,10 +9,10 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Product } from "../../models";
-import useStyles from "./styles";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { Product } from "../../models";
 import { pricedByWeight } from "../../services/productService";
+import useStyles from "./styles";
 
 interface Props {
     product: Product;

@@ -1,11 +1,11 @@
 import { List, ListItem, ListItemText } from "@material-ui/core";
+import Collapse from "@material-ui/core/Collapse";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
-import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import EcoIcon from "@material-ui/icons/Eco";
 import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
 import EcoTwoToneIcon from "@material-ui/icons/EcoTwoTone";
 import EmojiFoodBeverageTwoToneIcon from "@material-ui/icons/EmojiFoodBeverageTwoTone";
-import Collapse from "@material-ui/core/Collapse";
+import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import React from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import useStyles from "../styles";

@@ -1,12 +1,12 @@
+import { ThemeProvider } from "@material-ui/core";
+import { SnackbarProvider } from "notistack";
 import React from "react";
 import ReactDOM from "react-dom";
-import App from "./app";
-import * as serviceWorker from "./configuration/serviceWorker";
-import { ThemeProvider } from "@material-ui/core";
-import { mainTheme } from "./layouts/main/themes";
 import { Provider } from "react-redux";
+import App from "./app";
 import configureStore from "./configuration/reduxSetup/configureStore";
-import { SnackbarProvider } from "notistack";
+import { unregister } from "./configuration/serviceWorker";
+import { mainTheme } from "./layouts/main/themes";
 
 const store = configureStore();
 
@@ -23,4 +23,4 @@ ReactDOM.render(
     document.getElementById("root")
 );
 
-serviceWorker.unregister();
+unregister();

@@ -1,15 +1,15 @@
 import {
-    FetchProductsInCategoryActionTypes,
-    RECEIVE_PRODUCTS_IN_CATEGORY,
-    REQUEST_PRODUCTS_IN_CATEGORY,
-    fetchProductsInCategory,
-} from "./fetchProductsInCategory";
-import {
     FetchProductByIdActionTypes,
     RECEIVE_PRODUCT_BY_ID,
     REQUEST_PRODUCT_BY_ID,
     fetchProductById,
 } from "./fetchProductById";
+import {
+    FetchProductsInCategoryActionTypes,
+    RECEIVE_PRODUCTS_IN_CATEGORY,
+    REQUEST_PRODUCTS_IN_CATEGORY,
+    fetchProductsInCategory,
+} from "./fetchProductsInCategory";
 
 export { fetchProductsInCategory, fetchProductById };
 

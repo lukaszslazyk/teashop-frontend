@@ -1,9 +1,9 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
-import { fetchProductsInCategory } from "../../domain/product/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import BrowsePage from "./index";
+import { fetchProductsInCategory } from "../../domain/product/actions";
 import { RequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import BrowsePage from "./index";
 
 const mapStateToProps = (state: RootState) => ({
     products: state.product.products,

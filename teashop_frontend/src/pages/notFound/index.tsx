@@ -1,6 +1,6 @@
 import React from "react";
-import ErrorInfo from "../../shared/components/ErrorInfo";
 import MainLayout from "../../layouts/main";
+import ErrorInfo from "../../shared/components/ErrorInfo";
 
 const NotFoundPage = () => (
     <MainLayout>

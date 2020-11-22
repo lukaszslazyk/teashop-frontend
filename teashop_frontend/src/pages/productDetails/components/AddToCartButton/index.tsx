@@ -1,6 +1,6 @@
-import React from "react";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { Button, CircularProgress } from "@material-ui/core";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import React from "react";
 import useStyles from "./styles";
 
 interface Props {

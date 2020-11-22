@@ -1,11 +1,11 @@
 import { Fab, Grid, Typography } from "@material-ui/core";
+import DeleteIcon from "@material-ui/icons/Delete";
 import React, { useEffect } from "react";
 import { CartItem } from "../../../../domain/cart/models";
-import DeleteIcon from "@material-ui/icons/Delete";
-import useStyles from "./styles";
+import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
-import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
+import useStyles from "./styles";
 
 interface Props {
     cartItem: CartItem;

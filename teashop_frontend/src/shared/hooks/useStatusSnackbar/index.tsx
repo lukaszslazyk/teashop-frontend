@@ -1,7 +1,7 @@
 import { Button } from "@material-ui/core";
+import CloseIcon from "@material-ui/icons/Close";
 import { useSnackbar } from "notistack";
 import React from "react";
-import CloseIcon from "@material-ui/icons/Close";
 import useStyles from "./styles";
 
 export type Status = "success" | "info" | "error" | "warning";
