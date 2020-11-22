@@ -26,7 +26,7 @@ const ProductQuantityPicker = (props: Props) => {
         <QuantityPicker
             inputLabel=""
             initialValue={props.initialValue}
-            lowThreshold={0}
+            lowThreshold={1}
             step={1}
             quantityChangedCallback={props.quantityChangedCallback}
             quantityInvalidCallback={props.quantityInvalidCallback}
