@@ -45,19 +45,17 @@ const ProductDetailsPage = (props: Props) => {
     );
 
     const addItemToSessionCartCallback = () => {
-        if (props.product)
+        if (product)
             props.addItemToSessionCart(
-                props.product,
+                product,
                 quantity,
                 createRequestCancelToken()
             );
     };
 
-    const productPricedByWeight = useCallback((): boolean => {
-        if (product)
-            return pricedByWeight(product);
-        return false;
-    }, [product]);
+    const productPricedByWeight = useCallback((): boolean =>
+        product !== null && pricedByWeight(product),
+    [product]);
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
@@ -91,7 +89,7 @@ const ProductDetailsPage = (props: Props) => {
             {!props.productIsFetching && props.productErrorOccurred && (
                 <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
-            {!props.productIsFetching && !props.productErrorOccurred && (
+            {!props.productIsFetching && !props.productErrorOccurred && props.product && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <ProductDetailsContentHeader

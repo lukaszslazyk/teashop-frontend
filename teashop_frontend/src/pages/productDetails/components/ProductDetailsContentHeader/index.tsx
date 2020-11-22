@@ -9,7 +9,7 @@ import AddToCartButton from "../AddToCartButton";
 import useStyles from "./styles";
 
 interface Props {
-    product: Product | null;
+    product: Product;
     quantity: number;
     isProcessing: boolean;
     quantityChangedCallback: (value: number) => void;
@@ -21,19 +21,12 @@ const ProductDetailsContentHeader = (props: Props) => {
     const product = props.product;
     const [addToCartButtonDisabled, setAddToCartButtonDisabled] = React.useState(false);
 
-    const calculatePrice = (): number => {
-        if (props.product)
-            return calculateItemPriceWith(props.product, props.quantity);
+    const calculatePrice = (): number =>
+        calculateItemPriceWith(props.product, props.quantity);
 
-        return 0;
-    };
-
-    const productPricedByWeight = useCallback((): boolean => {
-        if (product)
-            return pricedByWeight(product);
-
-        return false;
-    }, [product]);
+    const productPricedByWeight = useCallback((): boolean =>
+        pricedByWeight(product),
+    [product]);
 
     const quantityInvalidCallback = () => {
         setAddToCartButtonDisabled(true);
@@ -51,7 +44,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                 color="primary"
                 className={classes.productNameText}
             >
-                {props.product?.name}
+                {props.product.name}
             </Typography>
         </Grid>
     );
@@ -62,13 +55,11 @@ const ProductDetailsContentHeader = (props: Props) => {
                 <Hidden smUp>{ProductName()}</Hidden>
                 <Grid item md={4} sm={6} xs={12}>
                     <Card square>
-                        {props.product &&
-                            <CardMedia
-                                className={classes.cardMedia}
-                                image={getImageFullUrl(props.product.imagePath)}
-                                title="Product"
-                            />
-                        }
+                        <CardMedia
+                            className={classes.cardMedia}
+                            image={getImageFullUrl(props.product.imagePath)}
+                            title="Product"
+                        />
                     </Card>
                 </Grid>
                 <Grid item md={8} sm={6} xs={12}>
@@ -87,34 +78,30 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 {calculatePrice().toFixed(2)} EUR
                             </Typography>
                         </Grid>
-                        {props.product && (
-                            <Grid item xs={12} container
-                                className={classes.productQuantityPickerContainer}
-                            >
-                                <ProductQuantityPicker
-                                    initialValue={props.product.quantityPerPrice}
-                                    pricedByWeight={productPricedByWeight()}
-                                    quantityChangedCallback={
-                                        quantityChangedCallback
-                                    }
-                                    quantityInvalidCallback={
-                                        quantityInvalidCallback
-                                    }
-                                />
-                            </Grid>
-                        )}
-                        {props.product && (
-                            <Grid item xs={12} container
-                                className={classes.addToCartButtonContainer}>
-                                <AddToCartButton
-                                    isProcessing={props.isProcessing}
-                                    addItemToSessionCartCallback={
-                                        props.addItemToSessionCartCallback
-                                    }
-                                    interactionDisabled={addToCartButtonDisabled}
-                                />
-                            </Grid>
-                        )}
+                        <Grid item xs={12} container
+                            className={classes.productQuantityPickerContainer}
+                        >
+                            <ProductQuantityPicker
+                                initialValue={props.product.quantityPerPrice}
+                                pricedByWeight={productPricedByWeight()}
+                                quantityChangedCallback={
+                                    quantityChangedCallback
+                                }
+                                quantityInvalidCallback={
+                                    quantityInvalidCallback
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={12} container
+                            className={classes.addToCartButtonContainer}>
+                            <AddToCartButton
+                                isProcessing={props.isProcessing}
+                                addItemToSessionCartCallback={
+                                    props.addItemToSessionCartCallback
+                                }
+                                interactionDisabled={addToCartButtonDisabled}
+                            />
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>
