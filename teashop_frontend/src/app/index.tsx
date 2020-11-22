@@ -10,7 +10,6 @@ function App() {
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         dispatch(fetchSessionCart(cancelToken));
-
         return () => cancelToken.cancel();
     }, [dispatch]);
 

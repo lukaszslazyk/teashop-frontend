@@ -5,7 +5,7 @@ import MainLayout from "../../layouts/main";
 const HomePage = () => (
     <MainLayout>
         <Typography variant="h3" align="center" noWrap>
-                Welcome to Tea Shop
+            Welcome to Tea Shop
         </Typography>
     </MainLayout>
 );

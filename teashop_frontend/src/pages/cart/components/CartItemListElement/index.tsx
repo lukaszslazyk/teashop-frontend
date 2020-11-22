@@ -18,6 +18,7 @@ const CartItemListElement = (props: Props) => {
     const classes = useStyles();
     const [ownInteractionDisabled, setOwnInteractionDisabled] =
         React.useState(false);
+    const { interactionDisabled } = props;
     
     const handleQuantityChanged = (value: number) => {
         setOwnInteractionDisabled(true);
@@ -29,7 +30,6 @@ const CartItemListElement = (props: Props) => {
         props.removeItemFromCartCallback(props.cartItem.product.id);
     };
 
-    const interactionDisabled = props.interactionDisabled;
     useEffect(() => {
         if (!interactionDisabled)
             setOwnInteractionDisabled(false);

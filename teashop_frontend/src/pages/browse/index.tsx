@@ -33,21 +33,18 @@ const BrowsePage = (props: Props) => {
     const classes = useStyles();
     const { categoryName }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
+    const { loadProductsInCategory } = props;
 
-    const categoryIsAvailable = useCallback(
-        (): boolean =>
-            categoryName !== undefined &&
-            availableProductCategories.includes(categoryName),
-        [categoryName]
-    );
+    const categoryIsAvailable = useCallback((): boolean =>
+        categoryName !== undefined &&
+        availableProductCategories.includes(categoryName),
+    [categoryName]);
 
-    const loadProductsInCategory = props.loadProductsInCategory;
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
         if (categoryName && categoryIsAvailable())
             loadProductsInCategory(categoryName, cancelToken);
-
         return () => cancelToken.cancel();
     }, [categoryName, categoryIsAvailable, loadProductsInCategory]);
 
@@ -55,7 +52,6 @@ const BrowsePage = (props: Props) => {
         const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
-
         return () => clearTimeout(timer);
     }, [timeoutPassed]);
 

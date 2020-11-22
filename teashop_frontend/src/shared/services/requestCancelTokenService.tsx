@@ -10,6 +10,5 @@ export function createRequestCancelToken(): RequestCancelToken {
         tokenSource: axios.CancelToken.source(),
         cancel: () => token.tokenSource.cancel(),
     };
-
     return token;
 }

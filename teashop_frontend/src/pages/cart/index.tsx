@@ -36,7 +36,6 @@ const CartPage = (props: Props) => {
         const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
         getSessionCart(cancelToken);
-
         return () => cancelToken.cancel();
     }, [getSessionCart]);
 
@@ -44,7 +43,6 @@ const CartPage = (props: Props) => {
         const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
-
         return () => clearTimeout(timer);
     }, [timeoutPassed]);
 

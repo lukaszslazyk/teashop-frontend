@@ -9,9 +9,9 @@ interface Props {
     interactionDisabled?: boolean;
 }
 
-const ProductQuantityPicker = (props: Props) => (
-    <div>
-        {props.pricedByWeight ? (
+const ProductQuantityPicker = (props: Props) => {
+    if (props.pricedByWeight)
+        return (
             <QuantityPicker
                 inputLabel="Grams"
                 initialValue={props.initialValue}
@@ -21,18 +21,18 @@ const ProductQuantityPicker = (props: Props) => (
                 quantityInvalidCallback={props.quantityInvalidCallback}
                 interactionDisabled={props.interactionDisabled}
             />
-        ) : (
-            <QuantityPicker
-                inputLabel=""
-                initialValue={props.initialValue}
-                lowThreshold={0}
-                step={1}
-                quantityChangedCallback={props.quantityChangedCallback}
-                quantityInvalidCallback={props.quantityInvalidCallback}
-                interactionDisabled={props.interactionDisabled}
-            />
-        )}
-    </div>
-);
+        );
+    return (
+        <QuantityPicker
+            inputLabel=""
+            initialValue={props.initialValue}
+            lowThreshold={0}
+            step={1}
+            quantityChangedCallback={props.quantityChangedCallback}
+            quantityInvalidCallback={props.quantityInvalidCallback}
+            interactionDisabled={props.interactionDisabled}
+        />
+    );
+};
 
 export default ProductQuantityPicker;

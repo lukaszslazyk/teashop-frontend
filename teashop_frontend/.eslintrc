@@ -63,11 +63,6 @@
         "nonblock-statement-body-position": ["warn", "below"],
         "operator-assignment": "warn",
         "padded-blocks": ["warn", "never"],
-        "padding-line-between-statements": ["warn", {
-            "blankLine": "always",
-            "prev": "*",
-            "next": "return"
-        }],
         "quotes": "warn",
         "semi": "warn",
         "semi-style": "warn",

@@ -6,7 +6,10 @@ import { Product } from "../../domain/product/models";
 import { pricedByWeight } from "../../domain/product/services/productService";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import { RequestCancelToken, createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import {
+    createRequestCancelToken,
+    RequestCancelToken,
+} from "../../shared/services/requestCancelTokenService";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
 import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
 import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
@@ -35,6 +38,7 @@ const ProductDetailsPage = (props: Props) => {
     const { productId }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
     const [quantity, setQuantity] = React.useState(0);
+    const { product, loadProduct } = props;
     useAddItemToCartResponseNotifyEffect(
         props.cartIsSending,
         props.cartErrorOccurred
@@ -49,20 +53,16 @@ const ProductDetailsPage = (props: Props) => {
             );
     };
 
-    const product = props.product;
     const productPricedByWeight = useCallback((): boolean => {
         if (product)
             return pricedByWeight(product);
-
         return false;
     }, [product]);
 
-    const loadProduct = props.loadProduct;
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
         loadProduct(productId, cancelToken);
-
         return () => cancelToken.cancel();
     }, [productId, loadProduct]);
 
@@ -70,7 +70,6 @@ const ProductDetailsPage = (props: Props) => {
         const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
-
         return () => clearTimeout(timer);
     }, [setTimeoutPassed]);
 
