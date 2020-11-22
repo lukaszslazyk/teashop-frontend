@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import { CancelToken, createCancelToken } from "../../shared/services/cancelTokenService";
+import { RequestCancelToken, createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
 import useStyles from "./styles";
@@ -13,15 +13,15 @@ interface Props {
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
-    getSessionCart: (cancelToken: CancelToken) => void;
+    getSessionCart: (cancelToken: RequestCancelToken) => void;
     updateItemQuantity: (
         productId: string,
         quantity: number,
-        cancelToken: CancelToken
+        cancelToken: RequestCancelToken
     ) => void;
     removeItemFromCart: (
         productId: string,
-        cancelToken: CancelToken
+        cancelToken: RequestCancelToken
     ) => void;
 }
 
@@ -33,7 +33,7 @@ const CartPage = (props: Props) => {
     const { isFetching, isSending, getSessionCart } = props;
 
     useEffect(() => {
-        const cancelToken = createCancelToken();
+        const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
         getSessionCart(cancelToken);
 
@@ -70,14 +70,14 @@ const CartPage = (props: Props) => {
         props.updateItemQuantity(
             productId,
             quantity,
-            createCancelToken()
+            createRequestCancelToken()
         );
     };
 
     const removeItemFromCartCallback = (productId: string) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
-        props.removeItemFromCart(productId, createCancelToken());
+        props.removeItemFromCart(productId, createRequestCancelToken());
     };
 
     return (

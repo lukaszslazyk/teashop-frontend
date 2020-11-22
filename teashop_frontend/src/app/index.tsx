@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchSessionCart } from "../domain/cart/actions";
-import { createCancelToken } from "../shared/services/cancelTokenService";
+import { createRequestCancelToken } from "../shared/services/requestCancelTokenService";
 import Routing from "./routing";
 
 function App() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const cancelToken = createCancelToken();
+        const cancelToken = createRequestCancelToken();
         dispatch(fetchSessionCart(cancelToken));
 
         return () => cancelToken.cancel();

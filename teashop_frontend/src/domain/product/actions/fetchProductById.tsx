@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CancelToken } from "../../../shared/services/cancelTokenService";
+import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
 import { AppThunk } from "../../../shared/types";
 import { Product } from "../models";
 
@@ -37,7 +37,7 @@ export const receiveProductById = (
 
 export const fetchProductById = (
     productId: string,
-    cancelToken: CancelToken
+    cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductById());
     await axios

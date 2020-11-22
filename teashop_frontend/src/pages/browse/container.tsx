@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { fetchProductsInCategory } from "../../domain/product/actions";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import BrowsePage from "./index";
-import { CancelToken } from "../../shared/services/cancelTokenService";
+import { RequestCancelToken } from "../../shared/services/requestCancelTokenService";
 
 const mapStateToProps = (state: RootState) => ({
     products: state.product.products,
@@ -12,7 +12,7 @@ const mapStateToProps = (state: RootState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    loadProductsInCategory: (categoryName: string, cancelToken: CancelToken) =>
+    loadProductsInCategory: (categoryName: string, cancelToken: RequestCancelToken) =>
         dispatch(fetchProductsInCategory(categoryName, cancelToken)),
 });
 

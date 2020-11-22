@@ -10,9 +10,9 @@ import {
 } from "../../domain/product/models";
 import useStyles from "./styles";
 import {
-    CancelToken,
-    createCancelToken,
-} from "../../shared/services/cancelTokenService";
+    RequestCancelToken,
+    createRequestCancelToken,
+} from "../../shared/services/requestCancelTokenService";
 import NotFoundPage from "../notFound";
 
 interface Props {
@@ -21,7 +21,7 @@ interface Props {
     errorOccurred: boolean;
     loadProductsInCategory: (
         categoryName: string,
-        cancelToken: CancelToken
+        cancelToken: RequestCancelToken
     ) => void;
 }
 
@@ -43,7 +43,7 @@ const BrowsePage = (props: Props) => {
 
     const loadProductsInCategory = props.loadProductsInCategory;
     useEffect(() => {
-        const cancelToken = createCancelToken();
+        const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
         if (categoryName && categoryIsAvailable())
             loadProductsInCategory(categoryName, cancelToken);

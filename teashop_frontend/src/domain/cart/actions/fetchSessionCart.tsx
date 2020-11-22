@@ -1,5 +1,5 @@
 import axios from "axios";
-import { CancelToken } from "../../../shared/services/cancelTokenService";
+import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
 import { AppThunk } from "../../../shared/types";
 import { Cart } from "../models";
 
@@ -36,7 +36,7 @@ export const receiveSessionCart = (
 });
 
 export const fetchSessionCart = (
-    cancelToken: CancelToken
+    cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
     dispatch(requestSessionCart());
     await axios

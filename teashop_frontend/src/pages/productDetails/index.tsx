@@ -6,7 +6,7 @@ import { Product } from "../../domain/product/models";
 import { pricedByWeight } from "../../domain/product/services/productService";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import { CancelToken, createCancelToken } from "../../shared/services/cancelTokenService";
+import { RequestCancelToken, createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
 import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
 import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
@@ -18,11 +18,11 @@ interface Props {
     productErrorOccurred: boolean;
     cartIsSending: boolean;
     cartErrorOccurred: boolean;
-    loadProduct: (productId: string, cancelToken: CancelToken) => void;
+    loadProduct: (productId: string, cancelToken: RequestCancelToken) => void;
     addItemToSessionCart: (
         product: Product,
         quantity: number,
-        cancelToken: CancelToken
+        cancelToken: RequestCancelToken
     ) => void;
 }
 
@@ -45,7 +45,7 @@ const ProductDetailsPage = (props: Props) => {
             props.addItemToSessionCart(
                 props.product,
                 quantity,
-                createCancelToken()
+                createRequestCancelToken()
             );
     };
 
@@ -59,7 +59,7 @@ const ProductDetailsPage = (props: Props) => {
 
     const loadProduct = props.loadProduct;
     useEffect(() => {
-        const cancelToken = createCancelToken();
+        const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
         loadProduct(productId, cancelToken);
 
