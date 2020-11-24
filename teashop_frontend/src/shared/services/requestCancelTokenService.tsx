@@ -5,10 +5,10 @@ export interface RequestCancelToken {
     cancel: () => void;
 }
 
-export function createRequestCancelToken(): RequestCancelToken {
+export const createRequestCancelToken = (): RequestCancelToken => {
     const token: RequestCancelToken = {
         tokenSource: axios.CancelToken.source(),
         cancel: () => token.tokenSource.cancel(),
     };
     return token;
-}
+};

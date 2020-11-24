@@ -27,10 +27,10 @@ const initialState: CartState = {
     errorMessage: "",
 };
 
-export function cartReducer(
+export const cartReducer = (
     state = initialState,
-    action: CartActionTypes,
-): CartState {
+    action: CartActionTypes
+): CartState => {
     switch (action.type) {
         case REQUEST_SESSION_CART:
             return {
@@ -83,22 +83,26 @@ export function cartReducer(
         default:
             return state;
     }
-}
+};
 
-function addItemToCart(state: CartState, item: CartItem) {
+const addItemToCart = (state: CartState, item: CartItem) => {
     const found = state.cart.items.find(i => i.product.id === item.product.id);
     if (found)
         found.quantity += item.quantity;
     else
         state.cart.items = [...state.cart.items, item];
-}
+};
 
-function updateItemQuantity(state: CartState, productId: string, quantity: number) {
+const updateItemQuantity = (
+    state: CartState,
+    productId: string,
+    quantity: number
+) => {
     const found = state.cart.items.find(i => i.product.id === productId);
     if (found)
         found.quantity = quantity;
-}
+};
 
-function removeItemFromCart(state: CartState, productId: string) {
+const removeItemFromCart = (state: CartState, productId: string) => {
     state.cart.items = state.cart.items.filter(i => i.product.id !== productId);
-}
+};

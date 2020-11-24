@@ -1,5 +1,4 @@
 import { Product } from "../models";
 
-export function pricedByWeight(product: Product) {
-    return product.quantityPerPrice > 1;
-}
+export const pricedByWeight = (product: Product) =>
+    product.quantityPerPrice > 1;

@@ -21,10 +21,10 @@ const initialState: ProductState = {
     errorOccurred: false,
 };
 
-export function productReducer(
+export const productReducer = (
     state = initialState,
-    action: ProductActionTypes,
-): ProductState {
+    action: ProductActionTypes
+): ProductState => {
     switch (action.type) {
         case REQUEST_PRODUCTS_IN_CATEGORY:
         case REQUEST_PRODUCT_BY_ID:
@@ -50,4 +50,4 @@ export function productReducer(
         default:
             return state;
     }
-}
+};

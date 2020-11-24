@@ -12,7 +12,7 @@ import useStyles from "../styles";
 
 interface Props extends RouteComponentProps {}
 
-function SidebarContent(props: Props) {
+const SidebarContent = (props: Props) => {
     const classes = useStyles();
     const [open, setOpen] = useState(true);
 
@@ -116,6 +116,6 @@ function SidebarContent(props: Props) {
             </List>
         </div>
     );
-}
+};
 
 export default withRouter(SidebarContent);
