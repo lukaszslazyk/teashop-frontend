@@ -1,6 +1,6 @@
 import { Fab, Grid, Typography } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
@@ -16,8 +16,7 @@ interface Props {
 
 const CartItemListElement = (props: Props) => {
     const classes = useStyles();
-    const [ownInteractionDisabled, setOwnInteractionDisabled] =
-        React.useState(false);
+    const [ownInteractionDisabled, setOwnInteractionDisabled] = useState(false);
     const { interactionDisabled } = props;
     
     const handleQuantityChanged = (value: number) => {

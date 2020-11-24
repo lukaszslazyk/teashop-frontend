@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Product } from "../../domain/product/models";
 import { pricedByWeight } from "../../domain/product/services/productService";
@@ -36,8 +36,8 @@ interface Params {
 const ProductDetailsPage = (props: Props) => {
     const classes = useStyles();
     const { productId }: Params = useParams();
-    const [timeoutPassed, setTimeoutPassed] = React.useState(false);
-    const [quantity, setQuantity] = React.useState(0);
+    const [timeoutPassed, setTimeoutPassed] = useState(false);
+    const [quantity, setQuantity] = useState(0);
     const { product, loadProduct } = props;
     useAddItemToCartResponseNotifyEffect(
         props.cartIsSending,

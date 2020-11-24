@@ -1,5 +1,5 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { Product } from "../../../../domain/product/models";
@@ -19,7 +19,7 @@ interface Props {
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();
     const product = props.product;
-    const [addToCartButtonDisabled, setAddToCartButtonDisabled] = React.useState(false);
+    const [addToCartButtonDisabled, setAddToCartButtonDisabled] = useState(false);
 
     const calculatePrice = (): number =>
         calculateItemPriceWith(props.product, props.quantity);

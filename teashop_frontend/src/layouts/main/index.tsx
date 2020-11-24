@@ -1,16 +1,16 @@
 import { Container, CssBaseline } from "@material-ui/core";
-import React from "react";
+import React, { ReactNode, useState } from "react";
 import Sidebar from "./components/Sidebar";
 import TopAppBar from "./components/TopAppBar";
 import useStyles from "./styles";
 
 interface Props {
-    children: React.ReactNode;
+    children: ReactNode;
 }
 
 const MainLayout = (props: Props) => {
     const classes = useStyles();
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);

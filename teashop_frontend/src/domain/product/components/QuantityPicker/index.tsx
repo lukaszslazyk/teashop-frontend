@@ -1,7 +1,7 @@
 import { ClickAwayListener, Fab, Popper, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import useStyles from "./styles";
 
 interface Props {
@@ -16,15 +16,15 @@ interface Props {
 
 const QuantityPicker = (props: Props) => {
     const classes = useStyles();
-    const [quantityText, setQuantityText] = React.useState(
+    const [quantityText, setQuantityText] = useState(
         props.initialValue.toString()
     );
-    const [quantityTextChanged, setQuantityTextChanged] = React.useState(false);
-    const [quantityErrorText, setQuantityErrorText] = React.useState("");
-    const [anchorEl, setAnchorEl]: any = React.useState(null);
+    const [quantityTextChanged, setQuantityTextChanged] = useState(false);
+    const [quantityErrorText, setQuantityErrorText] = useState("");
+    const [anchorEl, setAnchorEl]: any = useState(null);
 
     const handleQuantityChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: ChangeEvent<HTMLInputElement>
     ) => {
         const value = event.target.value;
         setQuantityText(value);

@@ -6,7 +6,7 @@ import EcoOutlinedIcon from "@material-ui/icons/EcoOutlined";
 import EcoTwoToneIcon from "@material-ui/icons/EcoTwoTone";
 import EmojiFoodBeverageTwoToneIcon from "@material-ui/icons/EmojiFoodBeverageTwoTone";
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
-import React from "react";
+import React, { useState } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
 import useStyles from "../styles";
 
@@ -14,7 +14,7 @@ interface Props extends RouteComponentProps {}
 
 function SidebarContent(props: Props) {
     const classes = useStyles();
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = useState(true);
 
     const isCurrentLocation = (location: string): boolean =>
         location === props.history.location.pathname;

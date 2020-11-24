@@ -1,5 +1,5 @@
 import { Backdrop, CircularProgress } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
@@ -27,9 +27,9 @@ interface Props {
 
 const CartPage = (props: Props) => {
     const classes = useStyles();
-    const [backdropOpen, setBackdropOpen] = React.useState(false);
-    const [disableInteraction, setDisableInteraction] = React.useState(false);
-    const [timeoutPassed, setTimeoutPassed] = React.useState(false);
+    const [backdropOpen, setBackdropOpen] = useState(false);
+    const [disableInteraction, setDisableInteraction] = useState(false);
+    const [timeoutPassed, setTimeoutPassed] = useState(false);
     const { isFetching, isSending, getSessionCart } = props;
 
     useEffect(() => {
