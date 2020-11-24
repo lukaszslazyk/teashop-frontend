@@ -8,7 +8,7 @@ import EmojiFoodBeverageTwoToneIcon from "@material-ui/icons/EmojiFoodBeverageTw
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import React, { useState } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
-import useStyles from "../styles";
+import useStyles from "../../styles";
 
 interface Props extends RouteComponentProps {}
 

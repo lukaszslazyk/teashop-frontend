@@ -3,8 +3,8 @@ import EcoIcon from "@material-ui/icons/Eco";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
-import useStyles from "../styles";
-import CartIconContainer from "./CartIcon/container";
+import useStyles from "../../styles";
+import CartIconContainer from "../CartIcon/container";
 
 interface Props {
     handleDrawerToggle: () => void;
