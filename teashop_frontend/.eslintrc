@@ -1,0 +1,123 @@
+{
+    "extends": "react-app",
+    "plugins": [
+        "import",
+        "prefer-arrow"
+    ],
+    "rules": {
+        "no-console": "warn",
+        "no-unreachable-loop": "warn",
+        "no-template-curly-in-string": "warn",
+        "no-extra-parens": ["warn", "all", {
+            "ignoreJSX": "all"
+        }],
+        "array-callback-return": "warn",
+        "consistent-return": "warn",
+        "curly": ["warn", "multi"],
+        "default-case-last": "warn",
+        "dot-location": "warn",
+        "dot-notation": "warn",
+        "eqeqeq": "warn",
+        "no-alert": "warn",
+        "no-else-return": "warn",
+        "no-empty-function": "warn",
+        "no-eq-null": "warn",
+        "no-eval": "error",
+        "no-extend-native": "warn",
+        "no-floating-decimal": "warn",
+        "no-implicit-coercion": "warn",
+        "no-implied-eval": "error",
+        "no-invalid-this": "warn",
+        "no-labels": "warn",
+        "no-lone-blocks": "warn",
+        "no-multi-spaces": "warn",
+        "no-param-reassign": "warn",
+        "no-unmodified-loop-condition": "warn",
+        "no-unused-expressions": "warn",
+        "no-useless-return": "warn",
+        "require-await": "warn",
+        "block-spacing": "warn",
+        "brace-style": ["warn", "1tbs", {
+            "allowSingleLine": true
+        }],
+        "camelcase": "warn",
+        "comma-spacing": "warn",
+        "comma-style": "warn",
+        "eol-last": ["warn", "always"],
+        "func-call-spacing": "warn",
+        "indent": ["warn", 4, {
+            "SwitchCase": 1
+        }],
+        "jsx-quotes": ["warn", "prefer-double"],
+        "key-spacing": "warn",
+        "keyword-spacing": "warn",
+        "newline-per-chained-call": "warn",
+        "no-lonely-if": "warn",
+        "no-mixed-operators": "warn",
+        "no-multiple-empty-lines": ["warn", {
+            "max": 1,
+            "maxEOF": 0
+        }],
+        "no-nested-ternary": "warn",
+        "no-trailing-spaces": ["warn", {
+            "skipBlankLines": true
+        }],
+        "no-unneeded-ternary": "warn",
+        "no-whitespace-before-property": "warn",
+        "nonblock-statement-body-position": ["warn", "below"],
+        "operator-assignment": "warn",
+        "padded-blocks": ["warn", "never"],
+        "quotes": "warn",
+        "semi": "warn",
+        "semi-style": "warn",
+        "space-before-blocks": "warn",
+        "space-before-function-paren": ["warn", {
+            "anonymous": "never",
+            "named": "never",
+            "asyncArrow": "always"
+        }],
+        "space-in-parens": "warn",
+        "space-infix-ops": "warn",
+        "space-unary-ops": ["warn", {
+            "words": true,
+            "nonwords": false
+        }],
+        "switch-colon-spacing": "warn",
+        "arrow-body-style": "warn",
+        "arrow-parens": ["warn", "as-needed"],
+        "arrow-spacing": ["warn", {
+            "before": true,
+            "after": true
+        }],
+        "no-confusing-arrow": "warn",
+        "no-duplicate-imports": "warn",
+        "no-var": "warn",
+        "prefer-arrow-callback": "warn",
+        "prefer-const": "warn",
+        "prefer-spread": "warn",
+        "prefer-template": "warn",
+        "rest-spread-spacing": "warn",
+        "template-curly-spacing": "warn",
+        // import plugin rules
+        "import/first": "warn",
+        "import/no-duplicates": "warn",
+        "import/no-namespace": "warn",
+        "import/extensions": "warn",
+        "import/order": ["warn", {
+            "alphabetize": {
+                "order": "asc",
+                "caseInsensitive": true
+            }
+        }],
+        "import/newline-after-import": "warn",
+        "import/no-unassigned-import": "warn",
+        "import/no-named-default": "warn",
+        "import/no-anonymous-default-export": "warn",
+        // prefer-arrow plugin rules
+        "prefer-arrow/prefer-arrow-functions": ["warn", {
+            "disallowPrototype": true,
+            "singleReturnOnly": false,
+            "classPropertiesAllowed": false
+        }]
+    }
+}

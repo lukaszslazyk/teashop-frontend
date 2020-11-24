@@ -1,18 +1,28 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
-import ErrorInfo from "../../shared/components/ErrorInfo";
-import MainLayout from "../../layouts/main";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
-import { Product } from "../../domain/product/models";
+import {
+    Product,
+    availableProductCategories,
+} from "../../domain/product/models";
+import MainLayout from "../../layouts/main";
+import ErrorInfo from "../../shared/components/ErrorInfo";
+import {
+    RequestCancelToken,
+    createRequestCancelToken,
+} from "../../shared/services/requestCancelTokenService";
+import NotFoundPage from "../notFound";
 import useStyles from "./styles";
 
 interface Props {
     products: Product[];
     isFetching: boolean;
     errorOccurred: boolean;
-    loadProducts: () => void;
-    loadProductsInCategory: (categoryName: string) => void;
+    loadProductsInCategory: (
+        categoryName: string,
+        cancelToken: RequestCancelToken
+    ) => void;
 }
 
 interface Params {
@@ -23,20 +33,30 @@ const BrowsePage = (props: Props) => {
     const classes = useStyles();
     const { categoryName }: Params = useParams();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
+    const { loadProductsInCategory } = props;
 
-    const { loadProducts, loadProductsInCategory } = props;
+    const categoryIsAvailable = useCallback((): boolean =>
+        categoryName !== undefined &&
+        availableProductCategories.includes(categoryName),
+    [categoryName]);
+
     useEffect(() => {
+        const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
-        categoryName
-            ? loadProductsInCategory(categoryName)
-            : loadProducts();
-    }, [categoryName, loadProducts, loadProductsInCategory]);
+        if (categoryName && categoryIsAvailable())
+            loadProductsInCategory(categoryName, cancelToken);
+        return () => cancelToken.cancel();
+    }, [categoryName, categoryIsAvailable, loadProductsInCategory]);
 
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+        return () => clearTimeout(timer);
     }, [timeoutPassed]);
+
+    if (!categoryIsAvailable())
+        return <NotFoundPage />;
 
     return (
         <MainLayout>

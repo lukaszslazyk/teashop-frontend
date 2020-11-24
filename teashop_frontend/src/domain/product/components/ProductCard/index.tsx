@@ -9,9 +9,10 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
-import { Product } from "../../models";
-import useStyles from "./styles";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { Product } from "../../models";
+import { pricedByWeight } from "../../services/productService";
+import useStyles from "./styles";
 
 interface Props {
     product: Product;
@@ -22,13 +23,10 @@ const ProductCard = (props: Props) => {
     const classes = useStyles();
 
     const getPriceTag = () => {
-        if (productPricedByWeight())
+        if (pricedByWeight(product))
             return `${product.price} EUR / ${product.quantityPerPrice}g`;
-        else return `${product.price} EUR`;
-    };
 
-    const productPricedByWeight = (): boolean => {
-        return product.quantityPerPrice > 1;
+        return `${product.price} EUR`;
     };
 
     return (

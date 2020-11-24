@@ -1,7 +1,7 @@
 import { ClickAwayListener, Fab, Popper, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import useStyles from "./styles";
 
 interface Props {
@@ -10,67 +10,70 @@ interface Props {
     lowThreshold: number;
     step: number;
     quantityChangedCallback: (value: number) => void;
+    quantityInvalidCallback?: () => void;
     interactionDisabled?: boolean;
 }
 
 const QuantityPicker = (props: Props) => {
     const classes = useStyles();
-    const [quantityText, setQuantityText] = React.useState(
+    const [quantityText, setQuantityText] = useState(
         props.initialValue.toString()
     );
-    const [quantityTextChanged, setQuantityTextChanged] = React.useState(false);
-    const [quantityErrorText, setQuantityErrorText] = React.useState("");
-    const [anchorEl, setAnchorEl]: any = React.useState(null);
+    const [quantityTextChanged, setQuantityTextChanged] = useState(false);
+    const [quantityErrorText, setQuantityErrorText] = useState("");
+    const [anchorEl, setAnchorEl]: any = useState(null);
 
     const handleQuantityChange = (
-        event: React.ChangeEvent<HTMLInputElement>
+        event: ChangeEvent<HTMLInputElement>
     ) => {
-        let value = event.target.value;
+        const value = event.target.value;
         setQuantityText(value);
         setQuantityTextChanged(true);
-        if (empty(value) || !validNumber(value))
+        if (empty(value) || !validNumber(value)) {
             setQuantityErrorText("Please provide a number");
-        else setQuantityErrorText("");
+            if (props.quantityInvalidCallback)
+                props.quantityInvalidCallback();
+        } else
+            setQuantityErrorText("");
         setAnchorEl(event.target);
     };
 
     const handleQuantityClickAway = () => {
         if (quantityTextChanged) {
             setQuantityTextChanged(false);
-            if (quantityErrorText === "") {
+            if (quantityErrorText === "")
                 if (!greaterThanLowThreshold(quantityText)) {
                     setQuantityText(props.lowThreshold.toString());
                     props.quantityChangedCallback(props.lowThreshold);
-                } else props.quantityChangedCallback(+quantityText);
-            }
+                } else
+                    props.quantityChangedCallback(Number(quantityText));
         }
     };
 
     const handleAddClicked = () => {
-        if (quantityErrorText === "") {
-            setQuantityText((+quantityText + props.step).toString());
-            props.quantityChangedCallback(+quantityText + props.step);
-        }
+        setQuantityText((Number(quantityText) + props.step).toString());
+        props.quantityChangedCallback(Number(quantityText) + props.step);
     };
 
     const handleSubtractClicked = () => {
-        if (quantityErrorText === "" && greaterThanLowThreshold(quantityText)) {
-            setQuantityText((+quantityText - props.step).toString());
-            props.quantityChangedCallback(+quantityText - props.step);
-        }
+        setQuantityText((Number(quantityText) - props.step).toString());
+        props.quantityChangedCallback(Number(quantityText) - props.step);
     };
 
-    const validNumber = (input: string): boolean => {
-        return !isNaN(+input);
-    };
+    const canAdd = (): boolean =>
+        quantityErrorText === "";
 
-    const empty = (input: string): boolean => {
-        return input.length === 0;
-    };
+    const canSubtract = (): boolean =>
+        quantityErrorText === "" && greaterThanLowThreshold(quantityText);
 
-    const greaterThanLowThreshold = (input: string) => {
-        return +input > props.lowThreshold;
-    };
+    const validNumber = (input: string): boolean =>
+        !isNaN(Number(input));
+
+    const empty = (input: string): boolean =>
+        input.length === 0;
+
+    const greaterThanLowThreshold = (input: string) =>
+        Number(input) > props.lowThreshold;
 
     return (
         <form className={classes.root}>
@@ -78,7 +81,7 @@ const QuantityPicker = (props: Props) => {
                 size="small"
                 color="primary"
                 onClick={handleSubtractClicked}
-                disabled={props.interactionDisabled}
+                disabled={props.interactionDisabled || !canSubtract()}
             >
                 <RemoveIcon />
             </Fab>
@@ -98,7 +101,7 @@ const QuantityPicker = (props: Props) => {
                 size="small"
                 color="primary"
                 onClick={handleAddClicked}
-                disabled={props.interactionDisabled}
+                disabled={props.interactionDisabled || !canAdd()}
             >
                 <AddIcon />
             </Fab>

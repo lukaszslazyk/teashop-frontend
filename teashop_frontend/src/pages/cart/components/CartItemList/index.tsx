@@ -12,7 +12,7 @@ interface Props {
 
 const CartItemList = (props: Props) => (
     <Grid container spacing={5}>
-        {props.cart.items.map((cartItem) => (
+        {props.cart.items.map(cartItem => (
             <Grid item key={cartItem.product.id} xs={12}>
                 <Paper>
                     <CartItemListElement

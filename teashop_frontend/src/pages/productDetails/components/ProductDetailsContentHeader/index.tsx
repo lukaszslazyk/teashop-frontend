@@ -1,14 +1,15 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect } from "react";
-import { Product } from "../../../../domain/product/models";
-import AddToCartButton from "../AddToCartButton";
+import React, { useCallback, useState } from "react";
+import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
+import { Product } from "../../../../domain/product/models";
+import { pricedByWeight } from "../../../../domain/product/services/productService";
+import { getImageFullUrl } from "../../../../shared/services/imageService";
+import AddToCartButton from "../AddToCartButton";
 import useStyles from "./styles";
 
-const IMAGES_ROOT = process.env.REACT_APP_CDN_ROOT;
-
 interface Props {
-    product: Product | null;
+    product: Product;
     quantity: number;
     isProcessing: boolean;
     quantityChangedCallback: (value: number) => void;
@@ -16,34 +17,25 @@ interface Props {
 }
 
 const ProductDetailsContentHeader = (props: Props) => {
-    const classes = useStyles();    
+    const classes = useStyles();
     const product = props.product;
-    const setQuantity = props.quantityChangedCallback;
+    const [addToCartButtonDisabled, setAddToCartButtonDisabled] = useState(false);
 
-    const calculatePrice = (): number => {
-        if (props.product)
-            return (
-                (props.product.price * props.quantity) /
-                props.product.quantityPerPrice
-            );
-        return 0;
+    const calculatePrice = (): number =>
+        calculateItemPriceWith(props.product, props.quantity);
+
+    const productPricedByWeight = useCallback((): boolean =>
+        pricedByWeight(product),
+    [product]);
+
+    const quantityInvalidCallback = () => {
+        setAddToCartButtonDisabled(true);
     };
 
-    const productPricedByWeight = useCallback((): boolean => {
-        if (product)
-            return product.quantityPerPrice > 1;
-        else
-            return false;
-    }, [product]);
-
-    useEffect(() => {
-        if (product) {
-            if (productPricedByWeight())
-                setQuantity(100);
-            else
-                setQuantity(1);
-        }
-    }, [product, setQuantity, productPricedByWeight]);
+    const quantityChangedCallback = (value: number) => {
+        setAddToCartButtonDisabled(false);
+        props.quantityChangedCallback(value);
+    };
 
     const ProductName = () => (
         <Grid item xs={12}>
@@ -52,7 +44,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                 color="primary"
                 className={classes.productNameText}
             >
-                {props.product?.name}
+                {props.product.name}
             </Typography>
         </Grid>
     );
@@ -65,7 +57,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                     <Card square>
                         <CardMedia
                             className={classes.cardMedia}
-                            image={`${IMAGES_ROOT}/${props.product?.imagePath}`}
+                            image={getImageFullUrl(props.product.imagePath)}
                             title="Product"
                         />
                     </Card>
@@ -75,7 +67,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                         {/*
                             Bug in Material-UI library: should be smDown,
                             but Hidden's Down prop behaves as one size larger
-                            than declared, that's why xsDown is used here 
+                            than declared, that's why xsDown is used here
                         */}
                         <Hidden xsDown>{ProductName()}</Hidden>
                         <Grid item xs={12}>
@@ -86,27 +78,30 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 {calculatePrice().toFixed(2)} EUR
                             </Typography>
                         </Grid>
-                        {props.product && (
-                            <Grid item xs={12}>
-                                <ProductQuantityPicker
-                                    initialValue={props.product.quantityPerPrice}
-                                    pricedByWeight={productPricedByWeight()}
-                                    quantityChangedCallback={
-                                        props.quantityChangedCallback
-                                    }
-                                />
-                            </Grid>
-                        )}
-                        {props.product && (
-                            <Grid item xs={12}>
-                                <AddToCartButton
-                                    isProcessing={props.isProcessing}
-                                    addItemToSessionCartCallback={
-                                        props.addItemToSessionCartCallback
-                                    }
-                                />
-                            </Grid>
-                        )}
+                        <Grid item xs={12} container
+                            className={classes.productQuantityPickerContainer}
+                        >
+                            <ProductQuantityPicker
+                                initialValue={props.product.quantityPerPrice}
+                                pricedByWeight={productPricedByWeight()}
+                                quantityChangedCallback={
+                                    quantityChangedCallback
+                                }
+                                quantityInvalidCallback={
+                                    quantityInvalidCallback
+                                }
+                            />
+                        </Grid>
+                        <Grid item xs={12} container
+                            className={classes.addToCartButtonContainer}>
+                            <AddToCartButton
+                                isProcessing={props.isProcessing}
+                                addItemToSessionCartCallback={
+                                    props.addItemToSessionCartCallback
+                                }
+                                interactionDisabled={addToCartButtonDisabled}
+                            />
+                        </Grid>
                     </Grid>
                 </Grid>
             </Grid>

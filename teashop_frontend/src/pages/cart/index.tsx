@@ -1,8 +1,9 @@
 import { Backdrop, CircularProgress } from "@material-ui/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
+import { RequestCancelToken, createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
 import useStyles from "./styles";
@@ -12,34 +13,43 @@ interface Props {
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
-    getSessionCart: () => void;
-    updateItemQuantity: (productId: string, quantity: number) => void;
-    removeItemFromCart: (productId: string) => void;
+    getSessionCart: (cancelToken: RequestCancelToken) => void;
+    updateItemQuantity: (
+        productId: string,
+        quantity: number,
+        cancelToken: RequestCancelToken
+    ) => void;
+    removeItemFromCart: (
+        productId: string,
+        cancelToken: RequestCancelToken
+    ) => void;
 }
 
 const CartPage = (props: Props) => {
     const classes = useStyles();
-    const [backdropOpen, setBackdropOpen] = React.useState(false);
-    const [disableInteraction, setDisableInteraction] = React.useState(false);
-    const [timeoutPassed, setTimeoutPassed] = React.useState(false);
+    const [backdropOpen, setBackdropOpen] = useState(false);
+    const [disableInteraction, setDisableInteraction] = useState(false);
+    const [timeoutPassed, setTimeoutPassed] = useState(false);
     const { isFetching, isSending, getSessionCart } = props;
 
     useEffect(() => {
+        const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
-        getSessionCart();
+        getSessionCart(cancelToken);
+        return () => cancelToken.cancel();
     }, [getSessionCart]);
 
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+        return () => clearTimeout(timer);
     }, [timeoutPassed]);
 
     useEffect(() => {
-        if (timeoutPassed) {
+        if (timeoutPassed)
             if (isFetching || isSending)
                 setBackdropOpen(true);
-        }
     }, [timeoutPassed, isFetching, isSending]);
 
     useEffect(() => {
@@ -49,16 +59,23 @@ const CartPage = (props: Props) => {
         }
     }, [isFetching, isSending, setBackdropOpen]);
 
-    const updateItemQuantityCallback = (productId: string, quantity: number) => {
+    const updateItemQuantityCallback = (
+        productId: string,
+        quantity: number
+    ) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
-        props.updateItemQuantity(productId, quantity);
-    }
-    
+        props.updateItemQuantity(
+            productId,
+            quantity,
+            createRequestCancelToken()
+        );
+    };
+
     const removeItemFromCartCallback = (productId: string) => {
         setDisableInteraction(true);
         setTimeoutPassed(false);
-        props.removeItemFromCart(productId);
+        props.removeItemFromCart(productId, createRequestCancelToken());
     };
 
     return (
@@ -79,8 +96,12 @@ const CartPage = (props: Props) => {
                             <CartView
                                 cart={props.cart}
                                 interactionDisabled={disableInteraction}
-                                updateItemQuantityCallback={updateItemQuantityCallback}
-                                removeItemFromCartCallback={removeItemFromCartCallback}
+                                updateItemQuantityCallback={
+                                    updateItemQuantityCallback
+                                }
+                                removeItemFromCartCallback={
+                                    removeItemFromCartCallback
+                                }
                             />
                         ) : (
                             <EmptyCartView />

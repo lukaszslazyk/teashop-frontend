@@ -1,13 +1,16 @@
 import React, { useEffect } from "react";
-import Routing from "./routing";
 import { useDispatch } from "react-redux";
 import { fetchSessionCart } from "../domain/cart/actions";
+import { createRequestCancelToken } from "../shared/services/requestCancelTokenService";
+import Routing from "./routing";
 
-function App() {
+const App = () => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchSessionCart());
+        const cancelToken = createRequestCancelToken();
+        dispatch(fetchSessionCart(cancelToken));
+        return () => cancelToken.cancel();
     }, [dispatch]);
 
     return (
@@ -15,6 +18,6 @@ function App() {
             <Routing />
         </div>
     );
-}
+};
 
 export default App;

@@ -1,14 +1,19 @@
 import { Grid } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
-import ErrorInfo from "../../shared/components/ErrorInfo";
-import MainLayout from "../../layouts/main";
 import { Product } from "../../domain/product/models";
-import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
+import { pricedByWeight } from "../../domain/product/services/productService";
+import MainLayout from "../../layouts/main";
+import ErrorInfo from "../../shared/components/ErrorInfo";
+import {
+    createRequestCancelToken,
+    RequestCancelToken,
+} from "../../shared/services/requestCancelTokenService";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
-import useStyles from "./styles";
+import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
 import useAddItemToCartResponseNotifyEffect from "./hooks/useAddItemToCartResponseNotifyEffect";
+import useStyles from "./styles";
 
 interface Props {
     product: Product | null;
@@ -16,8 +21,12 @@ interface Props {
     productErrorOccurred: boolean;
     cartIsSending: boolean;
     cartErrorOccurred: boolean;
-    loadProduct: (productId: string) => void;
-    addItemToSessionCart: (product: Product, quantity: number) => void;
+    loadProduct: (productId: string, cancelToken: RequestCancelToken) => void;
+    addItemToSessionCart: (
+        product: Product,
+        quantity: number,
+        cancelToken: RequestCancelToken
+    ) => void;
 }
 
 interface Params {
@@ -27,29 +36,48 @@ interface Params {
 const ProductDetailsPage = (props: Props) => {
     const classes = useStyles();
     const { productId }: Params = useParams();
-    const [timeoutPassed, setTimeoutPassed] = React.useState(false);
-    const [quantity, setQuantity] = React.useState(0);
+    const [timeoutPassed, setTimeoutPassed] = useState(false);
+    const [quantity, setQuantity] = useState(0);
+    const { product, loadProduct } = props;
     useAddItemToCartResponseNotifyEffect(
         props.cartIsSending,
         props.cartErrorOccurred
     );
 
     const addItemToSessionCartCallback = () => {
-        if (props.product)
-            props.addItemToSessionCart(props.product, quantity);
+        if (product)
+            props.addItemToSessionCart(
+                product,
+                quantity,
+                createRequestCancelToken()
+            );
     };
 
-    const loadProduct = props.loadProduct;
+    const productPricedByWeight = useCallback((): boolean =>
+        product !== null && pricedByWeight(product),
+    [product]);
+
     useEffect(() => {
+        const cancelToken = createRequestCancelToken();
         setTimeoutPassed(false);
-        loadProduct(productId);
+        loadProduct(productId, cancelToken);
+        return () => cancelToken.cancel();
     }, [productId, loadProduct]);
 
     useEffect(() => {
-        setTimeout(() => {
+        const timer = setTimeout(() => {
             setTimeoutPassed(true);
         }, 1000);
+        return () => clearTimeout(timer);
     }, [setTimeoutPassed]);
+
+    useEffect(() => {
+        if (product)
+            if (productPricedByWeight())
+                setQuantity(100);
+            else
+                setQuantity(1);
+    }, [product, setQuantity, productPricedByWeight]);
 
     return (
         <MainLayout>
@@ -61,7 +89,7 @@ const ProductDetailsPage = (props: Props) => {
             {!props.productIsFetching && props.productErrorOccurred && (
                 <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
-            {!props.productIsFetching && !props.productErrorOccurred && (
+            {!props.productIsFetching && !props.productErrorOccurred && props.product && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <ProductDetailsContentHeader

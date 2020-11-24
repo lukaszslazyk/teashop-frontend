@@ -1,10 +1,11 @@
 import { Fab, Grid, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { CartItem } from "../../../../domain/cart/models";
 import DeleteIcon from "@material-ui/icons/Delete";
-import useStyles from "./styles";
+import React, { useEffect, useState } from "react";
+import { CartItem } from "../../../../domain/cart/models";
+import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import useStyles from "./styles";
 
 interface Props {
     cartItem: CartItem;
@@ -15,29 +16,22 @@ interface Props {
 
 const CartItemListElement = (props: Props) => {
     const classes = useStyles();
-    const [ownInteractionDisabled, setOwnInteractionDisabled] = React.useState(false);
-
-    const calculatePrice = (): number => {
-        return (
-            (props.cartItem.product.price * props.cartItem.quantity) /
-            props.cartItem.product.quantityPerPrice
-        );
-    };
-
+    const [ownInteractionDisabled, setOwnInteractionDisabled] = useState(false);
+    const { interactionDisabled } = props;
+    
     const handleQuantityChanged = (value: number) => {
         setOwnInteractionDisabled(true);
         props.updateItemQuantityCallback(props.cartItem.product.id, value);
-    }
+    };
 
     const handleRemoveButtonClick = () => {
         setOwnInteractionDisabled(true);
         props.removeItemFromCartCallback(props.cartItem.product.id);
-    }
+    };
 
-    const interactionDisabled = props.interactionDisabled;
     useEffect(() => {
         if (!interactionDisabled)
-            setOwnInteractionDisabled(false);            
+            setOwnInteractionDisabled(false);
     }, [interactionDisabled, setOwnInteractionDisabled]);
 
     return (
@@ -64,7 +58,7 @@ const CartItemListElement = (props: Props) => {
                     </Grid>
                     <Grid item>
                         <Typography variant="h6">
-                            {calculatePrice().toFixed(2)} EUR
+                            {calculateItemPrice(props.cartItem).toFixed(2)} EUR
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -78,9 +72,12 @@ const CartItemListElement = (props: Props) => {
                                 <ProductQuantityPicker
                                     initialValue={props.cartItem.quantity}
                                     pricedByWeight={
-                                        props.cartItem.product.quantityPerPrice > 1
+                                        props.cartItem.product
+                                            .quantityPerPrice > 1
                                     }
-                                    quantityChangedCallback={handleQuantityChanged}
+                                    quantityChangedCallback={
+                                        handleQuantityChanged
+                                    }
                                     interactionDisabled={ownInteractionDisabled}
                                 />
                             </Grid>
