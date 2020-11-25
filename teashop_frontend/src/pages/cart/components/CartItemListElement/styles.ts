@@ -8,18 +8,29 @@ const useStyles = makeStyles((theme: Theme) =>
             paddingRight: theme.spacing(3),
             flexWrap: "nowrap",
         },
+        imageContainer: {
+            width: 100,
+            justifyContent: "center",
+            alignItems: "center",
+            marginRight: theme.spacing(1),
+        },
         image: {
-            width: 80,
+            width: "100%",
             paddingTop: 5,
         },
         contentContainer: {
+            marginLeft: theme.spacing(1),
             flexGrow: 1,
+            alignItems: "center",
+            [theme.breakpoints.up("xs")]: {
+                justifyContent: "flex-end"
+            },
+            [theme.breakpoints.down("xs")]: {
+                justifyContent: "flex-start"
+            }
         },
         productNameTextContainer: {
             flexGrow: 1,
-        },
-        buttonsContainer: {
-            flexWrap: "nowrap",
         },
         removeButton: {
             "&.MuiFab-root": {
