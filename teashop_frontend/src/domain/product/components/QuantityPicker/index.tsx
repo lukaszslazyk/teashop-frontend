@@ -1,4 +1,4 @@
-import { ClickAwayListener, Fab, Popper, TextField } from "@material-ui/core";
+import { ClickAwayListener, Fab, Paper, Popper, TextField } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React, { ChangeEvent, useState } from "react";
@@ -23,6 +23,7 @@ const QuantityPicker = (props: Props) => {
     const [quantityTextChanged, setQuantityTextChanged] = useState(false);
     const [quantityErrorText, setQuantityErrorText] = useState("");
     const [anchorEl, setAnchorEl]: any = useState(null);
+    const [errorPopperHidden, setErrorPopperHidden] = useState(true);
 
     const handleQuantityChange = (
         event: ChangeEvent<HTMLInputElement>
@@ -42,7 +43,12 @@ const QuantityPicker = (props: Props) => {
         setAnchorEl(event.target);
     };
 
+    const handleQuantityClick = () => {
+        setErrorPopperHidden(false);
+    };
+
     const handleQuantityClickAway = () => {
+        setErrorPopperHidden(true);
         if (quantityTextChanged) {
             setQuantityTextChanged(false);
             if (quantityErrorText === "")
@@ -96,6 +102,7 @@ const QuantityPicker = (props: Props) => {
                     variant="outlined"
                     value={quantityText}
                     onChange={handleQuantityChange}
+                    onClick={handleQuantityClick}
                     error={quantityErrorText !== ""}
                     className={classes.quantityInput}
                     disabled={props.interactionDisabled}
@@ -110,11 +117,12 @@ const QuantityPicker = (props: Props) => {
                 <AddIcon />
             </Fab>
             <Popper
-                open={quantityErrorText !== ""}
+                open={!errorPopperHidden && quantityErrorText !== ""}
                 anchorEl={anchorEl}
-                className={classes.errorText}
             >
-                {quantityErrorText}
+                <Paper className={classes.errorPaper}>
+                    {quantityErrorText}
+                </Paper>
             </Popper>
         </form>
     );
