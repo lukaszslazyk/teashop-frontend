@@ -1,5 +1,5 @@
 import { Box, Button, Divider, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useState } from "react";
 import { Cart } from "../../../../domain/cart/models";
 import CartItemList from "../CartItemList";
 import useStyles from "./styles";
@@ -13,13 +13,27 @@ interface Props {
 
 const CartView = (props: Props) => {
     const classes = useStyles();
+    const [invalidCount, setInvalidCount] = useState(0);
 
-    const calculatePrice = (): number => props.cart.items
-        .map(item =>
-            item.product.price * item.quantity /
-                item.product.quantityPerPrice
-        )
-        .reduce((x, y) => x + y, 0);
+    const calculatePrice = (): number =>
+        props.cart.items
+            .map(
+                item =>
+                    item.product.price * item.quantity /
+                    item.product.quantityPerPrice
+            )
+            .reduce((x, y) => x + y, 0);
+
+    const canProceedToCheckout = (): boolean =>
+        invalidCount === 0;
+
+    const quantityInvalid = () => {
+        setInvalidCount(invalidCount + 1);
+    };
+
+    const quantityValid = () => {
+        setInvalidCount(invalidCount - 1);
+    };
 
     return (
         <Grid container spacing={3}>
@@ -38,6 +52,8 @@ const CartView = (props: Props) => {
                     removeItemFromCartCallback={
                         props.removeItemFromCartCallback
                     }
+                    quantityInvalidCallback={quantityInvalid}
+                    quantityValidCallback={quantityValid}
                 />
             </Grid>
             <Grid item xs={12}>
@@ -53,7 +69,11 @@ const CartView = (props: Props) => {
             <Grid item xs={12}>
                 <Grid container className={classes.checkoutButtonContainer}>
                     <Grid item>
-                        <Button variant="contained" color="primary" disabled>
+                        <Button
+                            variant="contained"
+                            color="primary"
+                            disabled={!canProceedToCheckout()}
+                        >
                             Proceed to checkout
                         </Button>
                     </Grid>

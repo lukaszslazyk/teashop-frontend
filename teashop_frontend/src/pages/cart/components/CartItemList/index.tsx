@@ -8,6 +8,8 @@ interface Props {
     interactionDisabled: boolean;
     updateItemQuantityCallback: (productId: string, quantity: number) => void;
     removeItemFromCartCallback: (productId: string) => void;
+    quantityInvalidCallback: () => void;
+    quantityValidCallback: () => void;
 }
 
 const CartItemList = (props: Props) => (
@@ -23,6 +25,12 @@ const CartItemList = (props: Props) => (
                         }
                         removeItemFromCartCallback={
                             props.removeItemFromCartCallback
+                        }
+                        quantityInvalidCallback={
+                            props.quantityInvalidCallback
+                        }
+                        quantityValidCallback={
+                            props.quantityValidCallback
                         }
                     />
                 </Paper>

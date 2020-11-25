@@ -12,6 +12,8 @@ interface Props {
     interactionDisabled: boolean;
     updateItemQuantityCallback: (productId: string, quantity: number) => void;
     removeItemFromCartCallback: (productId: string) => void;
+    quantityInvalidCallback: () => void;
+    quantityValidCallback: () => void;
 }
 
 const CartItemListElement = (props: Props) => {
@@ -78,6 +80,8 @@ const CartItemListElement = (props: Props) => {
                                     quantityChangedCallback={
                                         handleQuantityChanged
                                     }
+                                    quantityInvalidCallback={props.quantityInvalidCallback}
+                                    quantityValidCallback={props.quantityValidCallback}
                                     interactionDisabled={ownInteractionDisabled}
                                 />
                             </Grid>

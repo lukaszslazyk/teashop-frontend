@@ -11,6 +11,7 @@ interface Props {
     step: number;
     quantityChangedCallback: (value: number) => void;
     quantityInvalidCallback?: () => void;
+    quantityValidCallback?: () => void;
     interactionDisabled?: boolean;
 }
 
@@ -31,10 +32,13 @@ const QuantityPicker = (props: Props) => {
         setQuantityTextChanged(true);
         if (empty(value) || !validNumber(value)) {
             setQuantityErrorText("Please provide a number");
-            if (props.quantityInvalidCallback)
+            if (props.quantityInvalidCallback && quantityErrorText === "")
                 props.quantityInvalidCallback();
-        } else
+        } else {
+            if (props.quantityValidCallback && quantityErrorText !== "")
+                props.quantityValidCallback();
             setQuantityErrorText("");
+        }
         setAnchorEl(event.target);
     };
 

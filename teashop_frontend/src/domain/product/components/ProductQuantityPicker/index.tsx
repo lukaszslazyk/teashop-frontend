@@ -6,6 +6,7 @@ interface Props {
     pricedByWeight: boolean
     quantityChangedCallback: (value: number) => void;
     quantityInvalidCallback?: () => void;
+    quantityValidCallback?: () => void;
     interactionDisabled?: boolean;
 }
 
@@ -19,6 +20,7 @@ const ProductQuantityPicker = (props: Props) => {
                 step={25}
                 quantityChangedCallback={props.quantityChangedCallback}
                 quantityInvalidCallback={props.quantityInvalidCallback}
+                quantityValidCallback={props.quantityValidCallback}
                 interactionDisabled={props.interactionDisabled}
             />
         );
@@ -30,6 +32,7 @@ const ProductQuantityPicker = (props: Props) => {
             step={1}
             quantityChangedCallback={props.quantityChangedCallback}
             quantityInvalidCallback={props.quantityInvalidCallback}
+            quantityValidCallback={props.quantityValidCallback}
             interactionDisabled={props.interactionDisabled}
         />
     );
