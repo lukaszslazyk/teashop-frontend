@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Grid, Typography } from "@material-ui/core";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import { Cart } from "../../../../domain/cart/models";
 import CartItemList from "../CartItemList";
 import useStyles from "./styles";
@@ -72,6 +73,8 @@ const CartView = (props: Props) => {
                         <Button
                             variant="contained"
                             color="primary"
+                            component={Link}
+                            to="/order"
                             disabled={!canProceedToCheckout()}
                         >
                             Proceed to checkout
