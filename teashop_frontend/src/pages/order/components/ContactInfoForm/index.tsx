@@ -1,15 +1,31 @@
 import { Box, Divider, Grid, TextField, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ContactInfo } from "../../../../domain/order/models";
 
-interface FormData {
-    email: string;
+interface Props {
+    shouldValidate: boolean;
+    setContactInfo: (value: ContactInfo) => void;
+    setFormValid: (value: boolean) => void;
 }
 
-const ContactInfoForm = () => {
-    const { register, errors } = useForm<FormData>({
+const ContactInfoForm = (props: Props) => {
+    const { register, errors, formState, trigger, getValues } = useForm<ContactInfo>({
         mode: "onTouched",
     });
+    const { isValid } = formState;
+    const { shouldValidate, setContactInfo, setFormValid } = props;
+    
+    useEffect(() => {
+        setFormValid(isValid);
+    }, [isValid, setFormValid]);
+
+    useEffect(() => {
+        if (shouldValidate)
+            trigger();
+    }, [shouldValidate, trigger]);
+
+    useEffect(() => () => setContactInfo(getValues()), [setContactInfo, getValues]);
 
     return (
         <form>

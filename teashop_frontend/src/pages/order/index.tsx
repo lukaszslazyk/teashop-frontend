@@ -13,14 +13,20 @@ import React, { useCallback } from "react";
 import { Cart } from "../../domain/cart/models";
 import { calculateCartPrice } from "../../domain/cart/services/cartService";
 import MainLayout from "../../layouts/main";
-import ContactInfoForm from "./components/ContactInfoForm";
+import ContactInfoFormContainer from "./components/ContactInfoForm/container";
 import NavButtonsPanel from "./components/NavButtonsPanel";
 import PriceInfoPanel from "./components/PriceInfoPanel";
-import ShippingAddressForm from "./components/ShippingAddressForm";
+import ShippingAddressFormContainer from "./components/ShippingAddressForm/container";
 import useStyles from "./styles";
 
 interface Props {
     cart: Cart;
+    contactInfoFormWasValidated: boolean;
+    contactInfoFormValid: boolean;
+    shippingAddressFormWasValidated: boolean;
+    shippingAddressFormValid: boolean;
+    validateContactInfoForm: () => void;
+    validateShippingAddressForm: () => void;
 }
 
 const OrderPage = (props: Props) => {
@@ -31,6 +37,18 @@ const OrderPage = (props: Props) => {
         (): string => `${calculateCartPrice(cart).toFixed(2)} EUR`,
         [cart]
     );
+
+    const handleContinueButtonClick = () => {
+        props.validateContactInfoForm();
+        props.validateShippingAddressForm();
+        if (
+            props.contactInfoFormWasValidated &&
+            props.contactInfoFormValid &&
+            props.shippingAddressFormWasValidated &&
+            props.shippingAddressFormValid
+        )
+            console.log("Continue");
+    };
 
     const PriceInfoPanelComponent = () => (
         <PriceInfoPanel cartPrice={calculateCartPrice(cart)} />
@@ -61,13 +79,17 @@ const OrderPage = (props: Props) => {
                 <Grid item md={8} xs={12}>
                     <Grid container spacing={4}>
                         <Grid item xs={12}>
-                            <ContactInfoForm />
+                            <ContactInfoFormContainer />
                         </Grid>
                         <Grid item xs={12}>
-                            <ShippingAddressForm />
+                            <ShippingAddressFormContainer />
                         </Grid>
                         <Grid item xs={12}>
-                            <NavButtonsPanel />
+                            <NavButtonsPanel
+                                onContinueButtonClick={
+                                    handleContinueButtonClick
+                                }
+                            />
                         </Grid>
                     </Grid>
                 </Grid>

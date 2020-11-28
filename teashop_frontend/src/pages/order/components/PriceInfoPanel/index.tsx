@@ -1,4 +1,4 @@
-import { Divider, Grid, Paper, Typography } from "@material-ui/core";
+import { Divider, Grid, Typography } from "@material-ui/core";
 import React, { useCallback } from "react";
 import useStyles from "./styles";
 

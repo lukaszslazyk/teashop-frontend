@@ -1,24 +1,33 @@
 import { Box, Divider, Grid, TextField, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ShippingAddress } from "../../../../domain/order/models";
 import useStyles from "./styles";
 
-interface FormData {
-    firstName: string;
-    lastName: string;
-    company: string;
-    address1: string;
-    address2: string;
-    postalCode: string;
-    city: string;
-    phone: string;
+interface Props {
+    shouldValidate: boolean;
+    setShippingAddress: (value: ShippingAddress) => void;
+    setFormValid: (value: boolean) => void;
 }
 
-const ShippingAddressForm = () => {
+const ShippingAddressForm = (props: Props) => {
     const classes = useStyles();
-    const { register, errors } = useForm<FormData>({
+    const { register, errors, formState, trigger, getValues } = useForm<ShippingAddress>({
         mode: "onTouched",
     });
+    const { isValid } = formState;
+    const { shouldValidate, setShippingAddress, setFormValid } = props;
+
+    useEffect(() => {
+        setFormValid(isValid);
+    }, [isValid, setFormValid]);
+
+    useEffect(() => {
+        if (shouldValidate)
+            trigger();
+    }, [shouldValidate, trigger]);
+
+    useEffect(() => () => setShippingAddress(getValues()), [setShippingAddress, getValues]);
 
     return (
         <form className={classes.root}>
@@ -114,9 +123,19 @@ const ShippingAddressForm = () => {
                         helperText={errors.city?.message}
                     />
                 </Grid>
-                {/* <Grid item xs={12}>
-                    
-                </Grid> */}
+                <Grid item xs={6}>
+                    <TextField
+                        name="country"
+                        inputRef={register({
+                            required: "Country is required",
+                        })}
+                        label="Country"
+                        variant="outlined"
+                        fullWidth={true}
+                        error={errors.country !== undefined}
+                        helperText={errors.country?.message}
+                    />
+                </Grid>
                 <Grid item xs={12}>
                     <TextField
                         name="phone"

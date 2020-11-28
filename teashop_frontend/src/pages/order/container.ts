@@ -1,20 +1,24 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { fetchSessionCart } from "../../domain/cart/actions";
-import { RequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import {
+    validateContactInfoForm,
+    validateShippingAddressForm,
+} from "../../domain/order/actions";
 import OrderPage from ".";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,
-    // isFetching: state.cart.isFetching,
-    // isSending: state.cart.isSending,
-    // errorOccurred: state.cart.errorOccurred,
+    contactInfoFormWasValidated: state.order.contactInfoForm.wasValidated,
+    contactInfoFormValid: state.order.contactInfoForm.valid,
+    shippingAddressFormWasValidated:
+        state.order.shippingAddressForm.wasValidated,
+    shippingAddressFormValid: state.order.shippingAddressForm.valid,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    // getSessionCart: (cancelToken: RequestCancelToken) =>
-    //     dispatch(fetchSessionCart(cancelToken)),
+    validateContactInfoForm: () => dispatch(validateContactInfoForm()),
+    validateShippingAddressForm: () => dispatch(validateShippingAddressForm()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);
