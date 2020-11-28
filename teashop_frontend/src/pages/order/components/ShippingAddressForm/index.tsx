@@ -5,6 +5,7 @@ import { ShippingAddress } from "../../../../domain/order/models";
 import useStyles from "./styles";
 
 interface Props {
+    shippingAddress: ShippingAddress;
     shouldValidate: boolean;
     setShippingAddress: (value: ShippingAddress) => void;
     setFormValid: (value: boolean) => void;
@@ -14,6 +15,7 @@ const ShippingAddressForm = (props: Props) => {
     const classes = useStyles();
     const { register, errors, formState, trigger, getValues } = useForm<ShippingAddress>({
         mode: "onTouched",
+        defaultValues: props.shippingAddress
     });
     const { isValid } = formState;
     const { shouldValidate, setShippingAddress, setFormValid } = props;

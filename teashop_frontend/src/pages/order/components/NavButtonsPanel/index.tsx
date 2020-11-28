@@ -2,11 +2,12 @@ import { Button, Grid } from "@material-ui/core";
 import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos";
 import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos";
 import React from "react";
-import { Link } from "react-router-dom";
 import useStyles from "./styles";
 
 interface Props {
     onContinueButtonClick: () => void;
+    onBackButtonClick: () => void;
+    backButtonLabel?: string
 }
 
 const NavButtonsPanel = (props: Props) => {
@@ -15,9 +16,9 @@ const NavButtonsPanel = (props: Props) => {
     return (
         <Grid container>
             <Grid item xs={6}>
-                <Button component={Link} to="/cart">
+                <Button onClick={props.onBackButtonClick}>
                     <ArrowBackIosIcon className={classes.backButtonIcon} />
-                    Back to cart
+                    {props.backButtonLabel ? props.backButtonLabel : "Back"}
                 </Button>
             </Grid>
             <Grid item xs={6} container justify="flex-end">

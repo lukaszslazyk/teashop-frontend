@@ -6,6 +6,7 @@ import { ShippingAddress } from "../../../../domain/order/models";
 import ShippingAddressForm from ".";
 
 const mapStateToProps = (state: RootState) => ({
+    shippingAddress: state.order.shippingAddress,
     shouldValidate: state.order.shippingAddressForm.shouldValidate,
 });
 

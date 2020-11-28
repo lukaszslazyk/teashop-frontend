@@ -9,6 +9,7 @@ import { ContactInfo } from "../../../../domain/order/models";
 import ContactInfoForm from ".";
 
 const mapStateToProps = (state: RootState) => ({
+    contactInfo: state.order.contactInfo,
     shouldValidate: state.order.contactInfoForm.shouldValidate,
 });
 

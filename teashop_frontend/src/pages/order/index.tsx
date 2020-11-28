@@ -1,107 +1,66 @@
-import {
-    Accordion,
-    AccordionDetails,
-    AccordionSummary,
-    Box,
-    Grid,
-    Hidden,
-    Paper,
-    Typography,
-} from "@material-ui/core";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import React, { useCallback } from "react";
-import { Cart } from "../../domain/cart/models";
-import { calculateCartPrice } from "../../domain/cart/services/cartService";
+import { Grid, Step, StepLabel, Stepper } from "@material-ui/core";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import MainLayout from "../../layouts/main";
-import ContactInfoFormContainer from "./components/ContactInfoForm/container";
-import NavButtonsPanel from "./components/NavButtonsPanel";
-import PriceInfoPanel from "./components/PriceInfoPanel";
-import ShippingAddressFormContainer from "./components/ShippingAddressForm/container";
+import InformationStepViewContainer from "./components/InformationStepView/container";
+import ProgressStepLayoutContainer from "./components/ProgressStepLayout/container";
 import useStyles from "./styles";
 
-interface Props {
-    cart: Cart;
-    contactInfoFormWasValidated: boolean;
-    contactInfoFormValid: boolean;
-    shippingAddressFormWasValidated: boolean;
-    shippingAddressFormValid: boolean;
-    validateContactInfoForm: () => void;
-    validateShippingAddressForm: () => void;
-}
-
-const OrderPage = (props: Props) => {
+const OrderPage = () => {
     const classes = useStyles();
-    const { cart } = props;
+    const history = useHistory();
+    const [activeStep, setActiveStep] = useState(0);
 
-    const getCartPriceText = useCallback(
-        (): string => `${calculateCartPrice(cart).toFixed(2)} EUR`,
-        [cart]
-    );
-
-    const handleContinueButtonClick = () => {
-        props.validateContactInfoForm();
-        props.validateShippingAddressForm();
-        if (
-            props.contactInfoFormWasValidated &&
-            props.contactInfoFormValid &&
-            props.shippingAddressFormWasValidated &&
-            props.shippingAddressFormValid
-        )
-            console.log("Continue");
+    const handleContinueButtonClicked = () => {
+        setActiveStep(activeStep => activeStep + 1);
     };
 
-    const PriceInfoPanelComponent = () => (
-        <PriceInfoPanel cartPrice={calculateCartPrice(cart)} />
-    );
+    const handleBackButtonClicked = () => {
+        if (activeStep === 0)
+            history.push("/cart");
+        else
+            setActiveStep(activeStep => activeStep - 1);
+    };
 
     return (
         <MainLayout>
-            <Grid container spacing={3}>
-                <Hidden mdUp>
-                    <Grid item xs={12}>
-                        <Accordion>
-                            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-                                <Typography variant="body1">
-                                    Total price:
-                                </Typography>
-                                <Box ml={2}>
-                                    <Typography variant="body1">
-                                        {getCartPriceText()}
-                                    </Typography>
-                                </Box>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                {PriceInfoPanelComponent()}
-                            </AccordionDetails>
-                        </Accordion>
-                    </Grid>
-                </Hidden>
-                <Grid item md={8} xs={12}>
-                    <Grid container spacing={4}>
-                        <Grid item xs={12}>
-                            <ContactInfoFormContainer />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ShippingAddressFormContainer />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <NavButtonsPanel
-                                onContinueButtonClick={
-                                    handleContinueButtonClick
-                                }
-                            />
-                        </Grid>
-                    </Grid>
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <Stepper
+                        activeStep={activeStep}
+                        alternativeLabel
+                        className={classes.stepper}
+                    >
+                        <Step>
+                            <StepLabel>Information</StepLabel>
+                        </Step>
+                        <Step>
+                            <StepLabel>Shipment</StepLabel>
+                        </Step>
+                        <Step>
+                            <StepLabel>Payment</StepLabel>
+                        </Step>
+                        <Step>
+                            <StepLabel>Summary</StepLabel>
+                        </Step>
+                    </Stepper>
                 </Grid>
-                <Hidden smDown>
-                    <Grid item md={4}>
-                        <Grid container>
-                            <Paper className={classes.priceInfoPaper}>
-                                {PriceInfoPanelComponent()}
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </Hidden>
+                <Grid item xs={12}>
+                    {activeStep !== 3 && (
+                        <ProgressStepLayoutContainer>
+                            {activeStep === 0 && (
+                                <InformationStepViewContainer
+                                    onContinueButtonClick={
+                                        handleContinueButtonClicked
+                                    }
+                                    onBackButtonClick={
+                                        handleBackButtonClicked
+                                    }
+                                />
+                            )}
+                        </ProgressStepLayoutContainer>
+                    )}
+                </Grid>
             </Grid>
         </MainLayout>
     );

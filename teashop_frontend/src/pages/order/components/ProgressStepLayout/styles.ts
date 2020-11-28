@@ -2,9 +2,9 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        stepper: {
-            backgroundColor: "transparent",
-        }
+        priceInfoPaper: {
+            padding: theme.spacing(2),
+        },
     })
 );
 

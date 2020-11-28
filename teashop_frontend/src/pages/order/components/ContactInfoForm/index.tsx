@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { ContactInfo } from "../../../../domain/order/models";
 
 interface Props {
+    contactInfo: ContactInfo;
     shouldValidate: boolean;
     setContactInfo: (value: ContactInfo) => void;
     setFormValid: (value: boolean) => void;
@@ -12,6 +13,7 @@ interface Props {
 const ContactInfoForm = (props: Props) => {
     const { register, errors, formState, trigger, getValues } = useForm<ContactInfo>({
         mode: "onTouched",
+        defaultValues: props.contactInfo
     });
     const { isValid } = formState;
     const { shouldValidate, setContactInfo, setFormValid } = props;

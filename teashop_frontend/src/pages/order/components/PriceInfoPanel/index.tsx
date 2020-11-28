@@ -1,5 +1,5 @@
 import { Divider, Grid, Typography } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React, { useMemo } from "react";
 import useStyles from "./styles";
 
 interface Props {
@@ -10,7 +10,7 @@ const PriceInfoPanel = (props: Props) => {
     const classes = useStyles();
     const { cartPrice } = props;
     
-    const getCartPriceText = useCallback(():string =>
+    const cartPriceText = useMemo(():string =>
         `${cartPrice.toFixed(2)} EUR`
     , [cartPrice]);
     
@@ -21,7 +21,7 @@ const PriceInfoPanel = (props: Props) => {
                     Subtotal:
                 </Typography>
                 <Typography variant="body1" align="right" className={classes.grow}>
-                    {getCartPriceText()}
+                    {cartPriceText}
                 </Typography>
             </Grid>
             <Grid item container>
@@ -40,7 +40,7 @@ const PriceInfoPanel = (props: Props) => {
                     Total:
                 </Typography>
                 <Typography variant="h6" align="right" className={classes.grow}>
-                    {getCartPriceText()}
+                    {cartPriceText}
                 </Typography>
             </Grid>
         </Grid>
