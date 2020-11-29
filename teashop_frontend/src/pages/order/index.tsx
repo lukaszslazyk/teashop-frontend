@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import MainLayout from "../../layouts/main";
 import InformationStepViewContainer from "./components/InformationStepView/container";
+import PaymentStepViewContainer from "./components/PaymentStepView/container";
 import ProgressStepLayoutContainer from "./components/ProgressStepLayout/container";
 import ShippingStepView from "./components/ShippingStepView";
 import useStyles from "./styles";
@@ -61,6 +62,16 @@ const OrderPage = () => {
                             )}
                             {activeStep === 1 && (
                                 <ShippingStepView
+                                    onContinueButtonClick={
+                                        handleContinueButtonClicked
+                                    }
+                                    onBackButtonClick={
+                                        handleBackButtonClicked
+                                    }
+                                />
+                            )}
+                            {activeStep === 2 && (
+                                <PaymentStepViewContainer
                                     onContinueButtonClick={
                                         handleContinueButtonClicked
                                     }

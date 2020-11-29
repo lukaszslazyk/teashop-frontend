@@ -7,16 +7,30 @@ import {
     VALIDATE_SHIPPING_ADDRESS_FORM,
     SET_SHIPPING_ADDRESS_FORM_VALID,
     SET_CHOSEN_SHIPPING_METHOD,
+    SET_CHOSEN_PAYMENT_METHOD,
+    VALIDATE_CREDIT_CARD_FORM,
+    SET_CREDIT_CARD,
+    SET_CREDIT_CARD_FORM_VALID,
 } from "./actions";
-import { ContactInfo, ShippingAddress, ShippingMethod } from "./models";
+import {
+    ContactInfo,
+    CreditCard,
+    PaymentMethod,
+    ShippingAddress,
+    ShippingMethod,
+} from "./models";
 
 export interface OrderState {
     shippingMethods: ShippingMethod[];
-    chosenShippingMethod: ShippingMethod | null,
+    chosenShippingMethod: ShippingMethod | null;
+    paymentMethods: PaymentMethod[];
+    chosenPaymentMethod: PaymentMethod | null;
     contactInfo: ContactInfo;
     contactInfoForm: ContactInfoFormState;
     shippingAddress: ShippingAddress;
     shippingAddressForm: ShippingAddressFormState;
+    creditCard: CreditCard;
+    creditCardForm: CreditCardFormState;
 }
 
 interface ContactInfoFormState {
@@ -31,6 +45,12 @@ interface ShippingAddressFormState {
     valid: boolean;
 }
 
+interface CreditCardFormState {
+    shouldValidate: boolean;
+    wasValidated: boolean;
+    valid: boolean;
+}
+
 const initialState: OrderState = {
     shippingMethods: [
         {
@@ -39,6 +59,12 @@ const initialState: OrderState = {
         },
     ],
     chosenShippingMethod: null,
+    paymentMethods: [
+        {
+            name: "creditCard",
+        },
+    ],
+    chosenPaymentMethod: null,
     contactInfo: {
         email: "",
     },
@@ -53,12 +79,23 @@ const initialState: OrderState = {
         country: "",
         phone: "",
     },
+    creditCard: {
+        number: "",
+        nameOnCard: "",
+        expirationDate: "",
+        securityCode: "",
+    },
     contactInfoForm: {
         shouldValidate: false,
         wasValidated: false,
         valid: false,
     },
     shippingAddressForm: {
+        shouldValidate: false,
+        wasValidated: false,
+        valid: false,
+    },
+    creditCardForm: {
         shouldValidate: false,
         wasValidated: false,
         valid: false,
@@ -80,6 +117,11 @@ export const orderReducer = (
                 ...state,
                 shippingAddress: action.value,
             };
+        case SET_CREDIT_CARD:
+            return {
+                ...state,
+                creditCard: action.value,
+            };
         case VALIDATE_CONTACT_INFO_FORM:
             if (state.contactInfoForm.shouldValidate)
                 return state;
@@ -97,6 +139,16 @@ export const orderReducer = (
                 ...state,
                 shippingAddressForm: {
                     ...state.contactInfoForm,
+                    shouldValidate: true,
+                },
+            };
+        case VALIDATE_CREDIT_CARD_FORM:
+            if (state.creditCardForm.shouldValidate)
+                return state;
+            return {
+                ...state,
+                creditCardForm: {
+                    ...state.creditCardForm,
                     shouldValidate: true,
                 },
             };
@@ -118,17 +170,48 @@ export const orderReducer = (
                     valid: action.value,
                 },
             };
+        case SET_CREDIT_CARD_FORM_VALID:
+            return {
+                ...state,
+                creditCardForm: {
+                    ...state.creditCardForm,
+                    wasValidated: true,
+                    valid: action.value,
+                },
+            };
         case SET_CHOSEN_SHIPPING_METHOD:
             return {
                 ...state,
-                chosenShippingMethod: findShippingMethodWithName(action.shippingMethodName, state),
+                chosenShippingMethod: findShippingMethodWithName(
+                    action.shippingMethodName,
+                    state
+                ),
+            };
+        case SET_CHOSEN_PAYMENT_METHOD:
+            return {
+                ...state,
+                chosenPaymentMethod: findPaymentMethodWithName(
+                    action.paymentMethodName,
+                    state
+                ),
             };
         default:
             return state;
     }
 };
 
-const findShippingMethodWithName = (name: string, state: OrderState): ShippingMethod | null => {
+const findShippingMethodWithName = (
+    name: string,
+    state: OrderState
+): ShippingMethod | null => {
     const found = state.shippingMethods.find(method => method.name === name);
+    return found ? found : null;
+};
+
+const findPaymentMethodWithName = (
+    name: string,
+    state: OrderState
+): PaymentMethod | null => {
+    const found = state.paymentMethods.find(method => method.name === name);
     return found ? found : null;
 };

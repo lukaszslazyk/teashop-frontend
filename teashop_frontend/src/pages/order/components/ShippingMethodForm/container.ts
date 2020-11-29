@@ -6,6 +6,7 @@ import ShippingMethodForm from ".";
 
 const mapStateToProps = (state: RootState) => ({
     shippingMethods: state.order.shippingMethods,
+    chosenShippingMethod: state.order.chosenShippingMethod,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

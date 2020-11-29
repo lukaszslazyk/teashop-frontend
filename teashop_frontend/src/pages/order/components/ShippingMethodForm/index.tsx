@@ -5,14 +5,16 @@ import ShippingMethodFormRadio from "../ShippingMethodFormRadio";
 
 interface Props {
     shippingMethods: ShippingMethod[];
+    chosenShippingMethod: ShippingMethod | null;
     setChosenShippingMethod: (shippingMethodName: string) => void;
 }
 
 const ShippingMethodForm = (props: Props) => {
-    const [chosenMethod, setChosenMethod] = React.useState(
-        props.shippingMethods[0].name
-    );
-    const { setChosenShippingMethod } = props;
+    const {
+        shippingMethods,
+        chosenShippingMethod,
+        setChosenShippingMethod,
+    } = props;
 
     const findShippingMethodWithName = (
         name: string
@@ -20,12 +22,16 @@ const ShippingMethodForm = (props: Props) => {
         props.shippingMethods.find(method => method.name === name);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setChosenMethod(event.target.value);
+        setChosenShippingMethod(event.target.value);
     };
 
-    useEffect(() =>
-        () => setChosenShippingMethod(chosenMethod)
-    , [chosenMethod, setChosenShippingMethod]);
+    useEffect(() => {
+        if (!chosenShippingMethod)
+            setChosenShippingMethod(shippingMethods[0].name);
+    }, [shippingMethods, chosenShippingMethod, setChosenShippingMethod]);
+
+    if (!chosenShippingMethod)
+        return null;
 
     return (
         <form>
@@ -39,7 +45,10 @@ const ShippingMethodForm = (props: Props) => {
                     </Box>
                 </Grid>
                 <Grid item xs={12}>
-                    <RadioGroup value={chosenMethod} onChange={handleChange}>
+                    <RadioGroup
+                        value={chosenShippingMethod.name}
+                        onChange={handleChange}
+                    >
                         <ShippingMethodFormRadio
                             value="standard"
                             label="Standard delivery"

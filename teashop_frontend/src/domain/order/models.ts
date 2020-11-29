@@ -18,3 +18,14 @@ export interface ShippingMethod {
     name: string;
     price: number;
 }
+
+export interface PaymentMethod {
+    name: string;
+}
+
+export interface CreditCard {
+    number: string;
+    nameOnCard: string;
+    expirationDate: string;
+    securityCode: string;
+}

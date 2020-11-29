@@ -8,6 +8,20 @@ import {
     setContactInfoFormValid,
 } from "./contactInfo";
 import {
+    CreditCardActionTypes,
+    SET_CREDIT_CARD,
+    VALIDATE_CREDIT_CARD_FORM,
+    SET_CREDIT_CARD_FORM_VALID,
+    setCreditCard,
+    validateCreditCardForm,
+    setCreditCardFormValid,
+} from "./creditCard";
+import {
+    PaymentMethodActionTypes,
+    SET_CHOSEN_PAYMENT_METHOD,
+    setChosenPaymentMethod,
+} from "./paymentMethod";
+import {
     ShippingAddressActionTypes,
     SET_SHIPPING_ADDRESS,
     VALIDATE_SHIPPING_ADDRESS_FORM,
@@ -30,6 +44,10 @@ export {
     validateShippingAddressForm,
     setShippingAddressFormValid,
     setChosenShippingMethod,
+    setChosenPaymentMethod,
+    setCreditCard,
+    validateCreditCardForm,
+    setCreditCardFormValid,
 };
 
 export {
@@ -40,9 +58,15 @@ export {
     VALIDATE_SHIPPING_ADDRESS_FORM,
     SET_SHIPPING_ADDRESS_FORM_VALID,
     SET_CHOSEN_SHIPPING_METHOD,
+    SET_CHOSEN_PAYMENT_METHOD,
+    SET_CREDIT_CARD,
+    VALIDATE_CREDIT_CARD_FORM,
+    SET_CREDIT_CARD_FORM_VALID,
 };
 
 export type OrderActionTypes =
     | ContactInfoActionTypes
     | ShippingAddressActionTypes
-    | ShippingMethodActionTypes;
+    | ShippingMethodActionTypes
+    | PaymentMethodActionTypes
+    | CreditCardActionTypes;
