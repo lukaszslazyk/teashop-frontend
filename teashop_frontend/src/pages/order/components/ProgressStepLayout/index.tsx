@@ -11,26 +11,24 @@ import {
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { ReactNode, useMemo } from "react";
 import { Cart } from "../../../../domain/cart/models";
-import { calculateCartPrice } from "../../../../domain/cart/services/cartService";
-import PriceInfoPanel from "../PriceInfoPanel";
+import { ShippingMethod } from "../../../../domain/order/models";
+import { calculateTotalOrderPrice } from "../../../../domain/order/services/orderService";
+import PriceInfoPanelContainer from "../PriceInfoPanel/container";
 import useStyles from "./styles";
 
 interface Props {
     cart: Cart;
+    chosenShippingMethod: ShippingMethod | null,
     children: ReactNode;
 }
 
 const ProgressStepLayout = (props: Props) => {
     const classes = useStyles();
-    const { cart } = props;
+    const { cart, chosenShippingMethod } = props;
 
-    const cartPrice = useMemo(():number =>
-        calculateCartPrice(cart)
-    , [cart]);
-
-    const cartPriceText = useMemo((): string =>
-        `${cartPrice.toFixed(2)} EUR`
-    , [cartPrice]);
+    const totalPrice = useMemo((): number =>
+        calculateTotalOrderPrice(cart, chosenShippingMethod)
+    , [cart, chosenShippingMethod]);
 
     return (
         <Grid container spacing={3}>
@@ -43,12 +41,12 @@ const ProgressStepLayout = (props: Props) => {
                             </Typography>
                             <Box ml={2}>
                                 <Typography variant="body1">
-                                    {cartPriceText}
+                                    {totalPrice.toFixed(2)} EUR
                                 </Typography>
                             </Box>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <PriceInfoPanel cartPrice={cartPrice} />
+                            <PriceInfoPanelContainer />
                         </AccordionDetails>
                     </Accordion>
                 </Grid>
@@ -60,7 +58,7 @@ const ProgressStepLayout = (props: Props) => {
                 <Grid item md={4}>
                     <Grid container>
                         <Paper className={classes.priceInfoPaper}>
-                            <PriceInfoPanel cartPrice={cartPrice} />
+                            <PriceInfoPanelContainer />
                         </Paper>
                     </Grid>
                 </Grid>

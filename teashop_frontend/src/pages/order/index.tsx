@@ -4,6 +4,7 @@ import { useHistory } from "react-router";
 import MainLayout from "../../layouts/main";
 import InformationStepViewContainer from "./components/InformationStepView/container";
 import ProgressStepLayoutContainer from "./components/ProgressStepLayout/container";
+import ShippingStepView from "./components/ShippingStepView";
 import useStyles from "./styles";
 
 const OrderPage = () => {
@@ -50,6 +51,16 @@ const OrderPage = () => {
                         <ProgressStepLayoutContainer>
                             {activeStep === 0 && (
                                 <InformationStepViewContainer
+                                    onContinueButtonClick={
+                                        handleContinueButtonClicked
+                                    }
+                                    onBackButtonClick={
+                                        handleBackButtonClicked
+                                    }
+                                />
+                            )}
+                            {activeStep === 1 && (
+                                <ShippingStepView
                                     onContinueButtonClick={
                                         handleContinueButtonClicked
                                     }

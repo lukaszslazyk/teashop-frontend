@@ -16,6 +16,11 @@ import {
     validateShippingAddressForm,
     setShippingAddressFormValid,
 } from "./shippingAddress";
+import {
+    ShippingMethodActionTypes,
+    SET_CHOSEN_SHIPPING_METHOD,
+    setChosenShippingMethod,
+} from "./shippingMethod";
 
 export {
     setContactInfo,
@@ -24,6 +29,7 @@ export {
     setShippingAddress,
     validateShippingAddressForm,
     setShippingAddressFormValid,
+    setChosenShippingMethod,
 };
 
 export {
@@ -33,8 +39,10 @@ export {
     SET_SHIPPING_ADDRESS,
     VALIDATE_SHIPPING_ADDRESS_FORM,
     SET_SHIPPING_ADDRESS_FORM_VALID,
+    SET_CHOSEN_SHIPPING_METHOD,
 };
 
 export type OrderActionTypes =
     | ContactInfoActionTypes
-    | ShippingAddressActionTypes;
+    | ShippingAddressActionTypes
+    | ShippingMethodActionTypes;

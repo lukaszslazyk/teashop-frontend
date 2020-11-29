@@ -6,10 +6,13 @@ import {
     SET_SHIPPING_ADDRESS,
     VALIDATE_SHIPPING_ADDRESS_FORM,
     SET_SHIPPING_ADDRESS_FORM_VALID,
+    SET_CHOSEN_SHIPPING_METHOD,
 } from "./actions";
-import { ContactInfo, ShippingAddress } from "./models";
+import { ContactInfo, ShippingAddress, ShippingMethod } from "./models";
 
 export interface OrderState {
+    shippingMethods: ShippingMethod[];
+    chosenShippingMethod: ShippingMethod | null,
     contactInfo: ContactInfo;
     contactInfoForm: ContactInfoFormState;
     shippingAddress: ShippingAddress;
@@ -29,6 +32,13 @@ interface ShippingAddressFormState {
 }
 
 const initialState: OrderState = {
+    shippingMethods: [
+        {
+            name: "standard",
+            price: 9.99,
+        },
+    ],
+    chosenShippingMethod: null,
     contactInfo: {
         email: "",
     },
@@ -108,7 +118,17 @@ export const orderReducer = (
                     valid: action.value,
                 },
             };
+        case SET_CHOSEN_SHIPPING_METHOD:
+            return {
+                ...state,
+                chosenShippingMethod: findShippingMethodWithName(action.shippingMethodName, state),
+            };
         default:
             return state;
     }
+};
+
+const findShippingMethodWithName = (name: string, state: OrderState): ShippingMethod | null => {
+    const found = state.shippingMethods.find(method => method.name === name);
+    return found ? found : null;
 };

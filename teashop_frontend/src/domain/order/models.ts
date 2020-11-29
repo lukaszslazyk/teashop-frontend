@@ -13,3 +13,8 @@ export interface ShippingAddress {
     country: string;
     phone: string;
 }
+
+export interface ShippingMethod {
+    name: string;
+    price: number;
+}
