@@ -1,4 +1,3 @@
-import { Dispatch } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import CheckoutPage from ".";

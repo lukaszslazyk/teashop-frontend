@@ -14,6 +14,7 @@ import {
 } from "./actions";
 import {
     ContactInfo,
+    Country,
     CreditCard,
     PaymentMethod,
     ShippingAddress,
@@ -21,6 +22,7 @@ import {
 } from "./models";
 
 export interface OrderState {
+    availableCountries: Country[];
     shippingMethods: ShippingMethod[];
     chosenShippingMethod: ShippingMethod | null;
     paymentMethods: PaymentMethod[];
@@ -45,7 +47,38 @@ interface ShippingAddressFormState extends FormState {}
 
 interface CreditCardFormState extends FormState {}
 
+const initialFormState = {
+    shouldValidate: false,
+    wasValidated: false,
+    valid: false,
+};
+
 const initialState: OrderState = {
+    availableCountries: [
+        {
+            code: "US",
+            name: "United States",
+        },
+        {
+            code: "GB",
+            name: "United Kingdom",
+        },
+    ],
+    shippingMethods: [
+        {
+            name: "standard",
+            displayName: "Standard delivery",
+            price: 9.99,
+        },
+    ],
+    chosenShippingMethod: null,
+    paymentMethods: [
+        {
+            name: "creditCard",
+            displayName: "Credit card",
+        },
+    ],
+    chosenPaymentMethod: null,
     contactInfo: {
         email: "",
     },
@@ -60,40 +93,15 @@ const initialState: OrderState = {
         country: "",
         phone: "",
     },
-    shippingMethods: [
-        {
-            name: "standard",
-            price: 9.99,
-        },
-    ],
-    chosenShippingMethod: null,
-    paymentMethods: [
-        {
-            name: "creditCard",
-        },
-    ],
-    chosenPaymentMethod: null,
     creditCard: {
         number: "",
         nameOnCard: "",
         expirationDate: "",
         securityCode: "",
     },
-    contactInfoForm: {
-        shouldValidate: false,
-        wasValidated: false,
-        valid: false,
-    },
-    shippingAddressForm: {
-        shouldValidate: false,
-        wasValidated: false,
-        valid: false,
-    },
-    creditCardForm: {
-        shouldValidate: false,
-        wasValidated: false,
-        valid: false,
-    },
+    contactInfoForm: initialFormState,
+    shippingAddressForm: initialFormState,
+    creditCardForm: initialFormState,
 };
 
 export const orderReducer = (

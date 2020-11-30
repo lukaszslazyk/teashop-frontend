@@ -1,10 +1,11 @@
-import { Box, Divider, Grid, TextField, Typography } from "@material-ui/core";
+import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { ShippingAddress } from "../../../../domain/order/models";
+import { useForm, Controller } from "react-hook-form";
+import { Country, ShippingAddress } from "../../../../domain/order/models";
 import useStyles from "./styles";
 
 interface Props {
+    availableCountries: Country[];
     shippingAddress: ShippingAddress;
     shouldValidate: boolean;
     setShippingAddress: (value: ShippingAddress) => void;
@@ -13,12 +14,17 @@ interface Props {
 
 const ShippingAddressForm = (props: Props) => {
     const classes = useStyles();
-    const { register, errors, formState, trigger, getValues } = useForm<ShippingAddress>({
+    const { register, errors, formState, trigger, getValues, control } = useForm<ShippingAddress>({
         mode: "onTouched",
-        defaultValues: props.shippingAddress
+        defaultValues: {
+            ...props.shippingAddress,
+            country: props.shippingAddress.country === ""
+                ? props.availableCountries[0].name
+                : props.shippingAddress.country
+        },
     });
     const { isValid } = formState;
-    const { shouldValidate, setShippingAddress, setFormValid } = props;
+    const { availableCountries, shouldValidate, setShippingAddress, setFormValid } = props;
 
     useEffect(() => {
         setFormValid(isValid);
@@ -50,7 +56,7 @@ const ShippingAddressForm = (props: Props) => {
                         })}
                         label="First name"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                         error={errors.firstName !== undefined}
                         helperText={errors.firstName?.message}
                     />
@@ -63,7 +69,7 @@ const ShippingAddressForm = (props: Props) => {
                         })}
                         label="Last name"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                         error={errors.lastName !== undefined}
                         helperText={errors.lastName?.message}
                     />
@@ -74,7 +80,7 @@ const ShippingAddressForm = (props: Props) => {
                         inputRef={register}
                         label="Company (optional)"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -85,7 +91,7 @@ const ShippingAddressForm = (props: Props) => {
                         })}
                         label="Address line 1"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                         error={errors.address1 !== undefined}
                         helperText={errors.address1?.message}
                     />
@@ -96,7 +102,7 @@ const ShippingAddressForm = (props: Props) => {
                         inputRef={register}
                         label="Address line 2 (optional)"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -107,7 +113,7 @@ const ShippingAddressForm = (props: Props) => {
                         })}
                         label="Postal code"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                         error={errors.postalCode !== undefined}
                         helperText={errors.postalCode?.message}
                     />
@@ -120,23 +126,37 @@ const ShippingAddressForm = (props: Props) => {
                         })}
                         label="City"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                         error={errors.city !== undefined}
                         helperText={errors.city?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
-                    <TextField
-                        name="country"
-                        inputRef={register({
-                            required: "Country is required",
-                        })}
-                        label="Country"
+                <Grid item xs={12}>
+                    <FormControl
                         variant="outlined"
-                        fullWidth={true}
-                        error={errors.country !== undefined}
-                        helperText={errors.country?.message}
-                    />
+                        fullWidth
+                    >
+                        <InputLabel id="country-label">
+                            Country
+                        </InputLabel>
+                        <Controller
+                            control={control}
+                            name="country"
+                            as={
+                                <Select
+                                    labelId="country-label"
+                                    label="Country"
+                                >
+                                    {availableCountries.map(country => (
+                                        <MenuItem key={country.name} value={country.name}>
+                                            {country.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            }
+                        >
+                        </Controller>
+                    </FormControl>
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
@@ -146,7 +166,7 @@ const ShippingAddressForm = (props: Props) => {
                         })}
                         label="Phone number"
                         variant="outlined"
-                        fullWidth={true}
+                        fullWidth
                         error={errors.phone !== undefined}
                         helperText={errors.phone?.message}
                     />

@@ -1,3 +1,19 @@
+export interface Country {
+    code: string;
+    name: string;
+}
+
+export interface ShippingMethod {
+    name: string;
+    displayName: string;
+    price: number;
+}
+
+export interface PaymentMethod {
+    name: string;
+    displayName: string;
+}
+
 export interface ContactInfo {
     email: string;
 }
@@ -12,15 +28,6 @@ export interface ShippingAddress {
     city: string;
     country: string;
     phone: string;
-}
-
-export interface ShippingMethod {
-    name: string;
-    price: number;
-}
-
-export interface PaymentMethod {
-    name: string;
 }
 
 export interface CreditCard {
