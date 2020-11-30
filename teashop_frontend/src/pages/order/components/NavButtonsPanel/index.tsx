@@ -7,6 +7,7 @@ import useStyles from "./styles";
 interface Props {
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
+    continueButtonLabel?: string
     backButtonLabel?: string
 }
 
@@ -27,7 +28,7 @@ const NavButtonsPanel = (props: Props) => {
                     color="primary"
                     onClick={props.onContinueButtonClick}
                 >
-                    Continue
+                    {props.continueButtonLabel ? props.continueButtonLabel : "Continue"}
                     <ArrowForwardIosIcon
                         className={classes.forwardButtonIcon}
                     />

@@ -6,6 +6,7 @@ import InformationStepViewContainer from "./components/InformationStepView/conta
 import PaymentStepViewContainer from "./components/PaymentStepView/container";
 import ProgressStepLayoutContainer from "./components/ProgressStepLayout/container";
 import ShippingStepView from "./components/ShippingStepView";
+import SummaryStepView from "./components/SummaryStepView";
 import useStyles from "./styles";
 
 const OrderPage = () => {
@@ -48,16 +49,14 @@ const OrderPage = () => {
                     </Stepper>
                 </Grid>
                 <Grid item xs={12}>
-                    {activeStep !== 3 && (
+                    {activeStep < 3 && (
                         <ProgressStepLayoutContainer>
                             {activeStep === 0 && (
                                 <InformationStepViewContainer
                                     onContinueButtonClick={
                                         handleContinueButtonClicked
                                     }
-                                    onBackButtonClick={
-                                        handleBackButtonClicked
-                                    }
+                                    onBackButtonClick={handleBackButtonClicked}
                                 />
                             )}
                             {activeStep === 1 && (
@@ -65,9 +64,7 @@ const OrderPage = () => {
                                     onContinueButtonClick={
                                         handleContinueButtonClicked
                                     }
-                                    onBackButtonClick={
-                                        handleBackButtonClicked
-                                    }
+                                    onBackButtonClick={handleBackButtonClicked}
                                 />
                             )}
                             {activeStep === 2 && (
@@ -75,12 +72,16 @@ const OrderPage = () => {
                                     onContinueButtonClick={
                                         handleContinueButtonClicked
                                     }
-                                    onBackButtonClick={
-                                        handleBackButtonClicked
-                                    }
+                                    onBackButtonClick={handleBackButtonClicked}
                                 />
                             )}
                         </ProgressStepLayoutContainer>
+                    )}
+                    {activeStep === 3 && (
+                        <SummaryStepView
+                            onContinueButtonClick={handleContinueButtonClicked}
+                            onBackButtonClick={handleBackButtonClicked}
+                        />
                     )}
                 </Grid>
             </Grid>

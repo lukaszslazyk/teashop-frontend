@@ -33,38 +33,19 @@ export interface OrderState {
     creditCardForm: CreditCardFormState;
 }
 
-interface ContactInfoFormState {
+interface FormState {
     shouldValidate: boolean;
     wasValidated: boolean;
     valid: boolean;
 }
 
-interface ShippingAddressFormState {
-    shouldValidate: boolean;
-    wasValidated: boolean;
-    valid: boolean;
-}
+interface ContactInfoFormState extends FormState {}
 
-interface CreditCardFormState {
-    shouldValidate: boolean;
-    wasValidated: boolean;
-    valid: boolean;
-}
+interface ShippingAddressFormState extends FormState {}
+
+interface CreditCardFormState extends FormState {}
 
 const initialState: OrderState = {
-    shippingMethods: [
-        {
-            name: "standard",
-            price: 9.99,
-        },
-    ],
-    chosenShippingMethod: null,
-    paymentMethods: [
-        {
-            name: "creditCard",
-        },
-    ],
-    chosenPaymentMethod: null,
     contactInfo: {
         email: "",
     },
@@ -79,6 +60,19 @@ const initialState: OrderState = {
         country: "",
         phone: "",
     },
+    shippingMethods: [
+        {
+            name: "standard",
+            price: 9.99,
+        },
+    ],
+    chosenShippingMethod: null,
+    paymentMethods: [
+        {
+            name: "creditCard",
+        },
+    ],
+    chosenPaymentMethod: null,
     creditCard: {
         number: "",
         nameOnCard: "",
@@ -121,6 +115,22 @@ export const orderReducer = (
             return {
                 ...state,
                 creditCard: action.value,
+            };
+        case SET_CHOSEN_SHIPPING_METHOD:
+            return {
+                ...state,
+                chosenShippingMethod: findShippingMethodWithName(
+                    action.shippingMethodName,
+                    state
+                ),
+            };
+        case SET_CHOSEN_PAYMENT_METHOD:
+            return {
+                ...state,
+                chosenPaymentMethod: findPaymentMethodWithName(
+                    action.paymentMethodName,
+                    state
+                ),
             };
         case VALIDATE_CONTACT_INFO_FORM:
             if (state.contactInfoForm.shouldValidate)
@@ -178,22 +188,6 @@ export const orderReducer = (
                     wasValidated: true,
                     valid: action.value,
                 },
-            };
-        case SET_CHOSEN_SHIPPING_METHOD:
-            return {
-                ...state,
-                chosenShippingMethod: findShippingMethodWithName(
-                    action.shippingMethodName,
-                    state
-                ),
-            };
-        case SET_CHOSEN_PAYMENT_METHOD:
-            return {
-                ...state,
-                chosenPaymentMethod: findPaymentMethodWithName(
-                    action.paymentMethodName,
-                    state
-                ),
             };
         default:
             return state;
