@@ -74,7 +74,7 @@ const CartView = (props: Props) => {
                             variant="contained"
                             color="primary"
                             component={Link}
-                            to="/order"
+                            to="/checkout"
                             disabled={!canProceedToCheckout()}
                         >
                             Proceed to checkout

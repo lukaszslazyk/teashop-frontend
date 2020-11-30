@@ -1,8 +1,8 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import ContactInfoFormContainer from "../../components/ContactInfoForm/container";
-import ShippingAddressFormContainer from "../../components/ShippingAddressForm/container";
+import ContactInfoFormContainer from "../ContactInfoForm/container";
 import NavButtonsPanel from "../NavButtonsPanel";
+import ShippingAddressFormContainer from "../ShippingAddressForm/container";
 
 interface Props {
     contactInfoFormWasValidated: boolean;

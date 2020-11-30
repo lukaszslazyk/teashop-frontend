@@ -9,7 +9,7 @@ import ShippingStepView from "./components/ShippingStepView";
 import SummaryStepView from "./components/SummaryStepView";
 import useStyles from "./styles";
 
-const OrderPage = () => {
+const CheckoutPage = () => {
     const classes = useStyles();
     const history = useHistory();
     const [activeStep, setActiveStep] = useState(0);
@@ -89,4 +89,4 @@ const OrderPage = () => {
     );
 };
 
-export default OrderPage;
+export default CheckoutPage;

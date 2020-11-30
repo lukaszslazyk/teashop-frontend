@@ -5,7 +5,7 @@ import {
     validateContactInfoForm,
     validateShippingAddressForm,
 } from "../../domain/order/actions";
-import OrderPage from ".";
+import CheckoutPage from ".";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,
@@ -21,4 +21,4 @@ const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     validateShippingAddressForm: () => dispatch(validateShippingAddressForm()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderPage);
+export default connect(mapStateToProps, mapDispatchToProps)(CheckoutPage);
