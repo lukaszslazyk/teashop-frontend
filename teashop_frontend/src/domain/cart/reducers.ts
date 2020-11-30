@@ -13,6 +13,7 @@ import { Cart, CartItem } from "./models";
 
 export interface CartState {
     cart: Cart;
+    fetchedYet: boolean;
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
@@ -21,6 +22,7 @@ export interface CartState {
 
 const initialState: CartState = {
     cart: { items: [] },
+    fetchedYet: false,
     isFetching: false,
     isSending: false,
     errorOccurred: false,
@@ -49,6 +51,7 @@ export const cartReducer = (
         case RECEIVE_SESSION_CART:
             return {
                 ...state,
+                fetchedYet: true,
                 isFetching: false,
                 cart: action.cart ? action.cart : initialState.cart,
                 errorOccurred: action.errorOccurred,

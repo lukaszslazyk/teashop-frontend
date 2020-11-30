@@ -11,14 +11,15 @@ import SummaryStepView from "./components/SummaryStepView";
 import useStyles from "./styles";
 
 interface Props {
-    cart: Cart
+    cart: Cart,
+    cartFetchedOnInit: boolean;
 }
 
 const CheckoutPage = (props: Props) => {
     const classes = useStyles();
     const history = useHistory();
     const [activeStep, setActiveStep] = useState(0);
-    const { cart } = props;
+    const { cart, cartFetchedOnInit } = props;
 
     const handleContinueButtonClicked = () => {
         setActiveStep(activeStep => activeStep + 1);
@@ -32,9 +33,9 @@ const CheckoutPage = (props: Props) => {
     };
 
     useEffect(() => {
-        if (cart.items.length === 0)
+        if (cartFetchedOnInit && cart.items.length === 0)
             history.push("/cart");
-    }, [cart, history]);
+    }, [cart, cartFetchedOnInit, history]);
 
     return (
         <MainLayout>
