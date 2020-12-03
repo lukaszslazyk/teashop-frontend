@@ -17,12 +17,12 @@ const internationalPhoneNumberRegex =
     /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
 
 interface Props {
-    availableCountries: Country[];
+    countries: Country[];
 }
 
 const ShippingAddressForm = (props: Props) => {
     const { register, errors, control } = useFormContext();
-    const { availableCountries } = props;
+    const { countries } = props;
 
     const validatePhoneNumber = (input: string): string | undefined => {
         if (!input.match(internationalPhoneNumberRegex))
@@ -174,7 +174,7 @@ const ShippingAddressForm = (props: Props) => {
                             defaultValue="United States"
                             as={
                                 <Select labelId="country-label" label="Country">
-                                    {availableCountries.map(country => (
+                                    {countries.map(country => (
                                         <MenuItem
                                             key={country.name}
                                             value={country.name}

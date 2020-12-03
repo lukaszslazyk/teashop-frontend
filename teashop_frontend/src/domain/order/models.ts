@@ -1,3 +1,9 @@
+export interface OrderMeta {
+    countries: Country[];
+    shippingMethods: ShippingMethod[];
+    paymentMethods: PaymentMethod[];
+}
+
 export interface Country {
     code: string;
     name: string;

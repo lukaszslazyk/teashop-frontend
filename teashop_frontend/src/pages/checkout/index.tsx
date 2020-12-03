@@ -1,102 +1,58 @@
-import { Grid, Step, StepLabel, Stepper } from "@material-ui/core";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
-import InformationStepViewContainer from "./components/InformationStepView/container";
-import PaymentStepViewContainer from "./components/PaymentStepView/container";
-import ProgressStepLayoutContainer from "./components/ProgressStepLayout/container";
-import ShippingStepView from "./components/ShippingStepView";
-import SummaryStepView from "./components/SummaryStepView";
+import ErrorInfo from "../../shared/components/ErrorInfo";
+import { createRequestCancelToken, RequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import CheckoutStepsView from "./components/CheckoutStepsView";
 import useStyles from "./styles";
 
 interface Props {
+    orderMetaIsFetching: boolean;
+    orderMetaErrorOccurred: boolean;
     cart: Cart,
     cartFetchedOnInit: boolean;
+    fetchOrderMeta: (cancelToken: RequestCancelToken) => void;
 }
 
 const CheckoutPage = (props: Props) => {
     const classes = useStyles();
     const history = useHistory();
-    const [activeStep, setActiveStep] = useState(0);
-    const { cart, cartFetchedOnInit } = props;
-
-    const handleContinueButtonClicked = () => {
-        setActiveStep(activeStep => activeStep + 1);
-    };
-
-    const handleBackButtonClicked = () => {
-        if (activeStep === 0)
-            history.push("/cart");
-        else
-            setActiveStep(activeStep => activeStep - 1);
-    };
+    const [timeoutPassed, setTimeoutPassed] = useState(false);
+    const { cart, cartFetchedOnInit, fetchOrderMeta } = props;
 
     useEffect(() => {
+        const cancelToken = createRequestCancelToken();
         if (cartFetchedOnInit && cart.items.length === 0)
             history.push("/cart");
-    }, [cart, cartFetchedOnInit, history]);
+        else {
+            setTimeoutPassed(false);
+            fetchOrderMeta(cancelToken);
+        }
+        return () => cancelToken.cancel();
+    }, [cart, cartFetchedOnInit, history, fetchOrderMeta]);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setTimeoutPassed(true);
+        }, 1000);
+        return () => clearTimeout(timer);
+    }, [setTimeoutPassed]);
 
     return (
         <MainLayout>
-            <Grid container spacing={1}>
-                <Grid item xs={12}>
-                    <Stepper
-                        activeStep={activeStep}
-                        alternativeLabel
-                        className={classes.stepper}
-                    >
-                        <Step>
-                            <StepLabel>Information</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Shipment</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Payment</StepLabel>
-                        </Step>
-                        <Step>
-                            <StepLabel>Summary</StepLabel>
-                        </Step>
-                    </Stepper>
-                </Grid>
-                <Grid item xs={12}>
-                    {activeStep < 3 && (
-                        <ProgressStepLayoutContainer>
-                            {activeStep === 0 && (
-                                <InformationStepViewContainer
-                                    onContinueButtonClick={
-                                        handleContinueButtonClicked
-                                    }
-                                    onBackButtonClick={handleBackButtonClicked}
-                                />
-                            )}
-                            {activeStep === 1 && (
-                                <ShippingStepView
-                                    onContinueButtonClick={
-                                        handleContinueButtonClicked
-                                    }
-                                    onBackButtonClick={handleBackButtonClicked}
-                                />
-                            )}
-                            {activeStep === 2 && (
-                                <PaymentStepViewContainer
-                                    onContinueButtonClick={
-                                        handleContinueButtonClicked
-                                    }
-                                    onBackButtonClick={handleBackButtonClicked}
-                                />
-                            )}
-                        </ProgressStepLayoutContainer>
-                    )}
-                    {activeStep === 3 && (
-                        <SummaryStepView
-                            onContinueButtonClick={handleContinueButtonClicked}
-                            onBackButtonClick={handleBackButtonClicked}
-                        />
-                    )}
-                </Grid>
-            </Grid>
+            {props.orderMetaIsFetching && timeoutPassed && (
+                <div className={classes.progressContainer}>
+                    <CircularProgress />
+                </div>
+            )}
+            {!props.orderMetaIsFetching && props.orderMetaErrorOccurred && (
+                <ErrorInfo errorMessage="Checkout is currently unavailable." />
+            )}
+            {!props.orderMetaIsFetching && !props.orderMetaErrorOccurred && (
+                <CheckoutStepsView />
+            )}
         </MainLayout>
     );
 };

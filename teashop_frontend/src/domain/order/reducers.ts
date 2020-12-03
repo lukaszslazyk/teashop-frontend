@@ -1,5 +1,7 @@
 import {
     OrderActionTypes,
+    REQUEST_ORDER_META,
+    RECEIVE_ORDER_META,
     SET_CONTACT_INFO,
     SET_SHIPPING_ADDRESS,
     SET_CHOSEN_SHIPPING_METHOD,
@@ -16,10 +18,12 @@ import {
 } from "./models";
 
 export interface OrderState {
-    availableCountries: Country[];
+    orderMetaIsFetching: boolean;
+    orderMetaErrorOccurred: boolean;
+    countries: Country[];
     shippingMethods: ShippingMethod[];
-    chosenShippingMethod: ShippingMethod | null;
     paymentMethods: PaymentMethod[];
+    chosenShippingMethod: ShippingMethod | null;
     chosenPaymentMethod: PaymentMethod | null;
     contactInfo: ContactInfo;
     shippingAddress: ShippingAddress;
@@ -27,30 +31,12 @@ export interface OrderState {
 }
 
 const initialState: OrderState = {
-    availableCountries: [
-        {
-            code: "US",
-            name: "United States",
-        },
-        {
-            code: "GB",
-            name: "United Kingdom",
-        },
-    ],
-    shippingMethods: [
-        {
-            name: "standard",
-            displayName: "Standard delivery",
-            price: 9.99,
-        },
-    ],
+    orderMetaIsFetching: false,
+    orderMetaErrorOccurred: false,
+    countries: [],
+    shippingMethods: [],
+    paymentMethods: [],
     chosenShippingMethod: null,
-    paymentMethods: [
-        {
-            name: "creditCard",
-            displayName: "Credit card",
-        },
-    ],
     chosenPaymentMethod: null,
     contactInfo: {
         email: "",
@@ -79,6 +65,27 @@ export const orderReducer = (
     action: OrderActionTypes
 ): OrderState => {
     switch (action.type) {
+        case REQUEST_ORDER_META:
+            return {
+                ...state,
+                orderMetaIsFetching: true,
+                orderMetaErrorOccurred: false,
+            };
+        case RECEIVE_ORDER_META:
+            return {
+                ...state,
+                orderMetaIsFetching: false,
+                orderMetaErrorOccurred: action.errorOccurred,
+                countries: action.orderMeta
+                    ? action.orderMeta.countries
+                    : initialState.countries,
+                shippingMethods: action.orderMeta
+                    ? action.orderMeta.shippingMethods
+                    : initialState.shippingMethods,
+                paymentMethods: action.orderMeta
+                    ? action.orderMeta.paymentMethods
+                    : initialState.paymentMethods,
+            };
         case SET_CONTACT_INFO:
             return {
                 ...state,

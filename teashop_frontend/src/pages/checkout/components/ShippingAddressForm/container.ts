@@ -3,7 +3,7 @@ import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import ShippingAddressForm from ".";
 
 const mapStateToProps = (state: RootState) => ({
-    availableCountries: state.order.availableCountries,
+    countries: state.order.countries,
 });
 
 export default connect(mapStateToProps)(ShippingAddressForm);

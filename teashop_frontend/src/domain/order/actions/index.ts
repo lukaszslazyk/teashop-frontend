@@ -9,6 +9,12 @@ import {
     setCreditCard,
 } from "./creditCard";
 import {
+    OrderMetaActionTypes,
+    REQUEST_ORDER_META,
+    RECEIVE_ORDER_META,
+    fetchOrderMeta,
+} from "./orderMeta";
+import {
     PaymentMethodActionTypes,
     SET_CHOSEN_PAYMENT_METHOD,
     setChosenPaymentMethod,
@@ -25,6 +31,7 @@ import {
 } from "./shippingMethod";
 
 export {
+    fetchOrderMeta,
     setContactInfo,
     setShippingAddress,
     setChosenShippingMethod,
@@ -33,6 +40,8 @@ export {
 };
 
 export {
+    REQUEST_ORDER_META,
+    RECEIVE_ORDER_META,
     SET_CONTACT_INFO,
     SET_SHIPPING_ADDRESS,
     SET_CHOSEN_SHIPPING_METHOD,
@@ -41,6 +50,7 @@ export {
 };
 
 export type OrderActionTypes =
+    | OrderMetaActionTypes
     | ContactInfoActionTypes
     | ShippingAddressActionTypes
     | ShippingMethodActionTypes
