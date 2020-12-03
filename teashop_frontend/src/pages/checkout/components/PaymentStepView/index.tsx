@@ -7,6 +7,7 @@ import NavButtonsPanel from "../NavButtonsPanel";
 import PaymentMethodFormContainer from "../PaymentMethodForm/container";
 
 interface Props {
+    creditCard: CreditCard,
     chosenPaymentMethod: PaymentMethod | null;
     setCreditCard: (value: CreditCard) => void;
     onContinueButtonClick: () => void;
@@ -14,7 +15,9 @@ interface Props {
 }
 
 const PaymentStepView = (props: Props) => {
-    const creditCardFormMethods = useForm<CreditCard>();
+    const creditCardFormMethods = useForm<CreditCard>({
+        defaultValues: props.creditCard
+    });
 
     const creditCardFormComponent = () => (
         <FormProvider {...creditCardFormMethods}>
@@ -46,7 +49,7 @@ const PaymentStepView = (props: Props) => {
                 <NavButtonsPanel
                     onContinueButtonClick={handleContinueButtonClick}
                     onBackButtonClick={props.onBackButtonClick}
-                    backButtonLabel="Back to Information"
+                    backButtonLabel="Back to Shipping"
                 />
             </Grid>
         </Grid>

@@ -7,6 +7,8 @@ import NavButtonsPanel from "../NavButtonsPanel";
 import ShippingAddressFormContainer from "../ShippingAddressForm/container";
 
 interface Props {
+    contactInfo: ContactInfo,
+    shippingAddress: ShippingAddress,
     setContactInfo: (value: ContactInfo) => void;
     setShippingAddress: (value: ShippingAddress) => void;
     onContinueButtonClick: () => void;
@@ -18,8 +20,12 @@ const InformationStepView = (props: Props) => {
     const [shippingAddressFormValid, setShippingAddressFormValid] = useState(false);
     const { onContinueButtonClick } = props;
 
-    const contactInfoFormMethods = useForm<ContactInfo>();
-    const shippingAddressFormMethods = useForm<ShippingAddress>();
+    const contactInfoFormMethods = useForm<ContactInfo>({
+        defaultValues: props.contactInfo
+    });
+    const shippingAddressFormMethods = useForm<ShippingAddress>({
+        defaultValues: props.shippingAddress
+    });
 
     const handleContinueButtonClick = () => {
         setContactInfoFormValid(false);

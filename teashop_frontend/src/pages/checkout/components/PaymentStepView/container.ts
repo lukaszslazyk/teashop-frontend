@@ -6,6 +6,7 @@ import { CreditCard } from "../../../../domain/order/models";
 import PaymentStepView from ".";
 
 const mapStateToProps = (state: RootState) => ({
+    creditCard: state.order.creditCard,
     chosenPaymentMethod: state.order.chosenPaymentMethod,
 });
 
