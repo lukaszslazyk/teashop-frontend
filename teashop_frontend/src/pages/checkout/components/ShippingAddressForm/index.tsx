@@ -29,6 +29,12 @@ const ShippingAddressForm = (props: Props) => {
     const { isValid } = formState;
     const { availableCountries, shouldValidate, setShippingAddress, setFormValid } = props;
 
+    const validatePhoneNumber = (input: string): string | undefined => {
+        if (!input.match(internationalPhoneNumberRegex))
+            return "Phone number is invalid";
+        return undefined;
+    };
+    
     useEffect(() => {
         setFormValid(isValid);
     }, [isValid, setFormValid]);
@@ -200,10 +206,8 @@ const ShippingAddressForm = (props: Props) => {
                         name="phone"
                         inputRef={register({
                             required: "Phone is required",
-                            pattern: {
-                                value: internationalPhoneNumberRegex,
-                                message: "Phone number is invalid",
-                            },
+                            validate: validatePhoneNumber,
+                            setValueAs: value => value.replace(/\s/g, "")
                         })}
                         label="Phone number"
                         variant="outlined"

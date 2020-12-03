@@ -2,6 +2,10 @@ import { Grid, TextField } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { CreditCard } from "../../../../domain/order/models";
+import { validateCreditCardNumber } from "../../../../domain/order/services/orderService";
+
+const expirationDateRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+const securityCodeRegex = /^[0-9]{3,4}$/;
 
 interface Props {
     creditCard: CreditCard;
@@ -39,6 +43,8 @@ const CreditCardForm = (props: Props) => {
                         name="number"
                         inputRef={register({
                             required: "Number is required",
+                            validate: validateCreditCardNumber,
+                            setValueAs: value => value.replace(/\s/g, "")
                         })}
                         label="Number"
                         variant="outlined"
@@ -52,6 +58,14 @@ const CreditCardForm = (props: Props) => {
                         name="nameOnCard"
                         inputRef={register({
                             required: "Name is required",
+                            minLength: {
+                                value: 2,
+                                message: "Name must be at least 2 characters long.",
+                            },
+                            maxLength: {
+                                value: 26,
+                                message: "Name must not exceed 26 characters.",
+                            },
                         })}
                         label="Name on card"
                         variant="outlined"
@@ -65,6 +79,10 @@ const CreditCardForm = (props: Props) => {
                         name="expirationDate"
                         inputRef={register({
                             required: "Expiration date is required",
+                            pattern: {
+                                value: expirationDateRegex,
+                                message: "Expiration date is invalid",
+                            },
                         })}
                         label="Expiration date (MM/YY)"
                         variant="outlined"
@@ -78,6 +96,10 @@ const CreditCardForm = (props: Props) => {
                         name="securityCode"
                         inputRef={register({
                             required: "Security code is required",
+                            pattern: {
+                                value: securityCodeRegex,
+                                message: "Security code is invalid",
+                            },
                         })}
                         label="Security code"
                         variant="outlined"
