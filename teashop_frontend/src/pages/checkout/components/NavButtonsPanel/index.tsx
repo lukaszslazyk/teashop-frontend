@@ -24,6 +24,7 @@ const NavButtonsPanel = (props: Props) => {
             </Grid>
             <Grid item xs={6} container justify="flex-end">
                 <Button
+                    type="submit"
                     variant="contained"
                     color="primary"
                     onClick={props.onContinueButtonClick}

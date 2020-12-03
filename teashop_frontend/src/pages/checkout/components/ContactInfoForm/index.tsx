@@ -1,38 +1,14 @@
 import { Box, Divider, Grid, TextField, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { ContactInfo } from "../../../../domain/order/models";
+import React from "react";
+import { useFormContext } from "react-hook-form";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
-interface Props {
-    contactInfo: ContactInfo;
-    shouldValidate: boolean;
-    setContactInfo: (value: ContactInfo) => void;
-    setFormValid: (value: boolean) => void;
-}
-
-const ContactInfoForm = (props: Props) => {
-    const { register, errors, formState, trigger, getValues } = useForm<ContactInfo>({
-        mode: "onTouched",
-        defaultValues: props.contactInfo
-    });
-    const { isValid } = formState;
-    const { shouldValidate, setContactInfo, setFormValid } = props;
-    
-    useEffect(() => {
-        setFormValid(isValid);
-    }, [isValid, setFormValid]);
-
-    useEffect(() => {
-        if (shouldValidate)
-            trigger();
-    }, [shouldValidate, trigger]);
-
-    useEffect(() => () => setContactInfo(getValues()), [setContactInfo, getValues]);
+const ContactInfoForm = () => {
+    const { register, errors } = useFormContext();
 
     return (
-        <form>
+        <form noValidate>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography variant="h6" color="primary">

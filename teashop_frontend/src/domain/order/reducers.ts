@@ -1,16 +1,10 @@
 import {
     OrderActionTypes,
     SET_CONTACT_INFO,
-    VALIDATE_CONTACT_INFO_FORM,
-    SET_CONTACT_INFO_FORM_VALID,
     SET_SHIPPING_ADDRESS,
-    VALIDATE_SHIPPING_ADDRESS_FORM,
-    SET_SHIPPING_ADDRESS_FORM_VALID,
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
-    VALIDATE_CREDIT_CARD_FORM,
     SET_CREDIT_CARD,
-    SET_CREDIT_CARD_FORM_VALID,
 } from "./actions";
 import {
     ContactInfo,
@@ -28,30 +22,9 @@ export interface OrderState {
     paymentMethods: PaymentMethod[];
     chosenPaymentMethod: PaymentMethod | null;
     contactInfo: ContactInfo;
-    contactInfoForm: ContactInfoFormState;
     shippingAddress: ShippingAddress;
-    shippingAddressForm: ShippingAddressFormState;
     creditCard: CreditCard;
-    creditCardForm: CreditCardFormState;
 }
-
-interface FormState {
-    shouldValidate: boolean;
-    wasValidated: boolean;
-    valid: boolean;
-}
-
-interface ContactInfoFormState extends FormState {}
-
-interface ShippingAddressFormState extends FormState {}
-
-interface CreditCardFormState extends FormState {}
-
-const initialFormState = {
-    shouldValidate: false,
-    wasValidated: false,
-    valid: false,
-};
 
 const initialState: OrderState = {
     availableCountries: [
@@ -99,9 +72,6 @@ const initialState: OrderState = {
         expirationDate: "",
         securityCode: "",
     },
-    contactInfoForm: initialFormState,
-    shippingAddressForm: initialFormState,
-    creditCardForm: initialFormState,
 };
 
 export const orderReducer = (
@@ -139,63 +109,6 @@ export const orderReducer = (
                     action.paymentMethodName,
                     state
                 ),
-            };
-        case VALIDATE_CONTACT_INFO_FORM:
-            if (state.contactInfoForm.shouldValidate)
-                return state;
-            return {
-                ...state,
-                contactInfoForm: {
-                    ...state.contactInfoForm,
-                    shouldValidate: true,
-                },
-            };
-        case VALIDATE_SHIPPING_ADDRESS_FORM:
-            if (state.shippingAddressForm.shouldValidate)
-                return state;
-            return {
-                ...state,
-                shippingAddressForm: {
-                    ...state.contactInfoForm,
-                    shouldValidate: true,
-                },
-            };
-        case VALIDATE_CREDIT_CARD_FORM:
-            if (state.creditCardForm.shouldValidate)
-                return state;
-            return {
-                ...state,
-                creditCardForm: {
-                    ...state.creditCardForm,
-                    shouldValidate: true,
-                },
-            };
-        case SET_CONTACT_INFO_FORM_VALID:
-            return {
-                ...state,
-                contactInfoForm: {
-                    ...state.contactInfoForm,
-                    wasValidated: true,
-                    valid: action.value,
-                },
-            };
-        case SET_SHIPPING_ADDRESS_FORM_VALID:
-            return {
-                ...state,
-                shippingAddressForm: {
-                    ...state.shippingAddressForm,
-                    wasValidated: true,
-                    valid: action.value,
-                },
-            };
-        case SET_CREDIT_CARD_FORM_VALID:
-            return {
-                ...state,
-                creditCardForm: {
-                    ...state.creditCardForm,
-                    wasValidated: true,
-                    valid: action.value,
-                },
             };
         default:
             return state;

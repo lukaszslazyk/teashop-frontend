@@ -8,13 +8,13 @@ import {
     Tooltip,
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
-import React from "react";
+import React, { ReactNode } from "react";
 import { getAcceptedCreditCardIssuers } from "../../../../domain/order/services/orderService";
-import CreditCardFormContainer from "../CreditCardForm/container";
 import useStyles from "./styles";
 
 interface Props {
     currentValue: string;
+    creditCardFormComponent: ReactNode;
 }
 
 const CreditCardRadio = (props: Props) => {
@@ -53,7 +53,7 @@ const CreditCardRadio = (props: Props) => {
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
-                <CreditCardFormContainer />
+                {props.creditCardFormComponent}
             </AccordionDetails>
         </Accordion>
     );

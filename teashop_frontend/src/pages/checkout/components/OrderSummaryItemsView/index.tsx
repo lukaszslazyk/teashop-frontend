@@ -31,7 +31,7 @@ const OrderSummaryItemsView = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 {props.cart.items.map((item, index) => (
-                    <Grid container>
+                    <Grid key={item.product.id} container>
                         {index !== 0 && (
                             <Grid item xs={12}>
                                 <Box my={1}>

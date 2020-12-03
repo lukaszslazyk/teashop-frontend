@@ -89,7 +89,7 @@ const OrderSummaryInfoView = (props: Props) => {
                 </Grid>
                 <Grid item xs={12} container>
                     <Typography variant="body1">
-                        Shipping method: {props.chosenShippingMethod.name}
+                        Shipping method: {props.chosenShippingMethod.displayName}
                     </Typography>
                 </Grid>
             </Grid>
@@ -104,7 +104,7 @@ const OrderSummaryInfoView = (props: Props) => {
                 </Grid>
                 <Grid item xs={12} container>
                     <Typography variant="body1">
-                        Payment method: {props.chosenPaymentMethod.name}
+                        Payment method: {props.chosenPaymentMethod.displayName}
                     </Typography>
                 </Grid>
             </Grid>

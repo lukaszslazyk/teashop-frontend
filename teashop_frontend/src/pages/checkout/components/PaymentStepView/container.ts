@@ -1,17 +1,16 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
-import { validateCreditCardForm } from "../../../../domain/order/actions";
+import { setCreditCard } from "../../../../domain/order/actions";
+import { CreditCard } from "../../../../domain/order/models";
 import PaymentStepView from ".";
 
 const mapStateToProps = (state: RootState) => ({
     chosenPaymentMethod: state.order.chosenPaymentMethod,
-    creditCardFormWasValidated: state.order.creditCardForm.wasValidated,
-    creditCardFormValid: state.order.creditCardForm.valid,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    validateCreditCardForm: () => dispatch(validateCreditCardForm()),
+    setCreditCard: (value: CreditCard) => dispatch(setCreditCard(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentStepView);

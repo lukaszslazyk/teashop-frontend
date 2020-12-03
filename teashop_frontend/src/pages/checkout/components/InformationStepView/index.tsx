@@ -1,40 +1,59 @@
 import { Grid } from "@material-ui/core";
-import React from "react";
-import ContactInfoFormContainer from "../ContactInfoForm/container";
+import React, { useEffect, useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { ContactInfo, ShippingAddress } from "../../../../domain/order/models";
+import ContactInfoForm from "../ContactInfoForm";
 import NavButtonsPanel from "../NavButtonsPanel";
 import ShippingAddressFormContainer from "../ShippingAddressForm/container";
 
 interface Props {
-    contactInfoFormWasValidated: boolean;
-    contactInfoFormValid: boolean;
-    shippingAddressFormWasValidated: boolean;
-    shippingAddressFormValid: boolean;
-    validateContactInfoForm: () => void;
-    validateShippingAddressForm: () => void;
+    setContactInfo: (value: ContactInfo) => void;
+    setShippingAddress: (value: ShippingAddress) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
 
 const InformationStepView = (props: Props) => {
+    const [contactInfoFormValid, setContactInfoFormValid] = useState(false);
+    const [shippingAddressFormValid, setShippingAddressFormValid] = useState(false);
+    const { onContinueButtonClick } = props;
+
+    const contactInfoFormMethods = useForm<ContactInfo>();
+    const shippingAddressFormMethods = useForm<ShippingAddress>();
+
     const handleContinueButtonClick = () => {
-        props.validateContactInfoForm();
-        props.validateShippingAddressForm();
-        if (
-            props.contactInfoFormWasValidated &&
-            props.contactInfoFormValid &&
-            props.shippingAddressFormWasValidated &&
-            props.shippingAddressFormValid
-        )
-            props.onContinueButtonClick();
+        setContactInfoFormValid(false);
+        setShippingAddressFormValid(false);
+        contactInfoFormMethods.handleSubmit(onContactInfoFormSubmit)();
+        shippingAddressFormMethods.handleSubmit(onShippingAddressFormSubmit)();
     };
+
+    const onContactInfoFormSubmit = () => {
+        props.setContactInfo(contactInfoFormMethods.getValues());
+        setContactInfoFormValid(true);
+    };
+
+    const onShippingAddressFormSubmit = () => {
+        props.setShippingAddress(shippingAddressFormMethods.getValues());
+        setShippingAddressFormValid(true);
+    };
+
+    useEffect(() => {
+        if (contactInfoFormValid && shippingAddressFormValid)
+            onContinueButtonClick();
+    }, [contactInfoFormValid, shippingAddressFormValid, onContinueButtonClick]);
 
     return (
         <Grid container spacing={4}>
             <Grid item xs={12}>
-                <ContactInfoFormContainer />
+                <FormProvider {...contactInfoFormMethods}>
+                    <ContactInfoForm />
+                </FormProvider>
             </Grid>
             <Grid item xs={12}>
-                <ShippingAddressFormContainer />
+                <FormProvider {...shippingAddressFormMethods}>
+                    <ShippingAddressFormContainer />
+                </FormProvider>
             </Grid>
             <Grid item xs={12}>
                 <NavButtonsPanel

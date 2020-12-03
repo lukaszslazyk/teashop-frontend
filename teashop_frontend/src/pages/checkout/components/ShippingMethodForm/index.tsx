@@ -34,30 +34,28 @@ const ShippingMethodForm = (props: Props) => {
         return null;
 
     return (
-        <form>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Typography variant="h6" color="primary">
-                        Shipping method
-                    </Typography>
-                    <Box mt={1}>
-                        <Divider />
-                    </Box>
-                </Grid>
-                <Grid item xs={12}>
-                    <RadioGroup
-                        value={chosenShippingMethod.name}
-                        onChange={handleChange}
-                    >
-                        <ShippingMethodFormRadio
-                            value="standard"
-                            label="Standard delivery"
-                            shippingMethod={findShippingMethodWithName("standard")}
-                        />
-                    </RadioGroup>
-                </Grid>
+        <Grid container spacing={2}>
+            <Grid item xs={12}>
+                <Typography variant="h6" color="primary">
+                    Shipping method
+                </Typography>
+                <Box mt={1}>
+                    <Divider />
+                </Box>
             </Grid>
-        </form>
+            <Grid item xs={12}>
+                <RadioGroup
+                    value={chosenShippingMethod.name}
+                    onChange={handleChange}
+                >
+                    <ShippingMethodFormRadio
+                        value="standard"
+                        label="Standard delivery"
+                        shippingMethod={findShippingMethodWithName("standard")}
+                    />
+                </RadioGroup>
+            </Grid>
+        </Grid>
     );
 };
 

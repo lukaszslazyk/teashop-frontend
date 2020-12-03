@@ -1,35 +1,46 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import { PaymentMethod } from "../../../../domain/order/models";
+import { FormProvider, useForm } from "react-hook-form";
+import { CreditCard, PaymentMethod } from "../../../../domain/order/models";
+import CreditCardForm from "../CreditCardForm";
 import NavButtonsPanel from "../NavButtonsPanel";
 import PaymentMethodFormContainer from "../PaymentMethodForm/container";
 
 interface Props {
     chosenPaymentMethod: PaymentMethod | null;
-    creditCardFormWasValidated: boolean;
-    creditCardFormValid: boolean;
-    validateCreditCardForm: () => void;
+    setCreditCard: (value: CreditCard) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
 
 const PaymentStepView = (props: Props) => {
+    const creditCardFormMethods = useForm<CreditCard>();
+
+    const creditCardFormComponent = () => (
+        <FormProvider {...creditCardFormMethods}>
+            <CreditCardForm />
+        </FormProvider>
+    );
+
     const handleContinueButtonClick = () => {
         if (
             props.chosenPaymentMethod &&
             props.chosenPaymentMethod.name === "creditCard"
-        ) {
-            props.validateCreditCardForm();
-            if (props.creditCardFormWasValidated && props.creditCardFormValid)
-                props.onContinueButtonClick();
-        } else
-            props.onContinueButtonClick();
+        )
+            creditCardFormMethods.handleSubmit(onCreditCardFormSubmit)();
+    };
+
+    const onCreditCardFormSubmit = () => {
+        props.setCreditCard(creditCardFormMethods.getValues());
+        props.onContinueButtonClick();
     };
 
     return (
         <Grid container spacing={4}>
             <Grid item xs={12}>
-                <PaymentMethodFormContainer />
+                <PaymentMethodFormContainer
+                    creditCardFormComponent={creditCardFormComponent()}
+                />
             </Grid>
             <Grid item xs={12}>
                 <NavButtonsPanel

@@ -1,53 +1,37 @@
-import { Box, Divider, FormControl, Grid, InputLabel, MenuItem, Select, TextField, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { Country, ShippingAddress } from "../../../../domain/order/models";
-import useStyles from "./styles";
+import {
+    Box,
+    Divider,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Select,
+    TextField,
+    Typography,
+} from "@material-ui/core";
+import React from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import { Country } from "../../../../domain/order/models";
 
 const internationalPhoneNumberRegex =
     /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
 
 interface Props {
     availableCountries: Country[];
-    shippingAddress: ShippingAddress;
-    shouldValidate: boolean;
-    setShippingAddress: (value: ShippingAddress) => void;
-    setFormValid: (value: boolean) => void;
 }
 
 const ShippingAddressForm = (props: Props) => {
-    const classes = useStyles();
-    const { register, errors, formState, trigger, getValues, control } = useForm<ShippingAddress>({
-        mode: "onTouched",
-        defaultValues: {
-            ...props.shippingAddress,
-            country: props.shippingAddress.country === ""
-                ? props.availableCountries[0].name
-                : props.shippingAddress.country
-        },
-    });
-    const { isValid } = formState;
-    const { availableCountries, shouldValidate, setShippingAddress, setFormValid } = props;
+    const { register, errors, control } = useFormContext();
+    const { availableCountries } = props;
 
     const validatePhoneNumber = (input: string): string | undefined => {
         if (!input.match(internationalPhoneNumberRegex))
             return "Phone number is invalid";
         return undefined;
     };
-    
-    useEffect(() => {
-        setFormValid(isValid);
-    }, [isValid, setFormValid]);
-
-    useEffect(() => {
-        if (shouldValidate)
-            trigger();
-    }, [shouldValidate, trigger]);
-
-    useEffect(() => () => setShippingAddress(getValues()), [setShippingAddress, getValues]);
 
     return (
-        <form className={classes.root}>
+        <form noValidate>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Typography variant="h6" color="primary">
@@ -64,8 +48,9 @@ const ShippingAddressForm = (props: Props) => {
                             required: "First name is required.",
                             maxLength: {
                                 value: 255,
-                                message: "First name must not exceed 255 characters."
-                            }
+                                message:
+                                    "First name must not exceed 255 characters.",
+                            },
                         })}
                         label="First name"
                         variant="outlined"
@@ -81,8 +66,9 @@ const ShippingAddressForm = (props: Props) => {
                             required: "Last name is required.",
                             maxLength: {
                                 value: 255,
-                                message: "Last name must not exceed 255 characters."
-                            }
+                                message:
+                                    "Last name must not exceed 255 characters.",
+                            },
                         })}
                         label="Last name"
                         variant="outlined"
@@ -97,8 +83,9 @@ const ShippingAddressForm = (props: Props) => {
                         inputRef={register({
                             maxLength: {
                                 value: 255,
-                                message: "Company name must not exceed 255 characters."
-                            }
+                                message:
+                                    "Company name must not exceed 255 characters.",
+                            },
                         })}
                         label="Company (optional)"
                         variant="outlined"
@@ -114,8 +101,9 @@ const ShippingAddressForm = (props: Props) => {
                             required: "Address is required",
                             maxLength: {
                                 value: 255,
-                                message: "Address line must not exceed 255 characters."
-                            }
+                                message:
+                                    "Address line must not exceed 255 characters.",
+                            },
                         })}
                         label="Address line 1"
                         variant="outlined"
@@ -130,8 +118,9 @@ const ShippingAddressForm = (props: Props) => {
                         inputRef={register({
                             maxLength: {
                                 value: 255,
-                                message: "Address line must not exceed 255 characters."
-                            }
+                                message:
+                                    "Address line must not exceed 255 characters.",
+                            },
                         })}
                         label="Address line 2 (optional)"
                         variant="outlined"
@@ -147,8 +136,9 @@ const ShippingAddressForm = (props: Props) => {
                             required: "Postal code is required",
                             maxLength: {
                                 value: 10,
-                                message: "Postal code must not exceed 10 characters."
-                            }
+                                message:
+                                    "Postal code must not exceed 10 characters.",
+                            },
                         })}
                         label="Postal code"
                         variant="outlined"
@@ -164,8 +154,9 @@ const ShippingAddressForm = (props: Props) => {
                             required: "City is required",
                             maxLength: {
                                 value: 255,
-                                message: "City name must not exceed 255 characters."
-                            }
+                                message:
+                                    "City name must not exceed 255 characters.",
+                            },
                         })}
                         label="City"
                         variant="outlined"
@@ -175,30 +166,25 @@ const ShippingAddressForm = (props: Props) => {
                     />
                 </Grid>
                 <Grid item xs={12}>
-                    <FormControl
-                        variant="outlined"
-                        fullWidth
-                    >
-                        <InputLabel id="country-label">
-                            Country
-                        </InputLabel>
+                    <FormControl variant="outlined" fullWidth>
+                        <InputLabel id="country-label">Country</InputLabel>
                         <Controller
                             control={control}
                             name="country"
+                            defaultValue="United States"
                             as={
-                                <Select
-                                    labelId="country-label"
-                                    label="Country"
-                                >
+                                <Select labelId="country-label" label="Country">
                                     {availableCountries.map(country => (
-                                        <MenuItem key={country.name} value={country.name}>
+                                        <MenuItem
+                                            key={country.name}
+                                            value={country.name}
+                                        >
                                             {country.name}
                                         </MenuItem>
                                     ))}
                                 </Select>
                             }
-                        >
-                        </Controller>
+                        ></Controller>
                     </FormControl>
                 </Grid>
                 <Grid item xs={12}>
@@ -207,7 +193,7 @@ const ShippingAddressForm = (props: Props) => {
                         inputRef={register({
                             required: "Phone is required",
                             validate: validatePhoneNumber,
-                            setValueAs: value => value.replace(/\s/g, "")
+                            setValueAs: value => value.replace(/\s/g, ""),
                         })}
                         label="Phone number"
                         variant="outlined"

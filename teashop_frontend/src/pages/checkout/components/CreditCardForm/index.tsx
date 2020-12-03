@@ -1,42 +1,16 @@
 import { Grid, TextField } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { CreditCard } from "../../../../domain/order/models";
+import React from "react";
+import { useFormContext } from "react-hook-form";
 import { validateCreditCardNumber } from "../../../../domain/order/services/orderService";
 
 const expirationDateRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
 const securityCodeRegex = /^[0-9]{3,4}$/;
 
-interface Props {
-    creditCard: CreditCard;
-    shouldValidate: boolean;
-    setCreditCard: (value: CreditCard) => void;
-    setFormValid: (value: boolean) => void;
-}
-
-const CreditCardForm = (props: Props) => {
-    const { register, errors, formState, trigger, getValues } = useForm<CreditCard>({
-        mode: "onTouched",
-        defaultValues: props.creditCard,
-    });
-    const { isValid } = formState;
-    const { shouldValidate, setCreditCard, setFormValid } = props;
-
-    useEffect(() => {
-        setFormValid(isValid);
-    }, [isValid, setFormValid]);
-
-    useEffect(() => {
-        if (shouldValidate)
-            trigger();
-    }, [shouldValidate, trigger]);
-
-    useEffect(() =>
-        () => setCreditCard(getValues())
-    , [setCreditCard, getValues]);
+const CreditCardForm = () => {
+    const { register, errors } = useFormContext();
 
     return (
-        <form>
+        <form noValidate>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField
