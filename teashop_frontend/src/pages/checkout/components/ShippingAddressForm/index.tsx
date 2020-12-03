@@ -4,6 +4,9 @@ import { useForm, Controller } from "react-hook-form";
 import { Country, ShippingAddress } from "../../../../domain/order/models";
 import useStyles from "./styles";
 
+const internationalPhoneNumberRegex =
+    /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
+
 interface Props {
     availableCountries: Country[];
     shippingAddress: ShippingAddress;
@@ -52,7 +55,11 @@ const ShippingAddressForm = (props: Props) => {
                     <TextField
                         name="firstName"
                         inputRef={register({
-                            required: "First name is required",
+                            required: "First name is required.",
+                            maxLength: {
+                                value: 255,
+                                message: "First name must not exceed 255 characters."
+                            }
                         })}
                         label="First name"
                         variant="outlined"
@@ -65,7 +72,11 @@ const ShippingAddressForm = (props: Props) => {
                     <TextField
                         name="lastName"
                         inputRef={register({
-                            required: "Last name is required",
+                            required: "Last name is required.",
+                            maxLength: {
+                                value: 255,
+                                message: "Last name must not exceed 255 characters."
+                            }
                         })}
                         label="Last name"
                         variant="outlined"
@@ -77,10 +88,17 @@ const ShippingAddressForm = (props: Props) => {
                 <Grid item xs={12}>
                     <TextField
                         name="company"
-                        inputRef={register}
+                        inputRef={register({
+                            maxLength: {
+                                value: 255,
+                                message: "Company name must not exceed 255 characters."
+                            }
+                        })}
                         label="Company (optional)"
                         variant="outlined"
                         fullWidth
+                        error={errors.company !== undefined}
+                        helperText={errors.company?.message}
                     />
                 </Grid>
                 <Grid item xs={12}>
@@ -88,6 +106,10 @@ const ShippingAddressForm = (props: Props) => {
                         name="address1"
                         inputRef={register({
                             required: "Address is required",
+                            maxLength: {
+                                value: 255,
+                                message: "Address line must not exceed 255 characters."
+                            }
                         })}
                         label="Address line 1"
                         variant="outlined"
@@ -99,10 +121,17 @@ const ShippingAddressForm = (props: Props) => {
                 <Grid item xs={12}>
                     <TextField
                         name="address2"
-                        inputRef={register}
+                        inputRef={register({
+                            maxLength: {
+                                value: 255,
+                                message: "Address line must not exceed 255 characters."
+                            }
+                        })}
                         label="Address line 2 (optional)"
                         variant="outlined"
                         fullWidth
+                        error={errors.address2 !== undefined}
+                        helperText={errors.address2?.message}
                     />
                 </Grid>
                 <Grid item xs={6}>
@@ -110,6 +139,10 @@ const ShippingAddressForm = (props: Props) => {
                         name="postalCode"
                         inputRef={register({
                             required: "Postal code is required",
+                            maxLength: {
+                                value: 10,
+                                message: "Postal code must not exceed 10 characters."
+                            }
                         })}
                         label="Postal code"
                         variant="outlined"
@@ -123,6 +156,10 @@ const ShippingAddressForm = (props: Props) => {
                         name="city"
                         inputRef={register({
                             required: "City is required",
+                            maxLength: {
+                                value: 255,
+                                message: "City name must not exceed 255 characters."
+                            }
                         })}
                         label="City"
                         variant="outlined"
@@ -163,6 +200,10 @@ const ShippingAddressForm = (props: Props) => {
                         name="phone"
                         inputRef={register({
                             required: "Phone is required",
+                            pattern: {
+                                value: internationalPhoneNumberRegex,
+                                message: "Phone number is invalid",
+                            },
                         })}
                         label="Phone number"
                         variant="outlined"

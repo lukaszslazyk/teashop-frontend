@@ -3,6 +3,8 @@ import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ContactInfo } from "../../../../domain/order/models";
 
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+
 interface Props {
     contactInfo: ContactInfo;
     shouldValidate: boolean;
@@ -46,7 +48,7 @@ const ContactInfoForm = (props: Props) => {
                         inputRef={register({
                             required: "Email is required",
                             pattern: {
-                                value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+                                value: emailRegex,
                                 message: "Email is invalid",
                             },
                         })}
