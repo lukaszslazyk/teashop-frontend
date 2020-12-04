@@ -4,7 +4,7 @@ import PriceInfoPanel from ".";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,
-    chosenShippingMethod: state.order.chosenShippingMethod,
+    chosenShippingMethod: state.order.createdOrder.chosenShippingMethod,
 });
 
 export default connect(mapStateToProps)(PriceInfoPanel);

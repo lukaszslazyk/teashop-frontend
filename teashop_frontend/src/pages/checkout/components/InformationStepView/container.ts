@@ -1,21 +1,21 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import {
     setContactInfo,
     setShippingAddress,
 } from "../../../../domain/order/actions";
-import { ContactInfo, ShippingAddress } from "../../../../domain/order/models";
+import { ContactInfo, Address } from "../../../../domain/order/models";
 import InformationStepView from ".";
-import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 
 const mapStateToProps = (state: RootState) => ({
-    contactInfo: state.order.contactInfo,
-    shippingAddress: state.order.shippingAddress,
+    contactInfo: state.order.createdOrder.contactInfo,
+    shippingAddress: state.order.createdOrder.shippingAddress,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
     setContactInfo: (value: ContactInfo) => dispatch(setContactInfo(value)),
-    setShippingAddress: (value: ShippingAddress) =>
+    setShippingAddress: (value: Address) =>
         dispatch(setShippingAddress(value)),
 });
 

@@ -1,13 +1,13 @@
 import { Box, Divider, Grid, RadioGroup, Typography } from "@material-ui/core";
 import React, { ChangeEvent, ReactNode, useEffect } from "react";
 import { PaymentMethod } from "../../../../domain/order/models";
-import CreditCardRadio from "../CreditCardRadio";
+import PaymentCardRadio from "../PaymentCardRadio";
 
 interface Props {
     paymentMethods: PaymentMethod[];
     chosenPaymentMethod: PaymentMethod | null;
     setChosenPaymentMethod: (paymentMethodName: string) => void;
-    creditCardFormComponent: ReactNode;
+    paymentCardFormComponent: ReactNode;
 }
 
 const PaymentMethodForm = (props: Props) => {
@@ -44,9 +44,9 @@ const PaymentMethodForm = (props: Props) => {
                     value={chosenPaymentMethod.name}
                     onChange={handleChange}
                 >
-                    <CreditCardRadio
+                    <PaymentCardRadio
                         currentValue={chosenPaymentMethod.name}
-                        creditCardFormComponent={props.creditCardFormComponent}
+                        paymentCardFormComponent={props.paymentCardFormComponent}
                     />
                 </RadioGroup>
             </Grid>

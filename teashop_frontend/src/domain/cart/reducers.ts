@@ -17,7 +17,6 @@ export interface CartState {
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
-    errorMessage: string;
 }
 
 const initialState: CartState = {
@@ -26,7 +25,6 @@ const initialState: CartState = {
     isFetching: false,
     isSending: false,
     errorOccurred: false,
-    errorMessage: "",
 };
 
 export const cartReducer = (

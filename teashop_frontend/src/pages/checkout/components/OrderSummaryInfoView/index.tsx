@@ -3,13 +3,13 @@ import React from "react";
 import {
     ContactInfo,
     PaymentMethod,
-    ShippingAddress,
+    Address,
     ShippingMethod,
 } from "../../../../domain/order/models";
 
 interface Props {
     contactInfo: ContactInfo;
-    shippingAddress: ShippingAddress;
+    shippingAddress: Address;
     chosenShippingMethod: ShippingMethod;
     chosenPaymentMethod: PaymentMethod;
 }
@@ -50,13 +50,13 @@ const OrderSummaryInfoView = (props: Props) => {
                     )}
                     <Grid item xs={12}>
                         <Typography variant="body1">
-                            {props.shippingAddress.address1}
+                            {props.shippingAddress.addressLine1}
                         </Typography>
                     </Grid>
-                    {!isEmptyOrNull(props.shippingAddress.address2) && (
+                    {!isEmptyOrNull(props.shippingAddress.addressLine2) && (
                         <Grid item xs={12}>
                             <Typography variant="body1">
-                                {props.shippingAddress.address2}
+                                {props.shippingAddress.addressLine2}
                             </Typography>
                         </Grid>
                     )}

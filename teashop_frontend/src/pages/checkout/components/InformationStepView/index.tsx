@@ -1,16 +1,16 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ContactInfo, ShippingAddress } from "../../../../domain/order/models";
+import { ContactInfo, Address } from "../../../../domain/order/models";
 import ContactInfoForm from "../ContactInfoForm";
 import NavButtonsPanel from "../NavButtonsPanel";
 import ShippingAddressFormContainer from "../ShippingAddressForm/container";
 
 interface Props {
     contactInfo: ContactInfo,
-    shippingAddress: ShippingAddress,
+    shippingAddress: Address,
     setContactInfo: (value: ContactInfo) => void;
-    setShippingAddress: (value: ShippingAddress) => void;
+    setShippingAddress: (value: Address) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
@@ -23,7 +23,7 @@ const InformationStepView = (props: Props) => {
     const contactInfoFormMethods = useForm<ContactInfo>({
         defaultValues: props.contactInfo
     });
-    const shippingAddressFormMethods = useForm<ShippingAddress>({
+    const shippingAddressFormMethods = useForm<Address>({
         defaultValues: props.shippingAddress
     });
 

@@ -1,43 +1,30 @@
+import { StringLiteral } from "typescript";
 import {
     OrderActionTypes,
     REQUEST_ORDER_META,
     RECEIVE_ORDER_META,
+    REQUEST_PLACE_ORDER,
+    RECEIVE_PLACE_ORDER,
     SET_CONTACT_INFO,
     SET_SHIPPING_ADDRESS,
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
-    SET_CREDIT_CARD,
+    SET_PAYMENT_CARD,
 } from "./actions";
-import {
-    ContactInfo,
-    Country,
-    CreditCard,
-    PaymentMethod,
-    ShippingAddress,
-    ShippingMethod,
-} from "./models";
+import { PaymentMethod, ShippingMethod, OrderMeta, Order } from "./models";
 
 export interface OrderState {
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
-    countries: Country[];
-    shippingMethods: ShippingMethod[];
-    paymentMethods: PaymentMethod[];
-    chosenShippingMethod: ShippingMethod | null;
-    chosenPaymentMethod: PaymentMethod | null;
-    contactInfo: ContactInfo;
-    shippingAddress: ShippingAddress;
-    creditCard: CreditCard;
+    orderMeta: OrderMeta;
+    createdOrder: Order;
+    createdOrderIsSending: boolean;
+    createdOrderErrorOccurred: boolean;
+    placedOrderId: string;
 }
 
-const initialState: OrderState = {
-    orderMetaIsFetching: false,
-    orderMetaErrorOccurred: false,
-    countries: [],
-    shippingMethods: [],
-    paymentMethods: [],
-    chosenShippingMethod: null,
-    chosenPaymentMethod: null,
+const initialOrder: Order = {
+    id: "",
     contactInfo: {
         email: "",
     },
@@ -45,19 +32,31 @@ const initialState: OrderState = {
         firstName: "",
         lastName: "",
         company: "",
-        address1: "",
-        address2: "",
+        addressLine1: "",
+        addressLine2: "",
         postalCode: "",
         city: "",
         country: "",
         phone: "",
     },
-    creditCard: {
-        number: "",
-        nameOnCard: "",
-        expirationDate: "",
-        securityCode: "",
+    chosenShippingMethod: null,
+    chosenPaymentMethod: null,
+    paymentCard: null,
+    cart: null,
+};
+
+const initialState: OrderState = {
+    orderMetaIsFetching: false,
+    orderMetaErrorOccurred: false,
+    orderMeta: {
+        countries: [],
+        shippingMethods: [],
+        paymentMethods: [],
     },
+    createdOrder: initialOrder,
+    createdOrderIsSending: false,
+    createdOrderErrorOccurred: false,
+    placedOrderId: "",
 };
 
 export const orderReducer = (
@@ -76,46 +75,68 @@ export const orderReducer = (
                 ...state,
                 orderMetaIsFetching: false,
                 orderMetaErrorOccurred: action.errorOccurred,
-                countries: action.orderMeta
-                    ? action.orderMeta.countries
-                    : initialState.countries,
-                shippingMethods: action.orderMeta
-                    ? action.orderMeta.shippingMethods
-                    : initialState.shippingMethods,
-                paymentMethods: action.orderMeta
-                    ? action.orderMeta.paymentMethods
-                    : initialState.paymentMethods,
+                orderMeta: action.orderMeta
+                    ? action.orderMeta
+                    : initialState.orderMeta,
+            };
+        case REQUEST_PLACE_ORDER:
+            return {
+                ...state,
+                createdOrderIsSending: true,
+                createdOrderErrorOccurred: false,
+            };
+        case RECEIVE_PLACE_ORDER:
+            return {
+                ...state,
+                createdOrderIsSending: false,
+                createdOrderErrorOccurred: action.errorOccurred,
+                placedOrderId: action.orderId ? action.orderId : state.createdOrder.id,
             };
         case SET_CONTACT_INFO:
             return {
                 ...state,
-                contactInfo: action.value,
+                createdOrder: {
+                    ...state.createdOrder,
+                    contactInfo: action.value,
+                },
             };
         case SET_SHIPPING_ADDRESS:
             return {
                 ...state,
-                shippingAddress: action.value,
+                createdOrder: {
+                    ...state.createdOrder,
+                    shippingAddress: action.value,
+                },
             };
-        case SET_CREDIT_CARD:
+        case SET_PAYMENT_CARD:
             return {
                 ...state,
-                creditCard: action.value,
+                createdOrder: {
+                    ...state.createdOrder,
+                    paymentCard: action.value,
+                },
             };
         case SET_CHOSEN_SHIPPING_METHOD:
             return {
                 ...state,
-                chosenShippingMethod: findShippingMethodWithName(
-                    action.shippingMethodName,
-                    state
-                ),
+                createdOrder: {
+                    ...state.createdOrder,
+                    chosenShippingMethod: findShippingMethodWithName(
+                        action.shippingMethodName,
+                        state
+                    ),
+                },
             };
         case SET_CHOSEN_PAYMENT_METHOD:
             return {
                 ...state,
-                chosenPaymentMethod: findPaymentMethodWithName(
-                    action.paymentMethodName,
-                    state
-                ),
+                createdOrder: {
+                    ...state.createdOrder,
+                    chosenPaymentMethod: findPaymentMethodWithName(
+                        action.paymentMethodName,
+                        state
+                    ),
+                },
             };
         default:
             return state;
@@ -126,7 +147,9 @@ const findShippingMethodWithName = (
     name: string,
     state: OrderState
 ): ShippingMethod | null => {
-    const found = state.shippingMethods.find(method => method.name === name);
+    const found = state.orderMeta.shippingMethods.find(
+        method => method.name === name
+    );
     return found ? found : null;
 };
 
@@ -134,6 +157,8 @@ const findPaymentMethodWithName = (
     name: string,
     state: OrderState
 ): PaymentMethod | null => {
-    const found = state.paymentMethods.find(method => method.name === name);
+    const found = state.orderMeta.paymentMethods.find(
+        method => method.name === name
+    );
     return found ? found : null;
 };

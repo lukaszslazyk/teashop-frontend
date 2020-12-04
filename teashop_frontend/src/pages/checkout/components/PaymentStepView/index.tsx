@@ -1,40 +1,48 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { CreditCard, PaymentMethod } from "../../../../domain/order/models";
-import CreditCardForm from "../CreditCardForm";
+import { PaymentCard, PaymentMethod } from "../../../../domain/order/models";
 import NavButtonsPanel from "../NavButtonsPanel";
+import PaymentCardForm from "../PaymentCardForm";
 import PaymentMethodFormContainer from "../PaymentMethodForm/container";
 
 interface Props {
-    creditCard: CreditCard,
+    paymentCard: PaymentCard | null;
     chosenPaymentMethod: PaymentMethod | null;
-    setCreditCard: (value: CreditCard) => void;
+    setPaymentCard: (value: PaymentCard) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
 
 const PaymentStepView = (props: Props) => {
-    const creditCardFormMethods = useForm<CreditCard>({
-        defaultValues: props.creditCard
+    const emptyPaymentCardFormValues = {
+        number: "",
+        nameOnCard: "",
+        expirationDate: "",
+        securityCode: "",
+    };
+    const paymentCardFormMethods = useForm<PaymentCard>({
+        defaultValues: props.paymentCard
+            ? props.paymentCard
+            : emptyPaymentCardFormValues,
     });
 
-    const creditCardFormComponent = () => (
-        <FormProvider {...creditCardFormMethods}>
-            <CreditCardForm />
+    const paymentCardFormComponent = () => (
+        <FormProvider {...paymentCardFormMethods}>
+            <PaymentCardForm />
         </FormProvider>
     );
 
     const handleContinueButtonClick = () => {
         if (
             props.chosenPaymentMethod &&
-            props.chosenPaymentMethod.name === "creditCard"
+            props.chosenPaymentMethod.name === "card"
         )
-            creditCardFormMethods.handleSubmit(onCreditCardFormSubmit)();
+            paymentCardFormMethods.handleSubmit(onPaymentCardFormSubmit)();
     };
 
-    const onCreditCardFormSubmit = () => {
-        props.setCreditCard(creditCardFormMethods.getValues());
+    const onPaymentCardFormSubmit = () => {
+        props.setPaymentCard(paymentCardFormMethods.getValues());
         props.onContinueButtonClick();
     };
 
@@ -42,7 +50,7 @@ const PaymentStepView = (props: Props) => {
         <Grid container spacing={4}>
             <Grid item xs={12}>
                 <PaymentMethodFormContainer
-                    creditCardFormComponent={creditCardFormComponent()}
+                    paymentCardFormComponent={paymentCardFormComponent()}
                 />
             </Grid>
             <Grid item xs={12}>

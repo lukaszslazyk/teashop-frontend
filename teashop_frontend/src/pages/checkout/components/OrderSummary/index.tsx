@@ -4,7 +4,7 @@ import { Cart } from "../../../../domain/cart/models";
 import {
     ContactInfo,
     PaymentMethod,
-    ShippingAddress,
+    Address,
     ShippingMethod,
 } from "../../../../domain/order/models";
 import OrderSummaryInfoView from "../OrderSummaryInfoView";
@@ -13,7 +13,7 @@ import OrderSummaryPriceView from "../OrderSummaryPriceView";
 
 interface Props {
     contactInfo: ContactInfo;
-    shippingAddress: ShippingAddress;
+    shippingAddress: Address;
     chosenShippingMethod: ShippingMethod | null;
     chosenPaymentMethod: PaymentMethod | null;
     cart: Cart;

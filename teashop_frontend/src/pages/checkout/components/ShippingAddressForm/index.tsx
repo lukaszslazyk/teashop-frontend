@@ -13,7 +13,7 @@ import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
 import { Country } from "../../../../domain/order/models";
 
-const internationalPhoneNumberRegex =
+const internationalPhoneNumberPattern =
     /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
 
 interface Props {
@@ -25,8 +25,8 @@ const ShippingAddressForm = (props: Props) => {
     const { countries } = props;
 
     const validatePhoneNumber = (input: string): string | undefined => {
-        if (!input.match(internationalPhoneNumberRegex))
-            return "Phone number is invalid";
+        if (!input.match(internationalPhoneNumberPattern))
+            return "Phone number is incorrect";
         return undefined;
     };
 
@@ -96,9 +96,9 @@ const ShippingAddressForm = (props: Props) => {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        name="address1"
+                        name="addressLine1"
                         inputRef={register({
-                            required: "Address is required",
+                            required: "Address first line is required",
                             maxLength: {
                                 value: 255,
                                 message:
@@ -108,13 +108,13 @@ const ShippingAddressForm = (props: Props) => {
                         label="Address line 1"
                         variant="outlined"
                         fullWidth
-                        error={errors.address1 !== undefined}
-                        helperText={errors.address1?.message}
+                        error={errors.addressLine1 !== undefined}
+                        helperText={errors.addressLine1?.message}
                     />
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        name="address2"
+                        name="addressLine2"
                         inputRef={register({
                             maxLength: {
                                 value: 255,
@@ -125,8 +125,8 @@ const ShippingAddressForm = (props: Props) => {
                         label="Address line 2 (optional)"
                         variant="outlined"
                         fullWidth
-                        error={errors.address2 !== undefined}
-                        helperText={errors.address2?.message}
+                        error={errors.addressLine2 !== undefined}
+                        helperText={errors.addressLine2?.message}
                     />
                 </Grid>
                 <Grid item xs={6}>

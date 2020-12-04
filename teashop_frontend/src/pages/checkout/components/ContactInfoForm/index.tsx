@@ -2,7 +2,7 @@ import { Box, Divider, Grid, TextField, Typography } from "@material-ui/core";
 import React from "react";
 import { useFormContext } from "react-hook-form";
 
-const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i;
 
 const ContactInfoForm = () => {
     const { register, errors } = useFormContext();
@@ -24,8 +24,8 @@ const ContactInfoForm = () => {
                         inputRef={register({
                             required: "Email is required",
                             pattern: {
-                                value: emailRegex,
-                                message: "Email is invalid",
+                                value: emailPattern,
+                                message: "Email is incorrect",
                             },
                         })}
                         label="Email"

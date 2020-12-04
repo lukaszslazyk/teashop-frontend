@@ -5,8 +5,8 @@ import { setChosenPaymentMethod } from "../../../../domain/order/actions";
 import PaymentMethodForm from ".";
 
 const mapStateToProps = (state: RootState) => ({
-    paymentMethods: state.order.paymentMethods,
-    chosenPaymentMethod: state.order.chosenPaymentMethod,
+    paymentMethods: state.order.orderMeta.paymentMethods,
+    chosenPaymentMethod: state.order.createdOrder.chosenPaymentMethod,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({

@@ -1,12 +1,12 @@
 import { Grid, TextField } from "@material-ui/core";
 import React from "react";
 import { useFormContext } from "react-hook-form";
-import { validateCreditCardNumber } from "../../../../domain/order/services/orderService";
+import { validatePaymentCardNumber } from "../../../../domain/order/services/orderService";
 
-const expirationDateRegex = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
-const securityCodeRegex = /^[0-9]{3,4}$/;
+const expirationDatePattern = /^(0[1-9]|1[0-2])\/([0-9]{2})$/;
+const securityCodePattern = /^[0-9]{3,4}$/;
 
-const CreditCardForm = () => {
+const PaymentCardForm = () => {
     const { register, errors } = useFormContext();
 
     return (
@@ -17,7 +17,7 @@ const CreditCardForm = () => {
                         name="number"
                         inputRef={register({
                             required: "Number is required",
-                            validate: validateCreditCardNumber,
+                            validate: validatePaymentCardNumber,
                             setValueAs: value => value.replace(/\s/g, "")
                         })}
                         label="Number"
@@ -54,8 +54,8 @@ const CreditCardForm = () => {
                         inputRef={register({
                             required: "Expiration date is required",
                             pattern: {
-                                value: expirationDateRegex,
-                                message: "Expiration date is invalid",
+                                value: expirationDatePattern,
+                                message: "Expiration date is incorrect",
                             },
                         })}
                         label="Expiration date (MM/YY)"
@@ -71,8 +71,8 @@ const CreditCardForm = () => {
                         inputRef={register({
                             required: "Security code is required",
                             pattern: {
-                                value: securityCodeRegex,
-                                message: "Security code is invalid",
+                                value: securityCodePattern,
+                                message: "Security code is incorrect",
                             },
                         })}
                         label="Security code"
@@ -87,4 +87,4 @@ const CreditCardForm = () => {
     );
 };
 
-export default CreditCardForm;
+export default PaymentCardForm;

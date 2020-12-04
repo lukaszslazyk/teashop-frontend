@@ -9,18 +9,18 @@ import {
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
 import React, { ReactNode } from "react";
-import { getAcceptedCreditCardIssuers } from "../../../../domain/order/services/orderService";
+import { getAcceptedPaymentCardIssuers } from "../../../../domain/order/services/orderService";
 import useStyles from "./styles";
 
 interface Props {
     currentValue: string;
-    creditCardFormComponent: ReactNode;
+    paymentCardFormComponent: ReactNode;
 }
 
-const CreditCardRadio = (props: Props) => {
+const PaymentCardRadio = (props: Props) => {
     const classes = useStyles();
 
-    const acceptedCardIssuers = getAcceptedCreditCardIssuers();
+    const acceptedCardIssuers = getAcceptedPaymentCardIssuers();
     const acceptedCardsInfo =
         `We accept ${
             acceptedCardIssuers
@@ -31,14 +31,14 @@ const CreditCardRadio = (props: Props) => {
         } cards`;
 
     return (
-        <Accordion expanded={props.currentValue === "creditCard"}>
+        <Accordion expanded={props.currentValue === "card"}>
             <AccordionSummary>
                 <Grid container alignItems="center">
                     <Grid item className={classes.grow}>
                         <FormControlLabel
                             control={<Radio />}
-                            value="creditCard"
-                            label="Credit card"
+                            value="card"
+                            label="Credit/Debit Card"
                         />
                     </Grid>
                     <Grid item>
@@ -53,10 +53,10 @@ const CreditCardRadio = (props: Props) => {
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
-                {props.creditCardFormComponent}
+                {props.paymentCardFormComponent}
             </AccordionDetails>
         </Accordion>
     );
 };
 
-export default CreditCardRadio;
+export default PaymentCardRadio;
