@@ -1,8 +1,14 @@
 import {
-    ContactInfoActionTypes,
-    SET_CONTACT_INFO,
-    setContactInfo,
+    ContactInfoFormActionTypes,
+    SET_CONTACT_INFO_FORM_DATA,
+    setContactInfoFormData,
 } from "./contactInfo";
+import {
+    OrderFormActionTypes,
+    REQUEST_PLACE_ORDER,
+    RECEIVE_PLACE_ORDER,
+    placeOrder,
+} from "./orderForm";
 import {
     OrderMetaActionTypes,
     REQUEST_ORDER_META,
@@ -10,40 +16,43 @@ import {
     fetchOrderMeta,
 } from "./orderMeta";
 import {
-    PaymentCardActionTypes,
-    SET_PAYMENT_CARD,
-    setPaymentCard,
-} from "./paymentCard";
+    PaymentCardFormActionTypes,
+    SET_PAYMENT_CARD_FORM_DATA,
+    setPaymentCardFormData,
+} from "./paymentCardForm";
 import {
-    PaymentMethodActionTypes,
+    PaymentMethodFormActionTypes,
     SET_CHOSEN_PAYMENT_METHOD,
     setChosenPaymentMethod,
-} from "./paymentMethod";
+} from "./paymentMethodForm";
 import {
-    ShippingAddressActionTypes,
-    SET_SHIPPING_ADDRESS,
-    setShippingAddress,
-} from "./shippingAddress";
+    PriceActionTypes,
+    SET_CART_PRICE,
+    SET_SHIPPING_PRICE,
+    setCartPrice,
+    setShippingPrice,
+} from "./price";
 import {
-    ShippingMethodActionTypes,
+    ShippingAddressFormActionTypes,
+    SET_SHIPPING_ADDRESS_FORM_DATA,
+    setShippingAddressFormData,
+} from "./shippingAddressForm";
+import {
+    ShippingMethodFormActionTypes,
     SET_CHOSEN_SHIPPING_METHOD,
     setChosenShippingMethod,
-} from "./shippingMethod";
-import {
-    MainOrderActionTypes,
-    REQUEST_PLACE_ORDER,
-    RECEIVE_PLACE_ORDER,
-    placeOrder,
-} from "./order";
+} from "./shippingMethodForm";
 
 export {
     fetchOrderMeta,
     placeOrder,
-    setContactInfo,
-    setShippingAddress,
+    setContactInfoFormData,
+    setShippingAddressFormData,
     setChosenShippingMethod,
     setChosenPaymentMethod,
-    setPaymentCard,
+    setPaymentCardFormData,
+    setCartPrice,
+    setShippingPrice,
 };
 
 export {
@@ -51,18 +60,21 @@ export {
     RECEIVE_ORDER_META,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
-    SET_CONTACT_INFO,
-    SET_SHIPPING_ADDRESS,
+    SET_CONTACT_INFO_FORM_DATA,
+    SET_SHIPPING_ADDRESS_FORM_DATA,
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
-    SET_PAYMENT_CARD,
+    SET_PAYMENT_CARD_FORM_DATA,
+    SET_CART_PRICE,
+    SET_SHIPPING_PRICE,
 };
 
 export type OrderActionTypes =
-    | MainOrderActionTypes
     | OrderMetaActionTypes
-    | ContactInfoActionTypes
-    | ShippingAddressActionTypes
-    | ShippingMethodActionTypes
-    | PaymentMethodActionTypes
-    | PaymentCardActionTypes;
+    | OrderFormActionTypes
+    | ContactInfoFormActionTypes
+    | ShippingMethodFormActionTypes
+    | ShippingAddressFormActionTypes
+    | PaymentMethodFormActionTypes
+    | PaymentCardFormActionTypes
+    | PriceActionTypes;

@@ -1,7 +1,7 @@
+import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
 import { AppThunk } from "../../../shared/types";
-import { Order } from "../models";
-import axios from "axios";
+import { OrderFormData } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -18,25 +18,25 @@ interface ReceivePlaceOrderAction {
     errorOccurred: boolean;
 }
 
-export type MainOrderActionTypes =
+export type OrderFormActionTypes =
     | RequestPlaceOrderAction
     | ReceivePlaceOrderAction;
 
-export const requestPlaceOrder = (): MainOrderActionTypes => ({
+export const requestPlaceOrder = (): OrderFormActionTypes => ({
     type: REQUEST_PLACE_ORDER,
 });
 
 export const receivePlaceOrder = (
     orderId: string | null,
     errorOccurred: boolean = false
-): MainOrderActionTypes => ({
+): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
     orderId: orderId,
     errorOccurred: errorOccurred,
 });
 
 export const placeOrder = (
-    order: Order,
+    orderFormData: OrderFormData,
     cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
     dispatch(requestPlaceOrder());
@@ -44,11 +44,11 @@ export const placeOrder = (
         .post(
             `${API_ROOT}/order`,
             {
-                contactInfo: order.contactInfo,
-                shippingAddress: order.shippingAddress,
-                chosenShippingMethodName: order.chosenShippingMethod?.name,
-                chosenPaymentMethodName: order.chosenPaymentMethod?.name,
-                paymentCard: order.paymentCard,
+                contactInfo: orderFormData.contactInfoFormData,
+                shippingAddress: orderFormData.shippingAddressFormData,
+                chosenShippingMethodName: orderFormData.chosenShippingMethodName,
+                chosenPaymentMethodName: orderFormData.chosenPaymentMethodName,
+                paymentCard: orderFormData.paymentCardFormData,
             },
             {
                 cancelToken: cancelToken.tokenSource.token,

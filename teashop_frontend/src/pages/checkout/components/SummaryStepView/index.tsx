@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
+import OrderSummaryContainer from "../CheckoutSummary/container";
 import NavButtonsPanel from "../NavButtonsPanel";
-import OrderSummaryContainer from "../OrderSummary/container";
 
 interface Props {
     onContinueButtonClick: () => void;

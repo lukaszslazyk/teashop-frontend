@@ -1,7 +1,3 @@
-import { Cart } from "../../cart/models";
-import { calculateCartPrice } from "../../cart/services/cartService";
-import { ShippingMethod } from "../models";
-
 const acceptedPaymentCardIssuers = [
     "Visa",
     "MasterCard",
@@ -21,10 +17,3 @@ export const validatePaymentCardNumber = (input: string): string | undefined => 
     const anyMatch = paymentCardNumberPatterns.some(pattern => input.match(pattern));
     return anyMatch ? undefined : "Number is incorrect";
 };
-
-export const calculateTotalOrderPrice = (
-    cart: Cart,
-    chosenShippingMethod: ShippingMethod | null
-) =>
-    calculateCartPrice(cart) +
-    (chosenShippingMethod ? chosenShippingMethod.price : 0);

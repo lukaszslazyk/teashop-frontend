@@ -5,11 +5,11 @@ interface SetChosenPaymentMethodAction {
     paymentMethodName: string;
 }
 
-export type PaymentMethodActionTypes = SetChosenPaymentMethodAction;
+export type PaymentMethodFormActionTypes = SetChosenPaymentMethodAction;
 
 export const setChosenPaymentMethod = (
     paymentMethodName: string
-): PaymentMethodActionTypes => ({
+): PaymentMethodFormActionTypes => ({
     type: SET_CHOSEN_PAYMENT_METHOD,
     paymentMethodName: paymentMethodName,
 });

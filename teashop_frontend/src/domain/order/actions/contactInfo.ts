@@ -1,15 +1,17 @@
-import { ContactInfo } from "../models";
+import { ContactInfoFormData } from "../models";
 
-export const SET_CONTACT_INFO = "SET_CONTACT_INFO";
+export const SET_CONTACT_INFO_FORM_DATA = "SET_CONTACT_INFO_FORM_DATA";
 
-interface SetContactInfoAction {
-    type: typeof SET_CONTACT_INFO;
-    value: ContactInfo;
+interface SetContactInfoFormAction {
+    type: typeof SET_CONTACT_INFO_FORM_DATA;
+    value: ContactInfoFormData;
 }
 
-export type ContactInfoActionTypes = SetContactInfoAction;
+export type ContactInfoFormActionTypes = SetContactInfoFormAction;
 
-export const setContactInfo = (value: ContactInfo): ContactInfoActionTypes => ({
-    type: SET_CONTACT_INFO,
+export const setContactInfoFormData = (
+    value: ContactInfoFormData
+): ContactInfoFormActionTypes => ({
+    type: SET_CONTACT_INFO_FORM_DATA,
     value: value,
 });

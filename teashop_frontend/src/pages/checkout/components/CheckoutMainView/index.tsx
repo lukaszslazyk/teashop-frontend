@@ -3,12 +3,13 @@ import React, { useState } from "react";
 import { useHistory } from "react-router";
 import InformationStepViewContainer from "../InformationStepView/container";
 import PaymentStepViewContainer from "../PaymentStepView/container";
+import PlaceOrderViewContainer from "../PlaceOrderView/container";
 import ProgressStepLayoutContainer from "../ProgressStepLayout/container";
 import ShippingStepView from "../ShippingStepView";
 import SummaryStepView from "../SummaryStepView";
 import useStyles from "./styles";
 
-const CheckoutStepsView = () => {
+const CheckoutMainView = () => {
     const classes = useStyles();
     const history = useHistory();
     const [activeStep, setActiveStep] = useState(0);
@@ -81,9 +82,10 @@ const CheckoutStepsView = () => {
                         onBackButtonClick={handleBackButtonClicked}
                     />
                 )}
+                {activeStep === 4 && <PlaceOrderViewContainer />}
             </Grid>
         </Grid>
     );
 };
 
-export default CheckoutStepsView;
+export default CheckoutMainView;

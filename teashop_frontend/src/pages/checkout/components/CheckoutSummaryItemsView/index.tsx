@@ -10,7 +10,7 @@ interface Props {
     cart: Cart;
 }
 
-const OrderSummaryItemsView = (props: Props) => {
+const CheckoutSummaryItemsView = (props: Props) => {
     const classes = useStyles();
 
     const getItemQuantityText = (item: CartItem) => {
@@ -83,4 +83,4 @@ const OrderSummaryItemsView = (props: Props) => {
     );
 };
 
-export default OrderSummaryItemsView;
+export default CheckoutSummaryItemsView;

@@ -9,26 +9,17 @@ import {
     Typography,
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import React, { ReactNode, useMemo } from "react";
-import { Cart } from "../../../../domain/cart/models";
-import { ShippingMethod } from "../../../../domain/order/models";
-import { calculateTotalOrderPrice } from "../../../../domain/order/services/orderService";
+import React, { ReactNode } from "react";
 import PriceInfoPanelContainer from "../PriceInfoPanel/container";
 import useStyles from "./styles";
 
 interface Props {
-    cart: Cart;
-    chosenShippingMethod: ShippingMethod | null,
+    totalPrice: number;
     children: ReactNode;
 }
 
 const ProgressStepLayout = (props: Props) => {
     const classes = useStyles();
-    const { cart, chosenShippingMethod } = props;
-
-    const totalPrice = useMemo((): number =>
-        calculateTotalOrderPrice(cart, chosenShippingMethod)
-    , [cart, chosenShippingMethod]);
 
     return (
         <Grid container spacing={3}>
@@ -41,7 +32,7 @@ const ProgressStepLayout = (props: Props) => {
                             </Typography>
                             <Box ml={2}>
                                 <Typography variant="body1">
-                                    {totalPrice.toFixed(2)} EUR
+                                    {props.totalPrice.toFixed(2)} EUR
                                 </Typography>
                             </Box>
                         </AccordionSummary>

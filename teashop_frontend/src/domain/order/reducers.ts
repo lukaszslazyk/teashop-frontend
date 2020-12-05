@@ -1,34 +1,37 @@
-import { StringLiteral } from "typescript";
 import {
     OrderActionTypes,
     REQUEST_ORDER_META,
     RECEIVE_ORDER_META,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
-    SET_CONTACT_INFO,
-    SET_SHIPPING_ADDRESS,
+    SET_CONTACT_INFO_FORM_DATA,
+    SET_SHIPPING_ADDRESS_FORM_DATA,
+    SET_PAYMENT_CARD_FORM_DATA,
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
-    SET_PAYMENT_CARD,
+    SET_CART_PRICE,
+    SET_SHIPPING_PRICE,
 } from "./actions";
-import { PaymentMethod, ShippingMethod, OrderMeta, Order } from "./models";
+import { OrderMeta, OrderFormData } from "./models";
 
 export interface OrderState {
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
     orderMeta: OrderMeta;
-    createdOrder: Order;
-    createdOrderIsSending: boolean;
-    createdOrderErrorOccurred: boolean;
+    orderFormData: OrderFormData;
+    orderFormIsSending: boolean;
+    orderFormErrorOccurred: boolean;
+    totalPrice: number;
+    cartPrice: number;
+    shippingPrice: number;
     placedOrderId: string;
 }
 
-const initialOrder: Order = {
-    id: "",
-    contactInfo: {
+const initialOrderFormData: OrderFormData = {
+    contactInfoFormData: {
         email: "",
     },
-    shippingAddress: {
+    shippingAddressFormData: {
         firstName: "",
         lastName: "",
         company: "",
@@ -36,13 +39,17 @@ const initialOrder: Order = {
         addressLine2: "",
         postalCode: "",
         city: "",
-        country: "",
+        countryCode: "",
         phone: "",
     },
-    chosenShippingMethod: null,
-    chosenPaymentMethod: null,
-    paymentCard: null,
-    cart: null,
+    chosenShippingMethodName: "",
+    chosenPaymentMethodName: "",
+    paymentCardFormData: {
+        number: "",
+        name: "",
+        expirationDate: "",
+        securityCode: "",
+    },
 };
 
 const initialState: OrderState = {
@@ -53,9 +60,12 @@ const initialState: OrderState = {
         shippingMethods: [],
         paymentMethods: [],
     },
-    createdOrder: initialOrder,
-    createdOrderIsSending: false,
-    createdOrderErrorOccurred: false,
+    orderFormData: initialOrderFormData,
+    orderFormIsSending: false,
+    orderFormErrorOccurred: false,
+    totalPrice: 0,
+    cartPrice: 0,
+    shippingPrice: 0,
     placedOrderId: "",
 };
 
@@ -78,87 +88,88 @@ export const orderReducer = (
                 orderMeta: action.orderMeta
                     ? action.orderMeta
                     : initialState.orderMeta,
+                orderFormData: {
+                    ...state.orderFormData,
+                    chosenShippingMethodName: action.orderMeta
+                        ? action.orderMeta.shippingMethods[0].name
+                        : "",
+                    chosenPaymentMethodName: action.orderMeta
+                        ? action.orderMeta.paymentMethods[0].name
+                        : "",
+                    shippingAddressFormData: {
+                        ...state.orderFormData.shippingAddressFormData,
+                        countryCode: action.orderMeta
+                            ? action.orderMeta.countries[0].code
+                            : "",
+                    },
+                },
             };
         case REQUEST_PLACE_ORDER:
             return {
                 ...state,
-                createdOrderIsSending: true,
-                createdOrderErrorOccurred: false,
+                orderFormIsSending: true,
+                orderFormErrorOccurred: false,
             };
         case RECEIVE_PLACE_ORDER:
             return {
                 ...state,
-                createdOrderIsSending: false,
-                createdOrderErrorOccurred: action.errorOccurred,
-                placedOrderId: action.orderId ? action.orderId : state.createdOrder.id,
+                orderFormIsSending: false,
+                orderFormErrorOccurred: action.errorOccurred,
+                placedOrderId: action.orderId ? action.orderId : "",
             };
-        case SET_CONTACT_INFO:
+        case SET_CONTACT_INFO_FORM_DATA:
             return {
                 ...state,
-                createdOrder: {
-                    ...state.createdOrder,
-                    contactInfo: action.value,
+                orderFormData: {
+                    ...state.orderFormData,
+                    contactInfoFormData: action.value,
                 },
             };
-        case SET_SHIPPING_ADDRESS:
+        case SET_SHIPPING_ADDRESS_FORM_DATA:
             return {
                 ...state,
-                createdOrder: {
-                    ...state.createdOrder,
-                    shippingAddress: action.value,
+                orderFormData: {
+                    ...state.orderFormData,
+                    shippingAddressFormData: action.value,
                 },
             };
-        case SET_PAYMENT_CARD:
+        case SET_PAYMENT_CARD_FORM_DATA:
             return {
                 ...state,
-                createdOrder: {
-                    ...state.createdOrder,
-                    paymentCard: action.value,
+                orderFormData: {
+                    ...state.orderFormData,
+                    paymentCardFormData: action.value,
                 },
             };
         case SET_CHOSEN_SHIPPING_METHOD:
             return {
                 ...state,
-                createdOrder: {
-                    ...state.createdOrder,
-                    chosenShippingMethod: findShippingMethodWithName(
-                        action.shippingMethodName,
-                        state
-                    ),
+                orderFormData: {
+                    ...state.orderFormData,
+                    chosenShippingMethodName: action.shippingMethodName,
                 },
             };
         case SET_CHOSEN_PAYMENT_METHOD:
             return {
                 ...state,
-                createdOrder: {
-                    ...state.createdOrder,
-                    chosenPaymentMethod: findPaymentMethodWithName(
-                        action.paymentMethodName,
-                        state
-                    ),
+                orderFormData: {
+                    ...state.orderFormData,
+                    chosenPaymentMethodName: action.paymentMethodName,
                 },
+            };
+        case SET_CART_PRICE:
+            return {
+                ...state,
+                cartPrice: action.value,
+                totalPrice: action.value + state.shippingPrice,
+            };
+        case SET_SHIPPING_PRICE:
+            return {
+                ...state,
+                shippingPrice: action.value,
+                totalPrice: state.cartPrice + action.value,
             };
         default:
             return state;
     }
-};
-
-const findShippingMethodWithName = (
-    name: string,
-    state: OrderState
-): ShippingMethod | null => {
-    const found = state.orderMeta.shippingMethods.find(
-        method => method.name === name
-    );
-    return found ? found : null;
-};
-
-const findPaymentMethodWithName = (
-    name: string,
-    state: OrderState
-): PaymentMethod | null => {
-    const found = state.orderMeta.paymentMethods.find(
-        method => method.name === name
-    );
-    return found ? found : null;
 };

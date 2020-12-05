@@ -170,14 +170,13 @@ const ShippingAddressForm = (props: Props) => {
                         <InputLabel id="country-label">Country</InputLabel>
                         <Controller
                             control={control}
-                            name="country"
-                            defaultValue="United States"
+                            name="countryCode"
                             as={
                                 <Select labelId="country-label" label="Country">
                                     {countries.map(country => (
                                         <MenuItem
-                                            key={country.name}
-                                            value={country.name}
+                                            key={country.code}
+                                            value={country.code}
                                         >
                                             {country.name}
                                         </MenuItem>

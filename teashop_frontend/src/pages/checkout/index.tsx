@@ -2,36 +2,44 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { Cart } from "../../domain/cart/models";
+import { calculateCartPrice } from "../../domain/cart/services/cartService";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import { createRequestCancelToken, RequestCancelToken } from "../../shared/services/requestCancelTokenService";
-import CheckoutStepsView from "./components/CheckoutStepsView";
+import {
+    createRequestCancelToken,
+    RequestCancelToken,
+} from "../../shared/services/requestCancelTokenService";
+import CheckoutMainView from "./components/CheckoutMainView";
 import useStyles from "./styles";
 
 interface Props {
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
-    cart: Cart,
+    cart: Cart;
     cartFetchedOnInit: boolean;
     fetchOrderMeta: (cancelToken: RequestCancelToken) => void;
+    setCartPrice: (value: number) => void;
 }
 
 const CheckoutPage = (props: Props) => {
     const classes = useStyles();
     const history = useHistory();
     const [timeoutPassed, setTimeoutPassed] = useState(false);
-    const { cart, cartFetchedOnInit, fetchOrderMeta } = props;
+    const { cart, cartFetchedOnInit, fetchOrderMeta, setCartPrice } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (cartFetchedOnInit && cart.items.length === 0)
-            history.push("/cart");
-        else {
-            setTimeoutPassed(false);
-            fetchOrderMeta(cancelToken);
-        }
+        if (cartFetchedOnInit)
+            if (cart.items.length === 0)
+                history.push("/cart");
+            else {
+                setTimeoutPassed(false);
+                setCartPrice(calculateCartPrice(cart));
+                fetchOrderMeta(cancelToken);
+            }
+        
         return () => cancelToken.cancel();
-    }, [cart, cartFetchedOnInit, history, fetchOrderMeta]);
+    }, [cart, cartFetchedOnInit, history, fetchOrderMeta, setCartPrice]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -51,7 +59,7 @@ const CheckoutPage = (props: Props) => {
                 <ErrorInfo errorMessage="Checkout is currently unavailable." />
             )}
             {!props.orderMetaIsFetching && !props.orderMetaErrorOccurred && (
-                <CheckoutStepsView />
+                <CheckoutMainView />
             )}
         </MainLayout>
     );

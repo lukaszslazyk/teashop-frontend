@@ -1,20 +1,48 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import {
-    ContactInfo,
+    AddressFormData,
+    ContactInfoFormData,
+    Country,
     PaymentMethod,
-    Address,
     ShippingMethod,
 } from "../../../../domain/order/models";
 
 interface Props {
-    contactInfo: ContactInfo;
-    shippingAddress: Address;
-    chosenShippingMethod: ShippingMethod;
-    chosenPaymentMethod: PaymentMethod;
+    contactInfoFormData: ContactInfoFormData;
+    shippingAddressFormData: AddressFormData;
+    chosenShippingMethodName: string;
+    chosenPaymentMethodName: string;
+    countries: Country[];
+    shippingMethods: ShippingMethod[];
+    paymentMethods: PaymentMethod[];
 }
 
-const OrderSummaryInfoView = (props: Props) => {
+const CheckoutSummaryInfoView = (props: Props) => {
+    const {
+        countries,
+        shippingMethods,
+        paymentMethods,
+        chosenShippingMethodName,
+        chosenPaymentMethodName,
+    } = props;
+    const countryCode = props.shippingAddressFormData.countryCode;
+
+    const countryName = useMemo(() => {
+        const country = countries.find(c => c.code === countryCode);
+        return country?.name;
+    }, [countryCode, countries]);
+
+    const shippingMethodDisplayName = useMemo(() => {
+        const method = shippingMethods.find(m => m.name === chosenShippingMethodName);
+        return method?.displayName;
+    }, [chosenShippingMethodName, shippingMethods]);
+
+    const paymentMethodDisplayName = useMemo(() => {
+        const method = paymentMethods.find(m => m.name === chosenPaymentMethodName);
+        return method?.displayName;
+    }, [chosenPaymentMethodName, paymentMethods]);
+
     const isEmptyOrNull = (input: string | null): boolean =>
         input === null || input.trim().length === 0;
 
@@ -32,48 +60,48 @@ const OrderSummaryInfoView = (props: Props) => {
                 <Grid item xs={12} container>
                     <Grid item xs={12}>
                         <Typography variant="body1">
-                            {props.contactInfo.email}
+                            {props.contactInfoFormData.email}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body1">
-                            {props.shippingAddress.firstName}{" "}
-                            {props.shippingAddress.lastName}
+                            {props.shippingAddressFormData.firstName}{" "}
+                            {props.shippingAddressFormData.lastName}
                         </Typography>
                     </Grid>
-                    {!isEmptyOrNull(props.shippingAddress.company) && (
+                    {!isEmptyOrNull(props.shippingAddressFormData.company) && (
                         <Grid item xs={12}>
                             <Typography variant="body1">
-                                {props.shippingAddress.company}
+                                {props.shippingAddressFormData.company}
                             </Typography>
                         </Grid>
                     )}
                     <Grid item xs={12}>
                         <Typography variant="body1">
-                            {props.shippingAddress.addressLine1}
+                            {props.shippingAddressFormData.addressLine1}
                         </Typography>
                     </Grid>
-                    {!isEmptyOrNull(props.shippingAddress.addressLine2) && (
+                    {!isEmptyOrNull(
+                        props.shippingAddressFormData.addressLine2
+                    ) && (
                         <Grid item xs={12}>
                             <Typography variant="body1">
-                                {props.shippingAddress.addressLine2}
+                                {props.shippingAddressFormData.addressLine2}
                             </Typography>
                         </Grid>
                     )}
                     <Grid item xs={12}>
                         <Typography variant="body1">
-                            {props.shippingAddress.postalCode},{" "}
-                            {props.shippingAddress.city}
+                            {props.shippingAddressFormData.postalCode},{" "}
+                            {props.shippingAddressFormData.city}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddress.country}
-                        </Typography>
+                        <Typography variant="body1">{countryName}</Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="body1">
-                            {props.shippingAddress.phone}
+                            {props.shippingAddressFormData.phone}
                         </Typography>
                     </Grid>
                 </Grid>
@@ -89,7 +117,7 @@ const OrderSummaryInfoView = (props: Props) => {
                 </Grid>
                 <Grid item xs={12} container>
                     <Typography variant="body1">
-                        Shipping method: {props.chosenShippingMethod.displayName}
+                        Shipping method: {shippingMethodDisplayName}
                     </Typography>
                 </Grid>
             </Grid>
@@ -104,7 +132,7 @@ const OrderSummaryInfoView = (props: Props) => {
                 </Grid>
                 <Grid item xs={12} container>
                     <Typography variant="body1">
-                        Payment method: {props.chosenPaymentMethod.displayName}
+                        Payment method: {paymentMethodDisplayName}
                     </Typography>
                 </Grid>
             </Grid>
@@ -112,4 +140,4 @@ const OrderSummaryInfoView = (props: Props) => {
     );
 };
 
-export default OrderSummaryInfoView;
+export default CheckoutSummaryInfoView;

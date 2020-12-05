@@ -5,11 +5,11 @@ interface SetChosenShippingMethodAction {
     shippingMethodName: string;
 }
 
-export type ShippingMethodActionTypes = SetChosenShippingMethodAction;
+export type ShippingMethodFormActionTypes = SetChosenShippingMethodAction;
 
 export const setChosenShippingMethod = (
     shippingMethodName: string
-): ShippingMethodActionTypes => ({
+): ShippingMethodFormActionTypes => ({
     type: SET_CHOSEN_SHIPPING_METHOD,
     shippingMethodName: shippingMethodName,
 });

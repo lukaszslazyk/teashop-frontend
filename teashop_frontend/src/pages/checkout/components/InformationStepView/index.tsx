@@ -1,16 +1,16 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { ContactInfo, Address } from "../../../../domain/order/models";
+import { AddressFormData, ContactInfoFormData } from "../../../../domain/order/models";
 import ContactInfoForm from "../ContactInfoForm";
 import NavButtonsPanel from "../NavButtonsPanel";
 import ShippingAddressFormContainer from "../ShippingAddressForm/container";
 
 interface Props {
-    contactInfo: ContactInfo,
-    shippingAddress: Address,
-    setContactInfo: (value: ContactInfo) => void;
-    setShippingAddress: (value: Address) => void;
+    contactInfoFormData: ContactInfoFormData,
+    shippingAddressFormData: AddressFormData,
+    setContactInfoFormData: (value: ContactInfoFormData) => void;
+    setShippingAddressFormData: (value: AddressFormData) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
@@ -20,11 +20,11 @@ const InformationStepView = (props: Props) => {
     const [shippingAddressFormValid, setShippingAddressFormValid] = useState(false);
     const { onContinueButtonClick } = props;
 
-    const contactInfoFormMethods = useForm<ContactInfo>({
-        defaultValues: props.contactInfo
+    const contactInfoFormMethods = useForm<ContactInfoFormData>({
+        defaultValues: props.contactInfoFormData
     });
-    const shippingAddressFormMethods = useForm<Address>({
-        defaultValues: props.shippingAddress
+    const shippingAddressFormMethods = useForm<AddressFormData>({
+        defaultValues: props.shippingAddressFormData
     });
 
     const handleContinueButtonClick = () => {
@@ -35,12 +35,12 @@ const InformationStepView = (props: Props) => {
     };
 
     const onContactInfoFormSubmit = () => {
-        props.setContactInfo(contactInfoFormMethods.getValues());
+        props.setContactInfoFormData(contactInfoFormMethods.getValues());
         setContactInfoFormValid(true);
     };
 
     const onShippingAddressFormSubmit = () => {
-        props.setShippingAddress(shippingAddressFormMethods.getValues());
+        props.setShippingAddressFormData(shippingAddressFormMethods.getValues());
         setShippingAddressFormValid(true);
     };
 

@@ -1,9 +1,9 @@
 import { connect } from "react-redux";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
-import ProgressStepLayout from ".";
+import CheckoutSummaryItemsView from ".";
 
 const mapStateToProps = (state: RootState) => ({
-    totalPrice: state.order.totalPrice,
+    cart: state.cart.cart,
 });
 
-export default connect(mapStateToProps)(ProgressStepLayout);
+export default connect(mapStateToProps)(CheckoutSummaryItemsView);

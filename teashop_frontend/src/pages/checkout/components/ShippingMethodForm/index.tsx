@@ -5,15 +5,17 @@ import ShippingMethodFormRadio from "../ShippingMethodFormRadio";
 
 interface Props {
     shippingMethods: ShippingMethod[];
-    chosenShippingMethod: ShippingMethod | null;
+    chosenShippingMethodName: string;
     setChosenShippingMethod: (shippingMethodName: string) => void;
+    setShippingPrice: (value: number) => void;
 }
 
 const ShippingMethodForm = (props: Props) => {
     const {
         shippingMethods,
-        chosenShippingMethod,
+        chosenShippingMethodName,
         setChosenShippingMethod,
+        setShippingPrice,
     } = props;
 
     const findShippingMethodWithName = (
@@ -26,11 +28,14 @@ const ShippingMethodForm = (props: Props) => {
     };
 
     useEffect(() => {
-        if (!chosenShippingMethod)
-            setChosenShippingMethod(shippingMethods[0].name);
-    }, [shippingMethods, chosenShippingMethod, setChosenShippingMethod]);
+        const shippingMethod = shippingMethods.find(
+            method => method.name === chosenShippingMethodName
+        );
+        if (shippingMethod)
+            setShippingPrice(shippingMethod.price);
+    }, [chosenShippingMethodName, shippingMethods, setShippingPrice]);
 
-    if (!chosenShippingMethod)
+    if (chosenShippingMethodName === "")
         return null;
 
     return (
@@ -45,7 +50,7 @@ const ShippingMethodForm = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 <RadioGroup
-                    value={chosenShippingMethod.name}
+                    value={chosenShippingMethodName}
                     onChange={handleChange}
                 >
                     <ShippingMethodFormRadio

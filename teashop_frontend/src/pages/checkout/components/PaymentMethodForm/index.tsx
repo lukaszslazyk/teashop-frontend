@@ -1,19 +1,16 @@
 import { Box, Divider, Grid, RadioGroup, Typography } from "@material-ui/core";
-import React, { ChangeEvent, ReactNode, useEffect } from "react";
-import { PaymentMethod } from "../../../../domain/order/models";
+import React, { ChangeEvent, ReactNode } from "react";
 import PaymentCardRadio from "../PaymentCardRadio";
 
 interface Props {
-    paymentMethods: PaymentMethod[];
-    chosenPaymentMethod: PaymentMethod | null;
+    chosenPaymentMethodName: string;
     setChosenPaymentMethod: (paymentMethodName: string) => void;
     paymentCardFormComponent: ReactNode;
 }
 
 const PaymentMethodForm = (props: Props) => {
     const {
-        paymentMethods,
-        chosenPaymentMethod,
+        chosenPaymentMethodName,
         setChosenPaymentMethod,
     } = props;
 
@@ -21,12 +18,7 @@ const PaymentMethodForm = (props: Props) => {
         setChosenPaymentMethod(event.target.value);
     };
 
-    useEffect(() => {
-        if (!chosenPaymentMethod)
-            setChosenPaymentMethod(paymentMethods[0].name);
-    }, [paymentMethods, chosenPaymentMethod, setChosenPaymentMethod]);
-
-    if (!chosenPaymentMethod)
+    if (chosenPaymentMethodName === "")
         return null;
 
     return (
@@ -41,11 +33,11 @@ const PaymentMethodForm = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 <RadioGroup
-                    value={chosenPaymentMethod.name}
+                    value={chosenPaymentMethodName}
                     onChange={handleChange}
                 >
                     <PaymentCardRadio
-                        currentValue={chosenPaymentMethod.name}
+                        currentValue={chosenPaymentMethodName}
                         paymentCardFormComponent={props.paymentCardFormComponent}
                     />
                 </RadioGroup>

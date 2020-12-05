@@ -29,7 +29,7 @@ const PaymentCardForm = () => {
                 </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        name="nameOnCard"
+                        name="name"
                         inputRef={register({
                             required: "Name is required",
                             minLength: {
@@ -41,11 +41,11 @@ const PaymentCardForm = () => {
                                 message: "Name must not exceed 26 characters.",
                             },
                         })}
-                        label="Name on card"
+                        label="Name"
                         variant="outlined"
                         fullWidth={true}
-                        error={errors.nameOnCard !== undefined}
-                        helperText={errors.nameOnCard?.message}
+                        error={errors.name !== undefined}
+                        helperText={errors.name?.message}
                     />
                 </Grid>
                 <Grid item xs={6}>

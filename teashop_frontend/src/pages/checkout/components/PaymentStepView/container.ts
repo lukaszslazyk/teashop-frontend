@@ -1,17 +1,18 @@
 import { Dispatch } from "react";
 import { connect } from "react-redux";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
-import { setPaymentCard } from "../../../../domain/order/actions";
-import { PaymentCard } from "../../../../domain/order/models";
+import { setPaymentCardFormData } from "../../../../domain/order/actions";
+import { PaymentCardFormData } from "../../../../domain/order/models";
 import PaymentStepView from ".";
 
 const mapStateToProps = (state: RootState) => ({
-    paymentCard: state.order.createdOrder.paymentCard,
-    chosenPaymentMethod: state.order.createdOrder.chosenPaymentMethod,
+    paymentCardFormData: state.order.orderFormData.paymentCardFormData,
+    chosenPaymentMethodName: state.order.orderFormData.chosenPaymentMethodName,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
-    setPaymentCard: (value: PaymentCard) => dispatch(setPaymentCard(value)),
+    setPaymentCardFormData: (value: PaymentCardFormData) =>
+        dispatch(setPaymentCardFormData(value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PaymentStepView);

@@ -1,30 +1,22 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { PaymentCard, PaymentMethod } from "../../../../domain/order/models";
+import { PaymentCardFormData } from "../../../../domain/order/models";
 import NavButtonsPanel from "../NavButtonsPanel";
 import PaymentCardForm from "../PaymentCardForm";
 import PaymentMethodFormContainer from "../PaymentMethodForm/container";
 
 interface Props {
-    paymentCard: PaymentCard | null;
-    chosenPaymentMethod: PaymentMethod | null;
-    setPaymentCard: (value: PaymentCard) => void;
+    paymentCardFormData: PaymentCardFormData;
+    chosenPaymentMethodName: string;
+    setPaymentCardFormData: (value: PaymentCardFormData) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
 
 const PaymentStepView = (props: Props) => {
-    const emptyPaymentCardFormValues = {
-        number: "",
-        nameOnCard: "",
-        expirationDate: "",
-        securityCode: "",
-    };
-    const paymentCardFormMethods = useForm<PaymentCard>({
-        defaultValues: props.paymentCard
-            ? props.paymentCard
-            : emptyPaymentCardFormValues,
+    const paymentCardFormMethods = useForm<PaymentCardFormData>({
+        defaultValues: props.paymentCardFormData
     });
 
     const paymentCardFormComponent = () => (
@@ -34,15 +26,12 @@ const PaymentStepView = (props: Props) => {
     );
 
     const handleContinueButtonClick = () => {
-        if (
-            props.chosenPaymentMethod &&
-            props.chosenPaymentMethod.name === "card"
-        )
+        if (props.chosenPaymentMethodName === "card")
             paymentCardFormMethods.handleSubmit(onPaymentCardFormSubmit)();
     };
 
     const onPaymentCardFormSubmit = () => {
-        props.setPaymentCard(paymentCardFormMethods.getValues());
+        props.setPaymentCardFormData(paymentCardFormMethods.getValues());
         props.onContinueButtonClick();
     };
 
