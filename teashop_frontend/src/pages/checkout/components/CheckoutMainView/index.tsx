@@ -1,6 +1,7 @@
 import { Grid, Step, StepLabel, Stepper } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
+import { Cart } from "../../../../domain/cart/models";
 import InformationStepViewContainer from "../InformationStepView/container";
 import PaymentStepViewContainer from "../PaymentStepView/container";
 import PlaceOrderViewContainer from "../PlaceOrderView/container";
@@ -9,10 +10,16 @@ import ShippingStepView from "../ShippingStepView";
 import SummaryStepView from "../SummaryStepView";
 import useStyles from "./styles";
 
-const CheckoutMainView = () => {
+interface Props {
+    cart: Cart;
+    cartFetchedOnInit: boolean;
+}
+
+const CheckoutMainView = (props: Props) => {
     const classes = useStyles();
     const history = useHistory();
     const [activeStep, setActiveStep] = useState(0);
+    const { cart, cartFetchedOnInit } = props;
 
     const handleContinueButtonClicked = () => {
         setActiveStep(activeStep => activeStep + 1);
@@ -24,6 +31,11 @@ const CheckoutMainView = () => {
         else
             setActiveStep(activeStep => activeStep - 1);
     };
+
+    useEffect(() => {
+        if (activeStep === 0 && cartFetchedOnInit && cart.items.length === 0)
+            history.push("/cart");
+    }, [activeStep, cart, cartFetchedOnInit, history]);
 
     return (
         <Grid container spacing={1}>

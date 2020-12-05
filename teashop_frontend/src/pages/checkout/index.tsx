@@ -9,7 +9,7 @@ import {
     createRequestCancelToken,
     RequestCancelToken,
 } from "../../shared/services/requestCancelTokenService";
-import CheckoutMainView from "./components/CheckoutMainView";
+import CheckoutMainViewContainer from "./components/CheckoutMainView/container";
 import useStyles from "./styles";
 
 interface Props {
@@ -29,15 +29,11 @@ const CheckoutPage = (props: Props) => {
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (cartFetchedOnInit)
-            if (cart.items.length === 0)
-                history.push("/cart");
-            else {
-                setTimeoutPassed(false);
-                setCartPrice(calculateCartPrice(cart));
-                fetchOrderMeta(cancelToken);
-            }
-        
+        if (cartFetchedOnInit && cart.items.length > 0) {
+            setTimeoutPassed(false);
+            setCartPrice(calculateCartPrice(cart));
+            fetchOrderMeta(cancelToken);
+        }
         return () => cancelToken.cancel();
     }, [cart, cartFetchedOnInit, history, fetchOrderMeta, setCartPrice]);
 
@@ -59,7 +55,7 @@ const CheckoutPage = (props: Props) => {
                 <ErrorInfo errorMessage="Checkout is currently unavailable." />
             )}
             {!props.orderMetaIsFetching && !props.orderMetaErrorOccurred && (
-                <CheckoutMainView />
+                <CheckoutMainViewContainer />
             )}
         </MainLayout>
     );

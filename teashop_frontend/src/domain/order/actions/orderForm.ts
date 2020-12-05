@@ -1,6 +1,7 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
 import { AppThunk } from "../../../shared/types";
+import { clearCart } from "../../cart/actions";
 import { OrderFormData } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -55,7 +56,10 @@ export const placeOrder = (
                 withCredentials: true,
             }
         )
-        .then(response => dispatch(receivePlaceOrder(response.data)))
+        .then(response => {
+            dispatch(receivePlaceOrder(response.data));
+            dispatch(clearCart());
+        })
         .catch(error => {
             if (!axios.isCancel(error))
                 dispatch(receivePlaceOrder(null, true));

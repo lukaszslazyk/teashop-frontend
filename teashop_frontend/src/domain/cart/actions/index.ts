@@ -4,6 +4,7 @@ import {
     REQUEST_ADD_ITEM_TO_SESSION_CART,
     addItemToSessionCart,
 } from "./addItemToSessionCart";
+import { ClearCartAction, CLEAR_CART, clearCart } from "./clearCart";
 import {
     FetchSessionCartActionTypes,
     RECEIVE_SESSION_CART,
@@ -28,6 +29,7 @@ export {
     addItemToSessionCart,
     updateSessionCartItemQuantity,
     removeItemFromSessionCart,
+    clearCart,
 };
 
 export {
@@ -39,10 +41,12 @@ export {
     RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
     REQUEST_REMOVE_ITEM_FROM_SESSION_CART,
     RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
+    CLEAR_CART,
 };
 
 export type CartActionTypes =
     | FetchSessionCartActionTypes
     | AddItemToSessionCartActionTypes
     | UpdateSessionCartItemQuantityActionTypes
-    | RemoveItemFromSessionCartActionTypes;
+    | RemoveItemFromSessionCartActionTypes
+    | ClearCartAction;

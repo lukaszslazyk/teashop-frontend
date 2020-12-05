@@ -14,19 +14,21 @@ interface Props {
     orderFormData: OrderFormData;
     isSending: boolean;
     errorOccurred: boolean;
+    orderPlaced: boolean;
     placedOrderId: string;
     placeOrder: (orderFormData: OrderFormData, cancelToken: RequestCancelToken) => void;
 }
 
 const PlaceOrderView = (props: Props) => {
     const classes = useStyles();
-    const { orderFormData, placeOrder } = props;
+    const { orderFormData, orderPlaced, placeOrder } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        placeOrder(orderFormData, cancelToken);
+        if (!orderPlaced)
+            placeOrder(orderFormData, cancelToken);
         return () => cancelToken.cancel();
-    }, [orderFormData, placeOrder]);
+    }, [orderFormData, orderPlaced, placeOrder]);
 
     return (
         <Grid container spacing={1} className={classes.root}>
@@ -63,7 +65,7 @@ const PlaceOrderView = (props: Props) => {
                         <Typography variant="h6" align="center">
                             We've encountered some problems while processing your request.
                             <br />
-                            Please reload page and try againn.
+                            Please reload page and try again.
                         </Typography>
                     )}
                     {!props.isSending && !props.errorOccurred && (

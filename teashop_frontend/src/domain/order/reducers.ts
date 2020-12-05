@@ -24,6 +24,7 @@ export interface OrderState {
     totalPrice: number;
     cartPrice: number;
     shippingPrice: number;
+    orderPlaced: boolean;
     placedOrderId: string;
 }
 
@@ -66,6 +67,7 @@ const initialState: OrderState = {
     totalPrice: 0,
     cartPrice: 0,
     shippingPrice: 0,
+    orderPlaced: false,
     placedOrderId: "",
 };
 
@@ -111,12 +113,22 @@ export const orderReducer = (
                 orderFormErrorOccurred: false,
             };
         case RECEIVE_PLACE_ORDER:
-            return {
+            let newState = {
                 ...state,
                 orderFormIsSending: false,
                 orderFormErrorOccurred: action.errorOccurred,
+                orderPlaced: !action.errorOccurred,
                 placedOrderId: action.orderId ? action.orderId : "",
             };
+            if (!action.errorOccurred)
+                newState = {
+                    ...newState,
+                    orderFormData: initialOrderFormData,
+                    totalPrice: 0,
+                    cartPrice: 0,
+                    shippingPrice: 0,
+                };
+            return newState;
         case SET_CONTACT_INFO_FORM_DATA:
             return {
                 ...state,

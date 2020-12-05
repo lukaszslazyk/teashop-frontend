@@ -10,6 +10,7 @@ const mapStateToProps = (state: RootState) => ({
     orderFormData: state.order.orderFormData,
     isSending: state.order.orderFormIsSending,
     errorOccurred: state.order.orderFormErrorOccurred,
+    orderPlaced: state.order.orderPlaced,
     placedOrderId: state.order.placedOrderId,
 });
 

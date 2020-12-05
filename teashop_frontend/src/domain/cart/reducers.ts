@@ -8,6 +8,7 @@ import {
     REQUEST_REMOVE_ITEM_FROM_SESSION_CART,
     REQUEST_SESSION_CART,
     REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY,
+    CLEAR_CART,
 } from "./actions";
 import { Cart, CartItem } from "./models";
 
@@ -80,6 +81,11 @@ export const cartReducer = (
                 ...state,
                 isSending: false,
                 errorOccurred: action.errorOccurred,
+            };
+        case CLEAR_CART:
+            return {
+                ...state,
+                cart: initialState.cart,
             };
         default:
             return state;
