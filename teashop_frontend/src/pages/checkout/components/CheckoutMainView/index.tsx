@@ -12,14 +12,14 @@ import useStyles from "./styles";
 
 interface Props {
     cart: Cart;
-    cartFetchedOnInit: boolean;
+    cartFetchedYet: boolean;
 }
 
 const CheckoutMainView = (props: Props) => {
     const classes = useStyles();
     const history = useHistory();
     const [activeStep, setActiveStep] = useState(0);
-    const { cart, cartFetchedOnInit } = props;
+    const { cart, cartFetchedYet } = props;
 
     const handleContinueButtonClicked = () => {
         setActiveStep(activeStep => activeStep + 1);
@@ -33,9 +33,9 @@ const CheckoutMainView = (props: Props) => {
     };
 
     useEffect(() => {
-        if (activeStep === 0 && cartFetchedOnInit && cart.items.length === 0)
+        if (activeStep === 0 && cartFetchedYet && cart.items.length === 0)
             history.push("/cart");
-    }, [activeStep, cart, cartFetchedOnInit, history]);
+    }, [activeStep, cart, cartFetchedYet, history]);
 
     return (
         <Grid container spacing={1}>

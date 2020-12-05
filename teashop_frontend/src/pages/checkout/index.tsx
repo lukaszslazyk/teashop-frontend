@@ -1,6 +1,5 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
 import { Cart } from "../../domain/cart/models";
 import { calculateCartPrice } from "../../domain/cart/services/cartService";
 import MainLayout from "../../layouts/main";
@@ -16,26 +15,28 @@ interface Props {
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
     cart: Cart;
-    cartFetchedOnInit: boolean;
+    cartFetchedYet: boolean;
+    cartErrorOccurred: boolean;
     fetchOrderMeta: (cancelToken: RequestCancelToken) => void;
     setCartPrice: (value: number) => void;
 }
 
 const CheckoutPage = (props: Props) => {
     const classes = useStyles();
-    const history = useHistory();
     const [timeoutPassed, setTimeoutPassed] = useState(false);
-    const { cart, cartFetchedOnInit, fetchOrderMeta, setCartPrice } = props;
+    const { cart, cartFetchedYet, fetchOrderMeta, setCartPrice } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (cartFetchedOnInit && cart.items.length > 0) {
-            setTimeoutPassed(false);
-            setCartPrice(calculateCartPrice(cart));
-            fetchOrderMeta(cancelToken);
-        }
+        setTimeoutPassed(false);
+        fetchOrderMeta(cancelToken);
         return () => cancelToken.cancel();
-    }, [cart, cartFetchedOnInit, history, fetchOrderMeta, setCartPrice]);
+    }, [fetchOrderMeta]);
+
+    useEffect(() => {
+        if (cartFetchedYet && cart.items.length > 0)
+            setCartPrice(calculateCartPrice(cart));
+    }, [cart, cartFetchedYet, setCartPrice]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -44,19 +45,30 @@ const CheckoutPage = (props: Props) => {
         return () => clearTimeout(timer);
     }, [setTimeoutPassed]);
 
+    const dataIsFetching = (): boolean =>
+        props.orderMetaIsFetching && !cartFetchedYet;
+
+    const anyErrorOccurred = (): boolean =>
+        (!props.orderMetaIsFetching && props.orderMetaErrorOccurred) ||
+        (cartFetchedYet && props.cartErrorOccurred);
+
+    const noErrors = (): boolean =>
+        !props.orderMetaIsFetching &&
+        cartFetchedYet &&
+        !props.orderMetaErrorOccurred &&
+        !props.cartErrorOccurred;
+
     return (
         <MainLayout>
-            {props.orderMetaIsFetching && timeoutPassed && (
+            {dataIsFetching() && timeoutPassed && (
                 <div className={classes.progressContainer}>
                     <CircularProgress />
                 </div>
             )}
-            {!props.orderMetaIsFetching && props.orderMetaErrorOccurred && (
-                <ErrorInfo errorMessage="Checkout is currently unavailable." />
+            {anyErrorOccurred() && (
+                <ErrorInfo errorMessage="Checkout is currently unavailable. Please try again later." />
             )}
-            {!props.orderMetaIsFetching && !props.orderMetaErrorOccurred && (
-                <CheckoutMainViewContainer />
-            )}
+            {noErrors() && <CheckoutMainViewContainer />}
         </MainLayout>
     );
 };

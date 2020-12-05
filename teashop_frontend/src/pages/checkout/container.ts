@@ -9,7 +9,8 @@ const mapStateToProps = (state: RootState) => ({
     orderMetaIsFetching: state.order.orderMetaIsFetching,
     orderMetaErrorOccurred: state.order.orderMetaErrorOccurred,
     cart: state.cart.cart,
-    cartFetchedOnInit: state.cart.fetchedYet,
+    cartFetchedYet: state.cart.fetchedYet,
+    cartErrorOccurred: state.cart.errorOccurred,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<any>) => ({
