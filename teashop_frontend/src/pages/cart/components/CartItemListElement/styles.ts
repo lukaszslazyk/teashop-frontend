@@ -1,45 +1,63 @@
 import { Theme, createStyles, makeStyles } from "@material-ui/core";
-import { grey, red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            paddingLeft: theme.spacing(3),
-            paddingRight: theme.spacing(3),
             flexWrap: "nowrap",
+            justifyContent: "center",
+            alignItems: "center",
+            paddingRight: theme.spacing(3),
         },
         imageContainer: {
             width: 100,
             justifyContent: "center",
             alignItems: "center",
-            marginRight: theme.spacing(1),
+            textAlign: "center",
+            padding: theme.spacing(1),
         },
         image: {
             width: "100%",
-            paddingTop: 5,
         },
         contentContainer: {
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
             marginLeft: theme.spacing(1),
             flexGrow: 1,
             alignItems: "center",
-            [theme.breakpoints.up("xs")]: {
-                justifyContent: "flex-end"
+            justifyContent: "flex-end",
+            [theme.breakpoints.up("md")]: {
+                flexWrap: "nowrap",
             },
-            [theme.breakpoints.down("xs")]: {
-                justifyContent: "flex-start"
-            }
+        },
+        titlePartContainer: {
+            flexGrow: 1,
+            flexWrap: "nowrap",
+            alignItems: "center",
+        },
+        bodyPartContainer: {
+            justifyContent: "flex-end",
+            alignItems: "center",
+            [theme.breakpoints.up("md")]: {
+                flexWrap: "nowrap",
+            },
         },
         productNameTextContainer: {
             flexGrow: 1,
+            wordBreak: "break-word",
         },
-        removeButton: {
-            "&.MuiFab-root": {
-                backgroundColor: red[600],
-                "&.Mui-disabled": {
-                    backgroundColor: grey[300],
-                }
-            },
-            color: "white",
+        productNameText: {
+            color: "black",
+            textDecoration: "none",
+            "&:hover": {
+                textDecoration: "underline",
+            }
+        },
+        mobileMenuContainer: {
+            alignSelf: "flex-start",
+        },
+        valueText: {
+            whiteSpace: "nowrap",
+            fontSize: "1.05rem",
         },
     })
 );

@@ -3,8 +3,10 @@ import { grey } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        backdropProgressContainer: {
-            zIndex: theme.zIndex.tooltip + 1,
+        progressContainer: {
+            display: "flex",
+            justifyContent: "center",
+            padding: theme.spacing(3),
         },
         backdropProgress: {
             color: "white",

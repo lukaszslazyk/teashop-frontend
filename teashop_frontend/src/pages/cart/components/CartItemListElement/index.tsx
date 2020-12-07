@@ -1,49 +1,55 @@
-import { Divider, Fab, Grid, Typography } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Divider, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
-import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
+import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import {
+    createRequestCancelToken,
+    RequestCancelToken,
+} from "../../../../shared/services/requestCancelTokenService";
+import CartItemListElementMenuButtonGroup from "../CartItemListElementMenuButtonGroup";
+import CartItemListElementMobileMenu from "../CartItemListElementMobileMenu";
+import EditItemQuantityDialogContainer from "../EditItemQuantityDialog/container";
 import useStyles from "./styles";
 
 interface Props {
     cartItem: CartItem;
-    interactionDisabled: boolean;
-    updateItemQuantityCallback: (productId: string, quantity: number) => void;
-    removeItemFromCartCallback: (productId: string) => void;
-    quantityInvalidCallback: () => void;
-    quantityValidCallback: () => void;
+    cartUpdateIsSending: boolean;
+    removeItemFromCart: (
+        productId: string,
+        cancelToken: RequestCancelToken
+    ) => void;
 }
 
 const CartItemListElement = (props: Props) => {
     const classes = useStyles();
-    const [ownInteractionDisabled, setOwnInteractionDisabled] = useState(false);
-    const { interactionDisabled } = props;
+    const [showProgress, setShowProgress] = useState(false);
+    const [openEditQuantityDialog, setOpenEditQuantityDialog] = useState(false);
+    const { cartUpdateIsSending } = props;
 
-    const handleQuantityChanged = (value: number) => {
-        setOwnInteractionDisabled(true);
-        props.updateItemQuantityCallback(props.cartItem.product.id, value);
-    };
+    const handleEditClicked = () =>
+        setOpenEditQuantityDialog(true);
 
-    const handleRemoveButtonClick = () => {
-        setOwnInteractionDisabled(true);
-        props.removeItemFromCartCallback(props.cartItem.product.id);
+    const handleEditQuantityDialogClose = () =>
+        setOpenEditQuantityDialog(false);
+
+    const handleRemoveClicked = () => {
+        props.removeItemFromCart(
+            props.cartItem.product.id,
+            createRequestCancelToken()
+        );
+        setShowProgress(true);
     };
 
     useEffect(() => {
-        if (!interactionDisabled)
-            setOwnInteractionDisabled(false);
-    }, [interactionDisabled, setOwnInteractionDisabled]);
+        if (!cartUpdateIsSending)
+            setShowProgress(false);
+    }, [cartUpdateIsSending]);
 
     return (
-        <Grid
-            container
-            justify="center"
-            alignItems="center"
-            spacing={3}
-            className={classes.root}
-        >
+        <Grid container className={classes.root}>
             <Grid item container className={classes.imageContainer}>
                 <img
                     src={getImageFullUrl(props.cartItem.product.imagePath)}
@@ -58,52 +64,76 @@ const CartItemListElement = (props: Props) => {
                 spacing={3}
                 className={classes.contentContainer}
             >
-                <Grid item className={classes.productNameTextContainer}>
-                    <Typography variant="h6">
-                        {props.cartItem.product.name}
-                    </Typography>
-                </Grid>
-                <Grid item>
-                    <Typography variant="h6">
-                        {calculateItemPrice(props.cartItem).toFixed(2)} EUR
-                    </Typography>
-                </Grid>
-                <Grid item>
-                    <Grid
-                        container
-                        alignItems="center"
-                        justify="center"
-                        spacing={3}
-                    >
-                        <Grid item>
-                            <ProductQuantityPicker
-                                initialValue={props.cartItem.quantity}
-                                pricedByWeight={
-                                    props.cartItem.product.quantityPerPrice > 1
-                                }
-                                quantityChangedCallback={handleQuantityChanged}
-                                quantityInvalidCallback={
-                                    props.quantityInvalidCallback
-                                }
-                                quantityValidCallback={
-                                    props.quantityValidCallback
-                                }
-                                interactionDisabled={ownInteractionDisabled}
+                <Grid
+                    item
+                    sm="auto"
+                    xs={12}
+                    container
+                    spacing={1}
+                    className={classes.titlePartContainer}
+                >
+                    <Grid item className={classes.productNameTextContainer}>
+                        <Typography
+                            variant="h6"
+                            component={Link}
+                            to={`/product/${props.cartItem.product.id}`}
+                            className={classes.productNameText}
+                        >
+                            {props.cartItem.product.name}
+                        </Typography>
+                    </Grid>
+                    <Hidden mdUp>
+                        <Grid item className={classes.mobileMenuContainer}>
+                            <CartItemListElementMobileMenu
+                                showProgress={showProgress}
+                                onEditMenuItemClick={handleEditClicked}
+                                onRemoveMenuItemClick={handleRemoveClicked}
                             />
                         </Grid>
-                        <Grid item>
-                            <Fab
-                                size="small"
-                                onClick={handleRemoveButtonClick}
-                                disabled={ownInteractionDisabled}
-                                className={classes.removeButton}
-                            >
-                                <DeleteIcon />
-                            </Fab>
-                        </Grid>
+                    </Hidden>
+                </Grid>
+                <Grid
+                    item
+                    sm="auto"
+                    xs={12}
+                    container
+                    spacing={2}
+                    className={classes.bodyPartContainer}
+                >
+                    <Grid item>
+                        <Typography
+                            variant="body1"
+                            className={classes.valueText}
+                        >
+                            {calculateItemPrice(props.cartItem).toFixed(2)} EUR
+                        </Typography>
                     </Grid>
+                    <Grid item>
+                        <Typography
+                            variant="body1"
+                            className={classes.valueText}
+                        >
+                            Quantity: {props.cartItem.quantity}{" "}
+                            {pricedByWeight(props.cartItem.product) ? "g" : ""}
+                        </Typography>
+                    </Grid>
+                    <Hidden smDown>
+                        <Grid item>
+                            {" "}
+                            <CartItemListElementMenuButtonGroup
+                                showProgress={showProgress}
+                                onEditButtonClick={handleEditClicked}
+                                onRemoveButtonClick={handleRemoveClicked}
+                            />
+                        </Grid>
+                    </Hidden>
                 </Grid>
             </Grid>
+            <EditItemQuantityDialogContainer
+                open={openEditQuantityDialog}
+                cartItem={props.cartItem}
+                onClose={handleEditQuantityDialogClose}
+            />
         </Grid>
     );
 };

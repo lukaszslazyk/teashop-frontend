@@ -11,8 +11,8 @@ import CartPage from ".";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,
-    isFetching: state.cart.isFetching,
-    isSending: state.cart.isSending,
+    cartIsFetching: state.cart.cartIsFetching,
+    cartUpdateIsSending: state.cart.cartUpdateIsSending,
     errorOccurred: state.cart.errorOccurred,
 });
 
