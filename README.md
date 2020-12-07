@@ -9,6 +9,7 @@ Single page application working as a frontend in Teashop application environment
 - [Redux](https://redux.js.org/) - state container
 - [Material-UI](https://material-ui.com/) - UI styling framework
 - [Notistack](https://github.com/iamhosseindhv/notistack) - notification display library
+- [React Hook Form](https://react-hook-form.com/) - form validation library
 - [Docker](https://www.docker.com/) - containerization
 
 ## Usage

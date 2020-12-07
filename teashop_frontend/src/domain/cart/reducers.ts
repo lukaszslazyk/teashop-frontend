@@ -8,23 +8,24 @@ import {
     REQUEST_REMOVE_ITEM_FROM_SESSION_CART,
     REQUEST_SESSION_CART,
     REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY,
+    CLEAR_CART,
 } from "./actions";
 import { Cart, CartItem } from "./models";
 
 export interface CartState {
     cart: Cart;
+    fetchedYet: boolean;
     isFetching: boolean;
     isSending: boolean;
     errorOccurred: boolean;
-    errorMessage: string;
 }
 
 const initialState: CartState = {
     cart: { items: [] },
+    fetchedYet: false,
     isFetching: false,
     isSending: false,
     errorOccurred: false,
-    errorMessage: "",
 };
 
 export const cartReducer = (
@@ -49,6 +50,7 @@ export const cartReducer = (
         case RECEIVE_SESSION_CART:
             return {
                 ...state,
+                fetchedYet: true,
                 isFetching: false,
                 cart: action.cart ? action.cart : initialState.cart,
                 errorOccurred: action.errorOccurred,
@@ -79,6 +81,11 @@ export const cartReducer = (
                 ...state,
                 isSending: false,
                 errorOccurred: action.errorOccurred,
+            };
+        case CLEAR_CART:
+            return {
+                ...state,
+                cart: initialState.cart,
             };
         default:
             return state;
