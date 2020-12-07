@@ -1,5 +1,7 @@
 import {
     OrderActionTypes,
+    REQUEST_ORDER,
+    RECEIVE_ORDER,
     REQUEST_ORDER_META,
     RECEIVE_ORDER_META,
     REQUEST_PLACE_ORDER,
@@ -12,12 +14,15 @@ import {
     SET_CART_PRICE,
     SET_SHIPPING_PRICE,
 } from "./actions";
-import { OrderMeta, OrderFormData } from "./models";
+import { OrderMeta, OrderFormData, Order } from "./models";
 
 export interface OrderState {
+    order: Order;
+    orderIsFetching: boolean;
+    orderErrorOccurred: boolean;
+    orderMeta: OrderMeta;
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
-    orderMeta: OrderMeta;
     orderFormData: OrderFormData;
     orderFormIsSending: boolean;
     orderFormErrorOccurred: boolean;
@@ -28,32 +33,42 @@ export interface OrderState {
     placedOrderId: string;
 }
 
-const initialOrderFormData: OrderFormData = {
-    contactInfoFormData: {
-        email: "",
-    },
-    shippingAddressFormData: {
-        firstName: "",
-        lastName: "",
-        company: "",
-        addressLine1: "",
-        addressLine2: "",
-        postalCode: "",
-        city: "",
-        countryCode: "",
-        phone: "",
-    },
-    chosenShippingMethodName: "",
-    chosenPaymentMethodName: "",
-    paymentCardFormData: {
-        number: "",
-        name: "",
-        expirationDate: "",
-        securityCode: "",
-    },
-};
-
 const initialState: OrderState = {
+    order: {
+        contactInfo: {
+            email: "",
+        },
+        shippingAddress: {
+            firstName: "",
+            lastName: "",
+            company: "",
+            addressLine1: "",
+            addressLine2: "",
+            postalCode: "",
+            city: "",
+            country: {
+                code: "",
+                name: "",
+            },
+            phone: "",
+        },
+        chosenShippingMethod: {
+            name: "",
+            displayName: "",
+            price: 0,
+        },
+        chosenPaymentMethod: {
+            name: "",
+            displayName: "",
+        },
+        cart: {
+            items: [],
+        },
+        totalPrice: 0,
+        shippingPrice: 0,
+    },
+    orderIsFetching: false,
+    orderErrorOccurred: false,
     orderMetaIsFetching: false,
     orderMetaErrorOccurred: false,
     orderMeta: {
@@ -61,7 +76,30 @@ const initialState: OrderState = {
         shippingMethods: [],
         paymentMethods: [],
     },
-    orderFormData: initialOrderFormData,
+    orderFormData: {
+        contactInfoFormData: {
+            email: "",
+        },
+        shippingAddressFormData: {
+            firstName: "",
+            lastName: "",
+            company: "",
+            addressLine1: "",
+            addressLine2: "",
+            postalCode: "",
+            city: "",
+            countryCode: "",
+            phone: "",
+        },
+        chosenShippingMethodName: "",
+        chosenPaymentMethodName: "",
+        paymentCardFormData: {
+            number: "",
+            name: "",
+            expirationDate: "",
+            securityCode: "",
+        },
+    },
     orderFormIsSending: false,
     orderFormErrorOccurred: false,
     totalPrice: 0,
@@ -76,6 +114,20 @@ export const orderReducer = (
     action: OrderActionTypes
 ): OrderState => {
     switch (action.type) {
+        case REQUEST_ORDER:
+            return {
+                ...state,
+                orderIsFetching: true,
+                orderErrorOccurred: false,
+            };
+        case RECEIVE_ORDER: {
+            return {
+                ...state,
+                orderIsFetching: false,
+                orderErrorOccurred: action.errorOccurred,
+                order: action.order ? action.order : initialState.order,
+            };
+        }
         case REQUEST_ORDER_META:
             return {
                 ...state,
@@ -123,7 +175,7 @@ export const orderReducer = (
             if (!action.errorOccurred)
                 newState = {
                     ...newState,
-                    orderFormData: initialOrderFormData,
+                    orderFormData: initialState.orderFormData,
                     totalPrice: 0,
                     cartPrice: 0,
                     shippingPrice: 0,

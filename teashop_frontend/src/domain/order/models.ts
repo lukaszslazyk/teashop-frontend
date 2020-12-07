@@ -1,3 +1,31 @@
+import { Cart } from "../cart/models";
+
+export interface Order {
+    contactInfo: ContactInfo;
+    shippingAddress: Address;
+    chosenShippingMethod: ShippingMethod;
+    chosenPaymentMethod: PaymentMethod;
+    cart: Cart;
+    totalPrice: number;
+    shippingPrice: number;
+}
+
+export interface ContactInfo {
+    email: string;
+}
+
+export interface Address {
+    firstName: string;
+    lastName: string;
+    company: string;
+    addressLine1: string;
+    addressLine2: string;
+    postalCode: string;
+    city: string;
+    country: Country;
+    phone: string;
+}
+
 export interface OrderMeta {
     countries: Country[];
     shippingMethods: ShippingMethod[];
