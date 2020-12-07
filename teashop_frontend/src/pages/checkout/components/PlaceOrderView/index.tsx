@@ -72,7 +72,10 @@ const PlaceOrderView = (props: Props) => {
                         <Grid item xs={12} container spacing={2} justify="center">
                             <Grid item xs={12}>
                                 <Typography variant="h6" align="center">
-                                    Your order number is: {props.placedOrderId}
+                                    Your order number is:{" "}
+                                    <Link to={`/orderDetails/${props.placedOrderId}`}>
+                                        {props.placedOrderId}
+                                    </Link>
                                 </Typography>
                             </Grid>
                             <Grid item>

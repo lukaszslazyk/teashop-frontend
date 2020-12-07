@@ -1,5 +1,5 @@
-import { Box, Divider, Grid, Typography } from "@material-ui/core";
 import React, { useMemo } from "react";
+import OrderInfoView from "../../../../domain/order/components/OrderInfoView";
 import {
     AddressFormData,
     ContactInfoFormData,
@@ -30,113 +30,45 @@ const CheckoutSummaryInfoView = (props: Props) => {
 
     const countryName = useMemo(() => {
         const country = countries.find(c => c.code === countryCode);
-        return country?.name;
+        return country ? country.name : "";
     }, [countryCode, countries]);
 
     const shippingMethodDisplayName = useMemo(() => {
-        const method = shippingMethods.find(m => m.name === chosenShippingMethodName);
-        return method?.displayName;
+        const method = shippingMethods.find(
+            m => m.name === chosenShippingMethodName
+        );
+        return method ? method.displayName : "";
     }, [chosenShippingMethodName, shippingMethods]);
 
     const paymentMethodDisplayName = useMemo(() => {
-        const method = paymentMethods.find(m => m.name === chosenPaymentMethodName);
-        return method?.displayName;
+        const method = paymentMethods.find(
+            m => m.name === chosenPaymentMethodName
+        );
+        return method ? method.displayName : "";
     }, [chosenPaymentMethodName, paymentMethods]);
 
-    const isEmptyOrNull = (input: string | null): boolean =>
-        input === null || input.trim().length === 0;
+    const contactInfo = {
+        email: props.contactInfoFormData.email,
+    };
+    const shippingAddress = {
+        firstName: props.shippingAddressFormData.firstName,
+        lastName: props.shippingAddressFormData.lastName,
+        company: props.shippingAddressFormData.company,
+        addressLine1: props.shippingAddressFormData.addressLine1,
+        addressLine2: props.shippingAddressFormData.addressLine2,
+        postalCode: props.shippingAddressFormData.postalCode,
+        city: props.shippingAddressFormData.city,
+        countryName: countryName,
+        phone: props.shippingAddressFormData.phone,
+    };
 
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} container>
-                <Grid item xs={12}>
-                    <Typography variant="h6" color="primary">
-                        Information
-                    </Typography>
-                    <Box mb={1}>
-                        <Divider />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} container>
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.contactInfoFormData.email}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddressFormData.firstName}{" "}
-                            {props.shippingAddressFormData.lastName}
-                        </Typography>
-                    </Grid>
-                    {!isEmptyOrNull(props.shippingAddressFormData.company) && (
-                        <Grid item xs={12}>
-                            <Typography variant="body1">
-                                {props.shippingAddressFormData.company}
-                            </Typography>
-                        </Grid>
-                    )}
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddressFormData.addressLine1}
-                        </Typography>
-                    </Grid>
-                    {!isEmptyOrNull(
-                        props.shippingAddressFormData.addressLine2
-                    ) && (
-                        <Grid item xs={12}>
-                            <Typography variant="body1">
-                                {props.shippingAddressFormData.addressLine2}
-                            </Typography>
-                        </Grid>
-                    )}
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddressFormData.postalCode},{" "}
-                            {props.shippingAddressFormData.city}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="body1">{countryName}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddressFormData.phone}
-                        </Typography>
-                    </Grid>
-                </Grid>
-            </Grid>
-            <Grid item xs={12}>
-                <Grid item xs={12}>
-                    <Typography variant="h6" color="primary">
-                        Shipping
-                    </Typography>
-                    <Box mb={1}>
-                        <Divider />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} container>
-                    <Typography variant="body1">
-                        Shipping method: {shippingMethodDisplayName}
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Grid item xs={12}>
-                <Grid item xs={12}>
-                    <Typography variant="h6" color="primary">
-                        Payment
-                    </Typography>
-                    <Box mb={1}>
-                        <Divider />
-                    </Box>
-                </Grid>
-                <Grid item xs={12} container>
-                    <Typography variant="body1">
-                        Payment method: {paymentMethodDisplayName}
-                    </Typography>
-                </Grid>
-            </Grid>
-        </Grid>
+        <OrderInfoView
+            contactInfo={contactInfo}
+            shippingAddress={shippingAddress}
+            chosenShippingMethodName={shippingMethodDisplayName}
+            chosenPaymentMethodName={paymentMethodDisplayName}
+        />
     );
 };
 

@@ -4,6 +4,12 @@ import {
     setContactInfoFormData,
 } from "./contactInfo";
 import {
+    FetchOrderActionTypes,
+    REQUEST_ORDER,
+    RECEIVE_ORDER,
+    fetchOrder,
+} from "./fetchOrder";
+import {
     OrderFormActionTypes,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
@@ -44,6 +50,7 @@ import {
 } from "./shippingMethodForm";
 
 export {
+    fetchOrder,
     fetchOrderMeta,
     placeOrder,
     setContactInfoFormData,
@@ -56,6 +63,8 @@ export {
 };
 
 export {
+    REQUEST_ORDER,
+    RECEIVE_ORDER,
     REQUEST_ORDER_META,
     RECEIVE_ORDER_META,
     REQUEST_PLACE_ORDER,
@@ -70,6 +79,7 @@ export {
 };
 
 export type OrderActionTypes =
+    | FetchOrderActionTypes
     | OrderMetaActionTypes
     | OrderFormActionTypes
     | ContactInfoFormActionTypes
