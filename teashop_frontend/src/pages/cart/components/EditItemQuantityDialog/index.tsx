@@ -32,25 +32,29 @@ interface Props {
 const EditItemQuantityDialog = (props: Props) => {
     const classes = useStyles();
     const [quantity, setQuantity] = useState(props.cartItem.quantity);
-    const [quantityValid, setQuantityValid] = useState(true);
+    const [quantityPickerValid, setQuantityPickerValid] = useState(true);
+    const [
+        quantityPickerTextInputFocused,
+        setQuantityPickerTextInputFocused,
+    ] = useState(false);
     const [awaitingResponse, setAwaitingResponse] = useState(false);
     const [displayLoading, setDisplayLoading] = useState(false);
     const { open, cartUpdateIsSending, onClose } = props;
 
-    const handleQuantityChanged = (value: number) => setQuantity(value);
-
-    const handleQuantityValid = () => {
-        if (!quantityValid)
-            setQuantityValid(true);
+    const handleQuantityChanged = (value: number, valid: boolean) => {
+        setQuantityPickerValid(valid);
+        if (valid)
+            setQuantity(value);
     };
 
-    const handleQuantityInvalid = () => {
-        if (quantityValid)
-            setQuantityValid(false);
-    };
+    const handleQuantityTextInputFocus = () =>
+        setQuantityPickerTextInputFocused(true);
+
+    const handleQuantityTextInputBlur = () =>
+        setQuantityPickerTextInputFocused(false);
 
     const handleAcceptButtonClicked = () => {
-        if (props.cartItem.quantity !== quantity) {
+        if (props.cartItem.quantity !== quantity && quantityPickerValid) {
             props.updateItemQuantity(
                 props.cartItem.product.id,
                 quantity,
@@ -63,8 +67,11 @@ const EditItemQuantityDialog = (props: Props) => {
     };
 
     const handleClose = () => {
-        if (!props.cartUpdateIsSending)
+        if (!props.cartUpdateIsSending) {
+            setQuantityPickerValid(true);
+            setQuantityPickerTextInputFocused(false);
             props.onClose();
+        }
     };
 
     useEffect(() => {
@@ -92,9 +99,13 @@ const EditItemQuantityDialog = (props: Props) => {
                             pricedByWeight={pricedByWeight(
                                 props.cartItem.product
                             )}
-                            quantityChangedCallback={handleQuantityChanged}
-                            quantityValidCallback={handleQuantityValid}
-                            quantityInvalidCallback={handleQuantityInvalid}
+                            onQuantityChange={handleQuantityChanged}
+                            onQuantityTextInputFocus={
+                                handleQuantityTextInputFocus
+                            }
+                            onQuantityTextInputBlur={
+                                handleQuantityTextInputBlur
+                            }
                         />
                     )}
                 </Grid>
@@ -113,7 +124,11 @@ const EditItemQuantityDialog = (props: Props) => {
                         <Button
                             onClick={handleAcceptButtonClicked}
                             color="primary"
-                            disabled={!quantityValid || displayLoading}
+                            disabled={
+                                displayLoading ||
+                                !quantityPickerValid ||
+                                quantityPickerTextInputFocused
+                            }
                         >
                             Accept
                         </Button>

@@ -4,10 +4,10 @@ import QuantityPickerContainer from "../QuantityPicker/container";
 interface Props {
     initialValue: number,
     pricedByWeight: boolean
-    quantityChangedCallback: (value: number) => void;
-    quantityInvalidCallback?: () => void;
-    quantityValidCallback?: () => void;
+    onQuantityChange: (value: number, valid: boolean) => void;
     interactionDisabled?: boolean;
+    onQuantityTextInputFocus?: () => void;
+    onQuantityTextInputBlur?: () => void;
 }
 
 const ProductQuantityPicker = (props: Props) => {
@@ -18,9 +18,9 @@ const ProductQuantityPicker = (props: Props) => {
                 initialValue={props.initialValue}
                 lowThreshold={50}
                 step={25}
-                quantityChangedCallback={props.quantityChangedCallback}
-                quantityInvalidCallback={props.quantityInvalidCallback}
-                quantityValidCallback={props.quantityValidCallback}
+                onQuantityChange={props.onQuantityChange}
+                onQuantityTextInputFocus={props.onQuantityTextInputFocus}
+                onQuantityTextInputBlur={props.onQuantityTextInputBlur}
                 interactionDisabled={props.interactionDisabled}
             />
         );
@@ -30,9 +30,9 @@ const ProductQuantityPicker = (props: Props) => {
             initialValue={props.initialValue}
             lowThreshold={1}
             step={1}
-            quantityChangedCallback={props.quantityChangedCallback}
-            quantityInvalidCallback={props.quantityInvalidCallback}
-            quantityValidCallback={props.quantityValidCallback}
+            onQuantityChange={props.onQuantityChange}
+            onQuantityTextInputFocus={props.onQuantityTextInputFocus}
+            onQuantityTextInputBlur={props.onQuantityTextInputBlur}
             interactionDisabled={props.interactionDisabled}
         />
     );

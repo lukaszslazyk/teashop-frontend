@@ -6,10 +6,10 @@ interface Props {
     initialValue: number;
     lowThreshold: number;
     step: number;
-    quantityChangedCallback: (value: number) => void;
-    quantityInvalidCallback?: () => void;
-    quantityValidCallback?: () => void;
+    onQuantityChange: (value: number, valid: boolean) => void;
     interactionDisabled?: boolean;
+    onQuantityTextInputFocus?: () => void;
+    onQuantityTextInputBlur?: () => void;
 }
 
 const QuantityPickerContainer = (props: Props) => {
@@ -18,7 +18,7 @@ const QuantityPickerContainer = (props: Props) => {
     );
     const [quantityTextChanged, setQuantityTextChanged] = useState(false);
     const [errorText, setErrorText] = useState("");
-    const [errorPopperHidden, setErrorPopperHidden] = useState(true);
+    const [errorInfoHidden, setErrorInfoHidden] = useState(true);
 
     const handleQuantityTextChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
@@ -27,37 +27,40 @@ const QuantityPickerContainer = (props: Props) => {
         validateQuantityText(value);
     };
 
-    const handleQuantityTextFieldClick = () => {
-        setErrorPopperHidden(false);
+    const handleQuantityTextInputFocused = () => {
+        setErrorInfoHidden(false);
+        if (props.onQuantityTextInputFocus)
+            props.onQuantityTextInputFocus();
     };
 
-    const handleQuantityTextFieldClickAway = () => {
-        setErrorPopperHidden(true);
+    const handleQuantityTextInputBlured = () => {
+        setErrorInfoHidden(true);
         if (quantityTextChanged) {
             setQuantityTextChanged(false);
-            if (!hasError())
-                processQuantityText();
+            processQuantityText();
         }
+        if (props.onQuantityTextInputBlur)
+            props.onQuantityTextInputBlur();
     };
 
     const handleAddClicked = () => {
         setQuantityText((Number(quantityText) + props.step).toString());
-        props.quantityChangedCallback(Number(quantityText) + props.step);
+        props.onQuantityChange(Number(quantityText) + props.step, true);
     };
 
     const handleSubtractClicked = () => {
         setQuantityText((Number(quantityText) - props.step).toString());
-        props.quantityChangedCallback(Number(quantityText) - props.step);
+        props.onQuantityChange(Number(quantityText) - props.step, true);
     };
 
     const hasError = (): boolean =>
         errorText !== "";
 
     const canAdd = (): boolean =>
-        errorText === "";
+        !hasError();
 
     const canSubtract = (): boolean =>
-        errorText === "" && Number(quantityText) > props.lowThreshold;
+        !hasError() && Number(quantityText) > props.lowThreshold;
 
     const validateQuantityText = (input: string) => {
         if (quantityValid(input))
@@ -66,17 +69,11 @@ const QuantityPickerContainer = (props: Props) => {
             handleInvalidQuantity();
     };
 
-    const handleValidQuantity = () => {
-        if (props.quantityValidCallback && errorText !== "")
-            props.quantityValidCallback();
+    const handleValidQuantity = () =>
         setErrorText("");
-    };
 
-    const handleInvalidQuantity = () => {
-        if (props.quantityInvalidCallback && errorText === "")
-            props.quantityInvalidCallback();
+    const handleInvalidQuantity = () =>
         setErrorText("Please provide a number");
-    };
 
     const quantityValid = (input: string): boolean =>
         !empty(input) && representsValidNumber(input);
@@ -87,11 +84,13 @@ const QuantityPickerContainer = (props: Props) => {
         !isNaN(Number(input));
 
     const processQuantityText = () => {
-        if (Number(quantityText) < props.lowThreshold) {
+        if (hasError())
+            props.onQuantityChange(0, false);
+        else if (Number(quantityText) < props.lowThreshold) {
             setQuantityText(props.lowThreshold.toString());
-            props.quantityChangedCallback(props.lowThreshold);
+            props.onQuantityChange(props.lowThreshold, true);
         } else
-            props.quantityChangedCallback(Number(quantityText));
+            props.onQuantityChange(Number(quantityText), true);
     };
 
     return (
@@ -99,15 +98,15 @@ const QuantityPickerContainer = (props: Props) => {
             inputLabel={props.inputLabel}
             quantityText={quantityText}
             errorText={errorText}
-            errorPopperHidden={errorPopperHidden}
+            errorInfoHidden={errorInfoHidden}
             interactionDisabled={
                 props.interactionDisabled ? props.interactionDisabled : false
             }
-            handleQuantityTextChange={handleQuantityTextChange}
-            handleQuantityTextFieldClick={handleQuantityTextFieldClick}
-            handleQuantityTextFieldClickAway={handleQuantityTextFieldClickAway}
-            handleAddClicked={handleAddClicked}
-            handleSubtractClicked={handleSubtractClicked}
+            onQuantityTextChange={handleQuantityTextChange}
+            onQuantityTextInputFocus={handleQuantityTextInputFocused}
+            onQuantityTextInputBlur={handleQuantityTextInputBlured}
+            onAddClicked={handleAddClicked}
+            onSubtractClicked={handleSubtractClicked}
             hasError={hasError}
             canAdd={canAdd}
             canSubtract={canSubtract}
