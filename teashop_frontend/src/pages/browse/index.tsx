@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useParams } from "react-router";
+import { BrowsePageParams } from "../../configuration/routing";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
 import {
     Product,
@@ -24,12 +25,8 @@ interface Props {
     ) => void;
 }
 
-interface Params {
-    categoryName: string | undefined;
-}
-
 const BrowsePage = (props: Props) => {
-    const { categoryName }: Params = useParams();
+    const { categoryName } = useParams<BrowsePageParams>();
     const { loadProductsInCategory } = props;
 
     const categoryIsAvailable = useCallback((): boolean =>

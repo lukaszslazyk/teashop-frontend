@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
+import { ProductDetailsPageParams } from "../../configuration/routing";
 import { Product } from "../../domain/product/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
@@ -26,12 +27,8 @@ interface Props {
     ) => void;
 }
 
-interface Params {
-    productId: string;
-}
-
 const ProductDetailsPage = (props: Props) => {
-    const { productId } = useParams<Params>();
+    const { productId } = useParams<ProductDetailsPageParams>();
     const { loadProduct } = props;
 
     useEffect(() => {

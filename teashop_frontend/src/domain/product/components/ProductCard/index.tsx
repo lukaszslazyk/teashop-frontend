@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import { Product } from "../../models";
@@ -32,7 +33,12 @@ const ProductCard = (props: Props) => {
 
     return (
         <Card className={classes.card}>
-            <CardActionArea component={Link} to={`/product/${product.id}`}>
+            <CardActionArea
+                component={Link}
+                to={routing.productDetails.getPathWithParams({
+                    productId: product.id,
+                })}
+            >
                 <CardMedia
                     className={classes.cardMedia}
                     image={getImageFullUrl(product.imagePath)}

@@ -3,6 +3,7 @@ import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import { OrderFormData } from "../../../../domain/order/models";
 import {
     createRequestCancelToken,
@@ -16,7 +17,10 @@ interface Props {
     errorOccurred: boolean;
     orderPlaced: boolean;
     placedOrderId: string;
-    placeOrder: (orderFormData: OrderFormData, cancelToken: RequestCancelToken) => void;
+    placeOrder: (
+        orderFormData: OrderFormData,
+        cancelToken: RequestCancelToken
+    ) => void;
 }
 
 const PlaceOrderView = (props: Props) => {
@@ -51,7 +55,8 @@ const PlaceOrderView = (props: Props) => {
                     <Typography variant="h4" align="center">
                         {props.isSending && "Please wait"}
                         {!props.isSending && props.errorOccurred && "Sorry"}
-                        {!props.isSending && !props.errorOccurred &&
+                        {!props.isSending &&
+                            !props.errorOccurred &&
                             "Your order has been placed successfully"}
                     </Typography>
                 </Grid>
@@ -63,17 +68,28 @@ const PlaceOrderView = (props: Props) => {
                     )}
                     {!props.isSending && props.errorOccurred && (
                         <Typography variant="h6" align="center">
-                            We've encountered some problems while processing your request.
+                            We've encountered some problems while processing
+                            your request.
                             <br />
                             Please reload page and try again.
                         </Typography>
                     )}
                     {!props.isSending && !props.errorOccurred && (
-                        <Grid item xs={12} container spacing={2} justify="center">
+                        <Grid
+                            item
+                            xs={12}
+                            container
+                            spacing={2}
+                            justify="center"
+                        >
                             <Grid item xs={12}>
                                 <Typography variant="h6" align="center">
                                     Your order number is:{" "}
-                                    <Link to={`/orderDetails/${props.placedOrderId}`}>
+                                    <Link
+                                        to={routing.orderDetails.getPathWithParams(
+                                            { orderId: props.placedOrderId }
+                                        )}
+                                    >
                                         {props.placedOrderId}
                                     </Link>
                                 </Typography>
@@ -83,7 +99,7 @@ const PlaceOrderView = (props: Props) => {
                                     variant="contained"
                                     color="primary"
                                     component={Link}
-                                    to="/"
+                                    to={routing.home}
                                 >
                                     Back to main page
                                 </Button>

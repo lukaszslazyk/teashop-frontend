@@ -1,6 +1,7 @@
 import { Divider, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
@@ -76,7 +77,9 @@ const CartItemListElement = (props: Props) => {
                         <Typography
                             variant="h6"
                             component={Link}
-                            to={`/product/${props.cartItem.product.id}`}
+                            to={routing.productDetails.getPathWithParams({
+                                productId: props.cartItem.product.id,
+                            })}
                             className={classes.productNameText}
                         >
                             {props.cartItem.product.name}

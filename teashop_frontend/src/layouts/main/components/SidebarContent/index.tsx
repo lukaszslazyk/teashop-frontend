@@ -8,6 +8,7 @@ import EmojiFoodBeverageTwoToneIcon from "@material-ui/icons/EmojiFoodBeverageTw
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import React, { useState } from "react";
 import { Link, RouteComponentProps, withRouter } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import useStyles from "../../styles";
 
 interface Props extends RouteComponentProps {}
@@ -28,9 +29,9 @@ const SidebarContent = (props: Props) => {
             <List>
                 <ListItem
                     button
-                    selected={isCurrentLocation("/")}
+                    selected={isCurrentLocation(routing.home)}
                     component={Link}
-                    to="/"
+                    to={routing.home}
                 >
                     <HomeRoundedIcon className={classes.listItemIcon} />
                     <ListItemText primary="Home" />
@@ -47,9 +48,9 @@ const SidebarContent = (props: Props) => {
                     <List>
                         <ListItem
                             button
-                            selected={isCurrentLocation("/browse/GreenTea")}
+                            selected={isCurrentLocation(routing.browseGreenTea)}
                             component={Link}
-                            to="/browse/GreenTea"
+                            to={routing.browseGreenTea}
                             className={classes.nestedListItem}
                         >
                             <EcoIcon
@@ -59,9 +60,9 @@ const SidebarContent = (props: Props) => {
                         </ListItem>
                         <ListItem
                             button
-                            selected={isCurrentLocation("/browse/BlackTea")}
+                            selected={isCurrentLocation(routing.browseBlackTea)}
                             component={Link}
-                            to="/browse/BlackTea"
+                            to={routing.browseBlackTea}
                             className={classes.nestedListItem}
                         >
                             <EcoIcon className={classes.listItemIcon} />
@@ -69,9 +70,9 @@ const SidebarContent = (props: Props) => {
                         </ListItem>
                         <ListItem
                             button
-                            selected={isCurrentLocation("/browse/RedTea")}
+                            selected={isCurrentLocation(routing.browseRedTea)}
                             component={Link}
-                            to="/browse/RedTea"
+                            to={routing.browseRedTea}
                             className={classes.nestedListItem}
                         >
                             <EcoIcon
@@ -81,9 +82,9 @@ const SidebarContent = (props: Props) => {
                         </ListItem>
                         <ListItem
                             button
-                            selected={isCurrentLocation("/browse/WhiteTea")}
+                            selected={isCurrentLocation(routing.browseWhiteTea)}
                             component={Link}
-                            to="/browse/WhiteTea"
+                            to={routing.browseWhiteTea}
                             className={classes.nestedListItem}
                         >
                             <EcoOutlinedIcon className={classes.listItemIcon} />
@@ -93,9 +94,9 @@ const SidebarContent = (props: Props) => {
                 </Collapse>
                 <ListItem
                     button
-                    selected={isCurrentLocation("/browse/Herbs")}
+                    selected={isCurrentLocation(routing.browseHerbs)}
                     component={Link}
-                    to="/browse/Herbs"
+                    to={routing.browseHerbs}
                 >
                     <EcoOutlinedIcon
                         className={`${classes.listItemIcon} ${classes.herbsIcon}`}
@@ -104,9 +105,9 @@ const SidebarContent = (props: Props) => {
                 </ListItem>
                 <ListItem
                     button
-                    selected={isCurrentLocation("/browse/Accessories")}
+                    selected={isCurrentLocation(routing.browseAccessories)}
                     component={Link}
-                    to="/browse/Accessories"
+                    to={routing.browseAccessories}
                 >
                     <EmojiFoodBeverageTwoToneIcon
                         className={classes.listItemIcon}

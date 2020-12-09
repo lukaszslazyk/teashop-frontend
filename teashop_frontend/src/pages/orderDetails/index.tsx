@@ -1,6 +1,7 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useParams } from "react-router";
+import { OrderDetailsPageParams } from "../../configuration/routing";
 import { Order } from "../../domain/order/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
@@ -20,12 +21,8 @@ interface Props {
     fetchOrder: (orderId: string, cancelToken: RequestCancelToken) => void;
 }
 
-interface Params {
-    orderId: string;
-}
-
 const OrderDetailsPage = (props: Props) => {
-    const { orderId } = useParams<Params>();
+    const { orderId } = useParams<OrderDetailsPageParams>();
     const { fetchOrder } = props;
 
     useEffect(() => {

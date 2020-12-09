@@ -1,6 +1,7 @@
 import { Box, Button, Divider, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import { Cart } from "../../../../domain/cart/models";
 import { calculateCartPrice } from "../../../../domain/cart/services/cartService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
@@ -41,7 +42,7 @@ const CartView = (props: Props) => {
                             variant="contained"
                             color="primary"
                             component={Link}
-                            to="/checkout"
+                            to={routing.checkout}
                         >
                             Proceed to checkout
                         </Button>

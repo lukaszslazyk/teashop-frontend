@@ -3,6 +3,7 @@ import EcoIcon from "@material-ui/icons/Eco";
 import MenuIcon from "@material-ui/icons/Menu";
 import React from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import useStyles from "../../styles";
 import CartIconContainer from "../CartIcon/container";
 
@@ -26,7 +27,7 @@ const TopAppBar = (props: Props) => {
                         <MenuIcon />
                     </IconButton>
                 </Box>
-                <Link to="/" className={classes.titleLink}>
+                <Link to={routing.home} className={classes.titleLink}>
                     <EcoIcon/>
                     <Box ml={1}>
                         <Typography variant="h6" noWrap>
