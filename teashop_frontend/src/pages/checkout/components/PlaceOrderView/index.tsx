@@ -36,7 +36,7 @@ const PlaceOrderView = (props: Props) => {
 
     return (
         <Grid container spacing={1} className={classes.root}>
-            <Grid container spacing={1}>
+            <Grid container spacing={3}>
                 <Grid item xs={12} className={classes.statusIconContainer}>
                     {props.isSending && (
                         <CircularProgress
@@ -75,34 +75,38 @@ const PlaceOrderView = (props: Props) => {
                         </Typography>
                     )}
                     {!props.isSending && !props.errorOccurred && (
-                        <Grid
-                            item
-                            xs={12}
-                            container
-                            spacing={2}
-                            justify="center"
-                        >
-                            <Grid item xs={12}>
-                                <Typography variant="h6" align="center">
-                                    Your order number is:{" "}
-                                    <Link
-                                        to={routing.orderDetails.getPathWithParams(
-                                            { orderId: props.placedOrderId }
-                                        )}
-                                    >
+                        <Grid item xs={12}>
+                            <Grid container spacing={2} justify="center">
+                                <Grid item xs={12}>
+                                    <Typography variant="h6" align="center">
+                                        Your order number is:{" "}
                                         {props.placedOrderId}
-                                    </Link>
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Button
-                                    variant="contained"
-                                    color="primary"
-                                    component={Link}
-                                    to={routing.home}
-                                >
-                                    Back to main page
-                                </Button>
+                                    </Typography>
+                                </Grid>
+                                <Grid item xs={12}>
+                                    <Typography variant="body1" align="center">
+                                        You can see order details{" "}
+                                        <Link
+                                            to={routing.orderDetails.getPathWithParams(
+                                                { orderId: props.placedOrderId }
+                                            )}
+                                            className={classes.link}
+                                        >
+                                            here
+                                        </Link>
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        component={Link}
+                                        to={routing.home}
+                                        className={classes.backToMainPageButton}
+                                    >
+                                        Back to main page
+                                    </Button>
+                                </Grid>
                             </Grid>
                         </Grid>
                     )}
