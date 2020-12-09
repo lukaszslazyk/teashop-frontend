@@ -10,6 +10,7 @@ import {
 import React from "react";
 import { Link } from "react-router-dom";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import { Product } from "../../models";
 import { pricedByWeight } from "../../services/productService";
 import useStyles from "./styles";
@@ -23,10 +24,10 @@ const ProductCard = (props: Props) => {
     const classes = useStyles();
 
     const getPriceTag = () => {
+        const priceText = getPriceTextWithCurrency(product.price);
         if (pricedByWeight(product))
-            return `${product.price} EUR / ${product.quantityPerPrice}g`;
-
-        return `${product.price} EUR`;
+            return `${priceText} / ${product.quantityPerPrice}g`;
+        return priceText;
     };
 
     return (

@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { ReactNode } from "react";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import PriceInfoPanelContainer from "../PriceInfoPanel/container";
 import useStyles from "./styles";
 
@@ -32,7 +33,7 @@ const ProgressStepLayout = (props: Props) => {
                             </Typography>
                             <Box ml={2}>
                                 <Typography variant="body1">
-                                    {props.totalPrice.toFixed(2)} EUR
+                                    {getPriceTextWithCurrency(props.totalPrice)}
                                 </Typography>
                             </Box>
                         </AccordionSummary>

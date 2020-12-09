@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Cart } from "../../../../domain/cart/models";
 import { calculateCartPrice } from "../../../../domain/cart/services/cartService";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import CartItemList from "../CartItemList";
 import useStyles from "./styles";
 
@@ -30,7 +31,7 @@ const CartView = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 <Typography variant="h5" className={classes.totalPriceText}>
-                    Total price: {calculateCartPrice(props.cart).toFixed(2)} EUR
+                    Total price: {getPriceTextWithCurrency(calculateCartPrice(props.cart))}
                 </Typography>
             </Grid>
             <Grid item xs={12}>

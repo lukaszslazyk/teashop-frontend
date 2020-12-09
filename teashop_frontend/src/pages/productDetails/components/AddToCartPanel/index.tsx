@@ -62,7 +62,12 @@ const AddToCartPanel = (props: Props) => {
 
     return (
         <Grid container spacing={3}>
-            <Grid item xs={12}>
+            <Grid
+                item
+                xs={12}
+                container
+                className={classes.productQuantityPickerContainer}
+            >
                 <ProductQuantityPicker
                     initialValue={props.product.quantityPerPrice}
                     pricedByWeight={pricedByWeight(props.product)}
@@ -71,7 +76,12 @@ const AddToCartPanel = (props: Props) => {
                     onQuantityTextInputBlur={handleQuantityTextInputBlur}
                 />
             </Grid>
-            <Grid item xs={12}>
+            <Grid
+                item
+                xs={12}
+                container
+                className={classes.addToCartButtonContainer}
+            >
                 <Button
                     variant="contained"
                     color="primary"

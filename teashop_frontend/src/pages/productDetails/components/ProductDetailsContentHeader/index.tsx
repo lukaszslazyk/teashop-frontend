@@ -1,8 +1,9 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useMemo, useState } from "react";
+import React, { useState } from "react";
 import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
 import { Product } from "../../../../domain/product/models";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import AddToCartPanelContainer from "../AddToCartPanel/container";
 import useStyles from "./styles";
 
@@ -15,12 +16,7 @@ const ProductDetailsContentHeader = (props: Props) => {
     const [quantity, setQuantity] = useState(props.product.quantityPerPrice);
     const { product } = props;
 
-    const price = useMemo((): number =>
-        calculateItemPriceWith(product, quantity)
-    , [product, quantity]);
-
-    const handleQuantityChanged = (value: number) =>
-        setQuantity(value);
+    const handleQuantityChanged = (value: number) => setQuantity(value);
 
     const ProductName = () => (
         <Grid item xs={12}>
@@ -60,7 +56,9 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 variant="h4"
                                 className={classes.priceText}
                             >
-                                {price.toFixed(2)} EUR
+                                {getPriceTextWithCurrency(
+                                    calculateItemPriceWith(product, quantity)
+                                )}
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>

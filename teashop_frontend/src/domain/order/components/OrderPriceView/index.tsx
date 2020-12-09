@@ -1,5 +1,6 @@
 import { Grid, Typography } from "@material-ui/core";
 import React from "react";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import useStyles from "./styles";
 
 interface Props {
@@ -23,7 +24,7 @@ const OrderPriceView = (props: Props) => {
                 </Grid>
                 <Grid item md={2} sm={3} xs={6}>
                     <Typography variant="body1" className={classes.valueText}>
-                        {props.shippingPrice.toFixed(2)} EUR
+                        {getPriceTextWithCurrency(props.shippingPrice)}
                     </Typography>
                 </Grid>
             </Grid>
@@ -35,7 +36,7 @@ const OrderPriceView = (props: Props) => {
                 </Grid>
                 <Grid item md={2} sm={3} xs={6}>
                     <Typography variant="h5" className={classes.valueText}>
-                        {props.totalPrice.toFixed(2)} EUR
+                        {getPriceTextWithCurrency(props.totalPrice)}
                     </Typography>
                 </Grid>
             </Grid>

@@ -5,6 +5,7 @@ import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import {
     createRequestCancelToken,
     RequestCancelToken,
@@ -29,8 +30,7 @@ const CartItemListElement = (props: Props) => {
     const [openEditQuantityDialog, setOpenEditQuantityDialog] = useState(false);
     const { cartUpdateIsSending } = props;
 
-    const handleEditClicked = () =>
-        setOpenEditQuantityDialog(true);
+    const handleEditClicked = () => setOpenEditQuantityDialog(true);
 
     const handleEditQuantityDialogClose = () =>
         setOpenEditQuantityDialog(false);
@@ -105,7 +105,9 @@ const CartItemListElement = (props: Props) => {
                             variant="body1"
                             className={classes.valueText}
                         >
-                            {calculateItemPrice(props.cartItem).toFixed(2)} EUR
+                            {getPriceTextWithCurrency(
+                                calculateItemPrice(props.cartItem)
+                            )}
                         </Typography>
                     </Grid>
                     <Grid item>

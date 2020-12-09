@@ -1,6 +1,7 @@
 import { FormControlLabel, Paper, Radio, Typography } from "@material-ui/core";
 import React from "react";
 import { ShippingMethod } from "../../../../domain/order/models";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import useStyles from "./styles";
 
 interface Props {
@@ -27,7 +28,7 @@ const ShippingMethodFormRadio = (props: Props) => {
                 align="right"
                 className={classes.grow}
             >
-                {props.shippingMethod.price} EUR
+                {getPriceTextWithCurrency(props.shippingMethod.price)}
             </Typography>
         </Paper>
     );
