@@ -25,7 +25,7 @@ npm install
 ```
 
 To run the application after setup:
-
+s
 ```
 npm start
 ```
@@ -47,3 +47,6 @@ docker run -p 3000:80 teashop_frontend
 ```
 
 You can visit the application in a browser at: [http://localhost:3000](http://localhost:3000)
+
+## Notes
+- Additional commands are configured for linting with eslint in this project. You can run linting by using command: ```npm run lint``` in teashop_frontend directory. You can also run linting with automatix fixing by using command: ```npm run lint-fix```.
