@@ -1,15 +1,14 @@
-import { CircularProgress } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Cart } from "../../domain/cart/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
+import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import {
     RequestCancelToken,
     createRequestCancelToken,
 } from "../../shared/services/requestCancelTokenService";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
-import useStyles from "./styles";
 
 interface Props {
     cart: Cart;
@@ -29,33 +28,21 @@ interface Props {
 }
 
 const CartPage = (props: Props) => {
-    const classes = useStyles();
-    const [timeoutPassed, setTimeoutPassed] = useState(false);
     const { cartIsFetching, cartUpdateIsSending, getSessionCart } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        setTimeoutPassed(false);
         getSessionCart(cancelToken);
         return () => cancelToken.cancel();
     }, [getSessionCart]);
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setTimeoutPassed(true);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, [timeoutPassed]);
 
     const cartIsEmpty = (): boolean =>
         props.cart.items.length === 0;
 
     return (
         <MainLayout>
-            {cartIsFetching && timeoutPassed && (
-                <div className={classes.progressContainer}>
-                    <CircularProgress />
-                </div>
+            {cartIsFetching && (
+                <PageLoadingProgress />
             )}
             {!cartIsFetching && !cartUpdateIsSending && props.errorOccurred && (
                 <ErrorInfo errorMessage="Your cart is currently unavailable. Please try again later." />

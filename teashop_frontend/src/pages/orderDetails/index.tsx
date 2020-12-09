@@ -1,9 +1,10 @@
-import { Box, CircularProgress, Divider, Grid, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { Box, Divider, Grid, Typography } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import { Order } from "../../domain/order/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
+import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import {
     createRequestCancelToken,
     RequestCancelToken,
@@ -24,28 +25,19 @@ interface Params {
 }
 
 const OrderDetailsPage = (props: Props) => {
-    const { orderId }: Params = useParams();
-    const [timeoutPassed, setTimeoutPassed] = useState(false);
+    const { orderId } = useParams<Params>();
     const { fetchOrder } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        setTimeoutPassed(false);
         fetchOrder(orderId, cancelToken);
         return () => cancelToken.cancel();
     }, [orderId, fetchOrder]);
 
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setTimeoutPassed(true);
-        }, 1000);
-        return () => clearTimeout(timer);
-    }, [setTimeoutPassed]);
-
     return (
         <MainLayout>
-            {props.isFetching && timeoutPassed && (
-                <CircularProgress />
+            {props.isFetching && (
+                <PageLoadingProgress />
             )}
             {!props.isFetching && props.errorOccurred && (
                 <ErrorInfo errorMessage="Order is currently unavailable." />
