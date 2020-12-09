@@ -4,7 +4,7 @@ import CheckoutMainView from ".";
 
 const mapStateToProps = (state: RootState) => ({
     cart: state.cart.cart,
-    cartFetchedYet: state.cart.fetchedYet,
+    cartFetchedYet: state.cart.cartFetchedYet,
 });
 
 export default connect(mapStateToProps)(CheckoutMainView);
