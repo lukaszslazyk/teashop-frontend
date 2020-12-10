@@ -1,30 +1,44 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { AddressFormData, ContactInfoFormData } from "../../../../domain/order/models";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
+import {
+    setContactInfoFormData,
+    setShippingAddressFormData,
+} from "../../../../domain/order/actions";
+import {
+    AddressFormData,
+    ContactInfoFormData,
+} from "../../../../domain/order/models";
 import ContactInfoForm from "../ContactInfoForm";
 import NavButtonsPanel from "../NavButtonsPanel";
-import ShippingAddressFormContainer from "../ShippingAddressForm/container";
+import ShippingAddressForm from "../ShippingAddressForm";
 
 interface Props {
-    contactInfoFormData: ContactInfoFormData,
-    shippingAddressFormData: AddressFormData,
-    setContactInfoFormData: (value: ContactInfoFormData) => void;
-    setShippingAddressFormData: (value: AddressFormData) => void;
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
 }
 
 const InformationStepView = (props: Props) => {
+    const contactInfoFormData = useSelector(
+        (state: RootState) => state.order.orderFormData.contactInfoFormData
+    );
+    const shippingAddressFormData = useSelector(
+        (state: RootState) => state.order.orderFormData.shippingAddressFormData
+    );
+    const dispatch = useDispatch();
     const [contactInfoFormValid, setContactInfoFormValid] = useState(false);
-    const [shippingAddressFormValid, setShippingAddressFormValid] = useState(false);
+    const [shippingAddressFormValid, setShippingAddressFormValid] = useState(
+        false
+    );
     const { onContinueButtonClick } = props;
 
     const contactInfoFormMethods = useForm<ContactInfoFormData>({
-        defaultValues: props.contactInfoFormData
+        defaultValues: contactInfoFormData,
     });
     const shippingAddressFormMethods = useForm<AddressFormData>({
-        defaultValues: props.shippingAddressFormData
+        defaultValues: shippingAddressFormData,
     });
 
     const handleContinueButtonClick = () => {
@@ -35,12 +49,14 @@ const InformationStepView = (props: Props) => {
     };
 
     const onContactInfoFormSubmit = () => {
-        props.setContactInfoFormData(contactInfoFormMethods.getValues());
+        dispatch(setContactInfoFormData(contactInfoFormMethods.getValues()));
         setContactInfoFormValid(true);
     };
 
     const onShippingAddressFormSubmit = () => {
-        props.setShippingAddressFormData(shippingAddressFormMethods.getValues());
+        dispatch(
+            setShippingAddressFormData(shippingAddressFormMethods.getValues())
+        );
         setShippingAddressFormValid(true);
     };
 
@@ -58,7 +74,7 @@ const InformationStepView = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 <FormProvider {...shippingAddressFormMethods}>
-                    <ShippingAddressFormContainer />
+                    <ShippingAddressForm />
                 </FormProvider>
             </Grid>
             <Grid item xs={12}>

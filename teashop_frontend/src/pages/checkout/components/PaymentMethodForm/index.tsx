@@ -1,21 +1,22 @@
 import { Box, Divider, Grid, RadioGroup, Typography } from "@material-ui/core";
 import React, { ChangeEvent, ReactNode } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
+import { setChosenPaymentMethod } from "../../../../domain/order/actions";
 import PaymentCardRadio from "../PaymentCardRadio";
 
 interface Props {
-    chosenPaymentMethodName: string;
-    setChosenPaymentMethod: (paymentMethodName: string) => void;
     paymentCardFormComponent: ReactNode;
 }
 
 const PaymentMethodForm = (props: Props) => {
-    const {
-        chosenPaymentMethodName,
-        setChosenPaymentMethod,
-    } = props;
+    const chosenPaymentMethodName = useSelector(
+        (state: RootState) => state.order.orderFormData.chosenPaymentMethodName
+    );
+    const dispatch = useDispatch();
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setChosenPaymentMethod(event.target.value);
+        dispatch(setChosenPaymentMethod(event.target.value));
     };
 
     if (chosenPaymentMethodName === "")
@@ -38,7 +39,9 @@ const PaymentMethodForm = (props: Props) => {
                 >
                     <PaymentCardRadio
                         currentValue={chosenPaymentMethodName}
-                        paymentCardFormComponent={props.paymentCardFormComponent}
+                        paymentCardFormComponent={
+                            props.paymentCardFormComponent
+                        }
                     />
                 </RadioGroup>
             </Grid>

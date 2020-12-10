@@ -1,25 +1,24 @@
 import { Grid, Step, StepLabel, Stepper } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-import { Cart } from "../../../../domain/cart/models";
-import InformationStepViewContainer from "../InformationStepView/container";
-import PaymentStepViewContainer from "../PaymentStepView/container";
-import PlaceOrderViewContainer from "../PlaceOrderView/container";
-import ProgressStepLayoutContainer from "../ProgressStepLayout/container";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
+import InformationStepView from "../InformationStepView";
+import PaymentStepView from "../PaymentStepView";
+import PlaceOrderView from "../PlaceOrderView";
+import ProgressStepLayout from "../ProgressStepLayout";
 import ShippingStepView from "../ShippingStepView";
 import SummaryStepView from "../SummaryStepView";
 import useStyles from "./styles";
 
-interface Props {
-    cart: Cart;
-    cartFetchedYet: boolean;
-}
-
-const CheckoutMainView = (props: Props) => {
-    const classes = useStyles();
-    const history = useHistory();
+const CheckoutMainView = () => {
+    const cart = useSelector((state: RootState) => state.cart.cart);
+    const cartFetchedYet = useSelector(
+        (state: RootState) => state.cart.cartFetchedYet
+    );
     const [activeStep, setActiveStep] = useState(0);
-    const { cart, cartFetchedYet } = props;
+    const history = useHistory();
+    const classes = useStyles();
 
     const handleContinueButtonClicked = () => {
         setActiveStep(activeStep => activeStep + 1);
@@ -61,9 +60,9 @@ const CheckoutMainView = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 {activeStep < 3 && (
-                    <ProgressStepLayoutContainer>
+                    <ProgressStepLayout>
                         {activeStep === 0 && (
-                            <InformationStepViewContainer
+                            <InformationStepView
                                 onContinueButtonClick={
                                     handleContinueButtonClicked
                                 }
@@ -79,14 +78,14 @@ const CheckoutMainView = (props: Props) => {
                             />
                         )}
                         {activeStep === 2 && (
-                            <PaymentStepViewContainer
+                            <PaymentStepView
                                 onContinueButtonClick={
                                     handleContinueButtonClicked
                                 }
                                 onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                    </ProgressStepLayoutContainer>
+                    </ProgressStepLayout>
                 )}
                 {activeStep === 3 && (
                     <SummaryStepView
@@ -94,7 +93,7 @@ const CheckoutMainView = (props: Props) => {
                         onBackButtonClick={handleBackButtonClicked}
                     />
                 )}
-                {activeStep === 4 && <PlaceOrderViewContainer />}
+                {activeStep === 4 && <PlaceOrderView />}
             </Grid>
         </Grid>
     );

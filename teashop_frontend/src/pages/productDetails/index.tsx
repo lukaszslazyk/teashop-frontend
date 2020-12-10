@@ -1,63 +1,47 @@
 import { Grid } from "@material-ui/core";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { ProductDetailsPageParams } from "../../configuration/routing";
-import { Product } from "../../domain/product/models";
+import { fetchProductById } from "../../domain/product/actions";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../shared/services/requestCancelTokenService";
+import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
 import ProductDetailsContentHeader from "./components/ProductDetailsContentHeader";
 
-interface Props {
-    product: Product | null;
-    productIsFetching: boolean;
-    productErrorOccurred: boolean;
-    cartIsSending: boolean;
-    cartErrorOccurred: boolean;
-    loadProduct: (productId: string, cancelToken: RequestCancelToken) => void;
-    addItemToSessionCart: (
-        product: Product,
-        quantity: number,
-        cancelToken: RequestCancelToken
-    ) => void;
-}
-
-const ProductDetailsPage = (props: Props) => {
+const ProductDetailsPage = () => {
+    const product = useSelector((state: RootState) => state.product.product);
+    const productIsFetching = useSelector(
+        (state: RootState) => state.product.isFetching
+    );
+    const productErrorOccurred = useSelector(
+        (state: RootState) => state.product.errorOccurred
+    );
+    const dispatch = useDispatch();
     const { productId } = useParams<ProductDetailsPageParams>();
-    const { loadProduct } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        loadProduct(productId, cancelToken);
+        dispatch(fetchProductById(productId, cancelToken));
         return () => cancelToken.cancel();
-    }, [productId, loadProduct]);
+    }, [productId, dispatch]);
 
     return (
         <MainLayout>
-            {props.productIsFetching && (
-                <PageLoadingProgress />
-            )}
-            {!props.productIsFetching && props.productErrorOccurred && (
+            {productIsFetching && <PageLoadingProgress />}
+            {!productIsFetching && productErrorOccurred && (
                 <ErrorInfo errorMessage="Product is currently unavailable." />
             )}
-            {!props.productIsFetching &&
-                !props.productErrorOccurred &&
-                props.product && (
+            {!productIsFetching && !productErrorOccurred && product && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <ProductDetailsContentHeader
-                            product={props.product}
-                        />
+                        <ProductDetailsContentHeader product={product} />
                     </Grid>
                     <Grid item xs={12}>
-                        <ProductDetailsContentBody
-                            product={props.product}
-                        />
+                        <ProductDetailsContentBody product={product} />
                     </Grid>
                 </Grid>
             )}

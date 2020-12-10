@@ -2,71 +2,72 @@ import { Button, CircularProgress, Grid, Typography } from "@material-ui/core";
 import CancelIcon from "@material-ui/icons/Cancel";
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../configuration/routing";
-import { OrderFormData } from "../../../../domain/order/models";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../../../shared/services/requestCancelTokenService";
+import { placeOrder } from "../../../../domain/order/actions";
+import { createRequestCancelToken } from "../../../../shared/services/requestCancelTokenService";
 import useStyles from "./styles";
 
-interface Props {
-    orderFormData: OrderFormData;
-    isSending: boolean;
-    errorOccurred: boolean;
-    orderPlaced: boolean;
-    placedOrderId: string;
-    placeOrder: (
-        orderFormData: OrderFormData,
-        cancelToken: RequestCancelToken
-    ) => void;
-}
-
-const PlaceOrderView = (props: Props) => {
+const PlaceOrderView = () => {
+    const orderFormData = useSelector(
+        (state: RootState) => state.order.orderFormData
+    );
+    const orderFormIsSending = useSelector(
+        (state: RootState) => state.order.orderFormIsSending
+    );
+    const errorOccurred = useSelector(
+        (state: RootState) => state.order.orderFormErrorOccurred
+    );
+    const orderPlaced = useSelector(
+        (state: RootState) => state.order.orderPlaced
+    );
+    const placedOrderId = useSelector(
+        (state: RootState) => state.order.placedOrderId
+    );
+    const dispatch = useDispatch();
     const classes = useStyles();
-    const { orderFormData, orderPlaced, placeOrder } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         if (!orderPlaced)
-            placeOrder(orderFormData, cancelToken);
+            dispatch(placeOrder(orderFormData, cancelToken));
         return () => cancelToken.cancel();
-    }, [orderFormData, orderPlaced, placeOrder]);
+    }, [orderFormData, orderPlaced, dispatch]);
 
     return (
         <Grid container spacing={1} className={classes.root}>
             <Grid container spacing={3}>
                 <Grid item xs={12} className={classes.statusIconContainer}>
-                    {props.isSending && (
+                    {orderFormIsSending && (
                         <CircularProgress
                             size={100}
                             className={classes.progress}
                         />
                     )}
-                    {!props.isSending && props.errorOccurred && (
+                    {!orderFormIsSending && errorOccurred && (
                         <CancelIcon className={classes.failIcon} />
                     )}
-                    {!props.isSending && !props.errorOccurred && (
+                    {!orderFormIsSending && !errorOccurred && (
                         <CheckCircleIcon className={classes.successIcon} />
                     )}
                 </Grid>
                 <Grid item xs={12}>
                     <Typography variant="h4" align="center">
-                        {props.isSending && "Please wait"}
-                        {!props.isSending && props.errorOccurred && "Sorry"}
-                        {!props.isSending &&
-                            !props.errorOccurred &&
+                        {orderFormIsSending && "Please wait"}
+                        {!orderFormIsSending && errorOccurred && "Sorry"}
+                        {!orderFormIsSending && !errorOccurred &&
                             "Your order has been placed successfully"}
                     </Typography>
                 </Grid>
                 <Grid item xs={12}>
-                    {props.isSending && (
+                    {orderFormIsSending && (
                         <Typography variant="h6" align="center">
                             We are processing your order
                         </Typography>
                     )}
-                    {!props.isSending && props.errorOccurred && (
+                    {!orderFormIsSending && errorOccurred && (
                         <Typography variant="h6" align="center">
                             We've encountered some problems while processing
                             your request.
@@ -74,13 +75,12 @@ const PlaceOrderView = (props: Props) => {
                             Please reload page and try again.
                         </Typography>
                     )}
-                    {!props.isSending && !props.errorOccurred && (
+                    {!orderFormIsSending && !errorOccurred && (
                         <Grid item xs={12}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item xs={12}>
                                     <Typography variant="h6" align="center">
-                                        Your order number is:{" "}
-                                        {props.placedOrderId}
+                                        Your order number is: {placedOrderId}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
@@ -88,7 +88,7 @@ const PlaceOrderView = (props: Props) => {
                                         You can see order details{" "}
                                         <Link
                                             to={routing.orderDetails.getPathWithParams(
-                                                { orderId: props.placedOrderId }
+                                                { orderId: placedOrderId }
                                             )}
                                             className={classes.link}
                                         >

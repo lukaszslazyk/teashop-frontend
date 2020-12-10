@@ -1,31 +1,32 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import CheckoutSummaryInfoViewContainer from "../CheckoutSummaryInfoView/container";
-import CheckoutSummaryItemsViewContainer from "../CheckoutSummaryItemsView/container";
-import CheckoutSummaryPriceViewContainer from "../CheckoutSummaryPriceView/container";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
+import CheckoutSummaryInfoView from "../CheckoutSummaryInfoView";
+import CheckoutSummaryItemsView from "../CheckoutSummaryItemsView";
+import CheckoutSummaryPriceView from "../CheckoutSummaryPriceView";
 
-interface Props {
-    chosenShippingMethodName: string;
-    chosenPaymentMethodName: string;
-}
+const CheckoutSummary = () => {
+    const chosenShippingMethodName = useSelector(
+        (state: RootState) => state.order.orderFormData.chosenShippingMethodName
+    );
+    const chosenPaymentMethodName = useSelector(
+        (state: RootState) => state.order.orderFormData.chosenPaymentMethodName
+    );
 
-const CheckoutSummary = (props: Props) => {
-    if (
-        props.chosenShippingMethodName === "" ||
-        props.chosenPaymentMethodName === ""
-    )
+    if (chosenShippingMethodName === "" || chosenPaymentMethodName === "")
         return null;
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12}>
-                <CheckoutSummaryInfoViewContainer />
+                <CheckoutSummaryInfoView />
             </Grid>
             <Grid item xs={12}>
-                <CheckoutSummaryItemsViewContainer />
+                <CheckoutSummaryItemsView />
             </Grid>
             <Grid item xs={12}>
-                <CheckoutSummaryPriceViewContainer />
+                <CheckoutSummaryPriceView />
             </Grid>
         </Grid>
     );

@@ -1,30 +1,30 @@
 import { Box, Divider, Grid, RadioGroup, Typography } from "@material-ui/core";
 import React, { ChangeEvent, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
+import {
+    setChosenShippingMethod,
+    setShippingPrice,
+} from "../../../../domain/order/actions";
 import { ShippingMethod } from "../../../../domain/order/models";
 import ShippingMethodFormRadio from "../ShippingMethodFormRadio";
 
-interface Props {
-    shippingMethods: ShippingMethod[];
-    chosenShippingMethodName: string;
-    setChosenShippingMethod: (shippingMethodName: string) => void;
-    setShippingPrice: (value: number) => void;
-}
-
-const ShippingMethodForm = (props: Props) => {
-    const {
-        shippingMethods,
-        chosenShippingMethodName,
-        setChosenShippingMethod,
-        setShippingPrice,
-    } = props;
+const ShippingMethodForm = () => {
+    const shippingMethods = useSelector(
+        (state: RootState) => state.order.orderMeta.shippingMethods
+    );
+    const chosenShippingMethodName = useSelector(
+        (state: RootState) => state.order.orderFormData.chosenShippingMethodName
+    );
+    const dispatch = useDispatch();
 
     const findShippingMethodWithName = (
         name: string
     ): ShippingMethod | undefined =>
-        props.shippingMethods.find(method => method.name === name);
+        shippingMethods.find(method => method.name === name);
 
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        setChosenShippingMethod(event.target.value);
+        dispatch(setChosenShippingMethod(event.target.value));
     };
 
     useEffect(() => {
@@ -32,8 +32,8 @@ const ShippingMethodForm = (props: Props) => {
             method => method.name === chosenShippingMethodName
         );
         if (shippingMethod)
-            setShippingPrice(shippingMethod.price);
-    }, [chosenShippingMethodName, shippingMethods, setShippingPrice]);
+            dispatch(setShippingPrice(shippingMethod.price));
+    }, [chosenShippingMethodName, shippingMethods, dispatch]);
 
     if (chosenShippingMethodName === "")
         return null;

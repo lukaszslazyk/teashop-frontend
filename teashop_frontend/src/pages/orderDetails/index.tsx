@@ -1,45 +1,42 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { OrderDetailsPageParams } from "../../configuration/routing";
-import { Order } from "../../domain/order/models";
+import { fetchOrder } from "../../domain/order/actions";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../shared/services/requestCancelTokenService";
+import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import OrderDetailsInfoView from "./components/OrderDetailsInfoView";
 import OrderDetailsItemsView from "./components/OrderDetailsItemsView";
 import OrderDetailsPriceView from "./components/OrderDetailsPriceView";
 
-interface Props {
-    order: Order;
-    isFetching: boolean;
-    errorOccurred: boolean;
-    fetchOrder: (orderId: string, cancelToken: RequestCancelToken) => void;
-}
-
-const OrderDetailsPage = (props: Props) => {
+const OrderDetailsPage = () => {
+    const order = useSelector((state: RootState) => state.order.order);
+    const orderIsFetching = useSelector(
+        (state: RootState) => state.order.orderIsFetching
+    );
+    const errorOccurred = useSelector(
+        (state: RootState) => state.order.orderErrorOccurred
+    );
+    const dispatch = useDispatch();
     const { orderId } = useParams<OrderDetailsPageParams>();
-    const { fetchOrder } = props;
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        fetchOrder(orderId, cancelToken);
+        dispatch(fetchOrder(orderId, cancelToken));
         return () => cancelToken.cancel();
-    }, [orderId, fetchOrder]);
+    }, [orderId, dispatch]);
 
     return (
         <MainLayout>
-            {props.isFetching && (
-                <PageLoadingProgress />
-            )}
-            {!props.isFetching && props.errorOccurred && (
+            {orderIsFetching && <PageLoadingProgress />}
+            {!orderIsFetching && errorOccurred && (
                 <ErrorInfo errorMessage="Order is currently unavailable." />
             )}
-            {!props.isFetching && !props.errorOccurred && (
+            {!orderIsFetching && !errorOccurred && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Typography variant="h5" color="primary">
@@ -50,13 +47,13 @@ const OrderDetailsPage = (props: Props) => {
                         </Box>
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderDetailsInfoView order={props.order} />
+                        <OrderDetailsInfoView order={order} />
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderDetailsItemsView order={props.order} />
+                        <OrderDetailsItemsView order={order} />
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderDetailsPriceView order={props.order} />
+                        <OrderDetailsPriceView order={order} />
                     </Grid>
                 </Grid>
             )}

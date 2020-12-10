@@ -1,13 +1,12 @@
 import React from "react";
-import { Cart } from "../../../../domain/cart/models";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import OrderItemsView from "../../../../domain/order/components/OrderItemsView";
 
-interface Props {
-    cart: Cart;
-}
+const CheckoutSummaryItemsView = () => {
+    const cart = useSelector((state: RootState) => state.cart.cart);
 
-const CheckoutSummaryItemsView = (props: Props) => (
-    <OrderItemsView cart={props.cart} />
-);
+    return <OrderItemsView cart={cart} />;
+};
 
 export default CheckoutSummaryItemsView;

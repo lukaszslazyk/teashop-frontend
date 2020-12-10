@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
-import OrderSummaryContainer from "../CheckoutSummary/container";
+import OrderSummary from "../CheckoutSummary";
 import NavButtonsPanel from "../NavButtonsPanel";
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 const SummaryStepView = (props: Props) => (
     <Grid container spacing={4}>
         <Grid item xs={12}>
-            <OrderSummaryContainer />
+            <OrderSummary />
         </Grid>
         <Grid item xs={12}>
             <NavButtonsPanel

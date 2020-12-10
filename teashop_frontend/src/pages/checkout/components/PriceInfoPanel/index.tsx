@@ -1,15 +1,20 @@
 import { Divider, Grid, Typography } from "@material-ui/core";
 import React from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import useStyles from "./styles";
 
-interface Props {
-    totalPrice: number;
-    cartPrice: number;
-    shippingPrice: number;
-}
-
-const PriceInfoPanel = (props: Props) => {
+const PriceInfoPanel = () => {
+    const totalPrice = useSelector(
+        (state: RootState) => state.order.totalPrice
+    );
+    const cartPrice = useSelector(
+        (state: RootState) => state.order.cartPrice
+    );
+    const shippingPrice = useSelector(
+        (state: RootState) => state.order.shippingPrice
+    );
     const classes = useStyles();
 
     return (
@@ -21,7 +26,7 @@ const PriceInfoPanel = (props: Props) => {
                     align="right"
                     className={classes.grow}
                 >
-                    {getPriceTextWithCurrency(props.cartPrice)}
+                    {getPriceTextWithCurrency(cartPrice)}
                 </Typography>
             </Grid>
             <Grid item container>
@@ -31,9 +36,9 @@ const PriceInfoPanel = (props: Props) => {
                     align="right"
                     className={classes.grow}
                 >
-                    {props.shippingPrice === 0
+                    {shippingPrice === 0
                         ? "-"
-                        : getPriceTextWithCurrency(props.shippingPrice)}
+                        : getPriceTextWithCurrency(shippingPrice)}
                 </Typography>
             </Grid>
             <Grid item xs={12} className={classes.dividerContainer}>
@@ -42,7 +47,7 @@ const PriceInfoPanel = (props: Props) => {
             <Grid item container>
                 <Typography variant="h6">Total:</Typography>
                 <Typography variant="h6" align="right" className={classes.grow}>
-                    {getPriceTextWithCurrency(props.totalPrice)}
+                    {getPriceTextWithCurrency(totalPrice)}
                 </Typography>
             </Grid>
         </Grid>

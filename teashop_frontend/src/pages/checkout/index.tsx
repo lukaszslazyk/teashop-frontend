@@ -1,61 +1,61 @@
 import React, { useEffect } from "react";
-import { Cart } from "../../domain/cart/models";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { calculateCartPrice } from "../../domain/cart/services/cartService";
+import { fetchOrderMeta, setCartPrice } from "../../domain/order/actions";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../shared/services/requestCancelTokenService";
-import CheckoutMainViewContainer from "./components/CheckoutMainView/container";
+import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import CheckoutMainView from "./components/CheckoutMainView";
 
-interface Props {
-    orderMetaIsFetching: boolean;
-    orderMetaErrorOccurred: boolean;
-    cart: Cart;
-    cartFetchedYet: boolean;
-    cartErrorOccurred: boolean;
-    fetchOrderMeta: (cancelToken: RequestCancelToken) => void;
-    setCartPrice: (value: number) => void;
-}
-
-const CheckoutPage = (props: Props) => {
-    const { cart, cartFetchedYet, fetchOrderMeta, setCartPrice } = props;
+const CheckoutPage = () => {
+    const orderMetaIsFetching = useSelector(
+        (state: RootState) => state.order.orderMetaIsFetching
+    );
+    const orderMetaErrorOccurred = useSelector(
+        (state: RootState) => state.order.orderMetaErrorOccurred
+    );
+    const cart = useSelector((state: RootState) => state.cart.cart);
+    const cartFetchedYet = useSelector(
+        (state: RootState) => state.cart.cartFetchedYet
+    );
+    const cartErrorOccurred = useSelector(
+        (state: RootState) => state.cart.errorOccurred
+    );
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        fetchOrderMeta(cancelToken);
+        dispatch(fetchOrderMeta(cancelToken));
         return () => cancelToken.cancel();
-    }, [fetchOrderMeta]);
+    }, [dispatch]);
 
     useEffect(() => {
         if (cartFetchedYet && cart.items.length > 0)
-            setCartPrice(calculateCartPrice(cart));
-    }, [cart, cartFetchedYet, setCartPrice]);
+            dispatch(setCartPrice(calculateCartPrice(cart)));
+    }, [cart, cartFetchedYet, dispatch]);
 
     const dataIsFetching = (): boolean =>
-        props.orderMetaIsFetching && !cartFetchedYet;
+        orderMetaIsFetching && !cartFetchedYet;
 
     const anyErrorOccurred = (): boolean =>
-        (!props.orderMetaIsFetching && props.orderMetaErrorOccurred) ||
-        (cartFetchedYet && props.cartErrorOccurred);
+        (!orderMetaIsFetching && orderMetaErrorOccurred) ||
+        (cartFetchedYet && cartErrorOccurred);
 
     const noErrors = (): boolean =>
-        !props.orderMetaIsFetching &&
+        !orderMetaIsFetching &&
         cartFetchedYet &&
-        !props.orderMetaErrorOccurred &&
-        !props.cartErrorOccurred;
+        !orderMetaErrorOccurred &&
+        !cartErrorOccurred;
 
     return (
         <MainLayout>
-            {dataIsFetching() && (
-                <PageLoadingProgress />
-            )}
+            {dataIsFetching() && <PageLoadingProgress />}
             {anyErrorOccurred() && (
                 <ErrorInfo errorMessage="Checkout is currently unavailable. Please try again later." />
             )}
-            {noErrors() && <CheckoutMainViewContainer />}
+            {noErrors() && <CheckoutMainView />}
         </MainLayout>
     );
 };

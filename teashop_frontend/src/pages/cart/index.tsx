@@ -1,38 +1,38 @@
 import React from "react";
-import { Cart } from "../../domain/cart/models";
+import { useSelector } from "react-redux";
+import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
 
-interface Props {
-    cart: Cart;
-    cartFetchedYet: boolean;
-    cartUpdateIsSending: boolean;
-    errorOccurred: boolean;
-}
+const CartPage = () => {
+    const cart = useSelector((state: RootState) => state.cart.cart);
+    const cartFetchedYet = useSelector(
+        (state: RootState) => state.cart.cartFetchedYet
+    );
+    const cartUpdateIsSending = useSelector(
+        (state: RootState) => state.cart.cartUpdateIsSending
+    );
+    const errorOccurred = useSelector(
+        (state: RootState) => state.cart.errorOccurred
+    );
 
-const CartPage = (props: Props) => {
-    const { cartFetchedYet, cartUpdateIsSending } = props;
-
-    const cartIsEmpty = (): boolean =>
-        props.cart.items.length === 0;
+    const cartIsEmpty = (): boolean => cart.items.length === 0;
 
     return (
         <MainLayout>
-            {!cartFetchedYet && (
-                <PageLoadingProgress />
-            )}
-            {cartFetchedYet && !cartUpdateIsSending && props.errorOccurred && (
+            {!cartFetchedYet && <PageLoadingProgress />}
+            {cartFetchedYet && !cartUpdateIsSending && errorOccurred && (
                 <ErrorInfo errorMessage="Your cart is currently unavailable. Please try again later." />
             )}
-            {cartFetchedYet && !props.errorOccurred && (
+            {cartFetchedYet && !errorOccurred && (
                 <div>
                     {cartIsEmpty() ? (
                         <EmptyCartView />
                     ) : (
-                        <CartView cart={props.cart} />
+                        <CartView cart={cart} />
                     )}
                 </div>
             )}

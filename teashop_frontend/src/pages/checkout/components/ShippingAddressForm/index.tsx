@@ -11,18 +11,17 @@ import {
 } from "@material-ui/core";
 import React from "react";
 import { Controller, useFormContext } from "react-hook-form";
-import { Country } from "../../../../domain/order/models";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 
 const internationalPhoneNumberPattern =
     /^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$/;
 
-interface Props {
-    countries: Country[];
-}
-
-const ShippingAddressForm = (props: Props) => {
+const ShippingAddressForm = () => {
+    const countries = useSelector(
+        (state: RootState) => state.order.orderMeta.countries
+    );
     const { register, errors, control } = useFormContext();
-    const { countries } = props;
 
     const validatePhoneNumber = (input: string): string | undefined => {
         if (!input.match(internationalPhoneNumberPattern))

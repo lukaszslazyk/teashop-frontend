@@ -1,35 +1,33 @@
 import { Divider, Grid, Hidden, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../configuration/routing";
+import { removeItemFromSessionCart } from "../../../../domain/cart/actions";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../../../shared/services/requestCancelTokenService";
+import { createRequestCancelToken } from "../../../../shared/services/requestCancelTokenService";
 import CartItemListElementMenuButtonGroup from "../CartItemListElementMenuButtonGroup";
 import CartItemListElementMobileMenu from "../CartItemListElementMobileMenu";
-import EditItemQuantityDialogContainer from "../EditItemQuantityDialog/container";
+import EditItemQuantityDialog from "../EditItemQuantityDialog";
 import useStyles from "./styles";
 
 interface Props {
     cartItem: CartItem;
-    cartUpdateIsSending: boolean;
-    removeItemFromCart: (
-        productId: string,
-        cancelToken: RequestCancelToken
-    ) => void;
 }
 
 const CartItemListElement = (props: Props) => {
-    const classes = useStyles();
+    const cartUpdateIsSending = useSelector(
+        (state: RootState) => state.cart.cartUpdateIsSending
+    );
+    const dispatch = useDispatch();
     const [showProgress, setShowProgress] = useState(false);
     const [openEditQuantityDialog, setOpenEditQuantityDialog] = useState(false);
-    const { cartUpdateIsSending } = props;
+    const classes = useStyles();
 
     const handleEditClicked = () => setOpenEditQuantityDialog(true);
 
@@ -37,9 +35,11 @@ const CartItemListElement = (props: Props) => {
         setOpenEditQuantityDialog(false);
 
     const handleRemoveClicked = () => {
-        props.removeItemFromCart(
-            props.cartItem.product.id,
-            createRequestCancelToken()
+        dispatch(
+            removeItemFromSessionCart(
+                props.cartItem.product.id,
+                createRequestCancelToken()
+            )
         );
         setShowProgress(true);
     };
@@ -134,7 +134,7 @@ const CartItemListElement = (props: Props) => {
                     </Hidden>
                 </Grid>
             </Grid>
-            <EditItemQuantityDialogContainer
+            <EditItemQuantityDialog
                 open={openEditQuantityDialog}
                 cartItem={props.cartItem}
                 onClose={handleEditQuantityDialogClose}

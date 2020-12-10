@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import NavButtonsPanel from "../NavButtonsPanel";
-import ShippingMethodFormContainer from "../ShippingMethodForm/container";
+import ShippingMethodForm from "../ShippingMethodForm";
 
 interface Props {
     onContinueButtonClick: () => void;
@@ -11,7 +11,7 @@ interface Props {
 const ShippingStepView = (props: Props) => (
     <Grid container spacing={4}>
         <Grid item xs={12}>
-            <ShippingMethodFormContainer />
+            <ShippingMethodForm />
         </Grid>
         <Grid item xs={12}>
             <NavButtonsPanel
