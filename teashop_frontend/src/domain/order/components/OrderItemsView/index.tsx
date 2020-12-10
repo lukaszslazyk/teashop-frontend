@@ -4,6 +4,7 @@ import { Cart, CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import useStyles from "./styles";
 
 interface Props {
@@ -63,7 +64,7 @@ const OrderItemsView = (props: Props) => {
                                     </Grid>
                                     <Grid item xs={6}>
                                         <Typography variant="body1" className={classes.priceText}>
-                                            {calculateItemPrice(item).toFixed(2)} EUR
+                                            {getPriceTextWithCurrency(calculateItemPrice(item))}
                                         </Typography>
                                     </Grid>
                                 </Grid>

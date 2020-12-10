@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchSessionCart } from "../domain/cart/actions";
 import { createRequestCancelToken } from "../shared/services/requestCancelTokenService";
-import Routing from "./routing";
+import AppRouter from "./components/AppRouter";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -15,7 +15,7 @@ const App = () => {
 
     return (
         <div>
-            <Routing />
+            <AppRouter />
         </div>
     );
 };

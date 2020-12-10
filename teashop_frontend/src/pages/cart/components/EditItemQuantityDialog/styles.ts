@@ -2,10 +2,14 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        progressContainer: {
-            display: "flex",
+        content: {
             justifyContent: "center",
-            padding: theme.spacing(3),
+            alignItems: "center",
+            width: 200,
+            height: 60,
+        },
+        grow: {
+            flexGrow: 1,
         },
     })
 );

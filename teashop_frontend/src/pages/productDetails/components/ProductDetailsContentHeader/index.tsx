@@ -1,41 +1,22 @@
 import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useCallback, useState } from "react";
+import React, { useState } from "react";
 import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
-import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { Product } from "../../../../domain/product/models";
-import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
-import AddToCartButton from "../AddToCartButton";
+import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
+import AddToCartPanelContainer from "../AddToCartPanel/container";
 import useStyles from "./styles";
 
 interface Props {
     product: Product;
-    quantity: number;
-    isProcessing: boolean;
-    quantityChangedCallback: (value: number) => void;
-    addItemToSessionCartCallback: () => void;
 }
 
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();
-    const product = props.product;
-    const [addToCartButtonDisabled, setAddToCartButtonDisabled] = useState(false);
+    const [quantity, setQuantity] = useState(props.product.quantityPerPrice);
+    const { product } = props;
 
-    const calculatePrice = (): number =>
-        calculateItemPriceWith(props.product, props.quantity);
-
-    const productPricedByWeight = useCallback((): boolean =>
-        pricedByWeight(product),
-    [product]);
-
-    const quantityInvalidCallback = () => {
-        setAddToCartButtonDisabled(true);
-    };
-
-    const quantityChangedCallback = (value: number) => {
-        setAddToCartButtonDisabled(false);
-        props.quantityChangedCallback(value);
-    };
+    const handleQuantityChanged = (value: number) => setQuantity(value);
 
     const ProductName = () => (
         <Grid item xs={12}>
@@ -75,31 +56,15 @@ const ProductDetailsContentHeader = (props: Props) => {
                                 variant="h4"
                                 className={classes.priceText}
                             >
-                                {calculatePrice().toFixed(2)} EUR
+                                {getPriceTextWithCurrency(
+                                    calculateItemPriceWith(product, quantity)
+                                )}
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} container
-                            className={classes.productQuantityPickerContainer}
-                        >
-                            <ProductQuantityPicker
-                                initialValue={props.product.quantityPerPrice}
-                                pricedByWeight={productPricedByWeight()}
-                                quantityChangedCallback={
-                                    quantityChangedCallback
-                                }
-                                quantityInvalidCallback={
-                                    quantityInvalidCallback
-                                }
-                            />
-                        </Grid>
-                        <Grid item xs={12} container
-                            className={classes.addToCartButtonContainer}>
-                            <AddToCartButton
-                                isProcessing={props.isProcessing}
-                                addItemToSessionCartCallback={
-                                    props.addItemToSessionCartCallback
-                                }
-                                interactionDisabled={addToCartButtonDisabled}
+                        <Grid item xs={12}>
+                            <AddToCartPanelContainer
+                                product={props.product}
+                                onQuantityChange={handleQuantityChanged}
                             />
                         </Grid>
                     </Grid>

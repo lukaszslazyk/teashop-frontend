@@ -2,6 +2,7 @@ import { Badge, IconButton } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import React from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import useStyles from "./styles";
 
 interface Props {
@@ -15,7 +16,7 @@ const CartIcon = (props: Props) => {
         <IconButton
             className={classes.root}
             component={Link}
-            to="/cart"
+            to={routing.cart}
         >
             <Badge badgeContent={props.cartSize} color="error">
                 <ShoppingCartIcon />

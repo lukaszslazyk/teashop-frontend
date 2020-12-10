@@ -19,7 +19,13 @@ const useStyles = makeStyles((theme: Theme) =>
         failIcon: {
             color: theme.palette.error.main,
             fontSize: 100,
-        }
+        },
+        link: {
+            textDecoration: "none",
+        },
+        backToMainPageButton: {
+            marginTop: theme.spacing(1),
+        },
     })
 );
 

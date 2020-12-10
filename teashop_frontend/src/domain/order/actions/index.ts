@@ -10,17 +10,17 @@ import {
     fetchOrder,
 } from "./fetchOrder";
 import {
+    OrderMetaActionTypes,
+    REQUEST_ORDER_META,
+    RECEIVE_ORDER_META,
+    fetchOrderMeta,
+} from "./fetchOrderMeta";
+import {
     OrderFormActionTypes,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
     placeOrder,
 } from "./orderForm";
-import {
-    OrderMetaActionTypes,
-    REQUEST_ORDER_META,
-    RECEIVE_ORDER_META,
-    fetchOrderMeta,
-} from "./orderMeta";
 import {
     PaymentCardFormActionTypes,
     SET_PAYMENT_CARD_FORM_DATA,

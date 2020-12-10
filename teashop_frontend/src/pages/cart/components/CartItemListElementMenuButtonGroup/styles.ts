@@ -1,16 +1,13 @@
 import { Theme, createStyles, makeStyles } from "@material-ui/core";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            width: 187,
+            flexWrap: "nowrap",
         },
-        progressIndicator: {
-            color: "white",
-            marginRight: theme.spacing(1),
-        },
-        icon: {
-            marginRight: theme.spacing(1),
+        removeButton: {
+            color: red[600],
         },
     })
 );

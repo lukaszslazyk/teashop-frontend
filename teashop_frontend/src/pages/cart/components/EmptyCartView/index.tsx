@@ -1,6 +1,7 @@
 import { Button, Grid } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import ErrorInfo from "../../../../shared/components/ErrorInfo";
 
 const EmptyCartView = () => (
@@ -18,7 +19,7 @@ const EmptyCartView = () => (
                         variant="contained"
                         color="primary"
                         component={Link}
-                        to="/"
+                        to={routing.home}
                     >
                         Back to main page
                     </Button>

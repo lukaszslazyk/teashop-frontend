@@ -14,17 +14,17 @@ import { Cart, CartItem } from "./models";
 
 export interface CartState {
     cart: Cart;
-    fetchedYet: boolean;
-    isFetching: boolean;
-    isSending: boolean;
+    cartFetchedYet: boolean;
+    cartIsFetching: boolean;
+    cartUpdateIsSending: boolean;
     errorOccurred: boolean;
 }
 
 const initialState: CartState = {
     cart: { items: [] },
-    fetchedYet: false,
-    isFetching: false,
-    isSending: false,
+    cartFetchedYet: false,
+    cartIsFetching: false,
+    cartUpdateIsSending: false,
     errorOccurred: false,
 };
 
@@ -36,24 +36,24 @@ export const cartReducer = (
         case REQUEST_SESSION_CART:
             return {
                 ...state,
-                isFetching: true,
+                cartIsFetching: true,
                 errorOccurred: false,
+            };
+        case RECEIVE_SESSION_CART:
+            return {
+                ...state,
+                cartFetchedYet: true,
+                cartIsFetching: false,
+                cart: action.cart ? action.cart : initialState.cart,
+                errorOccurred: action.errorOccurred,
             };
         case REQUEST_ADD_ITEM_TO_SESSION_CART:
         case REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY:
         case REQUEST_REMOVE_ITEM_FROM_SESSION_CART:
             return {
                 ...state,
-                isSending: true,
+                cartUpdateIsSending: true,
                 errorOccurred: false,
-            };
-        case RECEIVE_SESSION_CART:
-            return {
-                ...state,
-                fetchedYet: true,
-                isFetching: false,
-                cart: action.cart ? action.cart : initialState.cart,
-                errorOccurred: action.errorOccurred,
             };
         case RECEIVE_ADD_ITEM_TO_SESSION_CART:
             if (!action.errorOccurred && action.addedItem)
@@ -61,7 +61,7 @@ export const cartReducer = (
 
             return {
                 ...state,
-                isSending: false,
+                cartUpdateIsSending: false,
                 errorOccurred: action.errorOccurred,
             };
         case RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY:
@@ -70,7 +70,7 @@ export const cartReducer = (
 
             return {
                 ...state,
-                isSending: false,
+                cartUpdateIsSending: false,
                 errorOccurred: action.errorOccurred,
             };
         case RECEIVE_REMOVE_ITEM_FROM_SESSION_CART:
@@ -79,7 +79,7 @@ export const cartReducer = (
 
             return {
                 ...state,
-                isSending: false,
+                cartUpdateIsSending: false,
                 errorOccurred: action.errorOccurred,
             };
         case CLEAR_CART:

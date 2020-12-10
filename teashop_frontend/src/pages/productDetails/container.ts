@@ -11,7 +11,7 @@ const mapStateToProps = (state: RootState) => ({
     product: state.product.product,
     productIsFetching: state.product.isFetching,
     productErrorOccurred: state.product.errorOccurred,
-    cartIsSending: state.cart.isSending,
+    cartIsSending: state.cart.cartUpdateIsSending,
     cartErrorOccurred: state.cart.errorOccurred,
 });
 

@@ -44,9 +44,28 @@ export const fetchOrderMeta = (
         .get(`${API_ROOT}/order/meta`, {
             cancelToken: cancelToken.tokenSource.token,
         })
-        .then(response => dispatch(receiveOrderMeta(response.data)))
+        .then(response => {
+            if (valid(response.data))
+                dispatch(receiveOrderMeta(response.data));
+            else
+                dispatch(receiveOrderMeta(null, true));
+        })
         .catch(error => {
             if (!axios.isCancel(error))
                 dispatch(receiveProductById(null, true));
         });
 };
+
+const valid = (orderMeta: OrderMeta) =>
+    !countriesEmpty(orderMeta) &&
+    !shippingMethodsEmpty(orderMeta) &&
+    !paymentMethodsEmpty(orderMeta);
+
+const countriesEmpty = (orderMeta: OrderMeta) =>
+    orderMeta.countries.length === 0;
+
+const shippingMethodsEmpty = (orderMeta: OrderMeta) =>
+    orderMeta.shippingMethods.length === 0;
+
+const paymentMethodsEmpty = (orderMeta: OrderMeta) =>
+    orderMeta.paymentMethods.length === 0;

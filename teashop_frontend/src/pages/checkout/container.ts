@@ -9,7 +9,7 @@ const mapStateToProps = (state: RootState) => ({
     orderMetaIsFetching: state.order.orderMetaIsFetching,
     orderMetaErrorOccurred: state.order.orderMetaErrorOccurred,
     cart: state.cart.cart,
-    cartFetchedYet: state.cart.fetchedYet,
+    cartFetchedYet: state.cart.cartFetchedYet,
     cartErrorOccurred: state.cart.errorOccurred,
 });
 
