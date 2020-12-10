@@ -1,19 +1,16 @@
 import { Divider, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
 import { Link } from "react-router-dom";
-import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../configuration/routing";
-import { removeItemFromSessionCart } from "../../../../domain/cart/actions";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
-import { createRequestCancelToken } from "../../../../shared/services/requestCancelTokenService";
 import CartItemListElementMenuButtonGroup from "../CartItemListElementMenuButtonGroup";
 import CartItemListElementMobileMenu from "../CartItemListElementMobileMenu";
 import EditItemQuantityDialog from "../EditItemQuantityDialog";
+import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
@@ -21,33 +18,9 @@ interface Props {
 }
 
 const CartItemListElement = (props: Props) => {
-    const cartUpdateIsSending = useSelector(
-        (state: RootState) => state.cart.cartUpdateIsSending
-    );
-    const dispatch = useDispatch();
-    const [showProgress, setShowProgress] = useState(false);
-    const [openEditQuantityDialog, setOpenEditQuantityDialog] = useState(false);
+    const logic = useLogic(props.cartItem);
     const classes = useStyles();
-
-    const handleEditClicked = () => setOpenEditQuantityDialog(true);
-
-    const handleEditQuantityDialogClose = () =>
-        setOpenEditQuantityDialog(false);
-
-    const handleRemoveClicked = () => {
-        dispatch(
-            removeItemFromSessionCart(
-                props.cartItem.product.id,
-                createRequestCancelToken()
-            )
-        );
-        setShowProgress(true);
-    };
-
-    useEffect(() => {
-        if (!cartUpdateIsSending)
-            setShowProgress(false);
-    }, [cartUpdateIsSending]);
+    const { showProgress, openEditQuantityDialog } = logic;
 
     return (
         <Grid container className={classes.root}>
@@ -89,8 +62,8 @@ const CartItemListElement = (props: Props) => {
                         <Grid item className={classes.mobileMenuContainer}>
                             <CartItemListElementMobileMenu
                                 showProgress={showProgress}
-                                onEditMenuItemClick={handleEditClicked}
-                                onRemoveMenuItemClick={handleRemoveClicked}
+                                onEditMenuItemClick={logic.handleEditClicked}
+                                onRemoveMenuItemClick={logic.handleRemoveClicked}
                             />
                         </Grid>
                     </Hidden>
@@ -127,8 +100,8 @@ const CartItemListElement = (props: Props) => {
                             {" "}
                             <CartItemListElementMenuButtonGroup
                                 showProgress={showProgress}
-                                onEditButtonClick={handleEditClicked}
-                                onRemoveButtonClick={handleRemoveClicked}
+                                onEditButtonClick={logic.handleEditClicked}
+                                onRemoveButtonClick={logic.handleRemoveClicked}
                             />
                         </Grid>
                     </Hidden>
@@ -137,7 +110,7 @@ const CartItemListElement = (props: Props) => {
             <EditItemQuantityDialog
                 open={openEditQuantityDialog}
                 cartItem={props.cartItem}
-                onClose={handleEditQuantityDialogClose}
+                onClose={logic.handleEditQuantityDialogClose}
             />
         </Grid>
     );

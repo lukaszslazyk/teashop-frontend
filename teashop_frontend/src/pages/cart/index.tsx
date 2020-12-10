@@ -1,25 +1,19 @@
 import React from "react";
-import { useSelector } from "react-redux";
-import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import CartView from "./components/CartView";
 import EmptyCartView from "./components/EmptyCartView";
+import useLogic from "./logic";
 
 const CartPage = () => {
-    const cart = useSelector((state: RootState) => state.cart.cart);
-    const cartFetchedYet = useSelector(
-        (state: RootState) => state.cart.cartFetchedYet
-    );
-    const cartUpdateIsSending = useSelector(
-        (state: RootState) => state.cart.cartUpdateIsSending
-    );
-    const errorOccurred = useSelector(
-        (state: RootState) => state.cart.errorOccurred
-    );
-
-    const cartIsEmpty = (): boolean => cart.items.length === 0;
+    const {
+        cart,
+        cartFetchedYet,
+        cartUpdateIsSending,
+        errorOccurred,
+        cartIsEmpty,
+    } = useLogic();
 
     return (
         <MainLayout>

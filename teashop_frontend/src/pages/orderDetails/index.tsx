@@ -1,34 +1,16 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
-import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { OrderDetailsPageParams } from "../../configuration/routing";
-import { fetchOrder } from "../../domain/order/actions";
+import React from "react";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
-import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import OrderDetailsInfoView from "./components/OrderDetailsInfoView";
 import OrderDetailsItemsView from "./components/OrderDetailsItemsView";
 import OrderDetailsPriceView from "./components/OrderDetailsPriceView";
+import useLogic from "./logic";
 
 const OrderDetailsPage = () => {
-    const order = useSelector((state: RootState) => state.order.order);
-    const orderIsFetching = useSelector(
-        (state: RootState) => state.order.orderIsFetching
-    );
-    const errorOccurred = useSelector(
-        (state: RootState) => state.order.orderErrorOccurred
-    );
-    const dispatch = useDispatch();
-    const { orderId } = useParams<OrderDetailsPageParams>();
-
-    useEffect(() => {
-        const cancelToken = createRequestCancelToken();
-        dispatch(fetchOrder(orderId, cancelToken));
-        return () => cancelToken.cancel();
-    }, [orderId, dispatch]);
+    const logic = useLogic();
+    const { order, orderId, orderIsFetching, errorOccurred } = logic;
 
     return (
         <MainLayout>

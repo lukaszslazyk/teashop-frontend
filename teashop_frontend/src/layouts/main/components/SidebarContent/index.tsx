@@ -20,9 +20,8 @@ const SidebarContent = (props: Props) => {
     const isCurrentLocation = (location: string): boolean =>
         location === props.history.location.pathname;
 
-    const handleClick = () => {
+    const handleClick = () =>
         setOpen(!open);
-    };
 
     return (
         <div>
