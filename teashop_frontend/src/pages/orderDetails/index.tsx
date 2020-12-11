@@ -10,7 +10,7 @@ import useLogic from "./logic";
 
 const OrderDetailsPage = () => {
     const logic = useLogic();
-    const { order, orderId, orderIsFetching, errorOccurred } = logic;
+    const { order, orderIsFetching, errorOccurred } = logic;
 
     return (
         <MainLayout>
@@ -22,7 +22,7 @@ const OrderDetailsPage = () => {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         <Typography variant="h5" color="primary">
-                            Order no. {orderId}
+                            Order no. {order.orderNo}
                         </Typography>
                         <Box mt={1}>
                             <Divider />

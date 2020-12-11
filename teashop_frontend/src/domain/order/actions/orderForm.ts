@@ -15,7 +15,7 @@ interface RequestPlaceOrderAction {
 
 interface ReceivePlaceOrderAction {
     type: typeof RECEIVE_PLACE_ORDER;
-    orderId: string | null;
+    orderNo: number | null;
     errorOccurred: boolean;
 }
 
@@ -28,11 +28,11 @@ export const requestPlaceOrder = (): OrderFormActionTypes => ({
 });
 
 export const receivePlaceOrder = (
-    orderId: string | null,
+    orderNo: number | null,
     errorOccurred: boolean = false
 ): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
-    orderId: orderId,
+    orderNo: orderNo,
     errorOccurred: errorOccurred,
 });
 

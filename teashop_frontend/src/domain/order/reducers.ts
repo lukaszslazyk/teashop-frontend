@@ -30,11 +30,12 @@ export interface OrderState {
     cartPrice: number;
     shippingPrice: number;
     orderPlaced: boolean;
-    placedOrderId: string;
+    placedOrderNo: number;
 }
 
 const initialState: OrderState = {
     order: {
+        orderNo: 0,
         contactInfo: {
             email: "",
         },
@@ -106,7 +107,7 @@ const initialState: OrderState = {
     cartPrice: 0,
     shippingPrice: 0,
     orderPlaced: false,
-    placedOrderId: "",
+    placedOrderNo: 0,
 };
 
 export const orderReducer = (
@@ -170,7 +171,9 @@ export const orderReducer = (
                 orderFormIsSending: false,
                 orderFormErrorOccurred: action.errorOccurred,
                 orderPlaced: !action.errorOccurred,
-                placedOrderId: action.orderId ? action.orderId : "",
+                placedOrderNo: action.orderNo
+                    ? action.orderNo
+                    : initialState.placedOrderNo,
             };
             if (!action.errorOccurred)
                 newState = {

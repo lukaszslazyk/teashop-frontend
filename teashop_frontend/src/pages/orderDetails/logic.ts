@@ -15,17 +15,16 @@ const useLogic = () => {
         (state: RootState) => state.order.orderErrorOccurred
     );
     const dispatch = useDispatch();
-    const { orderId } = useParams<OrderDetailsPageParams>();
+    const { orderNo } = useParams<OrderDetailsPageParams>();
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchOrder(orderId, cancelToken));
+        dispatch(fetchOrder(orderNo, cancelToken));
         return () => cancelToken.cancel();
-    }, [orderId, dispatch]);
+    }, [orderNo, dispatch]);
 
     return {
         order,
-        orderId,
         orderIsFetching,
         errorOccurred,
     };

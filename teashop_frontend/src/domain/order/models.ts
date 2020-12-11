@@ -1,6 +1,7 @@
 import { Cart } from "../cart/models";
 
 export interface Order {
+    orderNo: number;
     contactInfo: ContactInfo;
     shippingAddress: Address;
     chosenShippingMethod: ShippingMethod;
