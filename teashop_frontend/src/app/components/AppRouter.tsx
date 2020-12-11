@@ -1,13 +1,13 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import routing from "../../configuration/routing";
-import BrowsePageContainer from "../../pages/browse/container";
-import CartContainer from "../../pages/cart/container";
-import CheckoutPageContainer from "../../pages/checkout/container";
+import BrowsePage from "../../pages/browse";
+import CartPage from "../../pages/cart";
+import CheckoutPage from "../../pages/checkout";
 import HomePage from "../../pages/home";
 import NotFoundPage from "../../pages/notFound";
-import OrderDetailsPageContainer from "../../pages/orderDetails/container";
-import ProductDetailsPageContainer from "../../pages/productDetails/container";
+import OrderDetailsPage from "../../pages/orderDetails";
+import ProductDetailsPage from "../../pages/productDetails";
 
 const Router = () => (
     <BrowserRouter>
@@ -16,23 +16,23 @@ const Router = () => (
             <Route
                 exact
                 path={routing.browse.pathPattern}
-                component={BrowsePageContainer}
+                component={BrowsePage}
             />
             <Route
                 exact
                 path={routing.productDetails.pathPattern}
-                component={ProductDetailsPageContainer}
+                component={ProductDetailsPage}
             />
-            <Route exact path={routing.cart} component={CartContainer} />
+            <Route exact path={routing.cart} component={CartPage} />
             <Route
                 exact
                 path={routing.checkout}
-                component={CheckoutPageContainer}
+                component={CheckoutPage}
             />
             <Route
                 exact
                 path={routing.orderDetails.pathPattern}
-                component={OrderDetailsPageContainer}
+                component={OrderDetailsPage}
             />
             <Route component={NotFoundPage} />
         </Switch>

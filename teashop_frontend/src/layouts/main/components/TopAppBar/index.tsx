@@ -5,7 +5,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import routing from "../../../../configuration/routing";
 import useStyles from "../../styles";
-import CartIconContainer from "../CartIcon/container";
+import CartIcon from "../CartIcon";
 
 interface Props {
     handleDrawerToggle: () => void;
@@ -36,7 +36,7 @@ const TopAppBar = (props: Props) => {
                     </Box>
                 </Link>
                 <div className={classes.grow} />
-                <CartIconContainer />
+                <CartIcon />
             </Toolbar>
         </AppBar>
     );

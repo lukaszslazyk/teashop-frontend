@@ -4,7 +4,7 @@ import { calculateItemPriceWith } from "../../../../domain/cart/services/cartSer
 import { Product } from "../../../../domain/product/models";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
-import AddToCartPanelContainer from "../AddToCartPanel/container";
+import AddToCartPanel from "../AddToCartPanel";
 import useStyles from "./styles";
 
 interface Props {
@@ -62,7 +62,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                             </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                            <AddToCartPanelContainer
+                            <AddToCartPanel
                                 product={props.product}
                                 onQuantityChange={handleQuantityChanged}
                             />

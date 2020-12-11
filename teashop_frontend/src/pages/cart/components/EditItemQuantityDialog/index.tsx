@@ -7,87 +7,26 @@ import {
     DialogTitle,
     Grid,
 } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { CartItem } from "../../../../domain/cart/models";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../../../shared/services/requestCancelTokenService";
+import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
     open: boolean;
     cartItem: CartItem;
     onClose: () => void;
-    cartUpdateIsSending: boolean;
-    updateItemQuantity: (
-        productId: string,
-        quantity: number,
-        cancelToken: RequestCancelToken
-    ) => void;
 }
 
 const EditItemQuantityDialog = (props: Props) => {
+    const logic = useLogic(props.open, props.cartItem, props.onClose);
     const classes = useStyles();
-    const [quantity, setQuantity] = useState(props.cartItem.quantity);
-    const [quantityPickerValid, setQuantityPickerValid] = useState(true);
-    const [
-        quantityPickerTextInputFocused,
-        setQuantityPickerTextInputFocused,
-    ] = useState(false);
-    const [awaitingResponse, setAwaitingResponse] = useState(false);
-    const [displayLoading, setDisplayLoading] = useState(false);
-    const { open, cartUpdateIsSending, onClose } = props;
-
-    const handleQuantityChanged = (value: number, valid: boolean) => {
-        setQuantityPickerValid(valid);
-        if (valid)
-            setQuantity(value);
-    };
-
-    const handleQuantityTextInputFocus = () =>
-        setQuantityPickerTextInputFocused(true);
-
-    const handleQuantityTextInputBlur = () =>
-        setQuantityPickerTextInputFocused(false);
-
-    const handleAcceptButtonClicked = () => {
-        if (props.cartItem.quantity !== quantity && quantityPickerValid) {
-            props.updateItemQuantity(
-                props.cartItem.product.id,
-                quantity,
-                createRequestCancelToken()
-            );
-            setAwaitingResponse(true);
-            setDisplayLoading(true);
-        } else
-            onClose();
-    };
-
-    const handleClose = () => {
-        if (!props.cartUpdateIsSending) {
-            setQuantityPickerValid(true);
-            setQuantityPickerTextInputFocused(false);
-            props.onClose();
-        }
-    };
-
-    useEffect(() => {
-        if (open)
-            setDisplayLoading(false);
-    }, [open, setDisplayLoading]);
-
-    useEffect(() => {
-        if (!cartUpdateIsSending && awaitingResponse) {
-            setAwaitingResponse(false);
-            onClose();
-        }
-    }, [cartUpdateIsSending, awaitingResponse, onClose]);
+    const { displayLoading } = logic;
 
     return (
-        <Dialog open={props.open} onClose={handleClose}>
+        <Dialog open={props.open} onClose={logic.handleClose}>
             <DialogTitle>Edit quantity</DialogTitle>
             <DialogContent>
                 <Grid container className={classes.content}>
@@ -99,12 +38,12 @@ const EditItemQuantityDialog = (props: Props) => {
                             pricedByWeight={pricedByWeight(
                                 props.cartItem.product
                             )}
-                            onQuantityChange={handleQuantityChanged}
+                            onQuantityChange={logic.handleQuantityChanged}
                             onQuantityTextInputFocus={
-                                handleQuantityTextInputFocus
+                                logic.handleQuantityTextInputFocus
                             }
                             onQuantityTextInputBlur={
-                                handleQuantityTextInputBlur
+                                logic.handleQuantityTextInputBlur
                             }
                         />
                     )}
@@ -122,13 +61,9 @@ const EditItemQuantityDialog = (props: Props) => {
                     </Grid>
                     <Grid item>
                         <Button
-                            onClick={handleAcceptButtonClicked}
+                            onClick={logic.handleAcceptButtonClicked}
                             color="primary"
-                            disabled={
-                                displayLoading ||
-                                !quantityPickerValid ||
-                                quantityPickerTextInputFocused
-                            }
+                            disabled={logic.addToCartButtonDisabled()}
                         >
                             Accept
                         </Button>

@@ -1,5 +1,5 @@
 import React from "react";
-import QuantityPickerContainer from "../QuantityPicker/container";
+import QuantityPicker from "../QuantityPicker";
 
 interface Props {
     initialValue: number,
@@ -13,7 +13,7 @@ interface Props {
 const ProductQuantityPicker = (props: Props) => {
     if (props.pricedByWeight)
         return (
-            <QuantityPickerContainer
+            <QuantityPicker
                 inputLabel="Grams"
                 initialValue={props.initialValue}
                 lowThreshold={50}
@@ -25,7 +25,7 @@ const ProductQuantityPicker = (props: Props) => {
             />
         );
     return (
-        <QuantityPickerContainer
+        <QuantityPicker
             inputLabel=""
             initialValue={props.initialValue}
             lowThreshold={1}

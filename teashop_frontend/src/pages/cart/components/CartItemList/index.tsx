@@ -1,7 +1,7 @@
 import { Grid, Paper } from "@material-ui/core";
 import React from "react";
 import { Cart } from "../../../../domain/cart/models";
-import CartItemListElementContainer from "../CartItemListElement/container";
+import CartItemListElement from "../CartItemListElement";
 
 interface Props {
     cart: Cart;
@@ -12,7 +12,7 @@ const CartItemList = (props: Props) => (
         {props.cart.items.map(cartItem => (
             <Grid item key={cartItem.product.id} xs={12}>
                 <Paper square>
-                    <CartItemListElementContainer cartItem={cartItem} />
+                    <CartItemListElement cartItem={cartItem} />
                 </Paper>
             </Grid>
         ))}

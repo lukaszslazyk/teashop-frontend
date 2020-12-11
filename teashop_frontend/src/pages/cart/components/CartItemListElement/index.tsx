@@ -1,5 +1,5 @@
 import { Divider, Grid, Hidden, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import routing from "../../../../configuration/routing";
 import { CartItem } from "../../../../domain/cart/models";
@@ -7,47 +7,20 @@ import { calculateItemPrice } from "../../../../domain/cart/services/cartService
 import { pricedByWeight } from "../../../../domain/product/services/productService";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../../../shared/services/requestCancelTokenService";
 import CartItemListElementMenuButtonGroup from "../CartItemListElementMenuButtonGroup";
 import CartItemListElementMobileMenu from "../CartItemListElementMobileMenu";
-import EditItemQuantityDialogContainer from "../EditItemQuantityDialog/container";
+import EditItemQuantityDialog from "../EditItemQuantityDialog";
+import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
     cartItem: CartItem;
-    cartUpdateIsSending: boolean;
-    removeItemFromCart: (
-        productId: string,
-        cancelToken: RequestCancelToken
-    ) => void;
 }
 
 const CartItemListElement = (props: Props) => {
+    const logic = useLogic(props.cartItem);
     const classes = useStyles();
-    const [showProgress, setShowProgress] = useState(false);
-    const [openEditQuantityDialog, setOpenEditQuantityDialog] = useState(false);
-    const { cartUpdateIsSending } = props;
-
-    const handleEditClicked = () => setOpenEditQuantityDialog(true);
-
-    const handleEditQuantityDialogClose = () =>
-        setOpenEditQuantityDialog(false);
-
-    const handleRemoveClicked = () => {
-        props.removeItemFromCart(
-            props.cartItem.product.id,
-            createRequestCancelToken()
-        );
-        setShowProgress(true);
-    };
-
-    useEffect(() => {
-        if (!cartUpdateIsSending)
-            setShowProgress(false);
-    }, [cartUpdateIsSending]);
+    const { showProgress, openEditQuantityDialog } = logic;
 
     return (
         <Grid container className={classes.root}>
@@ -89,8 +62,8 @@ const CartItemListElement = (props: Props) => {
                         <Grid item className={classes.mobileMenuContainer}>
                             <CartItemListElementMobileMenu
                                 showProgress={showProgress}
-                                onEditMenuItemClick={handleEditClicked}
-                                onRemoveMenuItemClick={handleRemoveClicked}
+                                onEditMenuItemClick={logic.handleEditClicked}
+                                onRemoveMenuItemClick={logic.handleRemoveClicked}
                             />
                         </Grid>
                     </Hidden>
@@ -127,17 +100,17 @@ const CartItemListElement = (props: Props) => {
                             {" "}
                             <CartItemListElementMenuButtonGroup
                                 showProgress={showProgress}
-                                onEditButtonClick={handleEditClicked}
-                                onRemoveButtonClick={handleRemoveClicked}
+                                onEditButtonClick={logic.handleEditClicked}
+                                onRemoveButtonClick={logic.handleRemoveClicked}
                             />
                         </Grid>
                     </Hidden>
                 </Grid>
             </Grid>
-            <EditItemQuantityDialogContainer
+            <EditItemQuantityDialog
                 open={openEditQuantityDialog}
                 cartItem={props.cartItem}
-                onClose={handleEditQuantityDialogClose}
+                onClose={logic.handleEditQuantityDialogClose}
             />
         </Grid>
     );

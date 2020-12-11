@@ -10,16 +10,20 @@ import {
 } from "@material-ui/core";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import React, { ReactNode } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
-import PriceInfoPanelContainer from "../PriceInfoPanel/container";
+import PriceInfoPanel from "../PriceInfoPanel";
 import useStyles from "./styles";
 
 interface Props {
-    totalPrice: number;
     children: ReactNode;
 }
 
 const ProgressStepLayout = (props: Props) => {
+    const totalPrice = useSelector(
+        (state: RootState) => state.order.totalPrice
+    );
     const classes = useStyles();
 
     return (
@@ -33,12 +37,12 @@ const ProgressStepLayout = (props: Props) => {
                             </Typography>
                             <Box ml={2}>
                                 <Typography variant="body1">
-                                    {getPriceTextWithCurrency(props.totalPrice)}
+                                    {getPriceTextWithCurrency(totalPrice)}
                                 </Typography>
                             </Box>
                         </AccordionSummary>
                         <AccordionDetails>
-                            <PriceInfoPanelContainer />
+                            <PriceInfoPanel />
                         </AccordionDetails>
                     </Accordion>
                 </Grid>
@@ -50,7 +54,7 @@ const ProgressStepLayout = (props: Props) => {
                 <Grid item md={4}>
                     <Grid container>
                         <Paper className={classes.priceInfoPaper}>
-                            <PriceInfoPanelContainer />
+                            <PriceInfoPanel />
                         </Paper>
                     </Grid>
                 </Grid>

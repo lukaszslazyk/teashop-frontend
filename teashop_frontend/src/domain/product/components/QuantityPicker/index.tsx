@@ -1,53 +1,44 @@
-import {
-    Fab,
-    TextField,
-    Tooltip,
-    Typography,
-} from "@material-ui/core";
+import { Fab, TextField, Tooltip, Typography } from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
-import React, { ChangeEvent, useEffect, useState } from "react";
+import React from "react";
+import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
     inputLabel: string;
-    quantityText: string;
-    errorText: string;
-    errorInfoHidden: boolean;
-    onQuantityTextChange: (event: ChangeEvent<HTMLInputElement>) => void;
-    onQuantityTextInputFocus: () => void;
-    onQuantityTextInputBlur: () => void;
-    onAddClicked: () => void;
-    onSubtractClicked: () => void;
-    hasError: () => boolean;
-    canAdd: () => boolean;
-    canSubtract: () => boolean;
+    initialValue: number;
+    lowThreshold: number;
+    step: number;
+    onQuantityChange: (value: number, valid: boolean) => void;
     interactionDisabled?: boolean;
+    onQuantityTextInputFocus?: () => void;
+    onQuantityTextInputBlur?: () => void;
 }
 
 const QuantityPicker = (props: Props) => {
+    const logic = useLogic(
+        props.initialValue,
+        props.lowThreshold,
+        props.step,
+        props.onQuantityChange,
+        props.onQuantityTextInputFocus,
+        props.onQuantityTextInputBlur
+    );
     const classes = useStyles();
-    const [errorInfoOpen, setErrorInfoOpen] = useState(false);
-    const [displayedErrorText, setDisplayedErrorText] = useState("");
-    const { errorInfoHidden, errorText, hasError} = props;
+    const { quantityText, displayedErrorText, errorInfoOpen } = logic;
 
-    useEffect(() => {
-        if (hasError() && !errorInfoHidden) {
-            setDisplayedErrorText(errorText);
-            setErrorInfoOpen(true);
-        } else
-            setErrorInfoOpen(false);
-    }, [errorText, errorInfoHidden, hasError]);
-
-    const ErrorText = () => <Typography variant="body1">{displayedErrorText}</Typography>;
+    const ErrorText = () => (
+        <Typography variant="body1">{displayedErrorText}</Typography>
+    );
 
     return (
         <form className={classes.root}>
             <Fab
                 size="small"
                 color="primary"
-                onClick={props.onSubtractClicked}
-                disabled={!props.canSubtract()}
+                onClick={logic.handleSubtractClicked}
+                disabled={!logic.canSubtract()}
             >
                 <RemoveIcon />
             </Fab>
@@ -56,11 +47,11 @@ const QuantityPicker = (props: Props) => {
                     id="quantity"
                     variant="outlined"
                     label={props.inputLabel}
-                    value={props.quantityText}
-                    onChange={props.onQuantityTextChange}
-                    onFocus={props.onQuantityTextInputFocus}
-                    onBlur={props.onQuantityTextInputBlur}
-                    error={props.hasError()}
+                    value={quantityText}
+                    onChange={logic.handleQuantityTextChange}
+                    onFocus={logic.handleQuantityTextInputFocused}
+                    onBlur={logic.handleQuantityTextInputBlured}
+                    error={logic.hasError()}
                     className={classes.quantityInput}
                     disabled={props.interactionDisabled}
                 />
@@ -68,8 +59,8 @@ const QuantityPicker = (props: Props) => {
             <Fab
                 size="small"
                 color="primary"
-                onClick={props.onAddClicked}
-                disabled={!props.canAdd()}
+                onClick={logic.handleAddClicked}
+                disabled={!logic.canAdd()}
             >
                 <AddIcon />
             </Fab>

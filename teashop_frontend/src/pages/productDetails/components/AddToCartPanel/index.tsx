@@ -1,64 +1,21 @@
 import { Button, CircularProgress, Grid } from "@material-ui/core";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import React, { useState } from "react";
+import React from "react";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { Product } from "../../../../domain/product/models";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
-import {
-    createRequestCancelToken,
-    RequestCancelToken,
-} from "../../../../shared/services/requestCancelTokenService";
-import useAddItemToCartResponseNotifyEffect from "../../hooks/useAddItemToCartResponseNotifyEffect";
+import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
     product: Product;
     onQuantityChange: (value: number) => void;
-    cartIsSending: boolean;
-    cartErrorOccurred: boolean;
-    addItemToSessionCart: (
-        product: Product,
-        quantity: number,
-        cancelToken: RequestCancelToken
-    ) => void;
 }
 
 const AddToCartPanel = (props: Props) => {
+    const logic = useLogic(props.product, props.onQuantityChange);
     const classes = useStyles();
-    const [quantity, setQuantity] = useState(props.product.quantityPerPrice);
-    const [quantityPickerValid, setQuantityPickerValid] = useState(true);
-    const [
-        quantityPickerTextInputFocused,
-        setQuantityPickerTextInputFocused,
-    ] = useState(false);
-
-    const handleQuantityChanged = (value: number, valid: boolean) => {
-        setQuantityPickerValid(valid);
-        if (valid) {
-            setQuantity(value);
-            props.onQuantityChange(value);
-        }
-    };
-
-    const handleQuantityTextInputFocus = () =>
-        setQuantityPickerTextInputFocused(true);
-
-    const handleQuantityTextInputBlur = () =>
-        setQuantityPickerTextInputFocused(false);
-
-    const handleAddToChartButtonClicked = () => {
-        if (quantityPickerValid)
-            props.addItemToSessionCart(
-                props.product,
-                quantity,
-                createRequestCancelToken()
-            );
-    };
-
-    useAddItemToCartResponseNotifyEffect(
-        props.cartIsSending,
-        props.cartErrorOccurred
-    );
+    const { cartUpdateIsSending } = logic;
 
     return (
         <Grid container spacing={3}>
@@ -71,9 +28,9 @@ const AddToCartPanel = (props: Props) => {
                 <ProductQuantityPicker
                     initialValue={props.product.quantityPerPrice}
                     pricedByWeight={pricedByWeight(props.product)}
-                    onQuantityChange={handleQuantityChanged}
-                    onQuantityTextInputFocus={handleQuantityTextInputFocus}
-                    onQuantityTextInputBlur={handleQuantityTextInputBlur}
+                    onQuantityChange={logic.handleQuantityChanged}
+                    onQuantityTextInputFocus={logic.handleQuantityTextInputFocused}
+                    onQuantityTextInputBlur={logic.handleQuantityTextInputBlured}
                 />
             </Grid>
             <Grid
@@ -86,14 +43,10 @@ const AddToCartPanel = (props: Props) => {
                     variant="contained"
                     color="primary"
                     className={classes.addToCartButton}
-                    onClick={handleAddToChartButtonClicked}
-                    disabled={
-                        props.cartIsSending ||
-                        !quantityPickerValid ||
-                        quantityPickerTextInputFocused
-                    }
+                    onClick={logic.handleAddToChartButtonClicked}
+                    disabled={logic.addToCartButtonDisabled()}
                 >
-                    {props.cartIsSending ? (
+                    {cartUpdateIsSending ? (
                         <CircularProgress
                             className={classes.progressIndicator}
                             size={20}

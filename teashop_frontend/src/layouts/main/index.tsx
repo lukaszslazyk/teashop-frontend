@@ -12,9 +12,8 @@ const MainLayout = (props: Props) => {
     const classes = useStyles();
     const [mobileOpen, setMobileOpen] = useState(false);
 
-    const handleDrawerToggle = () => {
+    const handleDrawerToggle = () =>
         setMobileOpen(!mobileOpen);
-    };
 
     return (
         <div className={classes.root}>

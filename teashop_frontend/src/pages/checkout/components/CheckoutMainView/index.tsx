@@ -1,41 +1,18 @@
 import { Grid, Step, StepLabel, Stepper } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router";
-import { Cart } from "../../../../domain/cart/models";
-import InformationStepViewContainer from "../InformationStepView/container";
-import PaymentStepViewContainer from "../PaymentStepView/container";
-import PlaceOrderViewContainer from "../PlaceOrderView/container";
-import ProgressStepLayoutContainer from "../ProgressStepLayout/container";
-import ShippingStepView from "../ShippingStepView";
-import SummaryStepView from "../SummaryStepView";
+import React from "react";
+import ProgressStepLayout from "../ProgressStepLayout";
+import FinalizeStep from "../steps/finalize/FinalizeStep";
+import InformationStep from "../steps/information/InformationStep";
+import PaymentStep from "../steps/payment/PaymentStep";
+import ShippingStep from "../steps/shipping/ShippingStep";
+import SummaryStep from "../steps/summary/SummaryStep";
+import useLogic from "./logic";
 import useStyles from "./styles";
 
-interface Props {
-    cart: Cart;
-    cartFetchedYet: boolean;
-}
-
-const CheckoutMainView = (props: Props) => {
+const CheckoutMainView = () => {
+    const logic = useLogic();
     const classes = useStyles();
-    const history = useHistory();
-    const [activeStep, setActiveStep] = useState(0);
-    const { cart, cartFetchedYet } = props;
-
-    const handleContinueButtonClicked = () => {
-        setActiveStep(activeStep => activeStep + 1);
-    };
-
-    const handleBackButtonClicked = () => {
-        if (activeStep === 0)
-            history.push("/cart");
-        else
-            setActiveStep(activeStep => activeStep - 1);
-    };
-
-    useEffect(() => {
-        if (activeStep === 0 && cartFetchedYet && cart.items.length === 0)
-            history.push("/cart");
-    }, [activeStep, cart, cartFetchedYet, history]);
+    const { activeStep } = logic;
 
     return (
         <Grid container spacing={1}>
@@ -61,40 +38,48 @@ const CheckoutMainView = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 {activeStep < 3 && (
-                    <ProgressStepLayoutContainer>
+                    <ProgressStepLayout>
                         {activeStep === 0 && (
-                            <InformationStepViewContainer
+                            <InformationStep
                                 onContinueButtonClick={
-                                    handleContinueButtonClicked
+                                    logic.handleContinueButtonClicked
                                 }
-                                onBackButtonClick={handleBackButtonClicked}
+                                onBackButtonClick={
+                                    logic.handleBackButtonClicked
+                                }
                             />
                         )}
                         {activeStep === 1 && (
-                            <ShippingStepView
+                            <ShippingStep
                                 onContinueButtonClick={
-                                    handleContinueButtonClicked
+                                    logic.handleContinueButtonClicked
                                 }
-                                onBackButtonClick={handleBackButtonClicked}
+                                onBackButtonClick={
+                                    logic.handleBackButtonClicked
+                                }
                             />
                         )}
                         {activeStep === 2 && (
-                            <PaymentStepViewContainer
+                            <PaymentStep
                                 onContinueButtonClick={
-                                    handleContinueButtonClicked
+                                    logic.handleContinueButtonClicked
                                 }
-                                onBackButtonClick={handleBackButtonClicked}
+                                onBackButtonClick={
+                                    logic.handleBackButtonClicked
+                                }
                             />
                         )}
-                    </ProgressStepLayoutContainer>
+                    </ProgressStepLayout>
                 )}
                 {activeStep === 3 && (
-                    <SummaryStepView
-                        onContinueButtonClick={handleContinueButtonClicked}
-                        onBackButtonClick={handleBackButtonClicked}
+                    <SummaryStep
+                        onContinueButtonClick={
+                            logic.handleContinueButtonClicked
+                        }
+                        onBackButtonClick={logic.handleBackButtonClicked}
                     />
                 )}
-                {activeStep === 4 && <PlaceOrderViewContainer />}
+                {activeStep === 4 && <FinalizeStep />}
             </Grid>
         </Grid>
     );

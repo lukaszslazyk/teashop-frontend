@@ -1,59 +1,27 @@
-import React, { useCallback, useEffect } from "react";
-import { useParams } from "react-router";
-import { BrowsePageParams } from "../../configuration/routing";
+import React from "react";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
-import {
-    Product,
-    availableProductCategories,
-} from "../../domain/product/models";
 import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
-import {
-    RequestCancelToken,
-    createRequestCancelToken,
-} from "../../shared/services/requestCancelTokenService";
 import NotFoundPage from "../notFound";
+import useLogic from "./logic";
 
-interface Props {
-    products: Product[];
-    isFetching: boolean;
-    errorOccurred: boolean;
-    loadProductsInCategory: (
-        categoryName: string,
-        cancelToken: RequestCancelToken
-    ) => void;
-}
+const BrowsePage = () => {
+    const logic = useLogic();
+    const { products, productsAreFetching, errorOccurred } = logic;
 
-const BrowsePage = (props: Props) => {
-    const { categoryName } = useParams<BrowsePageParams>();
-    const { loadProductsInCategory } = props;
-
-    const categoryIsAvailable = useCallback((): boolean =>
-        categoryName !== undefined &&
-        availableProductCategories.includes(categoryName),
-    [categoryName]);
-
-    useEffect(() => {
-        const cancelToken = createRequestCancelToken();
-        if (categoryName && categoryIsAvailable())
-            loadProductsInCategory(categoryName, cancelToken);
-        return () => cancelToken.cancel();
-    }, [categoryName, categoryIsAvailable, loadProductsInCategory]);
-
-    if (!categoryIsAvailable())
+    if (!logic.categoryIsAvailable())
         return <NotFoundPage />;
 
     return (
         <MainLayout>
-            {props.isFetching && (
-                <PageLoadingProgress />
-            )}
-            {!props.isFetching && props.products.length === 0 && (
+            {productsAreFetching && <PageLoadingProgress />}
+            {!productsAreFetching &&
+                (errorOccurred || products.length === 0) && (
                 <ErrorInfo errorMessage="No product in this category is currently available." />
             )}
-            {!props.isFetching && props.products.length > 0 && (
-                <ProductCardTileGroup products={props.products} />
+            {!productsAreFetching && !errorOccurred && products.length > 0 && (
+                <ProductCardTileGroup products={products} />
             )}
         </MainLayout>
     );
