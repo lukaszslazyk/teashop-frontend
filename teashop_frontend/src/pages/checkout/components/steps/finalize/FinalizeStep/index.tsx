@@ -10,7 +10,12 @@ import useStyles from "./styles";
 const FinalizeStep = () => {
     const logic = useLogic();
     const classes = useStyles();
-    const { orderFormIsSending, errorOccurred, placedOrderId } = logic;
+    const {
+        orderFormIsSending,
+        errorOccurred,
+        placedOrderNo,
+        orderDetailsRoutePath,
+    } = logic;
 
     return (
         <Grid container spacing={1} className={classes.root}>
@@ -33,7 +38,8 @@ const FinalizeStep = () => {
                     <Typography variant="h4" align="center">
                         {orderFormIsSending && "Please wait"}
                         {!orderFormIsSending && errorOccurred && "Sorry"}
-                        {!orderFormIsSending && !errorOccurred &&
+                        {!orderFormIsSending &&
+                            !errorOccurred &&
                             "Your order has been placed successfully"}
                     </Typography>
                 </Grid>
@@ -56,16 +62,14 @@ const FinalizeStep = () => {
                             <Grid container spacing={2} justify="center">
                                 <Grid item xs={12}>
                                     <Typography variant="h6" align="center">
-                                        Your order number is: {placedOrderId}
+                                        Your order number is: {placedOrderNo}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Typography variant="body1" align="center">
                                         You can see order details{" "}
                                         <Link
-                                            to={routing.orderDetails.getPathWithParams(
-                                                { orderId: placedOrderId }
-                                            )}
+                                            to={orderDetailsRoutePath}
                                             className={classes.link}
                                         >
                                             here
