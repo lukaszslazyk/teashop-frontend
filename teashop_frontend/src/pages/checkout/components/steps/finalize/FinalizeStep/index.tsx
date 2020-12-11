@@ -11,11 +11,15 @@ const FinalizeStep = () => {
     const logic = useLogic();
     const classes = useStyles();
     const {
+        requestWasSent,
         orderFormIsSending,
         errorOccurred,
         placedOrderNo,
         orderDetailsRoutePath,
     } = logic;
+
+    if (!requestWasSent)
+        return <div></div>;
 
     return (
         <Grid container spacing={1} className={classes.root}>

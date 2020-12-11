@@ -19,7 +19,9 @@ import {
     OrderFormActionTypes,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
+    RESET_ORDER_PLACED,
     placeOrder,
+    resetOrderPlaced
 } from "./orderForm";
 import {
     PaymentCardFormActionTypes,
@@ -53,6 +55,7 @@ export {
     fetchOrder,
     fetchOrderMeta,
     placeOrder,
+    resetOrderPlaced,
     setContactInfoFormData,
     setShippingAddressFormData,
     setChosenShippingMethod,
@@ -69,6 +72,7 @@ export {
     RECEIVE_ORDER_META,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
+    RESET_ORDER_PLACED,
     SET_CONTACT_INFO_FORM_DATA,
     SET_SHIPPING_ADDRESS_FORM_DATA,
     SET_CHOSEN_SHIPPING_METHOD,

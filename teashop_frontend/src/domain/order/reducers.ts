@@ -13,6 +13,7 @@ import {
     SET_CHOSEN_PAYMENT_METHOD,
     SET_CART_PRICE,
     SET_SHIPPING_PRICE,
+    RESET_ORDER_PLACED,
 } from "./actions";
 import { OrderMeta, OrderFormData, Order } from "./models";
 
@@ -184,6 +185,11 @@ export const orderReducer = (
                     shippingPrice: 0,
                 };
             return newState;
+        case RESET_ORDER_PLACED:
+            return {
+                ...state,
+                orderPlaced: false,
+            };
         case SET_CONTACT_INFO_FORM_DATA:
             return {
                 ...state,
