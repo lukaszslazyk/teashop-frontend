@@ -1,31 +1,35 @@
 import React from "react";
 import OrderInfoView from "../../../../domain/order/components/OrderInfoView";
-import { Order } from "../../../../domain/order/models";
+import { Address, Order } from "../../../../domain/order/models";
 
 interface Props {
     order: Order;
 }
 
+const mapToAddressProps = (address: Address) => ({
+    firstName: address.firstName,
+    lastName: address.lastName,
+    company: address.company,
+    addressLine1: address.addressLine1,
+    addressLine2: address.addressLine2,
+    postalCode: address.postalCode,
+    city: address.city,
+    countryName: address.country.name,
+    phone: address.phone
+});
+
 const OrderDetailsInfoView = (props: Props) => {
-    const contactInfo = {
+    const contactInfoProps = {
         email: props.order.contactInfo.email,
     };
-    const shippingAddress = {
-        firstName: props.order.shippingAddress.firstName,
-        lastName: props.order.shippingAddress.lastName,
-        company: props.order.shippingAddress.company,
-        addressLine1: props.order.shippingAddress.addressLine1,
-        addressLine2: props.order.shippingAddress.addressLine2,
-        postalCode: props.order.shippingAddress.postalCode,
-        city: props.order.shippingAddress.city,
-        countryName: props.order.shippingAddress.country.name,
-        phone: props.order.shippingAddress.phone,
-    };
+    const shippingAddressProps = mapToAddressProps(props.order.shippingAddress);
+    const billingAddressProps = mapToAddressProps(props.order.billingAddress);
 
     return (
         <OrderInfoView
-            contactInfo={contactInfo}
-            shippingAddress={shippingAddress}
+            contactInfo={contactInfoProps}
+            shippingAddress={shippingAddressProps}
+            billingAddress={billingAddressProps}
             chosenShippingMethodName={
                 props.order.chosenShippingMethod.displayName
             }
