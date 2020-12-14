@@ -8,12 +8,14 @@ import {
     RECEIVE_PLACE_ORDER,
     SET_CONTACT_INFO_FORM_DATA,
     SET_SHIPPING_ADDRESS_FORM_DATA,
+    SET_BILLING_ADDRESS_FORM_DATA,
     SET_PAYMENT_CARD_FORM_DATA,
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
     SET_CART_PRICE,
     SET_SHIPPING_PRICE,
     RESET_ORDER_PLACED,
+    SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
 } from "./actions";
 import { OrderMeta, OrderFormData, Order } from "./models";
 
@@ -41,6 +43,20 @@ const initialState: OrderState = {
             email: "",
         },
         shippingAddress: {
+            firstName: "",
+            lastName: "",
+            company: "",
+            addressLine1: "",
+            addressLine2: "",
+            postalCode: "",
+            city: "",
+            country: {
+                code: "",
+                name: "",
+            },
+            phone: "",
+        },
+        billingAddress: {
             firstName: "",
             lastName: "",
             company: "",
@@ -93,6 +109,18 @@ const initialState: OrderState = {
             countryCode: "",
             phone: "",
         },
+        billingAddressFormData: {
+            firstName: "",
+            lastName: "",
+            company: "",
+            addressLine1: "",
+            addressLine2: "",
+            postalCode: "",
+            city: "",
+            countryCode: "",
+            phone: "",
+        },
+        billingAddressSameAsShippingAddress: true,
         chosenShippingMethodName: "",
         chosenPaymentMethodName: "",
         paymentCardFormData: {
@@ -160,6 +188,14 @@ export const orderReducer = (
                     },
                 },
             };
+        case SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS:
+            return {
+                ...state,
+                orderFormData: {
+                    ...state.orderFormData,
+                    billingAddressSameAsShippingAddress: action.value,
+                },
+            };
         case REQUEST_PLACE_ORDER:
             return {
                 ...state,
@@ -204,6 +240,14 @@ export const orderReducer = (
                 orderFormData: {
                     ...state.orderFormData,
                     shippingAddressFormData: action.value,
+                },
+            };
+        case SET_BILLING_ADDRESS_FORM_DATA:
+            return {
+                ...state,
+                orderFormData: {
+                    ...state.orderFormData,
+                    billingAddressFormData: action.value,
                 },
             };
         case SET_PAYMENT_CARD_FORM_DATA:

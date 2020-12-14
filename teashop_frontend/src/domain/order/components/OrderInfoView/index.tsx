@@ -1,28 +1,46 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
 import React from "react";
+import OrderInfoAddressView from "../OrderInfoAddressView";
 
 interface Props {
     contactInfo: {
         email: string;
-    }
-    shippingAddress: {
-        firstName: string;
-        lastName: string;
-        company: string | null;
-        addressLine1: string;
-        addressLine2: string | null;
-        postalCode: string;
-        city: string;
-        countryName: string;
-        phone: string;
-    },
+    };
+    shippingAddress: AddressProps;
+    billingAddress: AddressProps;
     chosenShippingMethodName: string;
     chosenPaymentMethodName: string;
 }
 
+interface AddressProps {
+    firstName: string;
+    lastName: string;
+    company: string | null;
+    addressLine1: string;
+    addressLine2: string | null;
+    postalCode: string;
+    city: string;
+    countryName: string;
+    phone: string;
+}
+
 const OrderInfoView = (props: Props) => {
-    const isEmptyOrNull = (input: string | null): boolean =>
-        input === null || input.trim().length === 0;
+    const shippingAndBillingAddressesTheSame = () =>
+        JSON.stringify(props.shippingAddress) === JSON.stringify(props.billingAddress);
+
+    const OrderInfoAddressViewComponent = (addressProps: AddressProps) => (
+        <OrderInfoAddressView
+            firstName={addressProps.firstName}
+            lastName={addressProps.lastName}
+            company={addressProps.company}
+            addressLine1={addressProps.addressLine1}
+            addressLine2={addressProps.addressLine2}
+            postalCode={addressProps.postalCode}
+            city={addressProps.city}
+            countryName={addressProps.countryName}
+            phone={addressProps.phone}
+        />
+    );
 
     return (
         <Grid container spacing={3}>
@@ -35,53 +53,28 @@ const OrderInfoView = (props: Props) => {
                         <Divider />
                     </Box>
                 </Grid>
-                <Grid item xs={12} container>
+                <Grid item xs={12} container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="body1">
                             {props.contactInfo.email}
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddress.firstName}{" "}
-                            {props.shippingAddress.lastName}
-                        </Typography>
+                        {!shippingAndBillingAddressesTheSame() && (
+                            <Typography variant="body1">
+                                Shipping address:
+                            </Typography>
+                        )}
+                        {OrderInfoAddressViewComponent(props.shippingAddress)}
                     </Grid>
-                    {!isEmptyOrNull(props.shippingAddress.company) && (
+                    {!shippingAndBillingAddressesTheSame() && (
                         <Grid item xs={12}>
                             <Typography variant="body1">
-                                {props.shippingAddress.company}
+                                Billing address:
                             </Typography>
+                            {OrderInfoAddressViewComponent(props.billingAddress)}
                         </Grid>
                     )}
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddress.addressLine1}
-                        </Typography>
-                    </Grid>
-                    {!isEmptyOrNull(
-                        props.shippingAddress.addressLine2
-                    ) && (
-                        <Grid item xs={12}>
-                            <Typography variant="body1">
-                                {props.shippingAddress.addressLine2}
-                            </Typography>
-                        </Grid>
-                    )}
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddress.postalCode},{" "}
-                            {props.shippingAddress.city}
-                        </Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="body1">{props.shippingAddress.countryName}</Typography>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="body1">
-                            {props.shippingAddress.phone}
-                        </Typography>
-                    </Grid>
                 </Grid>
             </Grid>
             <Grid item xs={12}>

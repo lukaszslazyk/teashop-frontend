@@ -6,9 +6,16 @@ import { OrderFormData } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
+export const SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS =
+    "SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS";
 export const REQUEST_PLACE_ORDER = "REQUEST_PLACE_ORDER";
 export const RECEIVE_PLACE_ORDER = "RECEIVE_PLACE_ORDER";
 export const RESET_ORDER_PLACED = "RESET_ORDER_PLACED";
+
+interface SetShippingAddressSameAsBillingAddressAction {
+    type: typeof SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS;
+    value: boolean;
+}
 
 interface RequestPlaceOrderAction {
     type: typeof REQUEST_PLACE_ORDER;
@@ -25,9 +32,17 @@ interface ResetOrderPlacedAction {
 }
 
 export type OrderFormActionTypes =
+    | SetShippingAddressSameAsBillingAddressAction
     | RequestPlaceOrderAction
     | ReceivePlaceOrderAction
     | ResetOrderPlacedAction;
+
+export const setShippingAddressSameAsBillingAddress = (
+    value: boolean
+): OrderFormActionTypes => ({
+    type: SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
+    value: value,
+});
 
 export const requestPlaceOrder = (): OrderFormActionTypes => ({
     type: REQUEST_PLACE_ORDER,
@@ -57,6 +72,9 @@ export const placeOrder = (
             {
                 contactInfo: orderFormData.contactInfoFormData,
                 shippingAddress: orderFormData.shippingAddressFormData,
+                billingAddress: orderFormData.billingAddressSameAsShippingAddress
+                    ? orderFormData.shippingAddressFormData
+                    : orderFormData.billingAddressFormData,
                 chosenShippingMethodName:
                     orderFormData.chosenShippingMethodName,
                 chosenPaymentMethodName: orderFormData.chosenPaymentMethodName,

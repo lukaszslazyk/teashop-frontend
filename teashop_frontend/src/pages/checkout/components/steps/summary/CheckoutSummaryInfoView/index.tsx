@@ -4,16 +4,18 @@ import useLogic from "./logic";
 
 const CheckoutSummaryInfoView = () => {
     const {
-        contactInfo,
-        shippingAddress,
+        contactInfoProps,
+        shippingAddressProps,
+        billingAddressProps,
         shippingMethodDisplayName,
         paymentMethodDisplayName,
     } = useLogic();
 
     return (
         <OrderInfoView
-            contactInfo={contactInfo}
-            shippingAddress={shippingAddress}
+            contactInfo={contactInfoProps}
+            shippingAddress={shippingAddressProps}
+            billingAddress={billingAddressProps}
             chosenShippingMethodName={shippingMethodDisplayName}
             chosenPaymentMethodName={paymentMethodDisplayName}
         />

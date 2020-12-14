@@ -4,6 +4,7 @@ export interface Order {
     orderNo: number;
     contactInfo: ContactInfo;
     shippingAddress: Address;
+    billingAddress: Address;
     chosenShippingMethod: ShippingMethod;
     chosenPaymentMethod: PaymentMethod;
     cart: Cart;
@@ -52,6 +53,8 @@ export interface PaymentMethod {
 export interface OrderFormData {
     contactInfoFormData: ContactInfoFormData;
     shippingAddressFormData: AddressFormData;
+    billingAddressFormData: AddressFormData;
+    billingAddressSameAsShippingAddress: boolean;
     chosenShippingMethodName: string;
     chosenPaymentMethodName: string
     paymentCardFormData: PaymentCardFormData;
