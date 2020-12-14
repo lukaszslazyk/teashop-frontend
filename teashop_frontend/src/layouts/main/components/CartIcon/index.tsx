@@ -11,7 +11,13 @@ const CartIcon = () => {
     const cartSize = useSelector(
         (state: RootState) => state.cart.cart.items.length
     );
+    const cartFetchedYet = useSelector(
+        (state: RootState) => state.cart.cartFetchedYet
+    );
     const classes = useStyles();
+
+    if (!cartFetchedYet)
+        return null;
 
     return (
         <IconButton className={classes.root} component={Link} to={routing.cart}>
