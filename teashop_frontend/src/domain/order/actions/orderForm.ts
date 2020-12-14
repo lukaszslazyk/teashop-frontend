@@ -8,6 +8,7 @@ const API_ROOT = process.env.REACT_APP_API_ROOT;
 
 export const REQUEST_PLACE_ORDER = "REQUEST_PLACE_ORDER";
 export const RECEIVE_PLACE_ORDER = "RECEIVE_PLACE_ORDER";
+export const RESET_ORDER_PLACED = "RESET_ORDER_PLACED";
 
 interface RequestPlaceOrderAction {
     type: typeof REQUEST_PLACE_ORDER;
@@ -19,9 +20,14 @@ interface ReceivePlaceOrderAction {
     errorOccurred: boolean;
 }
 
+interface ResetOrderPlacedAction {
+    type: typeof RESET_ORDER_PLACED;
+}
+
 export type OrderFormActionTypes =
     | RequestPlaceOrderAction
-    | ReceivePlaceOrderAction;
+    | ReceivePlaceOrderAction
+    | ResetOrderPlacedAction;
 
 export const requestPlaceOrder = (): OrderFormActionTypes => ({
     type: REQUEST_PLACE_ORDER,
@@ -36,6 +42,10 @@ export const receivePlaceOrder = (
     errorOccurred: errorOccurred,
 });
 
+export const resetOrderPlaced = (): OrderFormActionTypes => ({
+    type: RESET_ORDER_PLACED,
+});
+
 export const placeOrder = (
     orderFormData: OrderFormData,
     cancelToken: RequestCancelToken
@@ -47,7 +57,8 @@ export const placeOrder = (
             {
                 contactInfo: orderFormData.contactInfoFormData,
                 shippingAddress: orderFormData.shippingAddressFormData,
-                chosenShippingMethodName: orderFormData.chosenShippingMethodName,
+                chosenShippingMethodName:
+                    orderFormData.chosenShippingMethodName,
                 chosenPaymentMethodName: orderFormData.chosenPaymentMethodName,
                 paymentCard: orderFormData.paymentCardFormData,
             },
@@ -57,8 +68,8 @@ export const placeOrder = (
             }
         )
         .then(response => {
-            dispatch(receivePlaceOrder(response.data));
             dispatch(clearCart());
+            dispatch(receivePlaceOrder(response.data));
         })
         .catch(error => {
             if (!axios.isCancel(error))
