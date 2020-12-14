@@ -40,9 +40,20 @@ const OrderItemsView = (props: Props) => {
                                 </Box>
                             </Grid>
                         )}
-                        <Grid item xs={12} container alignItems="center" spacing={2} className={classes.itemContainer}>
+                        <Grid
+                            item
+                            xs={12}
+                            container
+                            spacing={2}
+                            alignItems="center"
+                            className={classes.itemContainer}
+                        >
                             <Grid item>
-                                <Paper square className={classes.imageContainer}>
+                                <Paper
+                                    square
+                                    variant="outlined"
+                                    className={classes.imageContainer}
+                                >
                                     <img
                                         src={getImageFullUrl(item.product.imagePath)}
                                         alt="product"
@@ -50,7 +61,12 @@ const OrderItemsView = (props: Props) => {
                                     />
                                 </Paper>
                             </Grid>
-                            <Grid item container spacing={2} className={classes.grow}>
+                            <Grid
+                                item
+                                container
+                                spacing={2}
+                                className={classes.grow}
+                            >
                                 <Grid item sm={8} xs={12}>
                                     <Typography variant="body1">
                                         {item.product.name}
@@ -58,12 +74,18 @@ const OrderItemsView = (props: Props) => {
                                 </Grid>
                                 <Grid item sm={4} xs={12} container>
                                     <Grid item xs={6}>
-                                        <Typography variant="body1" className={classes.quantityText}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.quantityText}
+                                        >
                                             {getItemQuantityText(item)}
                                         </Typography>
                                     </Grid>
                                     <Grid item xs={6}>
-                                        <Typography variant="body1" className={classes.priceText}>
+                                        <Typography
+                                            variant="body1"
+                                            className={classes.priceText}
+                                        >
                                             {getPriceTextWithCurrency(calculateItemPrice(item))}
                                         </Typography>
                                     </Grid>

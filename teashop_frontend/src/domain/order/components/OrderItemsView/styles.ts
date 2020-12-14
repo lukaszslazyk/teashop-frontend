@@ -8,9 +8,11 @@ const useStyles = makeStyles((theme: Theme) =>
         imageContainer: {
             display: "flex",
             alignItems: "center",
+            width: 50,
+            height: 50,
         },
         image: {
-            width: 50,
+            width: "100%",
         },
         grow: {
             flexGrow: 1,
