@@ -12,7 +12,7 @@ const ProductDetailsPage = () => {
     const { product, productIsFetching, errorOccurred } = logic;
 
     return (
-        <MainLayout>
+        <MainLayout maxWidth="md">
             {productIsFetching && <PageLoadingProgress />}
             {!productIsFetching && errorOccurred && (
                 <ErrorInfo errorMessage={logic.getErrorMessage()} />

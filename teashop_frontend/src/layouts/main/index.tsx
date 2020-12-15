@@ -5,6 +5,7 @@ import TopAppBar from "./components/TopAppBar";
 import useStyles from "./styles";
 
 interface Props {
+    maxWidth?: false | "md" | "xs" | "sm" | "lg" | "xl" | undefined;
     children: ReactNode;
 }
 
@@ -23,7 +24,10 @@ const MainLayout = (props: Props) => {
                 mobileOpen={mobileOpen}
                 handleDrawerToggle={handleDrawerToggle}
             />
-            <Container disableGutters>
+            <Container
+                maxWidth={props.maxWidth ? props.maxWidth : "lg"}
+                disableGutters
+            >
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     {props.children}

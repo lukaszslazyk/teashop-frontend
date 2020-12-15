@@ -2,8 +2,17 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        cardMedia: {
-            height: 350,
+        imageWrapper: {
+            height: "100%",
+            padding: theme.spacing(2),
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        image: {
+            height: 300,
+            width: "auto",
+            display: "flex",
         },
         productNameText: {
             [theme.breakpoints.down("sm")]: {
@@ -14,6 +23,9 @@ const useStyles = makeStyles((theme: Theme) =>
             [theme.breakpoints.down("sm")]: {
                 textAlign: "center",
             },
+        },
+        alignToEnd: {
+            alignSelf: "flex-end",
         },
     })
 );
