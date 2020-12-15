@@ -34,8 +34,8 @@ const CartItemListElementMobileMenu = (props: Props) => {
         <div>
             <IconButton
                 ref={buttonRef}
-                edge="end"
                 onClick={handleMoreButtonClicked}
+                className={classes.openMenuButton}
             >
                 <MoreVertIcon />
             </IconButton>

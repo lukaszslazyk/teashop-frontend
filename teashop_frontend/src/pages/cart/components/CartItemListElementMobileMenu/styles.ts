@@ -3,6 +3,9 @@ import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        openMenuButton: {
+            marginRight: -theme.spacing(3),
+        },
         menuIcon: {
             marginRight: theme.spacing(2),
         },
