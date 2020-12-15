@@ -2,6 +2,11 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        root: {
+            [theme.breakpoints.down("sm")]: {
+                justifyContent: "center",
+            },
+        },
         imageWrapper: {
             height: "100%",
             padding: theme.spacing(2),
