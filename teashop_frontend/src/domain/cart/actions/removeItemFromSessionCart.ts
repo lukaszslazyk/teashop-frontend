@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -17,6 +17,7 @@ interface ReceiveRemoveItemFromSessionCartAction {
     type: typeof RECEIVE_REMOVE_ITEM_FROM_SESSION_CART;
     removedItemProductId: string;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type RemoveItemFromSessionCartActionTypes =
@@ -29,11 +30,23 @@ export const requestRemoveItemFromSessionCart = (): RemoveItemFromSessionCartAct
 
 export const receiveRemoveItemFromSessionCart = (
     removedItemProductId: string,
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
 ): RemoveItemFromSessionCartActionTypes => ({
     type: RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
     removedItemProductId: removedItemProductId,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveRemoveItemFromSessionCartError = (
+    removedItemProductId: string,
+    errorType: ApiErrorType
+): RemoveItemFromSessionCartActionTypes => ({
+    type: RECEIVE_REMOVE_ITEM_FROM_SESSION_CART,
+    removedItemProductId: removedItemProductId,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const removeItemFromSessionCart = (
@@ -49,6 +62,19 @@ export const removeItemFromSessionCart = (
         .then(response => dispatch(receiveRemoveItemFromSessionCart(productId)))
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receiveRemoveItemFromSessionCart(productId, true));
+                if (error.message === "Network Error")
+                    dispatch(
+                        receiveRemoveItemFromSessionCartError(
+                            productId,
+                            ApiErrorType.Unavailable
+                        )
+                    );
+                else
+                    dispatch(
+                        receiveRemoveItemFromSessionCartError(
+                            productId,
+                            ApiErrorType.Unexpected
+                        )
+                    );
         });
 };

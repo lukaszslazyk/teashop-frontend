@@ -8,3 +8,11 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     unknown,
     Action<string>
 >;
+
+export enum ApiErrorType {
+    None,
+    NotFound,
+    Invalid,
+    Unavailable,
+    Unexpected,
+}

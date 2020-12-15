@@ -1,3 +1,4 @@
+import { ApiErrorType } from "../../shared/types";
 import {
     ProductActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
@@ -12,6 +13,7 @@ export interface ProductState {
     product: Product | null;
     isFetching: boolean;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 const initialState: ProductState = {
@@ -19,6 +21,7 @@ const initialState: ProductState = {
     product: null,
     isFetching: false,
     errorOccurred: false,
+    errorType: ApiErrorType.None,
 };
 
 export const productReducer = (
@@ -32,6 +35,7 @@ export const productReducer = (
                 ...state,
                 isFetching: true,
                 errorOccurred: false,
+                errorType: ApiErrorType.None,
             };
         case RECEIVE_PRODUCTS_IN_CATEGORY:
             return {
@@ -39,6 +43,7 @@ export const productReducer = (
                 isFetching: false,
                 products: action.products,
                 errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
             };
         case RECEIVE_PRODUCT_BY_ID:
             return {
@@ -46,6 +51,7 @@ export const productReducer = (
                 isFetching: false,
                 product: action.product,
                 errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
             };
         default:
             return state;

@@ -1,17 +1,9 @@
-import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { fetchSessionCart } from "../domain/cart/actions";
-import { createRequestCancelToken } from "../shared/services/requestCancelTokenService";
+import React from "react";
 import AppRouter from "./components/AppRouter";
+import useInitialOperations from "./initialOperations";
 
 const App = () => {
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        const cancelToken = createRequestCancelToken();
-        dispatch(fetchSessionCart(cancelToken));
-        return () => cancelToken.cancel();
-    }, [dispatch]);
+    useInitialOperations();
 
     return (
         <div>

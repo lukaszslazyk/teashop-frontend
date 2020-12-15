@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { Product } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -16,6 +16,7 @@ interface ReceiveProductsInCategoryAction {
     type: typeof RECEIVE_PRODUCTS_IN_CATEGORY;
     products: Product[];
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type FetchProductsInCategoryActionTypes =
@@ -28,11 +29,22 @@ export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes 
 
 export const receiveProductsInCategory = (
     products: Product[],
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
 ): FetchProductsInCategoryActionTypes => ({
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: products,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveProductsInCategoryError = (
+    errorType: ApiErrorType
+): FetchProductsInCategoryActionTypes => ({
+    type: RECEIVE_PRODUCTS_IN_CATEGORY,
+    products: [],
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const fetchProductsInCategory = (
@@ -47,6 +59,13 @@ export const fetchProductsInCategory = (
         .then(response => dispatch(receiveProductsInCategory(response.data)))
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receiveProductsInCategory([], true));
+                if (error.message === "Network Error")
+                    dispatch(
+                        receiveProductsInCategoryError(ApiErrorType.Unavailable)
+                    );
+                else
+                    dispatch(
+                        receiveProductsInCategoryError(ApiErrorType.Unexpected)
+                    );
         });
 };

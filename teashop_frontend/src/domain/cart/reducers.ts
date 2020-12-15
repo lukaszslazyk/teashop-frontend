@@ -1,3 +1,4 @@
+import { ApiErrorType } from "../../shared/types";
 import {
     CartActionTypes,
     RECEIVE_ADD_ITEM_TO_SESSION_CART,
@@ -18,6 +19,7 @@ export interface CartState {
     cartIsFetching: boolean;
     cartUpdateIsSending: boolean;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 const initialState: CartState = {
@@ -26,6 +28,7 @@ const initialState: CartState = {
     cartIsFetching: false,
     cartUpdateIsSending: false,
     errorOccurred: false,
+    errorType: ApiErrorType.None,
 };
 
 export const cartReducer = (
@@ -38,6 +41,7 @@ export const cartReducer = (
                 ...state,
                 cartIsFetching: true,
                 errorOccurred: false,
+                errorType: ApiErrorType.None,
             };
         case RECEIVE_SESSION_CART:
             return {
@@ -46,6 +50,7 @@ export const cartReducer = (
                 cartIsFetching: false,
                 cart: action.cart ? action.cart : initialState.cart,
                 errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
             };
         case REQUEST_ADD_ITEM_TO_SESSION_CART:
         case REQUEST_UPDATE_SESSION_CART_ITEM_QUANTITY:
@@ -54,6 +59,7 @@ export const cartReducer = (
                 ...state,
                 cartUpdateIsSending: true,
                 errorOccurred: false,
+                errorType: ApiErrorType.None,
             };
         case RECEIVE_ADD_ITEM_TO_SESSION_CART:
             if (!action.errorOccurred && action.addedItem)
@@ -63,6 +69,7 @@ export const cartReducer = (
                 ...state,
                 cartUpdateIsSending: false,
                 errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
             };
         case RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY:
             if (!action.errorOccurred)
@@ -72,6 +79,7 @@ export const cartReducer = (
                 ...state,
                 cartUpdateIsSending: false,
                 errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
             };
         case RECEIVE_REMOVE_ITEM_FROM_SESSION_CART:
             if (!action.errorOccurred)
@@ -81,6 +89,7 @@ export const cartReducer = (
                 ...state,
                 cartUpdateIsSending: false,
                 errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
             };
         case CLEAR_CART:
             return {

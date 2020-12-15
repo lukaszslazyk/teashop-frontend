@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { Product } from "../../product/models";
 import { CartItem } from "../models";
 
@@ -19,6 +19,7 @@ interface ReceiveAddItemToSessionCartAction {
     type: typeof RECEIVE_ADD_ITEM_TO_SESSION_CART;
     addedItem: CartItem | null;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type AddItemToSessionCartActionTypes =
@@ -31,11 +32,22 @@ export const requestAddItemToSessionCart = (): AddItemToSessionCartActionTypes =
 
 export const receiveAddItemToSessionCart = (
     addedItem: CartItem | null,
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
 ): AddItemToSessionCartActionTypes => ({
     type: RECEIVE_ADD_ITEM_TO_SESSION_CART,
     addedItem: addedItem,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveAddItemToSessionCartError = (
+    errorType: ApiErrorType
+): AddItemToSessionCartActionTypes => ({
+    type: RECEIVE_ADD_ITEM_TO_SESSION_CART,
+    addedItem: null,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const addItemToSessionCart = (
@@ -66,6 +78,17 @@ export const addItemToSessionCart = (
         )
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receiveAddItemToSessionCart(null, true));
+                if (error.message === "Network Error")
+                    dispatch(
+                        receiveAddItemToSessionCartError(
+                            ApiErrorType.Unavailable
+                        )
+                    );
+                else
+                    dispatch(
+                        receiveAddItemToSessionCartError(
+                            ApiErrorType.Unexpected
+                        )
+                    );
         });
 };

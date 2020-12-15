@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -18,6 +18,7 @@ interface ReceiveUpdateSessionCartItemQuantityAction {
     productId: string;
     quantity: number;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type UpdateSessionCartItemQuantityActionTypes =
@@ -31,12 +32,26 @@ export const requestUpdateSessionCartItemQuantity = (): UpdateSessionCartItemQua
 export const receiveUpdateSessionCartItemQuantity = (
     productId: string,
     quantity: number,
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
 ): UpdateSessionCartItemQuantityActionTypes => ({
     type: RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
     productId: productId,
     quantity: quantity,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveUpdateSessionCartItemQuantityError = (
+    productId: string,
+    quantity: number,
+    errorType: ApiErrorType
+): UpdateSessionCartItemQuantityActionTypes => ({
+    type: RECEIVE_UPDATE_SESSION_CART_ITEM_QUANTITY,
+    productId: productId,
+    quantity: quantity,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const updateSessionCartItemQuantity = (
@@ -61,12 +76,21 @@ export const updateSessionCartItemQuantity = (
         )
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(
-                    receiveUpdateSessionCartItemQuantity(
-                        productId,
-                        quantity,
-                        true
-                    )
-                );
+                if (error.message === "Network Error")
+                    dispatch(
+                        receiveUpdateSessionCartItemQuantityError(
+                            productId,
+                            quantity,
+                            ApiErrorType.Unavailable
+                        )
+                    );
+                else
+                    dispatch(
+                        receiveUpdateSessionCartItemQuantityError(
+                            productId,
+                            quantity,
+                            ApiErrorType.Unexpected
+                        )
+                    );
         });
 };

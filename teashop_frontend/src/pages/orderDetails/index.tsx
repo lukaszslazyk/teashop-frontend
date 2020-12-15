@@ -16,7 +16,7 @@ const OrderDetailsPage = () => {
         <MainLayout>
             {orderIsFetching && <PageLoadingProgress />}
             {!orderIsFetching && errorOccurred && (
-                <ErrorInfo errorMessage="Order is currently unavailable." />
+                <ErrorInfo errorMessage={logic.getErrorMessage()} />
             )}
             {!orderIsFetching && !errorOccurred && (
                 <Grid container spacing={3}>
