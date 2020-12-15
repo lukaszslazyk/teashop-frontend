@@ -58,7 +58,7 @@ export const fetchOrder = (
         .catch(error => {
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
-                    dispatch(receiveOrderError(ApiErrorType.Unavailable));
+                    dispatch(receiveOrderError(ApiErrorType.Timeout));
                 else
                     dispatch(receiveOrderError(ApiErrorType.Unexpected));
         });

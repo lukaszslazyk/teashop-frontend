@@ -30,7 +30,7 @@ const useLogic = () => {
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.NotFound)
             return "Product does not exist.";
-        else if (errorType === ApiErrorType.Unavailable)
+        else if (errorType === ApiErrorType.Timeout)
             return "Product is currently unavailable.\nPlease try again later.";
         else if (errorType === ApiErrorType.Unexpected)
             return "We've encountered some issues on our servers.\nPlease try again later.";

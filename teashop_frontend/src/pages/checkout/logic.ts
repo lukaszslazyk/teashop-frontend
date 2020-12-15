@@ -59,8 +59,8 @@ const useLogic = () => {
         )
             return "We've encountered some issues on our servers.\nPlease try again later.";
         else if (
-            orderMetaErrorType === ApiErrorType.Unavailable ||
-            cartErrorType === ApiErrorType.Unavailable
+            orderMetaErrorType === ApiErrorType.Timeout ||
+            cartErrorType === ApiErrorType.Timeout
         )
             return "Checkout is currently unavailable.\nPlease try again later.";
         return "";

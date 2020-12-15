@@ -28,7 +28,7 @@ const useLogic = () => {
     }, [orderNo, dispatch]);
 
     const getErrorMessage = (): string => {
-        if (errorType === ApiErrorType.Unavailable)
+        if (errorType === ApiErrorType.Timeout)
             return "Order is currently unavailable.\nPlease try again later.";
         else if (errorType === ApiErrorType.Unexpected)
             return "We've encountered some issues on our servers.\nPlease try again later.";

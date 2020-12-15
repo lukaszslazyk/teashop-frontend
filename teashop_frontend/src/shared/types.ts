@@ -12,7 +12,7 @@ export type AppThunk<ReturnType = void> = ThunkAction<
 export enum ApiErrorType {
     None,
     NotFound,
-    Invalid,
-    Unavailable,
+    InvalidResponse,
+    Timeout,
     Unexpected,
 }
