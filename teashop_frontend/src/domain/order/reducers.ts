@@ -197,6 +197,12 @@ export const orderReducer = (
                             ? action.orderMeta.countries[0].code
                             : "",
                     },
+                    billingAddressFormData: {
+                        ...state.orderFormData.billingAddressFormData,
+                        countryCode: action.orderMeta
+                            ? action.orderMeta.countries[0].code
+                            : "",
+                    },
                 },
             };
         case SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS:
