@@ -44,9 +44,9 @@ const useLogic = () => {
     const getErrorMessage = (): string => {
         if (errorOccurred) {
             if (errorType === ApiErrorType.Unavailable)
-                return "Products in this category are currently unavailable. Please try again later.";
+                return "Products in this category are currently unavailable.\nPlease try again later.";
             else if (errorType === ApiErrorType.Unexpected)
-                return "We've encountered some issues on our servers. Please try again later.";
+                return "We've encountered some issues on our servers.\nPlease try again later.";
         } else if (categoryIsEmpty())
             return "There are no products in this category.";
         return "";

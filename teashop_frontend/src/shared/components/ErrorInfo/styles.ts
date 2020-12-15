@@ -1,10 +1,15 @@
-import { makeStyles } from "@material-ui/core";
+import { Theme, createStyles, makeStyles } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 
-const useStyles = makeStyles({
-    root: {
-        color: grey[500]
-    }
-});
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        root: {
+            color: grey[500]
+        },
+        title: {
+            marginBottom: theme.spacing(1),
+        }
+    })
+);
 
 export default useStyles;

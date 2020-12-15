@@ -20,9 +20,9 @@ const useLogic = () => {
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.Unavailable)
-            return "Your cart is currently unavailable. Please try again later.";
+            return "Your cart is currently unavailable.\nPlease try again later.";
         else if (errorType === ApiErrorType.Unexpected)
-            return "We've encountered some issues on our servers. Please try again later.";
+            return "We've encountered some issues on our servers.\nPlease try again later.";
         return "";
     };
 
