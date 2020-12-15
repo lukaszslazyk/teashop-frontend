@@ -5,6 +5,7 @@ import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { OrderDetailsPageParams } from "../../configuration/routing";
 import { fetchOrder } from "../../domain/order/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import { ApiErrorType } from "../../shared/types";
 
 const useLogic = () => {
     const order = useSelector((state: RootState) => state.order.order);
@@ -13,6 +14,9 @@ const useLogic = () => {
     );
     const errorOccurred = useSelector(
         (state: RootState) => state.order.orderErrorOccurred
+    );
+    const errorType = useSelector(
+        (state: RootState) => state.order.orderErrorType
     );
     const dispatch = useDispatch();
     const { orderNo } = useParams<OrderDetailsPageParams>();
@@ -23,10 +27,19 @@ const useLogic = () => {
         return () => cancelToken.cancel();
     }, [orderNo, dispatch]);
 
+    const getErrorMessage = (): string => {
+        if (errorType === ApiErrorType.Unavailable)
+            return "Order is currently unavailable.\nPlease try again later.";
+        else if (errorType === ApiErrorType.Unexpected)
+            return "We've encountered some issues on our servers.\nPlease try again later.";
+        return "";
+    };
+
     return {
         order,
         orderIsFetching,
         errorOccurred,
+        getErrorMessage,
     };
 };
 

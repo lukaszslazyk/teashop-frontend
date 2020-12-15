@@ -1,7 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
-import { receiveProductById } from "../../product/actions/fetchProductById";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { OrderMeta } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -17,6 +16,7 @@ interface ReceiveOrderMetaAction {
     type: typeof RECEIVE_ORDER_META;
     orderMeta: OrderMeta | null;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type OrderMetaActionTypes =
@@ -29,11 +29,22 @@ export const requestOrderMeta = (): OrderMetaActionTypes => ({
 
 export const receiveOrderMeta = (
     orderMeta: OrderMeta | null,
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
 ): OrderMetaActionTypes => ({
     type: RECEIVE_ORDER_META,
     orderMeta: orderMeta,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveOrderMetaError = (
+    errorType: ApiErrorType
+): OrderMetaActionTypes => ({
+    type: RECEIVE_ORDER_META,
+    orderMeta: null,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const fetchOrderMeta = (
@@ -48,11 +59,14 @@ export const fetchOrderMeta = (
             if (valid(response.data))
                 dispatch(receiveOrderMeta(response.data));
             else
-                dispatch(receiveOrderMeta(null, true));
+                dispatch(receiveOrderMetaError(ApiErrorType.Invalid));
         })
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receiveProductById(null, true));
+                if (error.message === "Network Error")
+                    dispatch(receiveOrderMetaError(ApiErrorType.Invalid));
+                else
+                    dispatch(receiveOrderMetaError(ApiErrorType.Unexpected));
         });
 };
 

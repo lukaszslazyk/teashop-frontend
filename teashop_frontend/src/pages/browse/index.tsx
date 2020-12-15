@@ -8,7 +8,7 @@ import useLogic from "./logic";
 
 const BrowsePage = () => {
     const logic = useLogic();
-    const { products, productsAreFetching, errorOccurred } = logic;
+    const { products, productsAreFetching, anyErrors } = logic;
 
     if (!logic.categoryIsAvailable())
         return <NotFoundPage />;
@@ -16,11 +16,10 @@ const BrowsePage = () => {
     return (
         <MainLayout>
             {productsAreFetching && <PageLoadingProgress />}
-            {!productsAreFetching &&
-                (errorOccurred || products.length === 0) && (
-                <ErrorInfo errorMessage="No product in this category is currently available." />
+            {!productsAreFetching && anyErrors() && (
+                <ErrorInfo errorMessage={logic.getErrorMessage()} />
             )}
-            {!productsAreFetching && !errorOccurred && products.length > 0 && (
+            {!productsAreFetching && !anyErrors() && (
                 <ProductCardTileGroup products={products} />
             )}
         </MainLayout>

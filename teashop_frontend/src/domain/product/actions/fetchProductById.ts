@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { Product } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -16,6 +16,7 @@ interface ReceiveProductByIdAction {
     type: typeof RECEIVE_PRODUCT_BY_ID;
     product: Product | null;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type FetchProductByIdActionTypes =
@@ -28,11 +29,22 @@ export const requestProductById = (): FetchProductByIdActionTypes => ({
 
 export const receiveProductById = (
     product: Product | null,
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType = ApiErrorType.None
 ): FetchProductByIdActionTypes => ({
     type: RECEIVE_PRODUCT_BY_ID,
     product: product,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveProductByIdError = (
+    errorType = ApiErrorType.None
+): FetchProductByIdActionTypes => ({
+    type: RECEIVE_PRODUCT_BY_ID,
+    product: null,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const fetchProductById = (
@@ -47,6 +59,13 @@ export const fetchProductById = (
         .then(response => dispatch(receiveProductById(response.data)))
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receiveProductById(null, true));
+                if (error.message === "Network Error")
+                    dispatch(receiveProductByIdError(ApiErrorType.Unavailable));
+                else if (error.response.status === 404)
+                    dispatch(
+                        receiveProductByIdError(ApiErrorType.NotFound)
+                    );
+                else
+                    dispatch(receiveProductByIdError(ApiErrorType.Unexpected));
         });
 };

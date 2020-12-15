@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { clearCart } from "../../cart/actions";
 import { OrderFormData } from "../models";
 
@@ -25,6 +25,7 @@ interface ReceivePlaceOrderAction {
     type: typeof RECEIVE_PLACE_ORDER;
     orderNo: number | null;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 interface ResetOrderPlacedAction {
@@ -50,11 +51,22 @@ export const requestPlaceOrder = (): OrderFormActionTypes => ({
 
 export const receivePlaceOrder = (
     orderNo: number | null,
-    errorOccurred: boolean = false
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
 ): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
     orderNo: orderNo,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receivePlaceOrderError = (
+    errorType: ApiErrorType
+): OrderFormActionTypes => ({
+    type: RECEIVE_PLACE_ORDER,
+    orderNo: null,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const resetOrderPlaced = (): OrderFormActionTypes => ({
@@ -91,6 +103,9 @@ export const placeOrder = (
         })
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receivePlaceOrder(null, true));
+                if (error.message === "Network Error")
+                    dispatch(receivePlaceOrderError(ApiErrorType.Unavailable));
+                else
+                    dispatch(receivePlaceOrderError(ApiErrorType.Unexpected));
         });
 };

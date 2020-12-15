@@ -13,14 +13,20 @@ const ErrorInfo = (props: Props) => {
     return (
         <Grid container className={classes.root}>
             <Grid item xs={12}>
-                <Typography variant="h3" align="center">
+                <Typography
+                    variant="h3"
+                    align="center"
+                    className={classes.title}
+                >
                     {props.title ? props.title : "Sorry"}
                 </Typography>
             </Grid>
             <Grid item xs={12}>
-                <Typography variant="h6" align="center">
-                    {props.errorMessage}
-                </Typography>
+                {props.errorMessage.split("\n").map((line, idx) => (
+                    <Typography key={idx} variant="h6" align="center">
+                        {line}
+                    </Typography>
+                ))}
             </Grid>
         </Grid>
     );

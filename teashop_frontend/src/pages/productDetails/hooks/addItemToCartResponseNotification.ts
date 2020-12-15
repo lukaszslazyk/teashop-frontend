@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import useStatusSnackbar from "../../../shared/hooks/useStatusSnackbar";
 
-const useAddItemToCartResponseNotifyEffect = (
+const useAddItemToCartResponseNotification = (
     requestIsProcessing: boolean,
     responseErrorOccurred: boolean
 ) => {
@@ -30,4 +30,4 @@ const useAddItemToCartResponseNotifyEffect = (
     ]);
 };
 
-export default useAddItemToCartResponseNotifyEffect;
+export default useAddItemToCartResponseNotification;

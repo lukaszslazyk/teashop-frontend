@@ -15,7 +15,7 @@ const ProductDetailsPage = () => {
         <MainLayout>
             {productIsFetching && <PageLoadingProgress />}
             {!productIsFetching && errorOccurred && (
-                <ErrorInfo errorMessage="Product is currently unavailable." />
+                <ErrorInfo errorMessage={logic.getErrorMessage()} />
             )}
             {!productIsFetching && !errorOccurred && product && (
                 <Grid container spacing={3}>

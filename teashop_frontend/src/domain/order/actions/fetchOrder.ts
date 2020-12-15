@@ -1,6 +1,6 @@
 import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
-import { AppThunk } from "../../../shared/types";
+import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { Order } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
@@ -16,6 +16,7 @@ interface ReceiveOrderAtion {
     type: typeof RECEIVE_ORDER;
     order: Order | null;
     errorOccurred: boolean;
+    errorType: ApiErrorType;
 }
 
 export type FetchOrderActionTypes = RequestOrderAction | ReceiveOrderAtion;
@@ -26,11 +27,22 @@ export const requestOrder = (): FetchOrderActionTypes => ({
 
 export const receiveOrder = (
     order: Order | null,
-    errorOccurred: boolean = false
-) => ({
+    errorOccurred: boolean = false,
+    errorType: ApiErrorType = ApiErrorType.None
+): FetchOrderActionTypes => ({
     type: RECEIVE_ORDER,
     order: order,
     errorOccurred: errorOccurred,
+    errorType: errorType,
+});
+
+export const receiveOrderError = (
+    errorType: ApiErrorType
+): FetchOrderActionTypes => ({
+    type: RECEIVE_ORDER,
+    order: null,
+    errorOccurred: true,
+    errorType: errorType,
 });
 
 export const fetchOrder = (
@@ -45,6 +57,9 @@ export const fetchOrder = (
         .then(response => dispatch(receiveOrder(response.data)))
         .catch(error => {
             if (!axios.isCancel(error))
-                dispatch(receiveOrder(null, true));
+                if (error.message === "Network Error")
+                    dispatch(receiveOrderError(ApiErrorType.Unavailable));
+                else
+                    dispatch(receiveOrderError(ApiErrorType.Unexpected));
         });
 };

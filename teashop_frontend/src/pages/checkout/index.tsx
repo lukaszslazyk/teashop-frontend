@@ -11,8 +11,8 @@ const CheckoutPage = () => {
     return (
         <MainLayout>
             {logic.dataIsFetching() && <PageLoadingProgress />}
-            {logic.anyErrorOccurred() && (
-                <ErrorInfo errorMessage="Checkout is currently unavailable. Please try again later." />
+            {logic.anyErrors() && (
+                <ErrorInfo errorMessage={logic.getErrorMessage()} />
             )}
             {logic.noErrors() && <CheckoutMainView />}
         </MainLayout>

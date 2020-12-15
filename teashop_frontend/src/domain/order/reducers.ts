@@ -1,3 +1,4 @@
+import { ApiErrorType } from "../../shared/types";
 import {
     OrderActionTypes,
     REQUEST_ORDER,
@@ -23,12 +24,15 @@ export interface OrderState {
     order: Order;
     orderIsFetching: boolean;
     orderErrorOccurred: boolean;
+    orderErrorType: ApiErrorType;
     orderMeta: OrderMeta;
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
+    orderMetaErrorType: ApiErrorType;
     orderFormData: OrderFormData;
     orderFormIsSending: boolean;
     orderFormErrorOccurred: boolean;
+    orderFormErrorType: ApiErrorType;
     totalPrice: number;
     cartPrice: number;
     shippingPrice: number;
@@ -87,8 +91,10 @@ const initialState: OrderState = {
     },
     orderIsFetching: false,
     orderErrorOccurred: false,
+    orderErrorType: ApiErrorType.None,
     orderMetaIsFetching: false,
     orderMetaErrorOccurred: false,
+    orderMetaErrorType: ApiErrorType.None,
     orderMeta: {
         countries: [],
         shippingMethods: [],
@@ -132,6 +138,7 @@ const initialState: OrderState = {
     },
     orderFormIsSending: false,
     orderFormErrorOccurred: false,
+    orderFormErrorType: ApiErrorType.None,
     totalPrice: 0,
     cartPrice: 0,
     shippingPrice: 0,
@@ -149,6 +156,7 @@ export const orderReducer = (
                 ...state,
                 orderIsFetching: true,
                 orderErrorOccurred: false,
+                orderErrorType: ApiErrorType.None,
             };
         case RECEIVE_ORDER: {
             return {
@@ -156,6 +164,7 @@ export const orderReducer = (
                 orderIsFetching: false,
                 orderErrorOccurred: action.errorOccurred,
                 order: action.order ? action.order : initialState.order,
+                orderErrorType: action.errorType,
             };
         }
         case REQUEST_ORDER_META:
@@ -163,12 +172,14 @@ export const orderReducer = (
                 ...state,
                 orderMetaIsFetching: true,
                 orderMetaErrorOccurred: false,
+                orderMetaErrorType: ApiErrorType.None,
             };
         case RECEIVE_ORDER_META:
             return {
                 ...state,
                 orderMetaIsFetching: false,
                 orderMetaErrorOccurred: action.errorOccurred,
+                orderMetaErrorType: action.errorType,
                 orderMeta: action.orderMeta
                     ? action.orderMeta
                     : initialState.orderMeta,
@@ -201,12 +212,14 @@ export const orderReducer = (
                 ...state,
                 orderFormIsSending: true,
                 orderFormErrorOccurred: false,
+                orderFormErrorType: ApiErrorType.None,
             };
         case RECEIVE_PLACE_ORDER:
             let newState = {
                 ...state,
                 orderFormIsSending: false,
                 orderFormErrorOccurred: action.errorOccurred,
+                orderFormErrorType: action.errorType,
                 orderPlaced: !action.errorOccurred,
                 placedOrderNo: action.orderNo
                     ? action.orderNo

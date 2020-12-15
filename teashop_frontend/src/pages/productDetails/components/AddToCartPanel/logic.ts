@@ -4,7 +4,7 @@ import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import { addItemToSessionCart } from "../../../../domain/cart/actions";
 import { Product } from "../../../../domain/product/models";
 import { createRequestCancelToken } from "../../../../shared/services/requestCancelTokenService";
-import useAddItemToCartResponseNotifyEffect from "../../hooks/useAddItemToCartResponseNotifyEffect";
+import useAddItemToCartResponseNotification from "../../hooks/addItemToCartResponseNotification";
 
 const useLogic = (
     product: Product,
@@ -24,7 +24,7 @@ const useLogic = (
         setQuantityPickerTextInputFocused,
     ] = useState(false);
 
-    useAddItemToCartResponseNotifyEffect(
+    useAddItemToCartResponseNotification(
         cartUpdateIsSending,
         cartErrorOccurred
     );

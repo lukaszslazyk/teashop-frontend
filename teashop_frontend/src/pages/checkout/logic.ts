@@ -4,6 +4,7 @@ import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { calculateCartPrice } from "../../domain/cart/services/cartService";
 import { fetchOrderMeta, setCartPrice } from "../../domain/order/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
+import { ApiErrorType } from "../../shared/types";
 
 const useLogic = () => {
     const orderMetaIsFetching = useSelector(
@@ -12,12 +13,18 @@ const useLogic = () => {
     const orderMetaErrorOccurred = useSelector(
         (state: RootState) => state.order.orderMetaErrorOccurred
     );
+    const orderMetaErrorType = useSelector(
+        (state: RootState) => state.order.orderErrorType
+    );
     const cart = useSelector((state: RootState) => state.cart.cart);
     const cartFetchedYet = useSelector(
         (state: RootState) => state.cart.cartFetchedYet
     );
     const cartErrorOccurred = useSelector(
         (state: RootState) => state.cart.errorOccurred
+    );
+    const cartErrorType = useSelector(
+        (state: RootState) => state.cart.errorType
     );
     const dispatch = useDispatch();
 
@@ -35,7 +42,7 @@ const useLogic = () => {
     const dataIsFetching = (): boolean =>
         orderMetaIsFetching && !cartFetchedYet;
 
-    const anyErrorOccurred = (): boolean =>
+    const anyErrors = (): boolean =>
         (!orderMetaIsFetching && orderMetaErrorOccurred) ||
         (cartFetchedYet && cartErrorOccurred);
 
@@ -45,10 +52,25 @@ const useLogic = () => {
         !orderMetaErrorOccurred &&
         !cartErrorOccurred;
 
+    const getErrorMessage = (): string => {
+        if (
+            orderMetaErrorType === ApiErrorType.Unexpected ||
+            cartErrorType === ApiErrorType.Unexpected
+        )
+            return "We've encountered some issues on our servers.\nPlease try again later.";
+        else if (
+            orderMetaErrorType === ApiErrorType.Unavailable ||
+            cartErrorType === ApiErrorType.Unavailable
+        )
+            return "Checkout is currently unavailable.\nPlease try again later.";
+        return "";
+    };
+
     return {
         dataIsFetching,
-        anyErrorOccurred,
+        anyErrors,
         noErrors,
+        getErrorMessage,
     };
 };
 
