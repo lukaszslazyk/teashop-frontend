@@ -2,12 +2,15 @@ import { Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { Product } from "../../../../domain/product/models";
 import BrewingInfoDisplay from "../BrewingInfoDisplay";
+import useStyles from "./styles";
 
 interface Props {
     product: Product;
 }
 
 const ProductDetailsContentBody = (props: Props) => {
+    const classes = useStyles();
+
     const nullOrEmpty = (input: string | undefined): boolean =>
         !input || input.trim().length === 0;
 
@@ -15,7 +18,10 @@ const ProductDetailsContentBody = (props: Props) => {
         <Grid container spacing={3}>
             {!nullOrEmpty(props.product.description) && (
                 <Grid item xs={12}>
-                    <Typography variant="body1">
+                    <Typography
+                        variant="body1"
+                        className={classes.descriptionText}
+                    >
                         {props.product.description}
                     </Typography>
                 </Grid>

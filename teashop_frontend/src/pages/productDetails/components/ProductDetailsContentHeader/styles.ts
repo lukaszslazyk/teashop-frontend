@@ -3,7 +3,7 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            [theme.breakpoints.down("sm")]: {
+            [theme.breakpoints.down("xs")]: {
                 justifyContent: "center",
             },
         },
@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "auto",
             display: "flex",
         },
+        topProductNameTextContainer: {
+            marginBottom: -theme.spacing(1),
+        },
         productNameText: {
             [theme.breakpoints.down("sm")]: {
                 textAlign: "center",
@@ -29,8 +32,11 @@ const useStyles = makeStyles((theme: Theme) =>
                 textAlign: "center",
             },
         },
-        alignToEnd: {
+        flexiblePanel: {
             alignSelf: "flex-end",
+            [theme.breakpoints.down("sm")]: {
+                alignSelf: "center",
+            },
         },
     })
 );
