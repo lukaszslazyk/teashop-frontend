@@ -5,9 +5,6 @@ const useStyles = makeStyles((theme: Theme) =>
         surface: {
             padding: theme.spacing(2),
         },
-        hidden: {
-            display: "none",
-        },
     })
 );
 

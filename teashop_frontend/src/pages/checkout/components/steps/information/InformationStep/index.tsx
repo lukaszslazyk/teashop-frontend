@@ -24,7 +24,7 @@ const InformationStep = (props: Props) => {
     } = logic;
 
     return (
-        <Grid container spacing={4}>
+        <Grid container spacing={3}>
             <Grid item xs={12}>
                 <FormProvider {...contactInfoFormMethods}>
                     <ContactInfoForm />
