@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme: Theme) =>
             textDecoration: "none",
             "&:hover": {
                 textDecoration: "underline",
-            }
+            },
         },
         mobileMenuContainer: {
             alignSelf: "flex-start",
