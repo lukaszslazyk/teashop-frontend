@@ -111,6 +111,7 @@ export const placeOrder = (
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
                     dispatch(receivePlaceOrderError(ApiErrorType.Timeout));
-                else dispatch(receivePlaceOrderError(ApiErrorType.Unexpected));
+                else
+                    dispatch(receivePlaceOrderError(ApiErrorType.Unexpected));
         });
 };

@@ -7,9 +7,11 @@ import OrderDetailsInfoView from "./components/OrderDetailsInfoView";
 import OrderDetailsItemsView from "./components/OrderDetailsItemsView";
 import OrderDetailsPriceView from "./components/OrderDetailsPriceView";
 import useLogic from "./logic";
+import useStyles from "./styles";
 
 const OrderDetailsPage = () => {
     const logic = useLogic();
+    const classes = useStyles();
     const { order, orderIsFetching, errorOccurred } = logic;
 
     return (
@@ -24,9 +26,12 @@ const OrderDetailsPage = () => {
                         <Typography variant="h5" color="primary">
                             Order no. {order.orderNo}
                         </Typography>
-                        <Box mt={1}>
+                        <Box my={1}>
                             <Divider />
                         </Box>
+                        <Typography className={classes.placementDateText}>
+                            Placement date: {logic.getPlacementDateText()}
+                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
                         <OrderDetailsInfoView order={order} />

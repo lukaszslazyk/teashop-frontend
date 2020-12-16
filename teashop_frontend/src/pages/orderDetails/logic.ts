@@ -27,6 +27,13 @@ const useLogic = () => {
         return () => cancelToken.cancel();
     }, [orderId, dispatch]);
 
+    const getPlacementDateText = (): string =>
+        order.placementDate.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+        });
+
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.Timeout)
             return "Order is currently unavailable.\nPlease try again later.";
@@ -40,6 +47,7 @@ const useLogic = () => {
         orderIsFetching,
         errorOccurred,
         getErrorMessage,
+        getPlacementDateText,
     };
 };
 
