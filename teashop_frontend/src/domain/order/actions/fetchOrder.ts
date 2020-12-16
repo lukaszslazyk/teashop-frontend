@@ -46,12 +46,12 @@ export const receiveOrderError = (
 });
 
 export const fetchOrder = (
-    orderNo: string,
+    orderId: string,
     cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
     dispatch(requestOrder());
     await axios
-        .get(`${API_ROOT}/order/${orderNo}`, {
+        .get(`${API_ROOT}/order/${orderId}`, {
             cancelToken: cancelToken.tokenSource.token,
         })
         .then(response => dispatch(receiveOrder(response.data)))

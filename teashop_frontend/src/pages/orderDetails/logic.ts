@@ -19,13 +19,13 @@ const useLogic = () => {
         (state: RootState) => state.order.orderErrorType
     );
     const dispatch = useDispatch();
-    const { orderNo } = useParams<OrderDetailsPageParams>();
+    const { orderId } = useParams<OrderDetailsPageParams>();
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchOrder(orderNo, cancelToken));
+        dispatch(fetchOrder(orderId, cancelToken));
         return () => cancelToken.cancel();
-    }, [orderNo, dispatch]);
+    }, [orderId, dispatch]);
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.Timeout)

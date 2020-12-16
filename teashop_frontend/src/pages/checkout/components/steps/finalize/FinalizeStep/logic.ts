@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../../../configuration/routing";
-import { placeOrder, resetOrderPlaced } from "../../../../../../domain/order/actions";
+import {
+    placeOrder,
+    resetOrderPlaced,
+} from "../../../../../../domain/order/actions";
 import { createRequestCancelToken } from "../../../../../../shared/services/requestCancelTokenService";
 
 const useLogic = () => {
@@ -18,15 +21,18 @@ const useLogic = () => {
     const orderPlaced = useSelector(
         (state: RootState) => state.order.orderPlaced
     );
+    const placedOrderId = useSelector(
+        (state: RootState) => state.order.placedOrderId
+    );
     const placedOrderNo = useSelector(
         (state: RootState) => state.order.placedOrderNo
     );
     const dispatch = useDispatch();
     const [requestWasSent, setRequestWasSent] = useState(false);
     const orderDetailsRoutePath = routing.orderDetails.getPathWithParams({
-        orderNo: placedOrderNo.toString(),
+        orderId: placedOrderId,
     });
-    
+
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         if (!orderPlaced) {
@@ -36,10 +42,13 @@ const useLogic = () => {
         return () => cancelToken.cancel();
     }, [orderFormData, orderPlaced, dispatch]);
 
-    useEffect(() => () => {
-        setRequestWasSent(false);
-        dispatch(resetOrderPlaced());
-    }, [dispatch]);
+    useEffect(
+        () => () => {
+            setRequestWasSent(false);
+            dispatch(resetOrderPlaced());
+        },
+        [dispatch]
+    );
 
     return {
         requestWasSent,
