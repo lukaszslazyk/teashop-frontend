@@ -3,7 +3,9 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
-            marginTop: theme.spacing(5),
+            [theme.breakpoints.up("sm")]: {
+                marginTop: theme.spacing(5),
+            }
         },
         statusIconContainer: {
             display: "flex",
