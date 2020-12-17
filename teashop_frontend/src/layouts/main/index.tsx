@@ -11,18 +11,22 @@ interface Props {
 
 const MainLayout = (props: Props) => {
     const classes = useStyles();
-    const [mobileOpen, setMobileOpen] = useState(false);
+    const [drawerOpen, setDrawerOpen] = useState(false);
 
-    const handleDrawerToggle = () =>
-        setMobileOpen(!mobileOpen);
+    const handleMenuButtonClicked = () => setDrawerOpen(true);
+
+    const handleDrawerOpen = () => setDrawerOpen(true);
+
+    const handleDrawerClose = () => setDrawerOpen(false);
 
     return (
         <div className={classes.root}>
             <CssBaseline />
-            <TopAppBar handleDrawerToggle={handleDrawerToggle} />
+            <TopAppBar onMenuButtonClick={handleMenuButtonClicked} />
             <Sidebar
-                mobileOpen={mobileOpen}
-                handleDrawerToggle={handleDrawerToggle}
+                drawerOpen={drawerOpen}
+                onDrawerOpen={handleDrawerOpen}
+                onDrawerClose={handleDrawerClose}
             />
             <Container
                 maxWidth={props.maxWidth ? props.maxWidth : "lg"}
