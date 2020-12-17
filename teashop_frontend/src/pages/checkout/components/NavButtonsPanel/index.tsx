@@ -7,33 +7,37 @@ import useStyles from "./styles";
 interface Props {
     onContinueButtonClick: () => void;
     onBackButtonClick: () => void;
-    continueButtonLabel?: string
-    backButtonLabel?: string
+    continueButtonLabel?: string;
+    backButtonLabel?: string;
 }
 
 const NavButtonsPanel = (props: Props) => {
     const classes = useStyles();
 
     return (
-        <Grid container>
-            <Grid item xs={6}>
+        <Grid container spacing={1} className={classes.root}>
+            <Grid item>
                 <Button onClick={props.onBackButtonClick}>
                     <ArrowBackIosIcon className={classes.backButtonIcon} />
                     {props.backButtonLabel ? props.backButtonLabel : "Back"}
                 </Button>
             </Grid>
-            <Grid item xs={6} container justify="flex-end">
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    onClick={props.onContinueButtonClick}
-                >
-                    {props.continueButtonLabel ? props.continueButtonLabel : "Continue"}
-                    <ArrowForwardIosIcon
-                        className={classes.forwardButtonIcon}
-                    />
-                </Button>
+            <Grid item style={{ flexGrow: 1 }}>
+                <Grid container justify="flex-end">
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        onClick={props.onContinueButtonClick}
+                    >
+                        {props.continueButtonLabel
+                            ? props.continueButtonLabel
+                            : "Continue"}
+                        <ArrowForwardIosIcon
+                            className={classes.forwardButtonIcon}
+                        />
+                    </Button>
+                </Grid>
             </Grid>
         </Grid>
     );
