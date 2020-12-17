@@ -17,7 +17,7 @@ const AddressForm = () => {
     return (
         <form noValidate>
             <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <TextField
                         name="firstName"
                         inputRef={register({
@@ -35,7 +35,7 @@ const AddressForm = () => {
                         helperText={errors.firstName?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <TextField
                         name="lastName"
                         inputRef={register({
@@ -105,7 +105,7 @@ const AddressForm = () => {
                         helperText={errors.addressLine2?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <TextField
                         name="postalCode"
                         inputRef={register({
@@ -123,7 +123,7 @@ const AddressForm = () => {
                         helperText={errors.postalCode?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <TextField
                         name="city"
                         inputRef={register({
