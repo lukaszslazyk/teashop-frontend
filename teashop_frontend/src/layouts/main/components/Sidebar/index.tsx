@@ -29,7 +29,7 @@ const Sidebar = (props: Props) => {
             }}
         >
             {/* <div className={props.classes.toolbar} > </div> */}
-            <SidebarContent></SidebarContent>
+            <SidebarContent closeDrawer={props.onDrawerClose}></SidebarContent>
         </SwipeableDrawer>
     );
 };
