@@ -88,7 +88,7 @@ const OrderInfoView = (props: Props) => {
                 </Grid>
                 <Grid item xs={12} container>
                     <Typography variant="body1">
-                        Shipping method: {props.chosenPaymentMethodName}
+                        Shipping method: {props.chosenShippingMethodName}
                     </Typography>
                 </Grid>
             </Grid>
