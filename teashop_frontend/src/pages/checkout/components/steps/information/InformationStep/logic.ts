@@ -30,9 +30,14 @@ const useLogic = (
             state.order.orderFormData.billingAddressSameAsShippingAddress
     );
     const dispatch = useDispatch();
+    const [submitInProgress, setSubmitInProgress] = useState(false);
     const [contactInfoFormValid, setContactInfoFormValid] = useState(false);
-    const [shippingAddressFormValid, setShippingAddressFormValid] = useState(false);
-    const [billingAddressFormValid, setBillingAddressFormValid] = useState(false);
+    const [shippingAddressFormValid, setShippingAddressFormValid] = useState(
+        false
+    );
+    const [billingAddressFormValid, setBillingAddressFormValid] = useState(
+        false
+    );
     const contactInfoFormMethods = useForm<ContactInfoFormData>({
         defaultValues: contactInfoFormData,
     });
@@ -57,34 +62,53 @@ const useLogic = (
     );
 
     useEffect(() => {
-        if (canContinue())
-            onContinueButtonClick();
-    }, [canContinue, onContinueButtonClick]);
+        if (submitInProgress && canContinue()) onContinueButtonClick();
+    }, [submitInProgress, canContinue, onContinueButtonClick]);
 
     const handleContinueButtonClicked = () => {
-        setContactInfoFormValid(false);
-        setShippingAddressFormValid(false);
-        contactInfoFormMethods.handleSubmit(onContactInfoFormSubmit)();
-        shippingAddressFormMethods.handleSubmit(onShippingAddressFormSubmit)();
-        if (!billingAddressSameAsShippingAddress) {
-            setBillingAddressFormValid(false);
-            billingAddressFormMethods.handleSubmit(onBillingAddressFormSubmit)();
-        }
+        setupFormsSubmition();
+        processFormsSubmitionPipeline();
     };
 
-    const handleBackButtonClicked = () =>
-        onBackButtonClick();
+    const handleBackButtonClicked = () => onBackButtonClick();
+
+    const setupFormsSubmition = () => {
+        setContactInfoFormValid(false);
+        setShippingAddressFormValid(false);
+        setBillingAddressFormValid(false);
+        setSubmitInProgress(true);
+    };
+
+    const processFormsSubmitionPipeline = () => handleContactInfoFormSubmit();
+
+    const handleContactInfoFormSubmit = () =>
+        contactInfoFormMethods
+            .handleSubmit(onContactInfoFormSubmit)()
+            .then(() => handleShippingAddressFormSubmit());
 
     const onContactInfoFormSubmit = () => {
         dispatch(setContactInfoFormData(contactInfoFormMethods.getValues()));
         setContactInfoFormValid(true);
     };
 
+    const handleShippingAddressFormSubmit = () =>
+        shippingAddressFormMethods
+            .handleSubmit(onShippingAddressFormSubmit)()
+            .then(() => handleBillingAddressFormSubmit());
+
     const onShippingAddressFormSubmit = () => {
         dispatch(
             setShippingAddressFormData(shippingAddressFormMethods.getValues())
         );
         setShippingAddressFormValid(true);
+    };
+
+    const handleBillingAddressFormSubmit = () => {
+        if (!billingAddressSameAsShippingAddress)
+            billingAddressFormMethods
+                .handleSubmit(onBillingAddressFormSubmit)()
+                .then(() => setSubmitInProgress(false));
+        else setSubmitInProgress(false);
     };
 
     const onBillingAddressFormSubmit = () => {
