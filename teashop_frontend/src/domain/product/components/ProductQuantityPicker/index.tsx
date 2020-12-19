@@ -1,38 +1,33 @@
 import React from "react";
+import { Product } from "../../models";
+import { pricedByWeight } from "../../services/productService";
 import QuantityPicker from "../QuantityPicker";
 
 interface Props {
-    initialValue: number,
-    pricedByWeight: boolean
+    product: Product;
     onQuantityChange: (value: number, valid: boolean) => void;
     interactionDisabled?: boolean;
-    onQuantityTextInputFocus?: () => void;
-    onQuantityTextInputBlur?: () => void;
 }
 
 const ProductQuantityPicker = (props: Props) => {
-    if (props.pricedByWeight)
+    if (pricedByWeight(props.product))
         return (
             <QuantityPicker
                 inputLabel="Grams"
-                initialValue={props.initialValue}
+                initialValue={props.product.quantityPerPrice}
                 lowThreshold={50}
                 step={25}
                 onQuantityChange={props.onQuantityChange}
-                onQuantityTextInputFocus={props.onQuantityTextInputFocus}
-                onQuantityTextInputBlur={props.onQuantityTextInputBlur}
                 interactionDisabled={props.interactionDisabled}
             />
         );
     return (
         <QuantityPicker
             inputLabel=""
-            initialValue={props.initialValue}
+            initialValue={1}
             lowThreshold={1}
             step={1}
             onQuantityChange={props.onQuantityChange}
-            onQuantityTextInputFocus={props.onQuantityTextInputFocus}
-            onQuantityTextInputBlur={props.onQuantityTextInputBlur}
             interactionDisabled={props.interactionDisabled}
         />
     );

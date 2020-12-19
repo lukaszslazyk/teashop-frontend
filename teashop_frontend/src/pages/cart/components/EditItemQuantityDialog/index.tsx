@@ -10,7 +10,6 @@ import {
 import React from "react";
 import { CartItem } from "../../../../domain/cart/models";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
-import { pricedByWeight } from "../../../../domain/product/services/productService";
 import useLogic from "./logic";
 import useStyles from "./styles";
 
@@ -34,17 +33,8 @@ const EditItemQuantityDialog = (props: Props) => {
                         <CircularProgress />
                     ) : (
                         <ProductQuantityPicker
-                            initialValue={props.cartItem.quantity}
-                            pricedByWeight={pricedByWeight(
-                                props.cartItem.product
-                            )}
+                            product={props.cartItem.product}
                             onQuantityChange={logic.handleQuantityChanged}
-                            onQuantityTextInputFocus={
-                                logic.handleQuantityTextInputFocus
-                            }
-                            onQuantityTextInputBlur={
-                                logic.handleQuantityTextInputBlur
-                            }
                         />
                     )}
                 </Grid>

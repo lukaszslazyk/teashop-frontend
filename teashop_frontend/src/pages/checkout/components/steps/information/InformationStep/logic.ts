@@ -62,7 +62,8 @@ const useLogic = (
     );
 
     useEffect(() => {
-        if (submitInProgress && canContinue()) onContinueButtonClick();
+        if (submitInProgress && canContinue())
+            onContinueButtonClick();
     }, [submitInProgress, canContinue, onContinueButtonClick]);
 
     const handleContinueButtonClicked = () => {
@@ -108,7 +109,8 @@ const useLogic = (
             billingAddressFormMethods
                 .handleSubmit(onBillingAddressFormSubmit)()
                 .then(() => setSubmitInProgress(false));
-        else setSubmitInProgress(false);
+        else
+            setSubmitInProgress(false);
     };
 
     const onBillingAddressFormSubmit = () => {

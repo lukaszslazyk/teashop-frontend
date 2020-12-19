@@ -12,8 +12,6 @@ interface Props {
     step: number;
     onQuantityChange: (value: number, valid: boolean) => void;
     interactionDisabled?: boolean;
-    onQuantityTextInputFocus?: () => void;
-    onQuantityTextInputBlur?: () => void;
 }
 
 const QuantityPicker = (props: Props) => {
@@ -21,9 +19,7 @@ const QuantityPicker = (props: Props) => {
         props.initialValue,
         props.lowThreshold,
         props.step,
-        props.onQuantityChange,
-        props.onQuantityTextInputFocus,
-        props.onQuantityTextInputBlur
+        props.onQuantityChange
     );
     const classes = useStyles();
     const { quantityText, displayedErrorText, errorInfoOpen } = logic;

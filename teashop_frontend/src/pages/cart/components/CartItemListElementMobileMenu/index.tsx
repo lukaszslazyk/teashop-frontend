@@ -28,7 +28,7 @@ const CartItemListElementMobileMenu = (props: Props) => {
     const handleEditMenuItemClicked = () => {
         setMenuOpen(false);
         props.onEditMenuItemClick();
-    }
+    };
 
     const handleMenuClose = () => {
         if (!props.showProgress)

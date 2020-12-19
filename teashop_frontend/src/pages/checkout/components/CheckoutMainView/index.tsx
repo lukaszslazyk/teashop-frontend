@@ -1,4 +1,4 @@
-import { Grid, Hidden, Step, StepLabel, Stepper } from "@material-ui/core";
+import { Grid, Hidden } from "@material-ui/core";
 import React from "react";
 import CheckoutStepper from "../CheckoutStepper";
 import CheckoutStepTitle from "../CheckoutStepTitle";

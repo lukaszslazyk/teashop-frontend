@@ -19,10 +19,6 @@ const useLogic = (
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(product.quantityPerPrice);
     const [quantityPickerValid, setQuantityPickerValid] = useState(true);
-    const [
-        quantityPickerTextInputFocused,
-        setQuantityPickerTextInputFocused,
-    ] = useState(false);
 
     useAddItemToCartResponseNotification(
         cartUpdateIsSending,
@@ -37,12 +33,6 @@ const useLogic = (
         }
     };
 
-    const handleQuantityTextInputFocused = () =>
-        setQuantityPickerTextInputFocused(true);
-
-    const handleQuantityTextInputBlured = () =>
-        setQuantityPickerTextInputFocused(false);
-
     const handleAddToChartButtonClicked = () => {
         if (quantityPickerValid)
             dispatch(
@@ -55,17 +45,13 @@ const useLogic = (
     };
 
     const addToCartButtonDisabled = () =>
-        cartUpdateIsSending ||
-        !quantityPickerValid ||
-        quantityPickerTextInputFocused;
+        cartUpdateIsSending || !quantityPickerValid;
 
     return {
         cartUpdateIsSending,
         handleQuantityChanged,
-        handleQuantityTextInputFocused,
-        handleQuantityTextInputBlured,
         handleAddToChartButtonClicked,
-        addToCartButtonDisabled
+        addToCartButtonDisabled,
     };
 };
 
