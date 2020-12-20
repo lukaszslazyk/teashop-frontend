@@ -14,11 +14,6 @@ const useStyles = makeStyles((theme: Theme) =>
             marginLeft: theme.spacing(2),
             marginRight: theme.spacing(2),
         },
-        errorPaper: {
-            color: theme.palette.error.dark,
-            padding: theme.spacing(1),
-            zIndex: 1
-        },
     })
 );
 

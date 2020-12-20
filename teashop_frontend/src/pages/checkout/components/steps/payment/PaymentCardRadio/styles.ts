@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         acceptedCardsHelpIcon: {
             color: grey[500],
-        }
+        },
     })
 );
 
