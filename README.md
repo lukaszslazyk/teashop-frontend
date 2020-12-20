@@ -37,8 +37,10 @@ The application will run on: [http://localhost:3000](http://localhost:3000)
 To setup the application on docker container, first build container image by running the following command in main project directory:
 
 ```
-docker build -t teashop_frontend .
+docker build -t teashop_frontend . --build-arg API_ROOT=http://localhost:5000/api --build-arg CDN_ROOT=http://localhost:8080
 ```
+
+where API_ROOT is a root URL path of backend's api endpoints and CDN_ROOT is a root URL path of CDN server.
 
 Then to run the container:
 
