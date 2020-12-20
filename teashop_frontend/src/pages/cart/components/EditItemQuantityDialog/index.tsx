@@ -35,6 +35,7 @@ const EditItemQuantityDialog = (props: Props) => {
                         <ProductQuantityPicker
                             product={props.cartItem.product}
                             onQuantityChange={logic.handleQuantityChanged}
+                            initialValue={props.cartItem.quantity}
                         />
                     )}
                 </Grid>

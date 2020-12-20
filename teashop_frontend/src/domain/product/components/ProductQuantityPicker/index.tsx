@@ -6,29 +6,31 @@ import QuantityPicker from "../QuantityPicker";
 interface Props {
     product: Product;
     onQuantityChange: (value: number, valid: boolean) => void;
-    interactionDisabled?: boolean;
+    initialValue?: number;
 }
 
 const ProductQuantityPicker = (props: Props) => {
+    const initialValue = props.initialValue
+        ? props.initialValue
+        : props.product.quantityPerPrice;
+
     if (pricedByWeight(props.product))
         return (
             <QuantityPicker
                 inputLabel="Grams"
-                initialValue={props.product.quantityPerPrice}
+                initialValue={initialValue}
                 lowThreshold={50}
                 step={25}
                 onQuantityChange={props.onQuantityChange}
-                interactionDisabled={props.interactionDisabled}
             />
         );
     return (
         <QuantityPicker
             inputLabel=""
-            initialValue={1}
+            initialValue={initialValue}
             lowThreshold={1}
             step={1}
             onQuantityChange={props.onQuantityChange}
-            interactionDisabled={props.interactionDisabled}
         />
     );
 };

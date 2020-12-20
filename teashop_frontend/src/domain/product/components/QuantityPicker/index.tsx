@@ -11,7 +11,6 @@ interface Props {
     lowThreshold: number;
     step: number;
     onQuantityChange: (value: number, valid: boolean) => void;
-    interactionDisabled?: boolean;
 }
 
 const QuantityPicker = (props: Props) => {
@@ -49,7 +48,6 @@ const QuantityPicker = (props: Props) => {
                     onBlur={logic.handleQuantityTextInputBlured}
                     error={logic.hasError()}
                     className={classes.quantityInput}
-                    disabled={props.interactionDisabled}
                 />
             </Tooltip>
             <Fab
