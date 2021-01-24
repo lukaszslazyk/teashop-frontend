@@ -1,6 +1,5 @@
 import { Box, Divider, Grid, Typography } from "@material-ui/core";
 import React from "react";
-import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import OrderDetailsInfoView from "./components/OrderDetailsInfoView";
@@ -15,7 +14,7 @@ const OrderDetailsPage = () => {
     const { order, orderIsFetching, errorOccurred } = logic;
 
     return (
-        <MainLayout>
+        <div>
             {orderIsFetching && <PageLoadingProgress />}
             {!orderIsFetching && errorOccurred && (
                 <ErrorInfo errorMessage={logic.getErrorMessage()} />
@@ -44,7 +43,7 @@ const OrderDetailsPage = () => {
                     </Grid>
                 </Grid>
             )}
-        </MainLayout>
+        </div>
     );
 };
 

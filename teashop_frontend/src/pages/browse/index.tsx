@@ -1,6 +1,5 @@
 import React from "react";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
-import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import NotFoundPage from "../notFound";
@@ -14,7 +13,7 @@ const BrowsePage = () => {
         return <NotFoundPage />;
 
     return (
-        <MainLayout>
+        <div>
             {productsAreFetching && <PageLoadingProgress />}
             {!productsAreFetching && anyErrors() && (
                 <ErrorInfo errorMessage={logic.getErrorMessage()} />
@@ -22,7 +21,7 @@ const BrowsePage = () => {
             {!productsAreFetching && !anyErrors() && (
                 <ProductCardTileGroup products={products} />
             )}
-        </MainLayout>
+        </div>
     );
 };
 

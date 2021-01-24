@@ -6,8 +6,8 @@ const useLogic = () => {
     const acceptedCardIssuers = getAcceptedPaymentCardIssuers();
     const acceptedCardsMessage = `We accept
         ${acceptedCardIssuers
-            .slice(0, acceptedCardIssuers.length - 1)
-            .join(", ")}
+        .slice(0, acceptedCardIssuers.length - 1)
+        .join(", ")}
         and
         ${acceptedCardIssuers[acceptedCardIssuers.length - 1]}
         cards`;

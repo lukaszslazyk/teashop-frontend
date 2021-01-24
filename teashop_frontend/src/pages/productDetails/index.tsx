@@ -1,6 +1,5 @@
-import { Grid } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import React from "react";
-import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import ProductDetailsContentBody from "./components/ProductDetailsContentBody";
@@ -12,7 +11,7 @@ const ProductDetailsPage = () => {
     const { product, productIsFetching, errorOccurred } = logic;
 
     return (
-        <MainLayout maxWidth="md">
+        <Container maxWidth="md" disableGutters>
             {productIsFetching && <PageLoadingProgress />}
             {!productIsFetching && errorOccurred && (
                 <ErrorInfo errorMessage={logic.getErrorMessage()} />
@@ -27,7 +26,7 @@ const ProductDetailsPage = () => {
                     </Grid>
                 </Grid>
             )}
-        </MainLayout>
+        </Container>
     );
 };
 

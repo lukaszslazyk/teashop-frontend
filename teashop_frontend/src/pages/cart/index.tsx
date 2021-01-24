@@ -1,5 +1,4 @@
 import React from "react";
-import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import CartView from "./components/CartView";
@@ -11,7 +10,7 @@ const CartPage = () => {
     const { cart, cartFetchedYet, cartUpdateIsSending, errorOccurred } = logic;
 
     return (
-        <MainLayout>
+        <div>
             {!cartFetchedYet && <PageLoadingProgress />}
             {cartFetchedYet && !cartUpdateIsSending && errorOccurred && (
                 <ErrorInfo errorMessage={logic.getErrorMessage()} />
@@ -25,7 +24,7 @@ const CartPage = () => {
                     )}
                 </div>
             )}
-        </MainLayout>
+        </div>
     );
 };
 

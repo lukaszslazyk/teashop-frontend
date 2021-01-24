@@ -5,7 +5,6 @@ import TopAppBar from "./components/TopAppBar";
 import useStyles from "./styles";
 
 interface Props {
-    maxWidth?: false | "md" | "xs" | "sm" | "lg" | "xl" | undefined;
     children: ReactNode;
 }
 
@@ -29,7 +28,6 @@ const MainLayout = (props: Props) => {
                 onDrawerClose={handleDrawerClose}
             />
             <Container
-                maxWidth={props.maxWidth ? props.maxWidth : "lg"}
                 disableGutters
             >
                 <main className={classes.content}>

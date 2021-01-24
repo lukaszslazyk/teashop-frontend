@@ -1,5 +1,4 @@
 import React from "react";
-import MainLayout from "../../layouts/main";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import CheckoutMainView from "./components/CheckoutMainView";
@@ -9,13 +8,13 @@ const CheckoutPage = () => {
     const logic = useLogic();
 
     return (
-        <MainLayout>
+        <div>
             {logic.dataIsFetching() && <PageLoadingProgress />}
             {logic.anyErrors() && (
                 <ErrorInfo errorMessage={logic.getErrorMessage()} />
             )}
             {logic.noErrors() && <CheckoutMainView />}
-        </MainLayout>
+        </div>
     );
 };
 
