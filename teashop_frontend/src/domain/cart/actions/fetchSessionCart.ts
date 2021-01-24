@@ -60,7 +60,7 @@ export const fetchSessionCart = (
         .catch(error => {
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
-                    dispatch(receiveSessionCartError(ApiErrorType.Unavailable));
+                    dispatch(receiveSessionCartError(ApiErrorType.Timeout));
                 else
                     dispatch(receiveSessionCartError(ApiErrorType.Unexpected));
         });

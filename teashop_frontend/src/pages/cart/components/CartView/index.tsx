@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import { Link } from "react-router-dom";
 import routing from "../../../../configuration/routing";
@@ -25,12 +25,7 @@ const CartView = (props: Props) => {
             <Grid item xs={12}>
                 <CartItemList cart={props.cart} />
             </Grid>
-            <Grid item xs={12}>
-                <Box mt={1}>
-                    <Divider />
-                </Box>
-            </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12} >
                 <Typography variant="h5" className={classes.totalPriceText}>
                     Total price: {getPriceTextWithCurrency(calculateCartPrice(props.cart))}
                 </Typography>

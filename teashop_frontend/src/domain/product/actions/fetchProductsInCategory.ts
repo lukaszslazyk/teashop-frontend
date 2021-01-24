@@ -61,7 +61,7 @@ export const fetchProductsInCategory = (
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
                     dispatch(
-                        receiveProductsInCategoryError(ApiErrorType.Unavailable)
+                        receiveProductsInCategoryError(ApiErrorType.Timeout)
                     );
                 else
                     dispatch(

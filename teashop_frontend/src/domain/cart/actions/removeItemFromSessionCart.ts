@@ -66,7 +66,7 @@ export const removeItemFromSessionCart = (
                     dispatch(
                         receiveRemoveItemFromSessionCartError(
                             productId,
-                            ApiErrorType.Unavailable
+                            ApiErrorType.Timeout
                         )
                     );
                 else

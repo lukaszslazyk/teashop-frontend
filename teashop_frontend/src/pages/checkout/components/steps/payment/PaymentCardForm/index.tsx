@@ -48,7 +48,7 @@ const PaymentCardForm = () => {
                         helperText={errors.name?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6}xs={12}>
                     <TextField
                         name="expirationDate"
                         inputRef={register({
@@ -65,7 +65,7 @@ const PaymentCardForm = () => {
                         helperText={errors.expirationDate?.message}
                     />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item sm={6} xs={12}>
                     <TextField
                         name="securityCode"
                         inputRef={register({

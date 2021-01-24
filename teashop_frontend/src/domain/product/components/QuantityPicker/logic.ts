@@ -4,17 +4,14 @@ const useLogic = (
     initialValue: number,
     lowThreshold: number,
     step: number,
-    onQuantityChange: (value: number, valid: boolean) => void,
-    onQuantityTextInputFocus?: () => void,
-    onQuantityTextInputBlur?: () => void
+    onQuantityChange: (value: number, valid: boolean) => void
 ) => {
     const [quantityText, setQuantityText] = useState(initialValue.toString());
-    const [quantityTextChanged, setQuantityTextChanged] = useState(false);
     const [errorText, setErrorText] = useState("");
     const [errorInfoHidden, setErrorInfoHidden] = useState(true);
     const [errorInfoOpen, setErrorInfoOpen] = useState(false);
     const [displayedErrorText, setDisplayedErrorText] = useState("");
-    
+
     useEffect(() => {
         if (errorText !== "" && !errorInfoHidden) {
             setDisplayedErrorText(errorText);
@@ -26,25 +23,12 @@ const useLogic = (
     const handleQuantityTextChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setQuantityText(value);
-        setQuantityTextChanged(true);
-        validateQuantityText(value);
+        processQuantityText(value);
     };
 
-    const handleQuantityTextInputFocused = () => {
-        setErrorInfoHidden(false);
-        if (onQuantityTextInputFocus)
-            onQuantityTextInputFocus();
-    };
+    const handleQuantityTextInputFocused = () => setErrorInfoHidden(false);
 
-    const handleQuantityTextInputBlured = () => {
-        setErrorInfoHidden(true);
-        if (quantityTextChanged) {
-            setQuantityTextChanged(false);
-            processQuantityText();
-        }
-        if (onQuantityTextInputBlur)
-            onQuantityTextInputBlur();
-    };
+    const handleQuantityTextInputBlured = () => setErrorInfoHidden(true);
 
     const handleAddClicked = () => {
         setQuantityText((Number(quantityText) + step).toString());
@@ -63,34 +47,34 @@ const useLogic = (
     const canSubtract = (): boolean =>
         !hasError() && Number(quantityText) > lowThreshold;
 
-    const validateQuantityText = (input: string) => {
-        if (quantityValid(input))
-            handleValidQuantity();
+    const processQuantityText = (value: string) => {
+        if (validateQuantityText(value))
+            onQuantityChange(Number(value), true);
         else
-            handleInvalidQuantity();
+            onQuantityChange(0, false);
     };
 
-    const handleValidQuantity = () => setErrorText("");
+    const validateQuantityText = (input: string): boolean => {
+        const errorText = getErrorTextFor(input);
+        setErrorText(errorText);
+        return errorText === "";
+    };
 
-    const handleInvalidQuantity = () => setErrorText("Please provide a number");
-
-    const quantityValid = (input: string): boolean =>
-        !empty(input) && representsValidNumber(input);
+    const getErrorTextFor = (input: string): string => {
+        if (empty(input) || invalidNumber(input))
+            return "Please provide a number";
+        else if (lowerThanLowThreshold(input))
+            return `Minimum value is ${lowThreshold}`;
+        return "";
+    };
 
     const empty = (input: string): boolean => input.length === 0;
 
-    const representsValidNumber = (input: string): boolean =>
-        !isNaN(Number(input));
+    const invalidNumber = (input: string): boolean =>
+        isNaN(Number(input));
 
-    const processQuantityText = () => {
-        if (hasError())
-            onQuantityChange(0, false);
-        else if (Number(quantityText) < lowThreshold) {
-            setQuantityText(lowThreshold.toString());
-            onQuantityChange(lowThreshold, true);
-        } else
-            onQuantityChange(Number(quantityText), true);
-    };
+    const lowerThanLowThreshold = (input: string) =>
+        Number(input) < lowThreshold;
 
     return {
         quantityText,
@@ -103,7 +87,7 @@ const useLogic = (
         handleSubtractClicked,
         hasError,
         canAdd,
-        canSubtract
+        canSubtract,
     };
 };
 

@@ -1,4 +1,4 @@
-import { Card, CardMedia, Grid, Hidden, Typography } from "@material-ui/core";
+import { Grid, Hidden, Paper, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import { calculateItemPriceWith } from "../../../../domain/cart/services/cartService";
 import { Product } from "../../../../domain/product/models";
@@ -18,10 +18,20 @@ const ProductDetailsContentHeader = (props: Props) => {
 
     const handleQuantityChanged = (value: number) => setQuantity(value);
 
-    const ProductName = () => (
-        <Grid item xs={12}>
+    const getProductNameTypographyVariant = () => {
+        if (product.name.length <= 25)
+            return "h3";
+        return "h4";
+    };
+
+    const ProductName = (top: boolean) => (
+        <Grid
+            item
+            xs={12}
+            className={top ? classes.topProductNameTextContainer : ""}
+        >
             <Typography
-                variant="h3"
+                variant={getProductNameTypographyVariant()}
                 color="primary"
                 className={classes.productNameText}
             >
@@ -31,26 +41,21 @@ const ProductDetailsContentHeader = (props: Props) => {
     );
 
     return (
-        <div>
-            <Grid container spacing={3}>
-                <Hidden smUp>{ProductName()}</Hidden>
-                <Grid item md={4} sm={6} xs={12}>
-                    <Card square>
-                        <CardMedia
-                            className={classes.cardMedia}
-                            image={getImageFullUrl(props.product.imagePath)}
-                            title="Product"
-                        />
-                    </Card>
-                </Grid>
-                <Grid item md={8} sm={6} xs={12}>
+        <Grid container spacing={4} className={classes.root}>
+            <Hidden mdUp>{ProductName(true)}</Hidden>
+            <Grid item md={6} sm={7} xs={12}>
+                <Paper className={classes.imageWrapper}>
+                    <img
+                        src={getImageFullUrl(props.product.imagePath)}
+                        alt="Product"
+                        className={classes.image}
+                    />
+                </Paper>
+            </Grid>
+            <Grid item md={6} sm={5} xs={12} container spacing={3}>
+                <Hidden smDown>{ProductName(false)}</Hidden>
+                <Grid item xs={12} className={classes.flexiblePanel}>
                     <Grid container spacing={3}>
-                        {/*
-                            Bug in Material-UI library: should be smDown,
-                            but Hidden's Down prop behaves as one size larger
-                            than declared, that's why xsDown is used here
-                        */}
-                        <Hidden xsDown>{ProductName()}</Hidden>
                         <Grid item xs={12}>
                             <Typography
                                 variant="h4"
@@ -70,7 +75,7 @@ const ProductDetailsContentHeader = (props: Props) => {
                     </Grid>
                 </Grid>
             </Grid>
-        </div>
+        </Grid>
     );
 };
 

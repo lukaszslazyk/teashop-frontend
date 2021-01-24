@@ -81,7 +81,7 @@ export const updateSessionCartItemQuantity = (
                         receiveUpdateSessionCartItemQuantityError(
                             productId,
                             quantity,
-                            ApiErrorType.Unavailable
+                            ApiErrorType.Timeout
                         )
                     );
                 else

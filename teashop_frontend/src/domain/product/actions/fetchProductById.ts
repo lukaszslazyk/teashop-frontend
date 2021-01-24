@@ -60,7 +60,7 @@ export const fetchProductById = (
         .catch(error => {
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
-                    dispatch(receiveProductByIdError(ApiErrorType.Unavailable));
+                    dispatch(receiveProductByIdError(ApiErrorType.Timeout));
                 else if (error.response.status === 404)
                     dispatch(
                         receiveProductByIdError(ApiErrorType.NotFound)

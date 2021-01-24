@@ -81,7 +81,7 @@ export const addItemToSessionCart = (
                 if (error.message === "Network Error")
                     dispatch(
                         receiveAddItemToSessionCartError(
-                            ApiErrorType.Unavailable
+                            ApiErrorType.Timeout
                         )
                     );
                 else

@@ -25,7 +25,12 @@ const CartItemListElementMobileMenu = (props: Props) => {
     const handleMoreButtonClicked = () =>
         setMenuOpen(true);
 
-    const handleClose = () => {
+    const handleEditMenuItemClicked = () => {
+        setMenuOpen(false);
+        props.onEditMenuItemClick();
+    };
+
+    const handleMenuClose = () => {
         if (!props.showProgress)
             setMenuOpen(false);
     };
@@ -34,8 +39,8 @@ const CartItemListElementMobileMenu = (props: Props) => {
         <div>
             <IconButton
                 ref={buttonRef}
-                edge="end"
                 onClick={handleMoreButtonClicked}
+                className={classes.openMenuButton}
             >
                 <MoreVertIcon />
             </IconButton>
@@ -43,9 +48,9 @@ const CartItemListElementMobileMenu = (props: Props) => {
                 open={menuOpen}
                 anchorEl={buttonRef.current}
                 keepMounted
-                onClose={handleClose}
+                onClose={handleMenuClose}
             >
-                <MenuItem onClick={props.onEditMenuItemClick}>
+                <MenuItem onClick={handleEditMenuItemClicked}>
                     <EditIcon
                         color="primary"
                         fontSize="small"

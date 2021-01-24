@@ -8,7 +8,7 @@ import useStyles from "../../styles";
 import CartIcon from "../CartIcon";
 
 interface Props {
-    handleDrawerToggle: () => void;
+    onMenuButtonClick: () => void;
 }
 
 const TopAppBar = (props: Props) => {
@@ -22,7 +22,7 @@ const TopAppBar = (props: Props) => {
                         color="inherit"
                         aria-label="open drawer"
                         edge="start"
-                        onClick={props.handleDrawerToggle}
+                        onClick={props.onMenuButtonClick}
                     >
                         <MenuIcon />
                     </IconButton>

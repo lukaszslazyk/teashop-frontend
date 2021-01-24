@@ -35,7 +35,7 @@ const CartItemListElement = (props: Props) => {
             <Grid
                 item
                 container
-                spacing={3}
+                spacing={2}
                 className={classes.contentContainer}
             >
                 <Grid
@@ -43,7 +43,6 @@ const CartItemListElement = (props: Props) => {
                     sm="auto"
                     xs={12}
                     container
-                    spacing={1}
                     className={classes.titlePartContainer}
                 >
                     <Grid item className={classes.productNameTextContainer}>

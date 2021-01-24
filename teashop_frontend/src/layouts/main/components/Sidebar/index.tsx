@@ -1,12 +1,13 @@
-import { Drawer } from "@material-ui/core";
+import { SwipeableDrawer } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 import React from "react";
 import useStyles from "../../styles";
 import SidebarContent from "../SidebarContent";
 
 interface Props {
-    mobileOpen: boolean;
-    handleDrawerToggle: () => void;
+    drawerOpen: boolean;
+    onDrawerOpen: () => void;
+    onDrawerClose: () => void;
 }
 
 const Sidebar = (props: Props) => {
@@ -14,11 +15,12 @@ const Sidebar = (props: Props) => {
     const theme = useTheme();
 
     return (
-        <Drawer
+        <SwipeableDrawer
             variant="temporary"
             anchor={theme.direction === "rtl" ? "right" : "left"}
-            open={props.mobileOpen}
-            onClose={props.handleDrawerToggle}
+            open={props.drawerOpen}
+            onOpen={props.onDrawerOpen}
+            onClose={props.onDrawerClose}
             classes={{
                 paper: classes.drawerPaper,
             }}
@@ -27,8 +29,8 @@ const Sidebar = (props: Props) => {
             }}
         >
             {/* <div className={props.classes.toolbar} > </div> */}
-            <SidebarContent></SidebarContent>
-        </Drawer>
+            <SidebarContent closeDrawer={props.onDrawerClose}></SidebarContent>
+        </SwipeableDrawer>
     );
 };
 

@@ -3,6 +3,7 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         totalPriceText: {
+            paddingTop: theme.spacing(1),
             textAlign: "right",
             [theme.breakpoints.down("sm")]: {
                 textAlign: "center",

@@ -5,6 +5,7 @@ import {
     CardContent,
     CardMedia,
     Divider,
+    Grid,
     Typography,
 } from "@material-ui/core";
 import React from "react";
@@ -38,27 +39,37 @@ const ProductCard = (props: Props) => {
                 to={routing.productDetails.getPathWithParams({
                     productId: product.id,
                 })}
+                className={classes.cardActionArea}
             >
                 <CardMedia
                     className={classes.cardMedia}
                     image={getImageFullUrl(product.imagePath)}
                     title="Product"
                 />
-                <CardContent>
-                    <Typography
-                        align="center"
-                        gutterBottom
-                        variant="h6"
-                        component="h2"
-                    >
-                        {product.name}
-                    </Typography>
-                    <Box mb={1}>
-                        <Divider />
-                    </Box>
-                    <Typography align="center" variant="body2" component="p">
-                        {getPriceTag()}
-                    </Typography>
+                <CardContent className={classes.cardContent}>
+                    <Grid container className={classes.cardContentInnerContainer}>
+                        <Grid item xs={12}>
+                            <Typography
+                                align="center"
+                                gutterBottom
+                                variant="h6"
+                                component="h2"
+                            >
+                                {product.name}
+                            </Typography>
+
+                            <Box mb={1}>
+                                <Divider />
+                            </Box>
+                            <Typography
+                                align="center"
+                                variant="body2"
+                                component="p"
+                            >
+                                {getPriceTag()}
+                            </Typography>
+                        </Grid>
+                    </Grid>
                 </CardContent>
             </CardActionArea>
         </Card>

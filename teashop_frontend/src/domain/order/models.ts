@@ -2,6 +2,7 @@ import { Cart } from "../cart/models";
 
 export interface Order {
     orderNo: number;
+    placementDate: Date;
     contactInfo: ContactInfo;
     shippingAddress: Address;
     billingAddress: Address;

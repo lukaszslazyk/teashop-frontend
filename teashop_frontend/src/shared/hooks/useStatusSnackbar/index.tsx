@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { useSnackbar } from "notistack";
 import React from "react";
@@ -19,14 +19,14 @@ const useStatusSnackbar = (status: Status) => {
             },
             autoHideDuration: 3000,
             action: key => (
-                <Button
+                <IconButton
                     className={classes.snackBarCloseButton}
                     onClick={() => {
                         closeSnackbar(key);
                     }}
                 >
                     <CloseIcon className={classes.icon} />
-                </Button>
+                </IconButton>
             ),
         });
     };

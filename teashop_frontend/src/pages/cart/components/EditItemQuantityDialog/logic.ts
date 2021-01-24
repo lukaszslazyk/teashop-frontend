@@ -12,10 +12,6 @@ const useLogic = (open: boolean, cartItem: CartItem, onClose: () => void) => {
     const dispatch = useDispatch();
     const [quantity, setQuantity] = useState(cartItem.quantity);
     const [quantityPickerValid, setQuantityPickerValid] = useState(true);
-    const [
-        quantityPickerTextInputFocused,
-        setQuantityPickerTextInputFocused,
-    ] = useState(false);
     const [waitingForResponse, setWaitingForResponse] = useState(false);
     const [displayLoading, setDisplayLoading] = useState(false);
 
@@ -37,12 +33,6 @@ const useLogic = (open: boolean, cartItem: CartItem, onClose: () => void) => {
             setQuantity(value);
     };
 
-    const handleQuantityTextInputFocus = () =>
-        setQuantityPickerTextInputFocused(true);
-
-    const handleQuantityTextInputBlur = () =>
-        setQuantityPickerTextInputFocused(false);
-
     const handleAcceptButtonClicked = () => {
         if (cartItem.quantity !== quantity && quantityPickerValid) {
             dispatch(
@@ -61,24 +51,19 @@ const useLogic = (open: boolean, cartItem: CartItem, onClose: () => void) => {
     const handleClose = () => {
         if (!cartUpdateIsSending) {
             setQuantityPickerValid(true);
-            setQuantityPickerTextInputFocused(false);
             onClose();
         }
     };
 
     const addToCartButtonDisabled = () =>
-        displayLoading ||
-        !quantityPickerValid ||
-        quantityPickerTextInputFocused;
+        displayLoading || !quantityPickerValid;
 
     return {
         displayLoading,
         handleQuantityChanged,
-        handleQuantityTextInputFocus,
-        handleQuantityTextInputBlur,
         handleAcceptButtonClicked,
         handleClose,
-        addToCartButtonDisabled
+        addToCartButtonDisabled,
     };
 };
 

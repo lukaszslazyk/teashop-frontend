@@ -41,7 +41,7 @@ const FinalizeStep = () => {
                 <Grid item xs={12}>
                     <Typography variant="h4" align="center">
                         {orderFormIsSending && "Please wait"}
-                        {!orderFormIsSending && errorOccurred && "Sorry"}
+                        {!orderFormIsSending && errorOccurred && "Sorry :("}
                         {!orderFormIsSending &&
                             !errorOccurred &&
                             "Your order has been placed successfully"}
@@ -55,8 +55,8 @@ const FinalizeStep = () => {
                     )}
                     {!orderFormIsSending && errorOccurred && (
                         <Typography variant="h6" align="center">
-                            We've encountered some problems while processing
-                            your request.
+                            We've encountered some issues while processing
+                            your order.
                             <br />
                             Please reload page and try again.
                         </Typography>

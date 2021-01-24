@@ -3,7 +3,6 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import React from "react";
 import ProductQuantityPicker from "../../../../domain/product/components/ProductQuantityPicker";
 import { Product } from "../../../../domain/product/models";
-import { pricedByWeight } from "../../../../domain/product/services/productService";
 import useLogic from "./logic";
 import useStyles from "./styles";
 
@@ -26,11 +25,8 @@ const AddToCartPanel = (props: Props) => {
                 className={classes.productQuantityPickerContainer}
             >
                 <ProductQuantityPicker
-                    initialValue={props.product.quantityPerPrice}
-                    pricedByWeight={pricedByWeight(props.product)}
+                    product={props.product}
                     onQuantityChange={logic.handleQuantityChanged}
-                    onQuantityTextInputFocus={logic.handleQuantityTextInputFocused}
-                    onQuantityTextInputBlur={logic.handleQuantityTextInputBlured}
                 />
             </Grid>
             <Grid

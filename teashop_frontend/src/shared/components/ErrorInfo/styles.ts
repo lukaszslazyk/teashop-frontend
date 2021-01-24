@@ -6,7 +6,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             color: grey[500]
         },
-        title: {
+        titleText: {
             marginBottom: theme.spacing(1),
         }
     })

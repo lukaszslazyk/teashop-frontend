@@ -37,12 +37,14 @@ export interface OrderState {
     cartPrice: number;
     shippingPrice: number;
     orderPlaced: boolean;
+    placedOrderId: string;
     placedOrderNo: number;
 }
 
 const initialState: OrderState = {
     order: {
         orderNo: 0,
+        placementDate: new Date(),
         contactInfo: {
             email: "",
         },
@@ -143,6 +145,7 @@ const initialState: OrderState = {
     cartPrice: 0,
     shippingPrice: 0,
     orderPlaced: false,
+    placedOrderId: "",
     placedOrderNo: 0,
 };
 
@@ -163,7 +166,12 @@ export const orderReducer = (
                 ...state,
                 orderIsFetching: false,
                 orderErrorOccurred: action.errorOccurred,
-                order: action.order ? action.order : initialState.order,
+                order: action.order
+                    ? {
+                        ...action.order,
+                        placementDate: new Date(action.order.placementDate),
+                    }
+                    : initialState.order,
                 orderErrorType: action.errorType,
             };
         }
@@ -197,6 +205,12 @@ export const orderReducer = (
                             ? action.orderMeta.countries[0].code
                             : "",
                     },
+                    billingAddressFormData: {
+                        ...state.orderFormData.billingAddressFormData,
+                        countryCode: action.orderMeta
+                            ? action.orderMeta.countries[0].code
+                            : "",
+                    },
                 },
             };
         case SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS:
@@ -221,6 +235,9 @@ export const orderReducer = (
                 orderFormErrorOccurred: action.errorOccurred,
                 orderFormErrorType: action.errorType,
                 orderPlaced: !action.errorOccurred,
+                placedOrderId: action.orderId
+                    ? action.orderId
+                    : initialState.placedOrderId,
                 placedOrderNo: action.orderNo
                     ? action.orderNo
                     : initialState.placedOrderNo,
