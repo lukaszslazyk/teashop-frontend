@@ -43,9 +43,11 @@ import {
 import {
     PriceActionTypes,
     SET_CART_PRICE,
-    SET_SHIPPING_PRICE,
+    SET_SHIPPING_FEE,
+    SET_PAYMENT_FEE,
     setCartPrice,
-    setShippingPrice,
+    setShippingFee,
+    setPaymentFee,
 } from "./price";
 import {
     ShippingAddressFormActionTypes,
@@ -71,7 +73,8 @@ export {
     setChosenPaymentMethod,
     setPaymentCardFormData,
     setCartPrice,
-    setShippingPrice,
+    setShippingFee,
+    setPaymentFee,
 };
 
 export {
@@ -90,7 +93,8 @@ export {
     SET_CHOSEN_PAYMENT_METHOD,
     SET_PAYMENT_CARD_FORM_DATA,
     SET_CART_PRICE,
-    SET_SHIPPING_PRICE,
+    SET_SHIPPING_FEE,
+    SET_PAYMENT_FEE,
 };
 
 export type OrderActionTypes =

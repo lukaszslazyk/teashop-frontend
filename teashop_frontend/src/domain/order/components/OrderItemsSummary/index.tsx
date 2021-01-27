@@ -8,7 +8,8 @@ import useStyles from "./styles";
 interface Props {
     cart: Cart;
     totalPrice: number;
-    shippingPrice: number;
+    shippingFee: number;
+    paymentFee: number;
 }
 
 const OrderItemsSummary = (props: Props) => {
@@ -32,7 +33,8 @@ const OrderItemsSummary = (props: Props) => {
                     <Grid item xs={12} className={classes.priceViewContainer}>
                         <OrderPriceView
                             totalPrice={props.totalPrice}
-                            shippingPrice={props.shippingPrice}
+                            shippingFee={props.shippingFee}
+                            paymentFee={props.paymentFee}
                         />
                     </Grid>
                 </Paper>

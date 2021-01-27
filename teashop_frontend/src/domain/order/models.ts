@@ -10,7 +10,8 @@ export interface Order {
     chosenPaymentMethod: PaymentMethod;
     cart: Cart;
     totalPrice: number;
-    shippingPrice: number;
+    shippingFee: number;
+    paymentFee: number;
 }
 
 export interface ContactInfo {
@@ -43,12 +44,13 @@ export interface Country {
 export interface ShippingMethod {
     name: string;
     displayName: string;
-    price: number;
+    fee: number;
 }
 
 export interface PaymentMethod {
     name: string;
     displayName: string;
+    fee: number;
 }
 
 export interface OrderFormData {

@@ -14,7 +14,8 @@ import {
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
     SET_CART_PRICE,
-    SET_SHIPPING_PRICE,
+    SET_SHIPPING_FEE,
+    SET_PAYMENT_FEE,
     RESET_ORDER_PLACED,
     SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
 } from "./actions";
@@ -35,7 +36,8 @@ export interface OrderState {
     orderFormErrorType: ApiErrorType;
     totalPrice: number;
     cartPrice: number;
-    shippingPrice: number;
+    shippingFee: number;
+    paymentFee: number;
     orderPlaced: boolean;
     placedOrderId: string;
     placedOrderNo: number;
@@ -79,17 +81,19 @@ const initialState: OrderState = {
         chosenShippingMethod: {
             name: "",
             displayName: "",
-            price: 0,
+            fee: 0,
         },
         chosenPaymentMethod: {
             name: "",
             displayName: "",
+            fee: 0,
         },
         cart: {
             items: [],
         },
         totalPrice: 0,
-        shippingPrice: 0,
+        shippingFee: 0,
+        paymentFee: 0,
     },
     orderIsFetching: false,
     orderErrorOccurred: false,
@@ -143,7 +147,8 @@ const initialState: OrderState = {
     orderFormErrorType: ApiErrorType.None,
     totalPrice: 0,
     cartPrice: 0,
-    shippingPrice: 0,
+    shippingFee: 0,
+    paymentFee: 0,
     orderPlaced: false,
     placedOrderId: "",
     placedOrderNo: 0,
@@ -166,12 +171,10 @@ export const orderReducer = (
                 ...state,
                 orderIsFetching: false,
                 orderErrorOccurred: action.errorOccurred,
-                order: action.order
-                    ? {
-                        ...action.order,
-                        placementDate: new Date(action.order.placementDate),
-                    }
-                    : initialState.order,
+                order: action.order ? {
+                    ...action.order,
+                    placementDate: new Date(action.order.placementDate),
+                } : initialState.order,
                 orderErrorType: action.errorType,
             };
         }
@@ -248,7 +251,8 @@ export const orderReducer = (
                     orderFormData: initialState.orderFormData,
                     totalPrice: 0,
                     cartPrice: 0,
-                    shippingPrice: 0,
+                    shippingFee: 0,
+                    paymentFee: 0,
                 };
             return newState;
         case RESET_ORDER_PLACED:
@@ -308,13 +312,19 @@ export const orderReducer = (
             return {
                 ...state,
                 cartPrice: action.value,
-                totalPrice: action.value + state.shippingPrice,
+                totalPrice: action.value + state.shippingFee,
             };
-        case SET_SHIPPING_PRICE:
+        case SET_SHIPPING_FEE:
             return {
                 ...state,
-                shippingPrice: action.value,
-                totalPrice: state.cartPrice + action.value,
+                shippingFee: action.value,
+                totalPrice: state.cartPrice + state.paymentFee + action.value,
+            };
+        case SET_PAYMENT_FEE:
+            return {
+                ...state,
+                paymentFee: action.value,
+                totalPrice: state.cartPrice + state.shippingFee + action.value,
             };
         default:
             return state;

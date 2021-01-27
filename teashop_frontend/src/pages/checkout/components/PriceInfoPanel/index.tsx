@@ -12,8 +12,11 @@ const PriceInfoPanel = () => {
     const cartPrice = useSelector(
         (state: RootState) => state.order.cartPrice
     );
-    const shippingPrice = useSelector(
-        (state: RootState) => state.order.shippingPrice
+    const shippingFee = useSelector(
+        (state: RootState) => state.order.shippingFee
+    );
+    const paymentFee = useSelector(
+        (state: RootState) => state.order.paymentFee
     );
     const classes = useStyles();
 
@@ -30,15 +33,27 @@ const PriceInfoPanel = () => {
                 </Typography>
             </Grid>
             <Grid item container>
-                <Typography variant="body1">Shipment:</Typography>
+                <Typography variant="body1">Shipment fee:</Typography>
                 <Typography
                     variant="body1"
                     align="right"
                     className={classes.grow}
                 >
-                    {shippingPrice === 0
+                    {shippingFee === 0
                         ? "-"
-                        : getPriceTextWithCurrency(shippingPrice)}
+                        : getPriceTextWithCurrency(shippingFee)}
+                </Typography>
+            </Grid>
+            <Grid item container>
+                <Typography variant="body1">Payment fee:</Typography>
+                <Typography
+                    variant="body1"
+                    align="right"
+                    className={classes.grow}
+                >
+                    {paymentFee === 0
+                        ? "-"
+                        : getPriceTextWithCurrency(paymentFee)}
                 </Typography>
             </Grid>
             <Grid item xs={12} className={classes.dividerContainer}>

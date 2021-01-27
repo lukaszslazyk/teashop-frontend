@@ -28,7 +28,7 @@ const ShippingMethodFormRadio = (props: Props) => {
                 align="right"
                 className={classes.grow}
             >
-                {getPriceTextWithCurrency(props.shippingMethod.price)}
+                {getPriceTextWithCurrency(props.shippingMethod.fee)}
             </Typography>
         </Paper>
     );
