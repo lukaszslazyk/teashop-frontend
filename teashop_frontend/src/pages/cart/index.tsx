@@ -2,7 +2,6 @@ import React from "react";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import CartView from "./components/CartView";
-import EmptyCartView from "./components/EmptyCartView";
 import useLogic from "./logic";
 
 const CartPage = () => {
@@ -18,7 +17,10 @@ const CartPage = () => {
             {cartFetchedYet && !errorOccurred && (
                 <div>
                     {logic.cartIsEmpty() ? (
-                        <EmptyCartView />
+                        <ErrorInfo
+                            title="Your cart is empty"
+                            errorMessage="Continue shopping and add some items to your cart."
+                        />
                     ) : (
                         <CartView cart={cart} />
                     )}

@@ -12,7 +12,7 @@ interface Props {
     onBackButtonClick: () => void;
 }
 
-const InformationStep = (props: Props) => {
+const CustomerInformationStep = (props: Props) => {
     const logic = useLogic(
         props.onContinueButtonClick,
         props.onBackButtonClick
@@ -51,4 +51,4 @@ const InformationStep = (props: Props) => {
     );
 };
 
-export default InformationStep;
+export default CustomerInformationStep;

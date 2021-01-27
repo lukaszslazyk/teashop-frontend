@@ -2,8 +2,8 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        descriptionText: {
-            textAlign: "justify",
+        root: {
+            padding: theme.spacing(2),
         },
     })
 );

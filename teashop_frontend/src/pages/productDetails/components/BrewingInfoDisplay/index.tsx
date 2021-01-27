@@ -1,17 +1,20 @@
-import { Box, Divider, Typography } from "@material-ui/core";
+import { Box, Divider, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { BrewingInfo } from "../../../../domain/product/models";
+import useStyles from "./styles";
 
 interface Props {
     brewingInfo: BrewingInfo;
 }
 
 const BrewingInfoDisplay = (props: Props) => {
+    const classes = useStyles();
+
     const nullOrEmpty = (input: string | undefined): boolean =>
         !input || input.trim().length === 0;
 
     return (
-        <div>
+        <Paper className={classes.root}>
             <Typography variant="h5" color="primary">
                 Brewing tips
             </Typography>
@@ -38,7 +41,7 @@ const BrewingInfoDisplay = (props: Props) => {
                     Number of brewings: {props.brewingInfo.numberOfBrewingsInfo}
                 </Typography>
             )}
-        </div>
+        </Paper>
     );
 };
 

@@ -57,7 +57,7 @@ const useLogic = () => {
         (state: RootState) => state.order.orderFormData.shippingAddressFormData
     );
     const billingAddressFormData = useSelector(
-        (state: RootState) => state.order.orderFormData.shippingAddressFormData
+        (state: RootState) => state.order.orderFormData.billingAddressFormData
     );
     const billingAddressSameAsShippingAddress = useSelector(
         (state: RootState) =>

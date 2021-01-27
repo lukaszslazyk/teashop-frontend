@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
         valueText: {
             textAlign: "right",
             whiteSpace: "nowrap",
+            marginRight: -theme.spacing(1),
         },
     })
 );

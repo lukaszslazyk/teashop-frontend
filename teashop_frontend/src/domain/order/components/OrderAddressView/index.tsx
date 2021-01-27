@@ -13,7 +13,7 @@ export interface Props {
     phone: string;
 }
 
-const OrderInfoAddressView = (props: Props) => {
+const OrderAddressView = (props: Props) => {
     const isEmptyOrNull = (input: string | null): boolean =>
         input === null || input.trim().length === 0;
 
@@ -64,4 +64,4 @@ const OrderInfoAddressView = (props: Props) => {
     );
 };
 
-export default OrderInfoAddressView;
+export default OrderAddressView;

@@ -3,8 +3,8 @@ import React from "react";
 import CheckoutStepper from "../CheckoutStepper";
 import CheckoutStepTitle from "../CheckoutStepTitle";
 import ProgressStepLayout from "../ProgressStepLayout";
+import CustomerInformationStep from "../steps/customerInformation/CustomerInformationStep";
 import FinalizeStep from "../steps/finalize/FinalizeStep";
-import InformationStep from "../steps/information/InformationStep";
 import PaymentStep from "../steps/payment/PaymentStep";
 import ShippingStep from "../steps/shipping/ShippingStep";
 import SummaryStep from "../steps/summary/SummaryStep";
@@ -28,7 +28,7 @@ const CheckoutMainView = () => {
                 {activeStep < 3 && (
                     <ProgressStepLayout>
                         {activeStep === 0 && (
-                            <InformationStep
+                            <CustomerInformationStep
                                 onContinueButtonClick={
                                     logic.handleContinueButtonClicked
                                 }

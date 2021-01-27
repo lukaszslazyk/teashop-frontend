@@ -47,7 +47,7 @@ const BillingAddressForm = () => {
                     className={
                         billingAddressSameAsShippingAddress
                             ? classes.hidden
-                            : ""
+                            : classes.billingAddressForm
                     }
                 >
                     <AddressForm />

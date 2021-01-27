@@ -1,5 +1,5 @@
 import React from "react";
-import OrderInfoView from "../../../../domain/order/components/OrderInfoView";
+import OrderCustomerProvidedInfoView from "../../../../domain/order/components/OrderCustomerProvidedInfoView";
 import { Address, Order } from "../../../../domain/order/models";
 
 interface Props {
@@ -18,7 +18,7 @@ const mapToAddressProps = (address: Address) => ({
     phone: address.phone
 });
 
-const OrderDetailsInfoView = (props: Props) => {
+const OrderDetailsCustomerProvidedInfoView = (props: Props) => {
     const contactInfoProps = {
         email: props.order.contactInfo.email,
     };
@@ -26,7 +26,7 @@ const OrderDetailsInfoView = (props: Props) => {
     const billingAddressProps = mapToAddressProps(props.order.billingAddress);
 
     return (
-        <OrderInfoView
+        <OrderCustomerProvidedInfoView
             contactInfo={contactInfoProps}
             shippingAddress={shippingAddressProps}
             billingAddress={billingAddressProps}
@@ -40,4 +40,4 @@ const OrderDetailsInfoView = (props: Props) => {
     );
 };
 
-export default OrderDetailsInfoView;
+export default OrderDetailsCustomerProvidedInfoView;

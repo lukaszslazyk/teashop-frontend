@@ -1,5 +1,7 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Button, Grid, Typography } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
+import routing from "../../../configuration/routing";
 import useStyles from "./styles";
 
 interface Props {
@@ -11,7 +13,7 @@ const ErrorInfo = (props: Props) => {
     const classes = useStyles();
 
     return (
-        <Grid container spacing={1} className={classes.root}>
+        <Grid container spacing={1}>
             <Grid item xs={12}>
                 <Typography
                     variant="h3"
@@ -28,6 +30,19 @@ const ErrorInfo = (props: Props) => {
                     </Typography>
                 </Grid>
             ))}
+            <Grid item xs={12} container justify="center">
+                <Grid item>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        component={Link}
+                        to={routing.home}
+                        className={classes.backToHomeButton}
+                    >
+                        Back to main page
+                    </Button>
+                </Grid>
+            </Grid>
         </Grid>
     );
 };
