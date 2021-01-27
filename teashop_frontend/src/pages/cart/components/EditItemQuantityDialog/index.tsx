@@ -53,7 +53,6 @@ const EditItemQuantityDialog = (props: Props) => {
                     <Grid item>
                         <Button
                             onClick={logic.handleAcceptButtonClicked}
-                            color="primary"
                             disabled={logic.addToCartButtonDisabled()}
                         >
                             Accept

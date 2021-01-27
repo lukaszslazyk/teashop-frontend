@@ -1,16 +1,14 @@
-import { Box, Divider, Grid, Typography } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
-import OrderDetailsInfoView from "./components/OrderDetailsInfoView";
-import OrderDetailsItemsView from "./components/OrderDetailsItemsView";
-import OrderDetailsPriceView from "./components/OrderDetailsPriceView";
+import OrderDetailsCustomerProvidedInfoView from "./components/OrderDetailsCustomerProvidedInfoView";
+import OrderDetailsItemsSummary from "./components/OrderDetailsItemsSummary";
+import OrderDetailsTopInfoView from "./components/OrderDetailsTopInfoView";
 import useLogic from "./logic";
-import useStyles from "./styles";
 
 const OrderDetailsPage = () => {
     const logic = useLogic();
-    const classes = useStyles();
     const { order, orderIsFetching, errorOccurred } = logic;
 
     return (
@@ -22,24 +20,20 @@ const OrderDetailsPage = () => {
             {!orderIsFetching && !errorOccurred && (
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Typography variant="h5" color="primary">
+                        <Typography variant="h4" color="primary">
                             Order no. {order.orderNo}
                         </Typography>
-                        <Box my={1}>
-                            <Divider />
+                        <Box mt={2}>
+                            <OrderDetailsTopInfoView
+                                placementDate={order.placementDate}
+                            />
                         </Box>
-                        <Typography className={classes.placementDateText}>
-                            Placement date: {logic.getPlacementDateText()}
-                        </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderDetailsInfoView order={order} />
+                        <OrderDetailsCustomerProvidedInfoView order={order} />
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderDetailsItemsView order={order} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <OrderDetailsPriceView order={order} />
+                        <OrderDetailsItemsSummary order={order} />
                     </Grid>
                 </Grid>
             )}

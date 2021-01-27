@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
         priceText: {
             whiteSpace: "nowrap",
             textAlign: "right",
+            marginRight: -theme.spacing(1),
         },
     })
 );

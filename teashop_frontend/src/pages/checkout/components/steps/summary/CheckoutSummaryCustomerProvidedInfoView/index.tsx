@@ -1,8 +1,8 @@
 import React from "react";
-import OrderInfoView from "../../../../../../domain/order/components/OrderInfoView";
+import OrderCustomerProvidedInfoView from "../../../../../../domain/order/components/OrderCustomerProvidedInfoView";
 import useLogic from "./logic";
 
-const CheckoutSummaryInfoView = () => {
+const CheckoutSummaryCustomerProvidedInfoView = () => {
     const {
         contactInfoProps,
         shippingAddressProps,
@@ -12,7 +12,7 @@ const CheckoutSummaryInfoView = () => {
     } = useLogic();
 
     return (
-        <OrderInfoView
+        <OrderCustomerProvidedInfoView
             contactInfo={contactInfoProps}
             shippingAddress={shippingAddressProps}
             billingAddress={billingAddressProps}
@@ -22,4 +22,4 @@ const CheckoutSummaryInfoView = () => {
     );
 };
 
-export default CheckoutSummaryInfoView;
+export default CheckoutSummaryCustomerProvidedInfoView;

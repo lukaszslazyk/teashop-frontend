@@ -1,12 +1,24 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
-import OrderItemsView from "../../../../../../domain/order/components/OrderItemsView";
+import OrderItemsSummary from "../../../../../../domain/order/components/OrderItemsSummary";
 
 const CheckoutSummaryItemsView = () => {
     const cart = useSelector((state: RootState) => state.cart.cart);
+    const totalPrice = useSelector(
+        (state: RootState) => state.order.totalPrice
+    );
+    const shippingPrice = useSelector(
+        (state: RootState) => state.order.shippingPrice
+    );
 
-    return <OrderItemsView cart={cart} />;
+    return (
+        <OrderItemsSummary
+            cart={cart}
+            totalPrice={totalPrice}
+            shippingPrice={shippingPrice}
+        />
+    );
 };
 
 export default CheckoutSummaryItemsView;

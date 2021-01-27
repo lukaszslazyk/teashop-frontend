@@ -70,7 +70,7 @@ const FinalizeStep = () => {
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Typography variant="body1" align="center">
+                                    <Typography variant="h6" align="center">
                                         You can see order details{" "}
                                         <Link
                                             to={orderDetailsRoutePath}

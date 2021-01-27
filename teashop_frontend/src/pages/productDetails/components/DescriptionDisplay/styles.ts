@@ -2,12 +2,12 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        titleText: {
-            marginBottom: theme.spacing(1),
+        root: {
+            padding: theme.spacing(2),
         },
-        backToHomeButton: {
-            marginTop: theme.spacing(2),
-        }
+        descriptionText: {
+            textAlign: "justify",
+        },
     })
 );
 

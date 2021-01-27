@@ -2,12 +2,9 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        titleText: {
-            marginBottom: theme.spacing(1),
+        paperWrapper: {
+            padding: theme.spacing(2),
         },
-        backToHomeButton: {
-            marginTop: theme.spacing(2),
-        }
     })
 );
 

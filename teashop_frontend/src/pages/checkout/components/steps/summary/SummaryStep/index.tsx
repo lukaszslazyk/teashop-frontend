@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import NavButtonsPanel from "../../../NavButtonsPanel";
-import OrderSummary from "../CheckoutSummary";
+import CheckoutSummary from "../CheckoutSummary";
 
 interface Props {
     onContinueButtonClick: () => void;
@@ -11,7 +11,7 @@ interface Props {
 const SummaryStep = (props: Props) => (
     <Grid container spacing={4}>
         <Grid item xs={12}>
-            <OrderSummary />
+            <CheckoutSummary />
         </Grid>
         <Grid item xs={12}>
             <NavButtonsPanel
