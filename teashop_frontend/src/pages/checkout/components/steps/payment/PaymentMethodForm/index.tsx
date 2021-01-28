@@ -1,23 +1,16 @@
 import { Box, Divider, Grid, RadioGroup, Typography } from "@material-ui/core";
-import React, { ChangeEvent, ReactNode } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
-import { setChosenPaymentMethod } from "../../../../../../domain/order/actions";
-import PaymentCardRadio from "../PaymentCardRadio";
+import React, { ReactNode} from "react";
+import CardPaymentMethodRadio from "../CardPaymentMethodRadio";
+import PaymentMethodRadio from "../PaymentMethodRadio";
+import useLogic from "./logic";
 
 interface Props {
     paymentCardFormComponent: ReactNode;
 }
 
 const PaymentMethodForm = (props: Props) => {
-    const chosenPaymentMethodName = useSelector(
-        (state: RootState) => state.order.orderFormData.chosenPaymentMethodName
-    );
-    const dispatch = useDispatch();
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-        dispatch(setChosenPaymentMethod(event.target.value));
-    };
+    const logic = useLogic();
+    const { paymentMethods, chosenPaymentMethodName } = logic;
 
     if (chosenPaymentMethodName === "")
         return null;
@@ -35,14 +28,21 @@ const PaymentMethodForm = (props: Props) => {
             <Grid item xs={12}>
                 <RadioGroup
                     value={chosenPaymentMethodName}
-                    onChange={handleChange}
+                    onChange={logic.handleChange}
                 >
-                    <PaymentCardRadio
-                        currentValue={chosenPaymentMethodName}
-                        paymentCardFormComponent={
-                            props.paymentCardFormComponent
-                        }
-                    />
+                    {paymentMethods.map(method => {
+                        if (method.name === "card")
+                            return (
+                                <CardPaymentMethodRadio
+                                    currentValue={chosenPaymentMethodName}
+                                    paymentCardFormComponent={
+                                        props.paymentCardFormComponent
+                                    }
+                                    paymentMethod={method}
+                                />
+                            );
+                        return <PaymentMethodRadio paymentMethod={method} />;
+                    })}
                 </RadioGroup>
             </Grid>
         </Grid>

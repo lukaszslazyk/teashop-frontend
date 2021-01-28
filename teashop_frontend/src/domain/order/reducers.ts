@@ -312,7 +312,7 @@ export const orderReducer = (
             return {
                 ...state,
                 cartPrice: action.value,
-                totalPrice: action.value + state.shippingFee,
+                totalPrice: action.value + state.shippingFee + state.paymentFee,
             };
         case SET_SHIPPING_FEE:
             return {

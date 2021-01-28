@@ -2,6 +2,7 @@ import {
     Accordion,
     AccordionDetails,
     AccordionSummary,
+    Box,
     ClickAwayListener,
     FormControlLabel,
     Grid,
@@ -12,15 +13,18 @@ import {
 } from "@material-ui/core";
 import HelpIcon from "@material-ui/icons/Help";
 import React, { ReactNode } from "react";
+import { PaymentMethod } from "../../../../../../domain/order/models";
+import { getPriceTextWithCurrency } from "../../../../../../shared/services/priceService";
 import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
     currentValue: string;
     paymentCardFormComponent: ReactNode;
+    paymentMethod: PaymentMethod;
 }
 
-const PaymentCardRadio = (props: Props) => {
+const CardPaymentMethodRadio = (props: Props) => {
     const logic = useLogic();
     const classes = useStyles();
     const { tooltipOpen, acceptedCardsMessage } = logic;
@@ -30,18 +34,24 @@ const PaymentCardRadio = (props: Props) => {
     );
 
     return (
-        <Accordion expanded={props.currentValue === "card"}>
-            <AccordionSummary>
+        <Accordion
+            expanded={props.currentValue === props.paymentMethod.name}
+            classes={{ root: classes.accordionRootRounded }}
+        >
+            <AccordionSummary
+                classes={{ content: classes.accordionSummaryContent }}
+            >
                 <Grid container alignItems="center">
-                    <Grid item className={classes.grow}>
+                    <Grid item className={classes.labelWrapper}>
                         <FormControlLabel
                             control={<Radio />}
-                            value="card"
-                            label="Credit/Debit Card"
+                            value={props.paymentMethod.name}
+                            label={props.paymentMethod.displayName}
+                            className={classes.grow}
                         />
                     </Grid>
                     <Grid item>
-                        <Grid container justify="flex-end">
+                        <Grid container justify="flex-end" alignItems="center">
                             <ClickAwayListener
                                 onClickAway={logic.handleTooltipClose}
                             >
@@ -66,6 +76,15 @@ const PaymentCardRadio = (props: Props) => {
                                     </IconButton>
                                 </Tooltip>
                             </ClickAwayListener>
+                            {props.paymentMethod.fee !== 0 && (
+                                <Box ml={2}>
+                                    <Typography variant="body1" align="right">
+                                        {getPriceTextWithCurrency(
+                                            props.paymentMethod.fee
+                                        )}
+                                    </Typography>
+                                </Box>
+                            )}
                         </Grid>
                     </Grid>
                 </Grid>
@@ -77,4 +96,4 @@ const PaymentCardRadio = (props: Props) => {
     );
 };
 
-export default PaymentCardRadio;
+export default CardPaymentMethodRadio;

@@ -22,6 +22,8 @@ const useLogic = (
     const handleContinueButtonClicked = () => {
         if (chosenPaymentMethodName === "card")
             paymentCardFormMethods.handleSubmit(onPaymentCardFormSubmit)();
+        else
+            onContinueButtonClick();
     };
 
     const handleBackButtonClicked = () => onBackButtonClick();

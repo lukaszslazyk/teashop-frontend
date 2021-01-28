@@ -5,7 +5,7 @@ import useLogic from "./logic";
 
 const ShippingMethodForm = () => {
     const logic = useLogic();
-    const { chosenShippingMethodName } = logic;
+    const { shippingMethods, chosenShippingMethodName } = logic;
 
     if (chosenShippingMethodName === "")
         return null;
@@ -25,13 +25,9 @@ const ShippingMethodForm = () => {
                     value={chosenShippingMethodName}
                     onChange={logic.handleChange}
                 >
-                    <ShippingMethodFormRadio
-                        value="standard"
-                        label="Standard delivery"
-                        shippingMethod={logic.findShippingMethodWithName(
-                            "standard"
-                        )}
-                    />
+                    {shippingMethods.map(method => (
+                        <ShippingMethodFormRadio shippingMethod={method} />
+                    ))}
                 </RadioGroup>
             </Grid>
         </Grid>
