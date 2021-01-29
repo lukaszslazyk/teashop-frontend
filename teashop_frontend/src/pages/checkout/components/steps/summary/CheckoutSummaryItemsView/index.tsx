@@ -8,15 +8,19 @@ const CheckoutSummaryItemsView = () => {
     const totalPrice = useSelector(
         (state: RootState) => state.order.totalPrice
     );
-    const shippingPrice = useSelector(
-        (state: RootState) => state.order.shippingPrice
+    const shippingFee = useSelector(
+        (state: RootState) => state.order.shippingFee
+    );
+    const paymentFee = useSelector(
+        (state: RootState) => state.order.paymentFee
     );
 
     return (
         <OrderItemsSummary
             cart={cart}
             totalPrice={totalPrice}
-            shippingPrice={shippingPrice}
+            shippingFee={shippingFee}
+            paymentFee={paymentFee}
         />
     );
 };

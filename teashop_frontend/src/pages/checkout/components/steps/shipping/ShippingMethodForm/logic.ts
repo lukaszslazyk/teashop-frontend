@@ -1,8 +1,7 @@
 import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
-import { setChosenShippingMethod, setShippingPrice } from "../../../../../../domain/order/actions";
-import { ShippingMethod } from "../../../../../../domain/order/models";
+import { setChosenShippingMethod, setShippingFee } from "../../../../../../domain/order/actions";
 
 const useLogic = () => {
     const shippingMethods = useSelector(
@@ -18,22 +17,16 @@ const useLogic = () => {
             method => method.name === chosenShippingMethodName
         );
         if (shippingMethod)
-            dispatch(setShippingPrice(shippingMethod.price));
+            dispatch(setShippingFee(shippingMethod.fee));
     }, [chosenShippingMethodName, shippingMethods, dispatch]);
 
-    const findShippingMethodWithName = (
-        name: string
-    ): ShippingMethod | undefined =>
-        shippingMethods.find(method => method.name === name);
-
-    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) =>
         dispatch(setChosenShippingMethod(event.target.value));
-    };
 
     return {
+        shippingMethods,
         chosenShippingMethodName,
         handleChange,
-        findShippingMethodWithName
     };
 };
 

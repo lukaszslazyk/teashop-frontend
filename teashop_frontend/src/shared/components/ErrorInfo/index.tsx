@@ -24,8 +24,8 @@ const ErrorInfo = (props: Props) => {
                 </Typography>
             </Grid>
             {props.errorMessage.split("\n").map((line, idx) => (
-                <Grid item xs={12}>
-                    <Typography key={idx} variant="h6" align="center">
+                <Grid item xs={12} key={idx}>
+                    <Typography variant="h6" align="center">
                         {line}
                     </Typography>
                 </Grid>

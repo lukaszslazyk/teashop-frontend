@@ -10,7 +10,8 @@ const OrderDetailsItemsSummary = (props: Props) => (
     <OrderItemsSummary
         cart={props.order.cart}
         totalPrice={props.order.totalPrice}
-        shippingPrice={props.order.shippingPrice}
+        shippingFee={props.order.shippingFee}
+        paymentFee={props.order.paymentFee}
     />
 );
 

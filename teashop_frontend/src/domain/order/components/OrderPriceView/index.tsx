@@ -5,7 +5,8 @@ import useStyles from "./styles";
 
 interface Props {
     totalPrice: number;
-    shippingPrice: number;
+    shippingFee: number;
+    paymentFee: number;
 }
 
 const OrderPriceView = (props: Props) => {
@@ -24,7 +25,26 @@ const OrderPriceView = (props: Props) => {
                 </Grid>
                 <Grid item md={2} sm={3} xs={6}>
                     <Typography variant="body1" className={classes.valueText}>
-                        {getPriceTextWithCurrency(props.shippingPrice)}
+                        {props.shippingFee === 0
+                            ? "-"
+                            : getPriceTextWithCurrency(props.shippingFee)}
+                    </Typography>
+                </Grid>
+            </Grid>
+            <Grid item xs={12} container spacing={2}>
+                <Grid item md={10} sm={9} xs={6}>
+                    <Typography
+                        variant="body1"
+                        className={classes.valueNameText}
+                    >
+                        Payment fee:
+                    </Typography>
+                </Grid>
+                <Grid item md={2} sm={3} xs={6}>
+                    <Typography variant="body1" className={classes.valueText}>
+                        {props.paymentFee === 0
+                            ? "-"
+                            : getPriceTextWithCurrency(props.paymentFee)}
                     </Typography>
                 </Grid>
             </Grid>
