@@ -1,5 +1,5 @@
 import { Box, Divider, Grid, RadioGroup, Typography } from "@material-ui/core";
-import React, { ReactNode} from "react";
+import React, { ReactNode } from "react";
 import CardPaymentMethodRadio from "../CardPaymentMethodRadio";
 import PaymentMethodRadio from "../PaymentMethodRadio";
 import useLogic from "./logic";
@@ -39,9 +39,15 @@ const PaymentMethodForm = (props: Props) => {
                                         props.paymentCardFormComponent
                                     }
                                     paymentMethod={method}
+                                    key={method.name}
                                 />
                             );
-                        return <PaymentMethodRadio paymentMethod={method} />;
+                        return (
+                            <PaymentMethodRadio
+                                paymentMethod={method}
+                                key={method.name}
+                            />
+                        );
                     })}
                 </RadioGroup>
             </Grid>

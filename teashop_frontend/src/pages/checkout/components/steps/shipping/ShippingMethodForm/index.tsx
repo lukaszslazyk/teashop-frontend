@@ -26,7 +26,10 @@ const ShippingMethodForm = () => {
                     onChange={logic.handleChange}
                 >
                     {shippingMethods.map(method => (
-                        <ShippingMethodFormRadio shippingMethod={method} />
+                        <ShippingMethodFormRadio
+                            shippingMethod={method}
+                            key={method.name}
+                        />
                     ))}
                 </RadioGroup>
             </Grid>
