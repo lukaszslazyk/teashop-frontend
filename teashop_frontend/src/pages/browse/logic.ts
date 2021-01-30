@@ -1,15 +1,18 @@
-import { useCallback, useEffect } from "react";
+import { useMediaQuery, useTheme } from "@material-ui/core";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { BrowsePageParams } from "../../configuration/routing";
 import { fetchProductsInCategory } from "../../domain/product/actions";
-import { availableProductCategories } from "../../domain/product/models";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
-const useLogic = () => {
+const useLogic = (productsPageSize: number) => {
     const products = useSelector((state: RootState) => state.product.products);
+    const pagesInTotal = useSelector(
+        (state: RootState) => state.product.pagesInTotal
+    );
     const productsAreFetching = useSelector(
         (state: RootState) => state.product.isFetching
     );
@@ -20,24 +23,58 @@ const useLogic = () => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
+    const location = useLocation();
     const { categoryName } = useParams<BrowsePageParams>();
+    const [pageNumber, setPageNumber] = useState(1);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
-    const categoryIsAvailable = useCallback(
+    const categoryExists = useCallback(
         (): boolean =>
             categoryName !== undefined &&
-            availableProductCategories.includes(categoryName),
-        [categoryName]
+            !(errorOccurred && errorType === ApiErrorType.InvalidResponse),
+        [categoryName, errorOccurred, errorType]
     );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (categoryName && categoryIsAvailable())
-            dispatch(fetchProductsInCategory(categoryName, cancelToken));
+        if (categoryName)
+            dispatch(
+                fetchProductsInCategory(
+                    categoryName,
+                    0,
+                    productsPageSize,
+                    cancelToken
+                )
+            );
         return () => cancelToken.cancel();
-    }, [categoryName, categoryIsAvailable, dispatch]);
+    }, [categoryName, productsPageSize, dispatch]);
 
-    const anyErrors = () =>
-        errorOccurred || categoryIsEmpty();
+    useEffect(() => {
+        setPageNumber(1);
+    }, [location]);
+
+    const handlePaginationChange = (
+        event: ChangeEvent<unknown>,
+        page: number
+    ) => {
+        if (categoryName) {
+            setPageNumber(page);
+            window.scrollTo({
+                top: 0,
+            });
+            dispatch(
+                fetchProductsInCategory(
+                    categoryName,
+                    page - 1,
+                    productsPageSize,
+                    createRequestCancelToken()
+                )
+            );
+        }
+    };
+
+    const anyErrors = () => errorOccurred || categoryIsEmpty();
 
     const categoryIsEmpty = (): boolean => products.length === 0;
 
@@ -54,8 +91,12 @@ const useLogic = () => {
 
     return {
         products,
+        pageNumber,
+        pagesInTotal,
         productsAreFetching,
-        categoryIsAvailable,
+        isMobile,
+        handlePaginationChange,
+        categoryExists,
         anyErrors,
         getErrorMessage,
     };

@@ -11,6 +11,7 @@ import { Product } from "./models";
 export interface ProductState {
     products: Product[];
     product: Product | null;
+    pagesInTotal: number;
     isFetching: boolean;
     errorOccurred: boolean;
     errorType: ApiErrorType;
@@ -19,6 +20,7 @@ export interface ProductState {
 const initialState: ProductState = {
     products: [],
     product: null,
+    pagesInTotal: 0,
     isFetching: false,
     errorOccurred: false,
     errorType: ApiErrorType.None,
@@ -42,6 +44,7 @@ export const productReducer = (
                 ...state,
                 isFetching: false,
                 products: action.products,
+                pagesInTotal: action.pagesInTotal,
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
             };

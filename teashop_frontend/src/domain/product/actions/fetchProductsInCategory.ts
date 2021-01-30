@@ -15,6 +15,7 @@ interface RequestProductsInCategoryAction {
 interface ReceiveProductsInCategoryAction {
     type: typeof RECEIVE_PRODUCTS_IN_CATEGORY;
     products: Product[];
+    pagesInTotal: number;
     errorOccurred: boolean;
     errorType: ApiErrorType;
 }
@@ -29,11 +30,13 @@ export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes 
 
 export const receiveProductsInCategory = (
     products: Product[],
+    pagesInTotal: number,
     errorOccurred: boolean = false,
     errorType: ApiErrorType = ApiErrorType.None
 ): FetchProductsInCategoryActionTypes => ({
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: products,
+    pagesInTotal: pagesInTotal,
     errorOccurred: errorOccurred,
     errorType: errorType,
 });
@@ -43,25 +46,43 @@ export const receiveProductsInCategoryError = (
 ): FetchProductsInCategoryActionTypes => ({
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: [],
+    pagesInTotal: 0,
     errorOccurred: true,
     errorType: errorType,
 });
 
 export const fetchProductsInCategory = (
     categoryName: string,
+    pageIndex: number,
+    pageSize: number,
     cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductsInCategory());
     await axios
-        .get(`${API_ROOT}/products/categories/${categoryName}`, {
-            cancelToken: cancelToken.tokenSource.token,
-        })
-        .then(response => dispatch(receiveProductsInCategory(response.data)))
+        .get(
+            `${API_ROOT}/products/categories/${categoryName}?pageIndex=${pageIndex}&pageSize=${pageSize}`, {
+                cancelToken: cancelToken.tokenSource.token,
+            }
+        )
+        .then(response =>
+            dispatch(
+                receiveProductsInCategory(
+                    response.data.products,
+                    response.data.pagesInTotal
+                )
+            )
+        )
         .catch(error => {
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
                     dispatch(
                         receiveProductsInCategoryError(ApiErrorType.Timeout)
+                    );
+                else if (error.response.status === 404)
+                    dispatch(
+                        receiveProductsInCategoryError(
+                            ApiErrorType.InvalidResponse
+                        )
                     );
                 else
                     dispatch(

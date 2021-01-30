@@ -9,11 +9,11 @@ interface Props {
 
 const ProductCardTileGroup = (props: Props) => (
     <Grid container spacing={3} justify="center">
-        {props.products.map(product =>
+        {props.products.map(product => (
             <Grid item key={product.id}>
                 <ProductCard product={product} />
             </Grid>
-        )}
+        ))}
     </Grid>
 );
 
