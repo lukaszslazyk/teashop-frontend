@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { ChangeEvent, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
@@ -8,8 +8,11 @@ import { availableProductCategories } from "../../domain/product/models";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
-const useLogic = () => {
+const useLogic = (productsPageSize: number) => {
     const products = useSelector((state: RootState) => state.product.products);
+    const pagesInTotal = useSelector(
+        (state: RootState) => state.product.pagesInTotal
+    );
     const productsAreFetching = useSelector(
         (state: RootState) => state.product.isFetching
     );
@@ -32,12 +35,35 @@ const useLogic = () => {
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         if (categoryName && categoryIsAvailable())
-            dispatch(fetchProductsInCategory(categoryName, cancelToken));
+            dispatch(
+                fetchProductsInCategory(
+                    categoryName,
+                    0,
+                    productsPageSize,
+                    cancelToken
+                )
+            );
         return () => cancelToken.cancel();
-    }, [categoryName, categoryIsAvailable, dispatch]);
+    }, [categoryName, productsPageSize, categoryIsAvailable, dispatch]);
 
-    const anyErrors = () =>
-        errorOccurred || categoryIsEmpty();
+    const handlePaginationChange =
+        (event: ChangeEvent<unknown>, page: number) => {
+            if (categoryName) {
+                window.scrollTo({
+                    top: 0,
+                });
+                dispatch(
+                    fetchProductsInCategory(
+                        categoryName,
+                        page - 1,
+                        productsPageSize,
+                        createRequestCancelToken()
+                    )
+                );
+            }
+        };
+
+    const anyErrors = () => errorOccurred || categoryIsEmpty();
 
     const categoryIsEmpty = (): boolean => products.length === 0;
 
@@ -54,7 +80,9 @@ const useLogic = () => {
 
     return {
         products,
+        pagesInTotal,
         productsAreFetching,
+        handlePaginationChange,
         categoryIsAvailable,
         anyErrors,
         getErrorMessage,
