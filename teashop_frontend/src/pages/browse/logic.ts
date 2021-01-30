@@ -4,7 +4,6 @@ import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { BrowsePageParams } from "../../configuration/routing";
 import { fetchProductsInCategory } from "../../domain/product/actions";
-import { availableProductCategories } from "../../domain/product/models";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -25,16 +24,16 @@ const useLogic = (productsPageSize: number) => {
     const dispatch = useDispatch();
     const { categoryName } = useParams<BrowsePageParams>();
 
-    const categoryIsAvailable = useCallback(
+    const categoryExists = useCallback(
         (): boolean =>
             categoryName !== undefined &&
-            availableProductCategories.includes(categoryName),
-        [categoryName]
+            !(errorOccurred && errorType === ApiErrorType.InvalidResponse),
+        [categoryName, errorOccurred, errorType]
     );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (categoryName && categoryIsAvailable())
+        if (categoryName)
             dispatch(
                 fetchProductsInCategory(
                     categoryName,
@@ -44,24 +43,26 @@ const useLogic = (productsPageSize: number) => {
                 )
             );
         return () => cancelToken.cancel();
-    }, [categoryName, productsPageSize, categoryIsAvailable, dispatch]);
+    }, [categoryName, productsPageSize, dispatch]);
 
-    const handlePaginationChange =
-        (event: ChangeEvent<unknown>, page: number) => {
-            if (categoryName) {
-                window.scrollTo({
-                    top: 0,
-                });
-                dispatch(
-                    fetchProductsInCategory(
-                        categoryName,
-                        page - 1,
-                        productsPageSize,
-                        createRequestCancelToken()
-                    )
-                );
-            }
-        };
+    const handlePaginationChange = (
+        event: ChangeEvent<unknown>,
+        page: number
+    ) => {
+        if (categoryName) {
+            window.scrollTo({
+                top: 0,
+            });
+            dispatch(
+                fetchProductsInCategory(
+                    categoryName,
+                    page - 1,
+                    productsPageSize,
+                    createRequestCancelToken()
+                )
+            );
+        }
+    };
 
     const anyErrors = () => errorOccurred || categoryIsEmpty();
 
@@ -83,7 +84,7 @@ const useLogic = (productsPageSize: number) => {
         pagesInTotal,
         productsAreFetching,
         handlePaginationChange,
-        categoryIsAvailable,
+        categoryExists,
         anyErrors,
         getErrorMessage,
     };

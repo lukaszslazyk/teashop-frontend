@@ -13,7 +13,7 @@ const BrowsePage = () => {
     const logic = useLogic(PRODUCTS_PAGE_SIZE);
     const { products, pagesInTotal, productsAreFetching, anyErrors } = logic;
 
-    if (!logic.categoryIsAvailable())
+    if (!logic.categoryExists())
         return <NotFoundPage />;
 
     return (

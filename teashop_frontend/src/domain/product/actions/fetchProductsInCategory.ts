@@ -59,9 +59,11 @@ export const fetchProductsInCategory = (
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductsInCategory());
     await axios
-        .get(`${API_ROOT}/products/categories/${categoryName}?pageIndex=${pageIndex}&pageSize=${pageSize}`, {
-            cancelToken: cancelToken.tokenSource.token,
-        })
+        .get(
+            `${API_ROOT}/products/categories/${categoryName}?pageIndex=${pageIndex}&pageSize=${pageSize}`, {
+                cancelToken: cancelToken.tokenSource.token,
+            }
+        )
         .then(response =>
             dispatch(
                 receiveProductsInCategory(
@@ -75,6 +77,12 @@ export const fetchProductsInCategory = (
                 if (error.message === "Network Error")
                     dispatch(
                         receiveProductsInCategoryError(ApiErrorType.Timeout)
+                    );
+                else if (error.response.status === 404)
+                    dispatch(
+                        receiveProductsInCategoryError(
+                            ApiErrorType.InvalidResponse
+                        )
                     );
                 else
                     dispatch(
