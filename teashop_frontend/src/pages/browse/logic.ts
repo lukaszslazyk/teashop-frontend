@@ -1,6 +1,7 @@
-import { ChangeEvent, useCallback, useEffect } from "react";
+import { useMediaQuery, useTheme } from "@material-ui/core";
+import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { BrowsePageParams } from "../../configuration/routing";
 import { fetchProductsInCategory } from "../../domain/product/actions";
@@ -22,7 +23,11 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
+    const location = useLocation();
     const { categoryName } = useParams<BrowsePageParams>();
+    const [pageNumber, setPageNumber] = useState(1);
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     const categoryExists = useCallback(
         (): boolean =>
@@ -45,11 +50,16 @@ const useLogic = (productsPageSize: number) => {
         return () => cancelToken.cancel();
     }, [categoryName, productsPageSize, dispatch]);
 
+    useEffect(() => {
+        setPageNumber(1);
+    }, [location]);
+
     const handlePaginationChange = (
         event: ChangeEvent<unknown>,
         page: number
     ) => {
         if (categoryName) {
+            setPageNumber(page);
             window.scrollTo({
                 top: 0,
             });
@@ -81,8 +91,10 @@ const useLogic = (productsPageSize: number) => {
 
     return {
         products,
+        pageNumber,
         pagesInTotal,
         productsAreFetching,
+        isMobile,
         handlePaginationChange,
         categoryExists,
         anyErrors,

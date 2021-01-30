@@ -11,7 +11,14 @@ const PRODUCTS_PAGE_SIZE = 12;
 
 const BrowsePage = () => {
     const logic = useLogic(PRODUCTS_PAGE_SIZE);
-    const { products, pagesInTotal, productsAreFetching, anyErrors } = logic;
+    const {
+        products,
+        pageNumber,
+        pagesInTotal,
+        productsAreFetching,
+        isMobile,
+        anyErrors,
+    } = logic;
 
     if (!logic.categoryExists())
         return <NotFoundPage />;
@@ -34,11 +41,12 @@ const BrowsePage = () => {
             {products.length !== 0 && (
                 <Grid item>
                     <Pagination
+                        page={pageNumber}
                         count={pagesInTotal}
                         onChange={logic.handlePaginationChange}
                         disabled={productsAreFetching}
                         color="primary"
-                        size="large"
+                        size={isMobile ? "medium" : "large"}
                     />
                 </Grid>
             )}
