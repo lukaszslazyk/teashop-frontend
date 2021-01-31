@@ -9,10 +9,19 @@ import {
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
-import useStyles from "./styles";
+import { useLocation } from "react-router-dom";
+import routing from "../../../../configuration/routing";
+import useBrowsePageStyles from "./browsePageStyles";
+import useHomePageStyles from "./homePageStyles";
 
-const ProductCardLoadingPlaceholder = () => {
-    const classes = useStyles();
+const ProductCardPlaceholder = () => {
+    const location = useLocation();
+    const browsePageClasses = useBrowsePageStyles();
+    const homePageClasses = useHomePageStyles();
+    const classes =
+        location.pathname === routing.home
+            ? homePageClasses
+            : browsePageClasses;
 
     return (
         <Card className={classes.card}>
@@ -55,4 +64,4 @@ const ProductCardLoadingPlaceholder = () => {
     );
 };
 
-export default ProductCardLoadingPlaceholder;
+export default ProductCardPlaceholder;

@@ -1,8 +1,8 @@
 import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import React from "react";
-import ProductCardLoadingPlaceholderTileGroup from "../../domain/product/components/ProductCardLoadingPlaceholderTileGroup";
 import ProductCardTileGroup from "../../domain/product/components/ProductCardTileGroup";
+import ProductCardTileGroupPlaceholder from "../../domain/product/components/ProductCardTileGroup/placeholder";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import NotFoundPage from "../notFound";
 import useLogic from "./logic";
@@ -27,7 +27,7 @@ const BrowsePage = () => {
         <Grid container justify="center" spacing={3}>
             <Grid item xs={12}>
                 {productsAreFetching && (
-                    <ProductCardLoadingPlaceholderTileGroup
+                    <ProductCardTileGroupPlaceholder
                         numberOfCards={PRODUCTS_PAGE_SIZE}
                     />
                 )}

@@ -9,13 +9,14 @@ import {
     Typography,
 } from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import routing from "../../../../configuration/routing";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import { Product } from "../../models";
 import { pricedByWeight } from "../../services/productService";
-import useStyles from "./styles";
+import useBrowsePageStyles from "./browsePageStyles";
+import useHomePageStyles from "./homePageStyles";
 
 interface Props {
     product: Product;
@@ -23,7 +24,13 @@ interface Props {
 
 const ProductCard = (props: Props) => {
     const product = props.product;
-    const classes = useStyles();
+    const location = useLocation();
+    const browsePageClasses = useBrowsePageStyles();
+    const homePageClasses = useHomePageStyles();
+    const classes =
+        location.pathname === routing.home
+            ? homePageClasses
+            : browsePageClasses;
 
     const getPriceTag = () => {
         const priceText = getPriceTextWithCurrency(product.price);
@@ -47,7 +54,10 @@ const ProductCard = (props: Props) => {
                     title="Product"
                 />
                 <CardContent className={classes.cardContent}>
-                    <Grid container className={classes.cardContentInnerContainer}>
+                    <Grid
+                        container
+                        className={classes.cardContentInnerContainer}
+                    >
                         <Grid item xs={12}>
                             <Typography
                                 align="center"
