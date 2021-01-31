@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { BrowsePageParams } from "../../configuration/routing";
-import { fetchProductsInCategory } from "../../domain/product/actions";
+import { clearProducts, fetchProductsInCategory } from "../../domain/product/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -47,7 +47,10 @@ const useLogic = (productsPageSize: number) => {
                     cancelToken
                 )
             );
-        return () => cancelToken.cancel();
+        return () => {
+            cancelToken.cancel();
+            dispatch(clearProducts());
+        };
     }, [categoryName, productsPageSize, dispatch]);
 
     useEffect(() => {
@@ -55,7 +58,7 @@ const useLogic = (productsPageSize: number) => {
     }, [location]);
 
     const handlePaginationChange = (
-        event: ChangeEvent<unknown>,
+        _event: ChangeEvent<unknown>,
         page: number
     ) => {
         if (categoryName) {

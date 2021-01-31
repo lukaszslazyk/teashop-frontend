@@ -1,5 +1,6 @@
 import { ApiErrorType } from "../../shared/types";
 import {
+    CLEAR_PRODUCTS,
     ProductActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCT_BY_ID,
@@ -55,6 +56,11 @@ export const productReducer = (
                 product: action.product,
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
+            };
+        case CLEAR_PRODUCTS:
+            return {
+                ...state,
+                products: [],
             };
         default:
             return state;

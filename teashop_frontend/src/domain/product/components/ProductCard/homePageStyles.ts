@@ -1,18 +1,18 @@
 import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles({
+const useHomePageStyles = makeStyles({
     card: {
-        width: 250,
+        width: 227,
         height: "100%",
     },
     cardMedia: {
-        height: 200,
+        height: 175,
     },
     cardActionArea: {
         height: "100%",
     },
     cardContent: {
-        height: "calc(100% - 200px)",
+        height: "calc(100% - 175px)",
     },
     cardContentInnerContainer: {
         height: "100%",
@@ -23,4 +23,4 @@ const useStyles = makeStyles({
     },
 });
 
-export default useStyles;
+export default useHomePageStyles;
