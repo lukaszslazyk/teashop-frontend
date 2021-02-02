@@ -66,7 +66,7 @@ export const fetchProductsWithSearchPhrase = (
     dispatch(requestProductsWithSearchPhrase());
     await axios
         .get(
-            `${API_ROOT}/products/search?phrase=${phrase}&pageIndex=${pageIndex}&pageSize=${pageSize}`, {
+            `${API_ROOT}/products?searchPhrase=${phrase}&pageIndex=${pageIndex}&pageSize=${pageSize}`, {
                 cancelToken: cancelToken.tokenSource.token,
             }
         )

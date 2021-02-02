@@ -60,7 +60,7 @@ export const fetchProductsInCategory = (
     dispatch(requestProductsInCategory());
     await axios
         .get(
-            `${API_ROOT}/products/categories/${categoryName}?pageIndex=${pageIndex}&pageSize=${pageSize}`, {
+            `${API_ROOT}/products?categoryName=${categoryName}&pageIndex=${pageIndex}&pageSize=${pageSize}`, {
                 cancelToken: cancelToken.tokenSource.token,
             }
         )
