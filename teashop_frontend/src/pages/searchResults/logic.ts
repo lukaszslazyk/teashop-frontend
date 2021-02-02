@@ -1,17 +1,21 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useLocation } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { BrowsePageParams } from "../../configuration/routing";
 import {
     clearProducts,
-    fetchProductsInCategory,
+    fetchProductsWithSearchPhrase,
 } from "../../domain/product/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
 const useLogic = (productsPageSize: number) => {
-    const products = useSelector((state: RootState) => state.product.products);
+    const productsAreFetching = useSelector(
+        (state: RootState) => state.product.isFetching
+    );
+    const resultsCount = useSelector(
+        (state: RootState) => state.product.totalCount
+    );
     const errorOccurred = useSelector(
         (state: RootState) => state.product.errorOccurred
     );
@@ -19,21 +23,23 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
-    const { categoryName } = useParams<BrowsePageParams>();
+    const location = useLocation();
+    const searchPhrase = new URLSearchParams(location.search).get("phrase");
 
-    const categoryExists = useCallback(
+    const searchPhraseEmpty = useCallback(
         (): boolean =>
-            categoryName !== undefined &&
-            !(errorOccurred && errorType === ApiErrorType.InvalidResponse),
-        [categoryName, errorOccurred, errorType]
+            searchPhrase === undefined ||
+            searchPhrase === null ||
+            searchPhrase.trim().length === 0,
+        [searchPhrase]
     );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (categoryName)
+        if (!searchPhraseEmpty() && searchPhrase)
             dispatch(
-                fetchProductsInCategory(
-                    categoryName,
+                fetchProductsWithSearchPhrase(
+                    searchPhrase,
                     0,
                     productsPageSize,
                     cancelToken
@@ -43,13 +49,13 @@ const useLogic = (productsPageSize: number) => {
             cancelToken.cancel();
             dispatch(clearProducts());
         };
-    }, [categoryName, productsPageSize, dispatch]);
+    }, [productsPageSize, searchPhrase, searchPhraseEmpty, dispatch]);
 
     const handlePaginationChange = (pageNumber: number) => {
-        if (categoryName)
+        if (searchPhrase)
             dispatch(
-                fetchProductsInCategory(
-                    categoryName,
+                fetchProductsWithSearchPhrase(
+                    searchPhrase,
                     pageNumber - 1,
                     productsPageSize,
                     createRequestCancelToken()
@@ -57,23 +63,23 @@ const useLogic = (productsPageSize: number) => {
             );
     };
 
-    const categoryIsEmpty = (): boolean => products.length === 0;
-
     const getErrorMessage = (): string => {
-        if (errorOccurred) {
+        if (errorOccurred)
             if (errorType === ApiErrorType.Timeout)
-                return "Products in this category are currently unavailable.\nPlease try again later.";
+                return "Searching products is currently unavailable.\nPlease try again later.";
             else if (errorType === ApiErrorType.Unexpected)
                 return "We've encountered some issues on our servers.\nPlease try again later.";
-        } else if (categoryIsEmpty())
-            return "There are no products in this category.";
+
         return "";
     };
 
     return {
+        searchPhrase,
+        productsAreFetching,
+        errorOccurred,
+        resultsCount,
         handlePaginationChange,
-        categoryExists,
-        categoryIsEmpty,
+        searchPhraseEmpty,
         getErrorMessage,
     };
 };

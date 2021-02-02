@@ -27,7 +27,8 @@ const TopAppBar = (props: Props) => {
     const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
 
     const handleSearchButtonClicked = () => {
-        if (isMobile) setTitleDisplayed(false);
+        if (isMobile)
+            setTitleDisplayed(false);
     };
 
     const handleSearchInputBlurred = () => setTitleDisplayed(true);

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import SearchIcon from "@material-ui/icons/Search";
 import { IconButton, InputBase } from "@material-ui/core";
+import SearchIcon from "@material-ui/icons/Search";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
+import routing from "../../../../configuration/routing";
 import useStyles from "./styles";
 
 interface Props {
@@ -9,8 +11,10 @@ interface Props {
 }
 
 const ProductSearch = (props: Props) => {
-    const classes = useStyles();
     const [searchInputOpen, setSearchInputOpen] = useState(false);
+    const [searchInputValue, setSearchInputValue] = useState("");
+    const history = useHistory();
+    const classes = useStyles();
 
     const handleSearchButtonClicked = () => {
         setSearchInputOpen(true);
@@ -22,6 +26,19 @@ const ProductSearch = (props: Props) => {
         setSearchInputOpen(false);
         if (props.onSearchInputBlur)
             props.onSearchInputBlur();
+    };
+
+    const handleSearchInputChanged = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => setSearchInputValue(event.target.value);
+
+    const handleSearchInputKeyPressed = (event: React.KeyboardEvent) => {
+        if (event.key === "Enter" && searchInputValue.trim().length !== 0)
+            history.push(
+                routing.searchResults.getPathWithParams({
+                    phrase: searchInputValue,
+                })
+            );
     };
 
     if (!searchInputOpen)
@@ -43,6 +60,8 @@ const ProductSearch = (props: Props) => {
                 placeholder="Search..."
                 autoFocus
                 onBlur={handleSearchInputBlurred}
+                onChange={handleSearchInputChanged}
+                onKeyPress={handleSearchInputKeyPressed}
                 classes={{
                     root: classes.searchFieldInputRoot,
                     input: classes.searchFieldInput,
