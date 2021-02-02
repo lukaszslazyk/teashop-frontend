@@ -9,6 +9,7 @@ import HomePage from "../../pages/home";
 import NotFoundPage from "../../pages/notFound";
 import OrderDetailsPage from "../../pages/orderDetails";
 import ProductDetailsPage from "../../pages/productDetails";
+import SearchResultsPage from "../../pages/searchResults";
 
 const Router = () => (
     <BrowserRouter>
@@ -19,6 +20,11 @@ const Router = () => (
                     exact
                     path={routing.browse.pathPattern}
                     component={BrowsePage}
+                />
+                <Route
+                    exact
+                    path={routing.searchResults.pathPattern}
+                    component={SearchResultsPage}
                 />
                 <Route
                     exact

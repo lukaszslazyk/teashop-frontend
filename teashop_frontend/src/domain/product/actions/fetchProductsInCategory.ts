@@ -7,7 +7,6 @@ const API_ROOT = process.env.REACT_APP_API_ROOT;
 
 export const REQUEST_PRODUCTS_IN_CATEGORY = "REQUEST_PRODUCTS_IN_CATEGORY";
 export const RECEIVE_PRODUCTS_IN_CATEGORY = "RECEIVE_PRODUCTS_IN_CATEGORY";
-export const CLEAR_PRODUCTS = "CLEAR_PRODUCTS";
 
 interface RequestProductsInCategoryAction {
     type: typeof REQUEST_PRODUCTS_IN_CATEGORY;
@@ -21,14 +20,9 @@ interface ReceiveProductsInCategoryAction {
     errorType: ApiErrorType;
 }
 
-interface ClearProductsAction {
-    type: typeof CLEAR_PRODUCTS;
-}
-
 export type FetchProductsInCategoryActionTypes =
     | RequestProductsInCategoryAction
-    | ReceiveProductsInCategoryAction
-    | ClearProductsAction;
+    | ReceiveProductsInCategoryAction;
 
 export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes => ({
     type: REQUEST_PRODUCTS_IN_CATEGORY,
@@ -55,11 +49,6 @@ export const receiveProductsInCategoryError = (
     pagesInTotal: 0,
     errorOccurred: true,
     errorType: errorType,
-});
-
-export const clearProducts = (
-): FetchProductsInCategoryActionTypes => ({
-    type: CLEAR_PRODUCTS,
 });
 
 export const fetchProductsInCategory = (

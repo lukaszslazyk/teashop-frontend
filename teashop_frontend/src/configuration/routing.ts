@@ -2,6 +2,10 @@ export interface BrowsePageParams {
     categoryName: string | undefined;
 }
 
+export interface SearchResultsPageParams {
+    phrase: string;
+}
+
 export interface ProductDetailsPageParams {
     productId: string;
 }
@@ -23,6 +27,14 @@ const routing = {
     browseWhiteTea: "/browse/WhiteTea",
     browseHerbs: "/browse/Herbs",
     browseAccessories: "/browse/Accessories",
+    searchResults: {
+        pathPattern: "/search",
+        getPathWithParams: (params: SearchResultsPageParams) => {
+            const queryParams = new URLSearchParams();
+            queryParams.set("phrase", params.phrase);
+            return `/search?${queryParams.toString()}`;
+        },
+    },
     productDetails: {
         pathPattern: "/products/:productId",
         getPathWithParams: (params: ProductDetailsPageParams) =>
