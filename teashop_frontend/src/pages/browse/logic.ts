@@ -12,6 +12,9 @@ import { ApiErrorType } from "../../shared/types";
 
 const useLogic = (productsPageSize: number) => {
     const products = useSelector((state: RootState) => state.product.products);
+    const chosenSortOptionName = useSelector(
+        (state: RootState) => state.product.chosenSortOptionName
+    );
     const errorOccurred = useSelector(
         (state: RootState) => state.product.errorOccurred
     );
@@ -21,29 +24,38 @@ const useLogic = (productsPageSize: number) => {
     const dispatch = useDispatch();
     const { categoryName } = useParams<BrowsePageParams>();
 
-    const categoryExists = useCallback(
-        (): boolean =>
-            categoryName !== undefined &&
-            !(errorOccurred && errorType === ApiErrorType.InvalidResponse),
-        [categoryName, errorOccurred, errorType]
+    const categoryNameValid = useCallback(
+        (): boolean => categoryName !== undefined,
+        [categoryName]
     );
+
+    const categoryExists = () =>
+        categoryNameValid() &&
+        !(errorOccurred && errorType === ApiErrorType.InvalidResponse);
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (categoryName)
+        if (categoryName && categoryNameValid())
             dispatch(
                 fetchProductsInCategory(
                     categoryName,
                     0,
                     productsPageSize,
-                    cancelToken
+                    cancelToken,
+                    chosenSortOptionName
                 )
             );
         return () => {
             cancelToken.cancel();
             dispatch(clearProducts());
         };
-    }, [categoryName, productsPageSize, dispatch]);
+    }, [
+        categoryName,
+        productsPageSize,
+        chosenSortOptionName,
+        categoryNameValid,
+        dispatch,
+    ]);
 
     const handlePaginationChange = (pageNumber: number) => {
         if (categoryName)
@@ -52,7 +64,8 @@ const useLogic = (productsPageSize: number) => {
                     categoryName,
                     pageNumber - 1,
                     productsPageSize,
-                    createRequestCancelToken()
+                    createRequestCancelToken(),
+                    chosenSortOptionName
                 )
             );
     };
