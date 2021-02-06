@@ -55,15 +55,14 @@ export const fetchProductsInCategory = (
     categoryName: string,
     pageIndex: number,
     pageSize: number,
-    cancelToken: RequestCancelToken
+    cancelToken: RequestCancelToken,
+    sortOptionName?: string
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductsInCategory());
     await axios
-        .get(
-            `${API_ROOT}/products?categoryName=${categoryName}&pageIndex=${pageIndex}&pageSize=${pageSize}`, {
-                cancelToken: cancelToken.tokenSource.token,
-            }
-        )
+        .get(prepareUrl(categoryName, pageIndex, pageSize, sortOptionName), {
+            cancelToken: cancelToken.tokenSource.token,
+        })
         .then(response =>
             dispatch(
                 receiveProductsInCategory(
@@ -90,3 +89,15 @@ export const fetchProductsInCategory = (
                     );
         });
 };
+
+const prepareUrl = (
+    categoryName: string,
+    pageIndex: number,
+    pageSize: number,
+    sortOptionName?: string
+) =>
+    `${API_ROOT}/products` +
+    `?categoryName=${categoryName}` +
+    `&pageIndex=${pageIndex}` +
+    `&pageSize=${pageSize}` +
+    `${sortOptionName ? `&orderBy=${sortOptionName}` : ""}`;

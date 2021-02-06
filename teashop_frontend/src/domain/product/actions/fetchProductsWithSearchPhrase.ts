@@ -61,15 +61,14 @@ export const fetchProductsWithSearchPhrase = (
     phrase: string,
     pageIndex: number,
     pageSize: number,
-    cancelToken: RequestCancelToken
+    cancelToken: RequestCancelToken,
+    sortOptionName?: string
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductsWithSearchPhrase());
     await axios
-        .get(
-            `${API_ROOT}/products?searchPhrase=${phrase}&pageIndex=${pageIndex}&pageSize=${pageSize}`, {
-                cancelToken: cancelToken.tokenSource.token,
-            }
-        )
+        .get(prepareUrl(phrase, pageIndex, pageSize, sortOptionName), {
+            cancelToken: cancelToken.tokenSource.token,
+        })
         .then(response =>
             dispatch(
                 receiveProductsWithSearchPhrase(
@@ -95,3 +94,15 @@ export const fetchProductsWithSearchPhrase = (
                     );
         });
 };
+
+const prepareUrl = (
+    phrase: string,
+    pageIndex: number,
+    pageSize: number,
+    sortOptionName?: string
+) =>
+    `${API_ROOT}/products` +
+    `?searchPhrase=${phrase}` +
+    `&pageIndex=${pageIndex}` +
+    `&pageSize=${pageSize}` +
+    `${sortOptionName ? `&orderBy=${sortOptionName}` : ""}`;

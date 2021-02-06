@@ -13,6 +13,9 @@ const useLogic = (productsPageSize: number) => {
     const productsAreFetching = useSelector(
         (state: RootState) => state.product.isFetching
     );
+    const chosenSortOptionName = useSelector(
+        (state: RootState) => state.product.chosenSortOptionName
+    );
     const resultsCount = useSelector(
         (state: RootState) => state.product.totalCount
     );
@@ -26,7 +29,7 @@ const useLogic = (productsPageSize: number) => {
     const location = useLocation();
     const searchPhrase = new URLSearchParams(location.search).get("phrase");
 
-    const searchPhraseEmpty = useCallback(
+    const searchPhraseValid = useCallback(
         (): boolean =>
             searchPhrase === undefined ||
             searchPhrase === null ||
@@ -36,20 +39,27 @@ const useLogic = (productsPageSize: number) => {
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (!searchPhraseEmpty() && searchPhrase)
+        if (searchPhrase && !searchPhraseValid())
             dispatch(
                 fetchProductsWithSearchPhrase(
                     searchPhrase,
                     0,
                     productsPageSize,
-                    cancelToken
+                    cancelToken,
+                    chosenSortOptionName
                 )
             );
         return () => {
             cancelToken.cancel();
             dispatch(clearProducts());
         };
-    }, [productsPageSize, searchPhrase, searchPhraseEmpty, dispatch]);
+    }, [
+        productsPageSize,
+        searchPhrase,
+        chosenSortOptionName,
+        searchPhraseValid,
+        dispatch,
+    ]);
 
     const handlePaginationChange = (pageNumber: number) => {
         if (searchPhrase)
@@ -58,7 +68,8 @@ const useLogic = (productsPageSize: number) => {
                     searchPhrase,
                     pageNumber - 1,
                     productsPageSize,
-                    createRequestCancelToken()
+                    createRequestCancelToken(),
+                    chosenSortOptionName
                 )
             );
     };
@@ -79,7 +90,7 @@ const useLogic = (productsPageSize: number) => {
         errorOccurred,
         resultsCount,
         handlePaginationChange,
-        searchPhraseEmpty,
+        searchPhraseValid,
         getErrorMessage,
     };
 };

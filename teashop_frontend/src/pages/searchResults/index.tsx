@@ -1,3 +1,4 @@
+import { Box } from "@material-ui/core";
 import React from "react";
 import ProductsBrowser from "../../domain/product/components/ProductsBrowser";
 import NotFoundPage from "../notFound";
@@ -15,7 +16,7 @@ const SearchResultsPage = () => {
         resultsCount,
     } = logic;
 
-    if (logic.searchPhraseEmpty())
+    if (logic.searchPhraseValid())
         return <NotFoundPage />;
 
     return (
@@ -34,11 +35,13 @@ const SearchResultsPage = () => {
                     resultsAreLoading={false}
                 />
             )}
-            <ProductsBrowser
-                productsPageSize={PRODUCTS_PAGE_SIZE}
-                errorMessage={logic.getErrorMessage()}
-                onPaginationChange={logic.handlePaginationChange}
-            />
+            <Box mt={2}>
+                <ProductsBrowser
+                    productsPageSize={PRODUCTS_PAGE_SIZE}
+                    errorMessage={logic.getErrorMessage()}
+                    onPaginationChange={logic.handlePaginationChange}
+                />
+            </Box>
         </div>
     );
 };

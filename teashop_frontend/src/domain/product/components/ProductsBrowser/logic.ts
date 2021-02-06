@@ -9,6 +9,9 @@ const useLogic = (
     customErrorOcurred?: boolean
 ) => {
     const products = useSelector((state: RootState) => state.product.products);
+    const chosenSortOptionName = useSelector(
+        (state: RootState) => state.product.chosenSortOptionName
+    );
     const pagesInTotal = useSelector(
         (state: RootState) => state.product.pagesInTotal
     );
@@ -25,7 +28,7 @@ const useLogic = (
 
     useEffect(() => {
         setPageNumber(1);
-    }, [location]);
+    }, [location, chosenSortOptionName]);
 
     const handlePaginationChange = (
         _event: ChangeEvent<unknown>,

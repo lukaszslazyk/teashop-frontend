@@ -1,5 +1,6 @@
 import { ApiErrorType } from "../../shared/types";
 import {
+    CHOOSE_SORT_OPTION,
     CLEAR_PRODUCTS,
     ProductActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
@@ -9,7 +10,7 @@ import {
     REQUEST_PRODUCTS_WITH_SEARCH_PHRASE,
     REQUEST_PRODUCT_BY_ID,
 } from "./actions";
-import { Product } from "./models";
+import { Product, productsSortOptions } from "./models";
 
 export interface ProductState {
     products: Product[];
@@ -19,6 +20,7 @@ export interface ProductState {
     isFetching: boolean;
     errorOccurred: boolean;
     errorType: ApiErrorType;
+    chosenSortOptionName: string;
 }
 
 const initialState: ProductState = {
@@ -29,6 +31,7 @@ const initialState: ProductState = {
     isFetching: false,
     errorOccurred: false,
     errorType: ApiErrorType.None,
+    chosenSortOptionName: productsSortOptions[0].name,
 };
 
 export const productReducer = (
@@ -76,6 +79,11 @@ export const productReducer = (
             return {
                 ...state,
                 products: [],
+            };
+        case CHOOSE_SORT_OPTION:
+            return {
+                ...state,
+                chosenSortOptionName: action.sortOptionName,
             };
         default:
             return state;

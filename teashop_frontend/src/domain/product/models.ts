@@ -15,3 +15,27 @@ export interface BrewingInfo {
     timeInfo: string;
     numberOfBrewingsInfo: string;
 }
+
+export interface SortOption {
+    name: string;
+    displayName: string;
+}
+
+export const productsSortOptions: SortOption[] = [
+    {
+        name: "priceAsc",
+        displayName: "Price from lowest",
+    },
+    {
+        name: "priceDesc",
+        displayName: "Price from highest",
+    },
+    {
+        name: "nameAsc",
+        displayName: "Name a-z",
+    },
+    {
+        name: "nameDesc",
+        displayName: "Name z-a",
+    },
+];
