@@ -5,44 +5,28 @@ import { Product } from "../../../../domain/product/models";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import AddToCartPanel from "../AddToCartPanel";
+import ProductDetailsContentHeaderProductNameView from "../ProductDetailsContentHeaderProductNameView";
 import useStyles from "./styles";
 
 interface Props {
     product: Product;
 }
 
-const getTypographyVariantForNameOf = (product: Product) => {
-    if (product.name.length <= 25)
-        return "h3";
-    return "h4";
-};
-
 const ProductDetailsContentHeader = (props: Props) => {
-    const classes = useStyles();
-    const [quantity, setQuantity] = useState(props.product.quantityPerPrice);
     const { product } = props;
+    const [quantity, setQuantity] = useState(props.product.quantityPerPrice);
+    const classes = useStyles();
 
     const handleQuantityChanged = (value: number) => setQuantity(value);
 
-    const ProductName = (top: boolean) => (
-        <Grid
-            item
-            xs={12}
-            className={top ? classes.topProductNameTextContainer : ""}
-        >
-            <Typography
-                variant={getTypographyVariantForNameOf(props.product)}
-                color="primary"
-                className={classes.productNameText}
-            >
-                {props.product.name}
-            </Typography>
-        </Grid>
-    );
-
     return (
-        <Grid container spacing={4} className={classes.root}>
-            <Hidden mdUp>{ProductName(true)}</Hidden>
+        <Grid container spacing={3} className={classes.root}>
+            <Hidden mdUp>
+                <ProductDetailsContentHeaderProductNameView
+                    productName={product.name}
+                    top
+                />
+            </Hidden>
             <Grid item md={6} sm={7} xs={12}>
                 <Paper className={classes.imageWrapper}>
                     <img
@@ -53,7 +37,11 @@ const ProductDetailsContentHeader = (props: Props) => {
                 </Paper>
             </Grid>
             <Grid item md={6} sm={5} xs={12} container spacing={3}>
-                <Hidden smDown>{ProductName(false)}</Hidden>
+                <Hidden smDown>
+                    <ProductDetailsContentHeaderProductNameView
+                        productName={product.name}
+                    />
+                </Hidden>
                 <Grid item xs={12} className={classes.flexiblePanel}>
                     <Grid container spacing={3}>
                         <Grid item xs={12}>

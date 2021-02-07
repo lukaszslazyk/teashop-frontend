@@ -19,14 +19,6 @@ const useStyles = makeStyles((theme: Theme) =>
             width: "auto",
             display: "flex",
         },
-        topProductNameTextContainer: {
-            marginBottom: -theme.spacing(1),
-        },
-        productNameText: {
-            [theme.breakpoints.down("sm")]: {
-                textAlign: "center",
-            },
-        },
         priceText: {
             [theme.breakpoints.down("sm")]: {
                 textAlign: "center",
