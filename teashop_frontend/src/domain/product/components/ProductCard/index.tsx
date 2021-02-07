@@ -7,52 +7,75 @@ import {
     Divider,
     Grid,
     Typography,
+    useMediaQuery,
+    useTheme,
 } from "@material-ui/core";
+import { Skeleton } from "@material-ui/lab";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import routing from "../../../../configuration/routing";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
 import { Product } from "../../models";
 import { pricedByWeight } from "../../services/productService";
-import useBrowsePageStyles from "./browsePageStyles";
-import useHomePageStyles from "./homePageStyles";
+import useStyles from "./styles";
 
 interface Props {
-    product: Product;
+    product?: Product;
 }
 
 const ProductCard = (props: Props) => {
-    const product = props.product;
-    const location = useLocation();
-    const browsePageClasses = useBrowsePageStyles();
-    const homePageClasses = useHomePageStyles();
-    const classes =
-        location.pathname === routing.home
-            ? homePageClasses
-            : browsePageClasses;
+    const { product } = props;
+    const history = useHistory();
+    const theme = useTheme();
+    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
+    const classes = useStyles();
 
     const getPriceTag = () => {
-        const priceText = getPriceTextWithCurrency(product.price);
-        if (pricedByWeight(product))
-            return `${priceText} / ${product.quantityPerPrice}g`;
-        return priceText;
+        if (product) {
+            const priceText = getPriceTextWithCurrency(product.price);
+            if (pricedByWeight(product))
+                return `${priceText} / ${product.quantityPerPrice}g`;
+            return priceText;
+        }
+        return "";
+    };
+
+    const handleClicked = () => {
+        if (product)
+            history.push(
+                routing.productDetails.getPathWithParams({
+                    productId: product.id,
+                })
+            );
     };
 
     return (
         <Card className={classes.card}>
             <CardActionArea
-                component={Link}
-                to={routing.productDetails.getPathWithParams({
-                    productId: product.id,
-                })}
+                onClick={handleClicked}
                 className={classes.cardActionArea}
             >
-                <CardMedia
-                    className={classes.cardMedia}
-                    image={getImageFullUrl(product.imagePath)}
-                    title="Product"
-                />
+                <CardMedia className={classes.cardMedia}>
+                    <div className={classes.equalAspectRatioContainer}>
+                        <div className={classes.equalAspectRatioInnerContainer}>
+                            {product ? (
+                                <img
+                                    src={getImageFullUrl(product.imagePath)}
+                                    alt="Product"
+                                    className={classes.image}
+                                />
+                            ) : (
+                                <Skeleton
+                                    animation="wave"
+                                    variant="rect"
+                                    className={classes.image}
+                                    height={"100%"}
+                                />
+                            )}
+                        </div>
+                    </div>
+                </CardMedia>
                 <CardContent className={classes.cardContent}>
                     <Grid
                         container
@@ -62,10 +85,10 @@ const ProductCard = (props: Props) => {
                             <Typography
                                 align="center"
                                 gutterBottom
-                                variant="h6"
+                                variant={isXsScreen ? "body1" : "h6"}
                                 component="h2"
                             >
-                                {product.name}
+                                {product ? product.name : <Skeleton />}
                             </Typography>
 
                             <Box mb={1}>
@@ -76,7 +99,7 @@ const ProductCard = (props: Props) => {
                                 variant="body2"
                                 component="p"
                             >
-                                {getPriceTag()}
+                                {product ? getPriceTag() : <Skeleton />}
                             </Typography>
                         </Grid>
                     </Grid>

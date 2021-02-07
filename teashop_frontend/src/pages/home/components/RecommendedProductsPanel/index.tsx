@@ -1,13 +1,14 @@
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, Typography, useMediaQuery, useTheme } from "@material-ui/core";
 import EcoIcon from "@material-ui/icons/Eco";
 import React from "react";
-import ProductCardTileGroup from "../../../../domain/product/components/ProductCardTileGroup";
-import ProductCardTileGroupPlaceholder from "../../../../domain/product/components/ProductCardTileGroup/placeholder";
+import RecommendedProductsCardGroup from "../RecommendedProductsCardGroup";
 import useLogic from "./logic";
 
 const RecommendedProductsPanel = () => {
     const logic = useLogic();
     const { products, productsAreFetching, anyErrors } = logic;
+    const theme = useTheme();
+    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
     return (
         <Grid container spacing={2}>
@@ -19,19 +20,26 @@ const RecommendedProductsPanel = () => {
                 justify="center"
                 alignItems="center"
             >
-                <EcoIcon color="primary" fontSize="large" />
+                <EcoIcon color="primary" fontSize="default" />
                 <Grid item>
-                    <Typography variant="h5" color="primary" align="center">
+                    <Typography
+                        variant={isXsScreen ? "h6" : "h5"}
+                        color="primary"
+                        align="center"
+                    >
                         Discover new flavours
                     </Typography>
                 </Grid>
-                <EcoIcon color="primary" fontSize="large" />
+                <EcoIcon color="primary" fontSize="default" />
             </Grid>
             <Grid item xs={12}>
                 {productsAreFetching || anyErrors() ? (
-                    <ProductCardTileGroupPlaceholder numberOfCards={5} />
+                    <RecommendedProductsCardGroup
+                        isPlaceholder
+                        numberOfPlaceholderCards={5}
+                    />
                 ) : (
-                    <ProductCardTileGroup products={products} />
+                    <RecommendedProductsCardGroup products={products} />
                 )}
             </Grid>
         </Grid>
