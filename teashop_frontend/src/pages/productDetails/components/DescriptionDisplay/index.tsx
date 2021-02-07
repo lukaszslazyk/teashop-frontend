@@ -1,4 +1,4 @@
-import { Box, Divider, Paper, Typography } from "@material-ui/core";
+import { Box, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import useStyles from "./styles";
 
@@ -11,11 +11,10 @@ const DescriptionDisplay = (props: Props) => {
 
     return (
         <Paper className={classes.root}>
-            <Typography variant="h5" color="primary">
-                Description
-            </Typography>
-            <Box mt={1} mb={2}>
-                <Divider />
+            <Box mb={1}>
+                <Typography variant="h5" color="primary">
+                    Description
+                </Typography>
             </Box>
             <Typography variant="body1" className={classes.descriptionText}>
                 {props.description}

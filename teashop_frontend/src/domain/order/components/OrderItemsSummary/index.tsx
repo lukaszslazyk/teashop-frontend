@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { Cart } from "../../../cart/models";
 import OrderItemsList from "../OrderItemList";
@@ -23,9 +23,6 @@ const OrderItemsSummary = (props: Props) => {
                         <Typography variant="h6" color="primary">
                             Items
                         </Typography>
-                        <Box mb={1}>
-                            <Divider />
-                        </Box>
                     </Grid>
                     <Grid item xs={12}>
                         <OrderItemsList items={props.cart.items} />

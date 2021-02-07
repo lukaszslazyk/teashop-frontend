@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Paper, Typography } from "@material-ui/core";
+import { Box, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import OrderAddressView from "../OrderAddressView";
 import useStyles from "./styles";
@@ -51,11 +51,10 @@ const OrderCustomerProvidedInfoView = (props: Props) => {
             <Grid item xs={12}>
                 <Paper className={classes.paperWrapper}>
                     <Grid item xs={12}>
-                        <Typography variant="h6" color="primary">
-                            Information
-                        </Typography>
-                        <Box mb={2}>
-                            <Divider />
+                        <Box mb={1}>
+                            <Typography variant="h6" color="primary">
+                                Information
+                            </Typography>
                         </Box>
                     </Grid>
                     <Grid item xs={12} container spacing={2}>

@@ -24,13 +24,11 @@ const OrderItemsList = (props: Props) => {
         <div>
             {props.items.map((item, index) => (
                 <Grid key={item.product.id} container>
-                    {index !== 0 && (
-                        <Grid item xs={12}>
-                            <Box my={1}>
-                                <Divider />
-                            </Box>
-                        </Grid>
-                    )}
+                    <Grid item xs={12}>
+                        <Box my={1}>
+                            <Divider />
+                        </Box>
+                    </Grid>
                     <Grid
                         item
                         xs={12}

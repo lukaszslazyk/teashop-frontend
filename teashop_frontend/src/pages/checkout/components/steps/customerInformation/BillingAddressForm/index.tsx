@@ -1,6 +1,4 @@
 import {
-    Box,
-    Divider,
     FormControlLabel,
     Grid,
     Paper,
@@ -26,9 +24,6 @@ const BillingAddressForm = () => {
                     <Typography variant="h6" color="primary">
                         Billing address
                     </Typography>
-                    <Box my={1}>
-                        <Divider />
-                    </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel

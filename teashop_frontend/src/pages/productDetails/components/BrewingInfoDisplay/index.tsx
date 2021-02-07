@@ -1,4 +1,4 @@
-import { Box, Divider, Paper, Typography } from "@material-ui/core";
+import { Box, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import { BrewingInfo } from "../../../../domain/product/models";
 import useStyles from "./styles";
@@ -15,11 +15,10 @@ const BrewingInfoDisplay = (props: Props) => {
 
     return (
         <Paper className={classes.root}>
-            <Typography variant="h5" color="primary">
-                Brewing tips
-            </Typography>
-            <Box mt={1} mb={2}>
-                <Divider />
+            <Box mb={1}>
+                <Typography variant="h5" color="primary">
+                    Brewing tips
+                </Typography>
             </Box>
             {!nullOrEmpty(props.brewingInfo.weightInfo) && (
                 <Typography variant="body1">

@@ -1,4 +1,4 @@
-import { Box, Divider, Grid, Paper, Typography } from "@material-ui/core";
+import { Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
 import AddressForm from "../AddressForm";
 import useStyles from "./styles";
@@ -13,9 +13,6 @@ const ShippingAddressForm = () => {
                     <Typography variant="h6" color="primary">
                         Shipping address
                     </Typography>
-                    <Box my={1}>
-                        <Divider />
-                    </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <AddressForm />
