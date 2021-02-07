@@ -16,14 +16,6 @@ const CartButton = () => {
     );
     const classes = useStyles();
 
-    const LoadingIndicator = () => (
-        <CircularProgress
-            size={12}
-            thickness={7}
-            className={classes.progressIndicator}
-        />
-    );
-
     return (
         <IconButton
             component={Link}
@@ -31,7 +23,16 @@ const CartButton = () => {
             className={classes.iconButton}
         >
             {!cartFetchedYet && (
-                <Badge badgeContent={LoadingIndicator()} color="primary">
+                <Badge
+                    badgeContent={
+                        <CircularProgress
+                            size={12}
+                            thickness={7}
+                            className={classes.progressIndicator}
+                        />
+                    }
+                    color="primary"
+                >
                     <ShoppingCartIcon />
                 </Badge>
             )}

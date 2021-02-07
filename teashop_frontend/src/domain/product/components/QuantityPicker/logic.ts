@@ -1,5 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
+const empty = (input: string): boolean => input.length === 0;
+
+const invalidNumber = (input: string): boolean => isNaN(Number(input));
+
 const useLogic = (
     initialValue: number,
     lowThreshold: number,
@@ -67,11 +71,6 @@ const useLogic = (
             return `Minimum value is ${lowThreshold}`;
         return "";
     };
-
-    const empty = (input: string): boolean => input.length === 0;
-
-    const invalidNumber = (input: string): boolean =>
-        isNaN(Number(input));
 
     const lowerThanLowThreshold = (input: string) =>
         Number(input) < lowThreshold;

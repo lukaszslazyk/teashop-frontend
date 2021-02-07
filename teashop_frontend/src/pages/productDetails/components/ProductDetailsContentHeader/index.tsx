@@ -11,18 +11,18 @@ interface Props {
     product: Product;
 }
 
+const getTypographyVariantForNameOf = (product: Product) => {
+    if (product.name.length <= 25)
+        return "h3";
+    return "h4";
+};
+
 const ProductDetailsContentHeader = (props: Props) => {
     const classes = useStyles();
     const [quantity, setQuantity] = useState(props.product.quantityPerPrice);
     const { product } = props;
 
     const handleQuantityChanged = (value: number) => setQuantity(value);
-
-    const getProductNameTypographyVariant = () => {
-        if (product.name.length <= 25)
-            return "h3";
-        return "h4";
-    };
 
     const ProductName = (top: boolean) => (
         <Grid
@@ -31,7 +31,7 @@ const ProductDetailsContentHeader = (props: Props) => {
             className={top ? classes.topProductNameTextContainer : ""}
         >
             <Typography
-                variant={getProductNameTypographyVariant()}
+                variant={getTypographyVariantForNameOf(props.product)}
                 color="primary"
                 className={classes.productNameText}
             >

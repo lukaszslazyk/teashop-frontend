@@ -29,10 +29,6 @@ const CardPaymentMethodRadio = (props: Props) => {
     const classes = useStyles();
     const { tooltipOpen, acceptedCardsMessage } = logic;
 
-    const AcceptedCardsTooltipText = () => (
-        <Typography variant="body1">{acceptedCardsMessage}</Typography>
-    );
-
     return (
         <Accordion
             expanded={props.currentValue === props.paymentMethod.name}
@@ -56,7 +52,11 @@ const CardPaymentMethodRadio = (props: Props) => {
                                 onClickAway={logic.handleTooltipClose}
                             >
                                 <Tooltip
-                                    title={AcceptedCardsTooltipText()}
+                                    title={
+                                        <Typography variant="body1">
+                                            {acceptedCardsMessage}
+                                        </Typography>
+                                    }
                                     placement="top-end"
                                     open={tooltipOpen}
                                     onClick={logic.handleTooltipClose}

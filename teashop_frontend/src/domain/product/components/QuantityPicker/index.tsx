@@ -29,10 +29,6 @@ const QuantityPicker = (props: Props) => {
     const classes = useStyles();
     const { quantityText, displayedErrorText, errorInfoOpen } = logic;
 
-    const ErrorText = () => (
-        <Typography variant="body1">{displayedErrorText}</Typography>
-    );
-
     return (
         <form className={classes.root}>
             <Fab
@@ -43,7 +39,15 @@ const QuantityPicker = (props: Props) => {
             >
                 <RemoveIcon />
             </Fab>
-            <Tooltip open={errorInfoOpen} title={ErrorText()} arrow>
+            <Tooltip
+                open={errorInfoOpen}
+                title={
+                    <Typography variant="body1">
+                        {displayedErrorText}
+                    </Typography>
+                }
+                arrow
+            >
                 <OutlinedInput
                     id="quantity"
                     value={quantityText}

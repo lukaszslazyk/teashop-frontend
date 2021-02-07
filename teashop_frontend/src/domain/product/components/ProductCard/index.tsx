@@ -24,22 +24,19 @@ interface Props {
     product?: Product;
 }
 
+const getPriceTagFor = (product: Product) => {
+    const priceText = getPriceTextWithCurrency(product.price);
+    if (pricedByWeight(product))
+        return `${priceText} / ${product.quantityPerPrice}g`;
+    return priceText;
+};
+
 const ProductCard = (props: Props) => {
     const { product } = props;
     const history = useHistory();
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
     const classes = useStyles();
-
-    const getPriceTag = () => {
-        if (product) {
-            const priceText = getPriceTextWithCurrency(product.price);
-            if (pricedByWeight(product))
-                return `${priceText} / ${product.quantityPerPrice}g`;
-            return priceText;
-        }
-        return "";
-    };
 
     const handleClicked = () => {
         if (product)
@@ -99,7 +96,7 @@ const ProductCard = (props: Props) => {
                                 variant="body2"
                                 component="p"
                             >
-                                {product ? getPriceTag() : <Skeleton />}
+                                {product ? getPriceTagFor(product) : <Skeleton />}
                             </Typography>
                         </Grid>
                     </Grid>

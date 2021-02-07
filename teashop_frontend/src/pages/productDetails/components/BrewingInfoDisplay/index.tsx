@@ -7,11 +7,11 @@ interface Props {
     brewingInfo: BrewingInfo;
 }
 
+const nullOrEmpty = (input: string | undefined): boolean =>
+    !input || input.trim().length === 0;
+
 const BrewingInfoDisplay = (props: Props) => {
     const classes = useStyles();
-
-    const nullOrEmpty = (input: string | undefined): boolean =>
-        !input || input.trim().length === 0;
 
     return (
         <Paper className={classes.root}>

@@ -18,17 +18,15 @@ const PaymentStep = (props: Props) => {
     );
     const { paymentCardFormMethods } = logic;
 
-    const paymentCardFormComponent = () => (
-        <FormProvider {...paymentCardFormMethods}>
-            <PaymentCardForm />
-        </FormProvider>
-    );
-
     return (
         <Grid container spacing={4}>
             <Grid item xs={12}>
                 <PaymentMethodForm
-                    paymentCardFormComponent={paymentCardFormComponent()}
+                    paymentCardFormComponent={
+                        <FormProvider {...paymentCardFormMethods}>
+                            <PaymentCardForm />
+                        </FormProvider>
+                    }
                 />
             </Grid>
             <Grid item xs={12}>
