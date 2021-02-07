@@ -5,6 +5,8 @@ import { useHistory } from "react-router";
 import routing from "../../../../configuration/routing";
 import useStyles from "./styles";
 
+const maxLength = 32;
+
 interface Props {
     onSearchButtonClick?: () => void;
     onSearchInputBlur?: () => void;
@@ -65,6 +67,9 @@ const ProductSearch = (props: Props) => {
                 classes={{
                     root: classes.searchFieldInputRoot,
                     input: classes.searchFieldInput,
+                }}
+                inputProps={{
+                    maxLength: maxLength,
                 }}
             />
         </div>
