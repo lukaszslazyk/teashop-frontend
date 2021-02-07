@@ -13,9 +13,11 @@ import useLogic from "./logic";
 import useStyles from "./styles";
 
 const BillingAddressForm = () => {
-    const logic = useLogic();
+    const {
+        billingAddressSameAsShippingAddress,
+        handleCheckboxChange,
+    } = useLogic();
     const classes = useStyles();
-    const { billingAddressSameAsShippingAddress } = logic;
 
     return (
         <Paper className={classes.surface}>
@@ -33,7 +35,7 @@ const BillingAddressForm = () => {
                         control={
                             <Switch
                                 checked={billingAddressSameAsShippingAddress}
-                                onChange={logic.handleCheckboxChange}
+                                onChange={handleCheckboxChange}
                                 name="billingAddressSameAsShippingAddress"
                                 color="primary"
                             />

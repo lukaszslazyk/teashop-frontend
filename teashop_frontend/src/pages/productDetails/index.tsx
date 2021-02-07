@@ -7,14 +7,18 @@ import ProductDetailsContentHeader from "./components/ProductDetailsContentHeade
 import useLogic from "./logic";
 
 const ProductDetailsPage = () => {
-    const logic = useLogic();
-    const { product, productIsFetching, errorOccurred } = logic;
+    const {
+        product,
+        productIsFetching,
+        errorOccurred,
+        getErrorMessage,
+    } = useLogic();
 
     return (
         <Container maxWidth="md" disableGutters>
             {productIsFetching && <PageLoadingProgress />}
             {!productIsFetching && errorOccurred && (
-                <ErrorInfo errorMessage={logic.getErrorMessage()} />
+                <ErrorInfo errorMessage={getErrorMessage()} />
             )}
             {!productIsFetching && !errorOccurred && product && (
                 <Grid container spacing={3}>

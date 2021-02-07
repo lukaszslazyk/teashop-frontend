@@ -25,9 +25,13 @@ interface Props {
 }
 
 const CardPaymentMethodRadio = (props: Props) => {
-    const logic = useLogic();
+    const {
+        tooltipOpen,
+        acceptedCardsMessage,
+        toggleTooltipOpen,
+        handleTooltipClose,
+    } = useLogic();
     const classes = useStyles();
-    const { tooltipOpen, acceptedCardsMessage } = logic;
 
     return (
         <Accordion
@@ -48,9 +52,7 @@ const CardPaymentMethodRadio = (props: Props) => {
                     </Grid>
                     <Grid item>
                         <Grid container justify="flex-end" alignItems="center">
-                            <ClickAwayListener
-                                onClickAway={logic.handleTooltipClose}
-                            >
+                            <ClickAwayListener onClickAway={handleTooltipClose}>
                                 <Tooltip
                                     title={
                                         <Typography variant="body1">
@@ -59,13 +61,13 @@ const CardPaymentMethodRadio = (props: Props) => {
                                     }
                                     placement="top-end"
                                     open={tooltipOpen}
-                                    onClick={logic.handleTooltipClose}
+                                    onClick={handleTooltipClose}
                                     disableFocusListener
                                     disableHoverListener
                                     disableTouchListener
                                 >
                                     <IconButton
-                                        onClick={logic.toggleTooltipOpen}
+                                        onClick={toggleTooltipOpen}
                                         edge="end"
                                     >
                                         <HelpIcon

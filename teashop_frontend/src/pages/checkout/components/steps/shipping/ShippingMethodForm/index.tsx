@@ -4,8 +4,11 @@ import ShippingMethodFormRadio from "../ShippingMethodFormRadio";
 import useLogic from "./logic";
 
 const ShippingMethodForm = () => {
-    const logic = useLogic();
-    const { shippingMethods, chosenShippingMethodName } = logic;
+    const {
+        shippingMethods,
+        chosenShippingMethodName,
+        handleChange,
+    } = useLogic();
 
     if (chosenShippingMethodName === "")
         return null;
@@ -23,7 +26,7 @@ const ShippingMethodForm = () => {
             <Grid item xs={12}>
                 <RadioGroup
                     value={chosenShippingMethodName}
-                    onChange={logic.handleChange}
+                    onChange={handleChange}
                 >
                     {shippingMethods.map(method => (
                         <ShippingMethodFormRadio

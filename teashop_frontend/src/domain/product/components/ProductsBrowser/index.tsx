@@ -13,14 +13,15 @@ interface Props {
 }
 
 const ProductsBrowser = (props: Props) => {
-    const logic = useLogic(props.onPaginationChange, props.customErrorOcurred);
     const {
         products,
         pagesInTotal,
         productsAreFetching,
         pageNumber,
         isMobile,
-    } = logic;
+        anyErrors,
+        handlePaginationChange,
+    } = useLogic(props.onPaginationChange, props.customErrorOcurred);
 
     return (
         <Grid container justify="center" spacing={3}>
@@ -31,10 +32,10 @@ const ProductsBrowser = (props: Props) => {
                         numberOfPlaceholderCards={props.productsPageSize}
                     />
                 )}
-                {!productsAreFetching && logic.anyErrors() && (
+                {!productsAreFetching && anyErrors() && (
                     <ErrorInfo errorMessage={props.errorMessage} />
                 )}
-                {!productsAreFetching && !logic.anyErrors() && (
+                {!productsAreFetching && !anyErrors() && (
                     <ProductCardGroup products={products} />
                 )}
             </Grid>
@@ -43,7 +44,7 @@ const ProductsBrowser = (props: Props) => {
                     <Pagination
                         page={pageNumber}
                         count={pagesInTotal}
-                        onChange={logic.handlePaginationChange}
+                        onChange={handlePaginationChange}
                         disabled={productsAreFetching}
                         color="primary"
                         size={isMobile ? "medium" : "large"}

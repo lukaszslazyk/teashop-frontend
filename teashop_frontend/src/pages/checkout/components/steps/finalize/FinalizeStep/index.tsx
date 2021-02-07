@@ -8,15 +8,14 @@ import useLogic from "./logic";
 import useStyles from "./styles";
 
 const FinalizeStep = () => {
-    const logic = useLogic();
-    const classes = useStyles();
     const {
         requestWasSent,
         orderFormIsSending,
         errorOccurred,
         placedOrderNo,
         orderDetailsRoutePath,
-    } = logic;
+    } = useLogic();
+    const classes = useStyles();
 
     if (!requestWasSent)
         return <div></div>;
@@ -55,8 +54,8 @@ const FinalizeStep = () => {
                     )}
                     {!orderFormIsSending && errorOccurred && (
                         <Typography variant="h6" align="center">
-                            We've encountered some issues while processing
-                            your order.
+                            We've encountered some issues while processing your
+                            order.
                             <br />
                             Please reload page and try again.
                         </Typography>

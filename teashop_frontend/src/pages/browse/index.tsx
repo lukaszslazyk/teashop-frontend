@@ -8,11 +8,16 @@ import useLogic from "./logic";
 const PRODUCTS_PAGE_SIZE = 12;
 
 const BrowsePage = () => {
-    const logic = useLogic(PRODUCTS_PAGE_SIZE);
+    const {
+        handlePaginationChange,
+        categoryExists,
+        categoryIsEmpty,
+        getErrorMessage,
+    } = useLogic(PRODUCTS_PAGE_SIZE);
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-    if (!logic.categoryExists())
+    if (!categoryExists())
         return <NotFoundPage />;
 
     return (
@@ -28,9 +33,9 @@ const BrowsePage = () => {
             <Grid item xs={12}>
                 <ProductsBrowser
                     productsPageSize={PRODUCTS_PAGE_SIZE}
-                    customErrorOcurred={logic.categoryIsEmpty()}
-                    errorMessage={logic.getErrorMessage()}
-                    onPaginationChange={logic.handlePaginationChange}
+                    customErrorOcurred={categoryIsEmpty()}
+                    errorMessage={getErrorMessage()}
+                    onPaginationChange={handlePaginationChange}
                 />
             </Grid>
         </Grid>

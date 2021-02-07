@@ -12,9 +12,13 @@ interface Props {
 }
 
 const AddToCartPanel = (props: Props) => {
-    const logic = useLogic(props.product, props.onQuantityChange);
+    const {
+        cartUpdateIsSending,
+        handleQuantityChanged,
+        handleAddToChartButtonClicked,
+        addToCartButtonDisabled,
+    } = useLogic(props.product, props.onQuantityChange);
     const classes = useStyles();
-    const { cartUpdateIsSending } = logic;
 
     return (
         <Grid container spacing={3}>
@@ -26,7 +30,7 @@ const AddToCartPanel = (props: Props) => {
             >
                 <ProductQuantityPicker
                     product={props.product}
-                    onQuantityChange={logic.handleQuantityChanged}
+                    onQuantityChange={handleQuantityChanged}
                 />
             </Grid>
             <Grid
@@ -39,8 +43,8 @@ const AddToCartPanel = (props: Props) => {
                     variant="contained"
                     color="primary"
                     className={classes.addToCartButton}
-                    onClick={logic.handleAddToChartButtonClicked}
-                    disabled={logic.addToCartButtonDisabled()}
+                    onClick={handleAddToChartButtonClicked}
+                    disabled={addToCartButtonDisabled()}
                 >
                     {cartUpdateIsSending ? (
                         <CircularProgress

@@ -8,15 +8,17 @@ import useLogic from "./logic";
 const PRODUCTS_PAGE_SIZE = 12;
 
 const SearchResultsPage = () => {
-    const logic = useLogic(PRODUCTS_PAGE_SIZE);
     const {
         searchPhrase,
         productsAreFetching,
         errorOccurred,
         resultsCount,
-    } = logic;
+        handlePaginationChange,
+        searchPhraseValid,
+        getErrorMessage,
+    } = useLogic(PRODUCTS_PAGE_SIZE);
 
-    if (logic.searchPhraseValid())
+    if (searchPhraseValid())
         return <NotFoundPage />;
 
     return (
@@ -38,8 +40,8 @@ const SearchResultsPage = () => {
             <Box mt={2}>
                 <ProductsBrowser
                     productsPageSize={PRODUCTS_PAGE_SIZE}
-                    errorMessage={logic.getErrorMessage()}
-                    onPaginationChange={logic.handlePaginationChange}
+                    errorMessage={getErrorMessage()}
+                    onPaginationChange={handlePaginationChange}
                 />
             </Box>
         </div>

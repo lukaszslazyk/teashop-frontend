@@ -12,15 +12,20 @@ interface Props {
 }
 
 const ProductSearch = (props: Props) => {
-    const logic = useLogic(props.onSearchButtonClick, props.onSearchInputBlur);
+    const {
+        searchInputOpen,
+        handleSearchButtonClicked,
+        handleSearchInputBlurred,
+        handleSearchInputChanged,
+        handleSearchInputKeyPressed,
+    } = useLogic(props.onSearchButtonClick, props.onSearchInputBlur);
     const classes = useStyles();
-    const { searchInputOpen } = logic;
 
     if (!searchInputOpen)
         return (
             <IconButton
                 className={classes.searchIconButton}
-                onClick={logic.handleSearchButtonClicked}
+                onClick={handleSearchButtonClicked}
             >
                 <SearchIcon />
             </IconButton>
@@ -34,9 +39,9 @@ const ProductSearch = (props: Props) => {
             <InputBase
                 placeholder="Search..."
                 autoFocus
-                onBlur={logic.handleSearchInputBlurred}
-                onChange={logic.handleSearchInputChanged}
-                onKeyPress={logic.handleSearchInputKeyPressed}
+                onBlur={handleSearchInputBlurred}
+                onChange={handleSearchInputChanged}
+                onKeyPress={handleSearchInputKeyPressed}
                 classes={{
                     root: classes.searchFieldInputRoot,
                     input: classes.searchFieldInput,

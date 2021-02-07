@@ -5,8 +5,7 @@ import RecommendedProductsCardGroup from "../RecommendedProductsCardGroup";
 import useLogic from "./logic";
 
 const RecommendedProductsPanel = () => {
-    const logic = useLogic();
-    const { products, productsAreFetching, anyErrors } = logic;
+    const { products, productsAreFetching, anyErrors } = useLogic();
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 

@@ -11,8 +11,13 @@ import { Controller } from "react-hook-form";
 import useLogic from "./logic";
 
 const AddressForm = () => {
-    const logic = useLogic();
-    const { countries, errors, control, register, validatePhoneNumber } = logic;
+    const {
+        countries,
+        errors,
+        control,
+        register,
+        validatePhoneNumber,
+    } = useLogic();
 
     return (
         <form noValidate>

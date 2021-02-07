@@ -9,8 +9,11 @@ interface Props {
 }
 
 const PaymentMethodForm = (props: Props) => {
-    const logic = useLogic();
-    const { paymentMethods, chosenPaymentMethodName } = logic;
+    const {
+        paymentMethods,
+        chosenPaymentMethodName,
+        handleChange,
+    } = useLogic();
 
     if (chosenPaymentMethodName === "")
         return null;
@@ -28,7 +31,7 @@ const PaymentMethodForm = (props: Props) => {
             <Grid item xs={12}>
                 <RadioGroup
                     value={chosenPaymentMethodName}
-                    onChange={logic.handleChange}
+                    onChange={handleChange}
                 >
                     {paymentMethods.map(method => {
                         if (method.name === "card")

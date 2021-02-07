@@ -5,18 +5,24 @@ import CartView from "./components/CartView";
 import useLogic from "./logic";
 
 const CartPage = () => {
-    const logic = useLogic();
-    const { cart, cartFetchedYet, cartUpdateIsSending, errorOccurred } = logic;
+    const {
+        cart,
+        cartFetchedYet,
+        cartUpdateIsSending,
+        errorOccurred,
+        getErrorMessage,
+        cartIsEmpty,
+    } = useLogic();
 
     return (
         <div>
             {!cartFetchedYet && <PageLoadingProgress />}
             {cartFetchedYet && !cartUpdateIsSending && errorOccurred && (
-                <ErrorInfo errorMessage={logic.getErrorMessage()} />
+                <ErrorInfo errorMessage={getErrorMessage()} />
             )}
             {cartFetchedYet && !errorOccurred && (
                 <div>
-                    {logic.cartIsEmpty() ? (
+                    {cartIsEmpty() ? (
                         <ErrorInfo
                             title="Your cart is empty"
                             errorMessage="Continue shopping and add some items to your cart."

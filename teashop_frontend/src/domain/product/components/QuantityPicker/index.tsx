@@ -27,7 +27,6 @@ const QuantityPicker = (props: Props) => {
         props.onQuantityChange
     );
     const classes = useStyles();
-    const { quantityText, displayedErrorText, errorInfoOpen } = logic;
 
     return (
         <form className={classes.root}>
@@ -40,17 +39,17 @@ const QuantityPicker = (props: Props) => {
                 <RemoveIcon />
             </Fab>
             <Tooltip
-                open={errorInfoOpen}
+                open={logic.errorInfoOpen}
                 title={
                     <Typography variant="body1">
-                        {displayedErrorText}
+                        {logic.displayedErrorText}
                     </Typography>
                 }
                 arrow
             >
                 <OutlinedInput
                     id="quantity"
-                    value={quantityText}
+                    value={logic.quantityText}
                     onChange={logic.handleQuantityTextChange}
                     onFocus={logic.handleQuantityTextInputFocused}
                     onBlur={logic.handleQuantityTextInputBlured}

@@ -20,12 +20,17 @@ interface Props {
 }
 
 const EditItemQuantityDialog = (props: Props) => {
-    const logic = useLogic(props.open, props.cartItem, props.onClose);
+    const {
+        displayLoading,
+        handleQuantityChanged,
+        handleAcceptButtonClicked,
+        handleClose,
+        addToCartButtonDisabled,
+    } = useLogic(props.open, props.cartItem, props.onClose);
     const classes = useStyles();
-    const { displayLoading } = logic;
 
     return (
-        <Dialog open={props.open} onClose={logic.handleClose}>
+        <Dialog open={props.open} onClose={handleClose}>
             <DialogTitle>Edit quantity</DialogTitle>
             <DialogContent>
                 <Grid container className={classes.content}>
@@ -34,7 +39,7 @@ const EditItemQuantityDialog = (props: Props) => {
                     ) : (
                         <ProductQuantityPicker
                             product={props.cartItem.product}
-                            onQuantityChange={logic.handleQuantityChanged}
+                            onQuantityChange={handleQuantityChanged}
                             initialValue={props.cartItem.quantity}
                         />
                     )}
@@ -52,8 +57,8 @@ const EditItemQuantityDialog = (props: Props) => {
                     </Grid>
                     <Grid item>
                         <Button
-                            onClick={logic.handleAcceptButtonClicked}
-                            disabled={logic.addToCartButtonDisabled()}
+                            onClick={handleAcceptButtonClicked}
+                            disabled={addToCartButtonDisabled()}
                         >
                             Accept
                         </Button>

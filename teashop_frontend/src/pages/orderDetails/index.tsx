@@ -8,14 +8,18 @@ import OrderDetailsTopInfoView from "./components/OrderDetailsTopInfoView";
 import useLogic from "./logic";
 
 const OrderDetailsPage = () => {
-    const logic = useLogic();
-    const { order, orderIsFetching, errorOccurred } = logic;
+    const {
+        order,
+        orderIsFetching,
+        errorOccurred,
+        getErrorMessage,
+    } = useLogic();
 
     return (
         <div>
             {orderIsFetching && <PageLoadingProgress />}
             {!orderIsFetching && errorOccurred && (
-                <ErrorInfo errorMessage={logic.getErrorMessage()} />
+                <ErrorInfo errorMessage={getErrorMessage()} />
             )}
             {!orderIsFetching && !errorOccurred && (
                 <Grid container spacing={3}>

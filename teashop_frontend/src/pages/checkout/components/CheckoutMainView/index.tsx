@@ -11,8 +11,11 @@ import SummaryStep from "../steps/summary/SummaryStep";
 import useLogic from "./logic";
 
 const CheckoutMainView = () => {
-    const logic = useLogic();
-    const { activeStep } = logic;
+    const {
+        activeStep,
+        handleContinueButtonClicked,
+        handleBackButtonClicked,
+    } = useLogic();
 
     return (
         <Grid container spacing={1}>
@@ -30,41 +33,33 @@ const CheckoutMainView = () => {
                         {activeStep === 0 && (
                             <CustomerInformationStep
                                 onContinueButtonClick={
-                                    logic.handleContinueButtonClicked
+                                    handleContinueButtonClicked
                                 }
-                                onBackButtonClick={
-                                    logic.handleBackButtonClicked
-                                }
+                                onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
                         {activeStep === 1 && (
                             <ShippingStep
                                 onContinueButtonClick={
-                                    logic.handleContinueButtonClicked
+                                    handleContinueButtonClicked
                                 }
-                                onBackButtonClick={
-                                    logic.handleBackButtonClicked
-                                }
+                                onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
                         {activeStep === 2 && (
                             <PaymentStep
                                 onContinueButtonClick={
-                                    logic.handleContinueButtonClicked
+                                    handleContinueButtonClicked
                                 }
-                                onBackButtonClick={
-                                    logic.handleBackButtonClicked
-                                }
+                                onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
                     </ProgressStepLayout>
                 )}
                 {activeStep === 3 && (
                     <SummaryStep
-                        onContinueButtonClick={
-                            logic.handleContinueButtonClicked
-                        }
-                        onBackButtonClick={logic.handleBackButtonClicked}
+                        onContinueButtonClick={handleContinueButtonClicked}
+                        onBackButtonClick={handleBackButtonClicked}
                     />
                 )}
                 {activeStep === 4 && <FinalizeStep />}
