@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         backToHomeButton: {
             marginTop: theme.spacing(2),
-        }
+        },
     })
 );
 

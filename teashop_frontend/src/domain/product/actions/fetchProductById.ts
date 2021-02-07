@@ -62,9 +62,7 @@ export const fetchProductById = (
                 if (error.message === "Network Error")
                     dispatch(receiveProductByIdError(ApiErrorType.Timeout));
                 else if (error.response.status === 404)
-                    dispatch(
-                        receiveProductByIdError(ApiErrorType.NotFound)
-                    );
+                    dispatch(receiveProductByIdError(ApiErrorType.NotFound));
                 else
                     dispatch(receiveProductByIdError(ApiErrorType.Unexpected));
         });

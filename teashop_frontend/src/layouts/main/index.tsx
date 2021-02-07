@@ -27,9 +27,7 @@ const MainLayout = (props: Props) => {
                 onDrawerOpen={handleDrawerOpen}
                 onDrawerClose={handleDrawerClose}
             />
-            <Container
-                disableGutters
-            >
+            <Container disableGutters>
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
                     {props.children}

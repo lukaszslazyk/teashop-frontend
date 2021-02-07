@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             [theme.breakpoints.up("sm")]: {
                 marginTop: theme.spacing(5),
-            }
+            },
         },
         statusIconContainer: {
             display: "flex",

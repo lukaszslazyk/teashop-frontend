@@ -10,7 +10,7 @@ const useLogic = () => {
     );
     const [activeStep, setActiveStep] = useState(0);
     const history = useHistory();
-    
+
     useEffect(() => {
         if (activeStep === 0 && cartFetchedYet && cart.items.length === 0)
             history.push("/cart");

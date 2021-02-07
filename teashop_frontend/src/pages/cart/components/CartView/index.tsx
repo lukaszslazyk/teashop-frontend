@@ -25,9 +25,10 @@ const CartView = (props: Props) => {
             <Grid item xs={12}>
                 <CartItemList cart={props.cart} />
             </Grid>
-            <Grid item xs={12} >
+            <Grid item xs={12}>
                 <Typography variant="h5" className={classes.totalPriceText}>
-                    Total price: {getPriceTextWithCurrency(calculateCartPrice(props.cart))}
+                    Total price:{" "}
+                    {getPriceTextWithCurrency(calculateCartPrice(props.cart))}
                 </Typography>
             </Grid>
             <Grid item xs={12}>

@@ -22,7 +22,7 @@ const useLogic = () => {
         errors,
         control,
         register,
-        validatePhoneNumber
+        validatePhoneNumber,
     };
 };
 

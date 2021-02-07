@@ -88,7 +88,7 @@ const useLogic = (
     const onFormError = () => {
         throw new Error();
     };
-    
+
     return {
         contactInfoFormMethods,
         shippingAddressFormMethods,

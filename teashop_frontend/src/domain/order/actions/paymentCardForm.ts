@@ -9,7 +9,9 @@ interface SetPaymentCardFormDataAction {
 
 export type PaymentCardFormActionTypes = SetPaymentCardFormDataAction;
 
-export const setPaymentCardFormData = (value: PaymentCardFormData): PaymentCardFormActionTypes => ({
+export const setPaymentCardFormData = (
+    value: PaymentCardFormData
+): PaymentCardFormActionTypes => ({
     type: SET_PAYMENT_CARD_FORM_DATA,
     value: value,
 });

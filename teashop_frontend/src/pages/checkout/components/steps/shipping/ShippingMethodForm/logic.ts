@@ -1,7 +1,10 @@
 import { ChangeEvent, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
-import { setChosenShippingMethod, setShippingFee } from "../../../../../../domain/order/actions";
+import {
+    setChosenShippingMethod,
+    setShippingFee,
+} from "../../../../../../domain/order/actions";
 
 const useLogic = () => {
     const shippingMethods = useSelector(

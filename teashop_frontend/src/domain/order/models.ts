@@ -59,7 +59,7 @@ export interface OrderFormData {
     billingAddressFormData: AddressFormData;
     billingAddressSameAsShippingAddress: boolean;
     chosenShippingMethodName: string;
-    chosenPaymentMethodName: string
+    chosenPaymentMethodName: string;
     paymentCardFormData: PaymentCardFormData;
 }
 

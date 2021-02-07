@@ -64,7 +64,9 @@ export const fetchOrderMeta = (
         .catch(error => {
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
-                    dispatch(receiveOrderMetaError(ApiErrorType.InvalidResponse));
+                    dispatch(
+                        receiveOrderMetaError(ApiErrorType.InvalidResponse)
+                    );
                 else
                     dispatch(receiveOrderMetaError(ApiErrorType.Unexpected));
         });

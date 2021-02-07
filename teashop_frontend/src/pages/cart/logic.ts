@@ -15,8 +15,7 @@ const useLogic = () => {
     );
     const errorType = useSelector((state: RootState) => state.cart.errorType);
 
-    const cartIsEmpty = (): boolean =>
-        cart.items.length === 0;
+    const cartIsEmpty = (): boolean => cart.items.length === 0;
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.Timeout)

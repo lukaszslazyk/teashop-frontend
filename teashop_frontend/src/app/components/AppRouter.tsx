@@ -32,11 +32,7 @@ const Router = () => (
                     component={ProductDetailsPage}
                 />
                 <Route exact path={routing.cart} component={CartPage} />
-                <Route
-                    exact
-                    path={routing.checkout}
-                    component={CheckoutPage}
-                />
+                <Route exact path={routing.checkout} component={CheckoutPage} />
                 <Route
                     exact
                     path={routing.orderDetails.pathPattern}

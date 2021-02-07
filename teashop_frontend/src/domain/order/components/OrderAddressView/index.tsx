@@ -33,9 +33,7 @@ const OrderAddressView = (props: Props) => (
         </Grid>
         {!isEmptyOrNull(props.addressLine2) && (
             <Grid item xs={12}>
-                <Typography variant="body1">
-                    {props.addressLine2}
-                </Typography>
+                <Typography variant="body1">{props.addressLine2}</Typography>
             </Grid>
         )}
         <Grid item xs={12}>
