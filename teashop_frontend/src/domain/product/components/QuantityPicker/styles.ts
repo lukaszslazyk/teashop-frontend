@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme: Theme) =>
             alignItems: "center",
         },
         quantityInput: {
-            width: 75,
+            width: "9ch",
             "& input": {
                 textAlign: "center",
             },

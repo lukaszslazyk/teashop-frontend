@@ -1,4 +1,10 @@
-import { Fab, TextField, Tooltip, Typography } from "@material-ui/core";
+import {
+    Fab,
+    InputAdornment,
+    OutlinedInput,
+    Tooltip,
+    Typography,
+} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import RemoveIcon from "@material-ui/icons/Remove";
 import React from "react";
@@ -6,11 +12,11 @@ import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
-    inputLabel: string;
     initialValue: number;
     lowThreshold: number;
     step: number;
     onQuantityChange: (value: number, valid: boolean) => void;
+    unit?: string;
 }
 
 const QuantityPicker = (props: Props) => {
@@ -38,15 +44,20 @@ const QuantityPicker = (props: Props) => {
                 <RemoveIcon />
             </Fab>
             <Tooltip open={errorInfoOpen} title={ErrorText()} arrow>
-                <TextField
+                <OutlinedInput
                     id="quantity"
-                    variant="outlined"
-                    label={props.inputLabel}
                     value={quantityText}
                     onChange={logic.handleQuantityTextChange}
                     onFocus={logic.handleQuantityTextInputFocused}
                     onBlur={logic.handleQuantityTextInputBlured}
                     error={logic.hasError()}
+                    endAdornment={
+                        props.unit && (
+                            <InputAdornment position="end">
+                                {props.unit}
+                            </InputAdornment>
+                        )
+                    }
                     className={classes.quantityInput}
                 />
             </Tooltip>
