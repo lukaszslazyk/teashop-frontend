@@ -23,7 +23,11 @@ const ProductSortOptionSelect = () => {
 
     return (
         <FormControl className={classes.root}>
-            <Select value={chosenSortOptionName} onChange={handleChange}>
+            <Select
+                value={chosenSortOptionName}
+                onChange={handleChange}
+                classes={{ select: classes.select }}
+            >
                 {productsSortOptions.map(sortOption => (
                     <MenuItem key={sortOption.name} value={sortOption.name}>
                         {sortOption.displayName}

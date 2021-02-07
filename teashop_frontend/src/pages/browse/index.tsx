@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core";
+import { Grid, useMediaQuery, useTheme } from "@material-ui/core";
 import React from "react";
 import ProductsBrowser from "../../domain/product/components/ProductsBrowser";
 import ProductSortOptionSelect from "../../domain/product/components/ProductSortOptionSelect";
@@ -9,13 +9,20 @@ const PRODUCTS_PAGE_SIZE = 12;
 
 const BrowsePage = () => {
     const logic = useLogic(PRODUCTS_PAGE_SIZE);
+    const theme = useTheme();
+    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
     if (!logic.categoryExists())
         return <NotFoundPage />;
 
     return (
         <Grid container spacing={2}>
-            <Grid item xs={12} container justify="flex-end">
+            <Grid
+                item
+                xs={12}
+                container
+                justify={isXsScreen ? "flex-start" : "flex-end"}
+            >
                 <ProductSortOptionSelect />
             </Grid>
             <Grid item xs={12}>

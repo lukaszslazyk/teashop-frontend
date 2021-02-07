@@ -5,6 +5,11 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             width: 250,
         },
+        select: {
+            "&:focus": {
+                backgroundColor: "rgba(0,0,0,0)",
+            },
+        },
     })
 );
 
