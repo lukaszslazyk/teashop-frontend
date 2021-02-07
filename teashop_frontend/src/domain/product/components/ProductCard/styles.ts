@@ -35,6 +35,18 @@ const useStyles = makeStyles((theme: Theme) =>
         cardContentInnerContainer: {
             alignContent: "flex-end",
         },
+        productNameText: {
+            fontSize: theme.typography.h1.fontFamily,
+            fontWeight: theme.typography.h1.fontWeight,
+            lineHeight: theme.typography.h1.lineHeight,
+            letterSpacing: theme.typography.h1.letterSpacing,
+            [theme.breakpoints.down("xs")]: {
+                fontSize: theme.typography.body1.fontFamily,
+                fontWeight: theme.typography.body1.fontWeight,
+                lineHeight: theme.typography.body1.lineHeight,
+                letterSpacing: theme.typography.body1.letterSpacing,
+            },
+        },
     })
 );
 

@@ -10,14 +10,8 @@ import { createRequestCancelToken } from "../../shared/services/requestCancelTok
 import { ApiErrorType } from "../../shared/types";
 
 const useLogic = (productsPageSize: number) => {
-    const productsAreFetching = useSelector(
-        (state: RootState) => state.product.isFetching
-    );
     const chosenSortOptionName = useSelector(
         (state: RootState) => state.product.chosenSortOptionName
-    );
-    const resultsCount = useSelector(
-        (state: RootState) => state.product.totalCount
     );
     const errorOccurred = useSelector(
         (state: RootState) => state.product.errorOccurred
@@ -86,9 +80,6 @@ const useLogic = (productsPageSize: number) => {
 
     return {
         searchPhrase,
-        productsAreFetching,
-        errorOccurred,
-        resultsCount,
         handlePaginationChange,
         searchPhraseValid,
         getErrorMessage,

@@ -41,7 +41,10 @@ const useLogic = (
         onPaginationChange(page);
     };
 
-    const anyErrors = () => errorOccurred || customErrorOcurred;
+    const anyErrors = () => errorOccurred && customErrorOcurred;
+
+    const shouldDisplaySuppliedHeader = () =>
+        productsAreFetching || (!productsAreFetching && !anyErrors());
 
     return {
         products,
@@ -50,6 +53,7 @@ const useLogic = (
         pageNumber,
         isMobile,
         anyErrors,
+        shouldDisplaySuppliedHeader,
         handlePaginationChange,
     };
 };

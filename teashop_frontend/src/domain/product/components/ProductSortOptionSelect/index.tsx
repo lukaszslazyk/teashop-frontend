@@ -11,7 +11,11 @@ import { chooseSortOption } from "../../actions";
 import { productsSortOptions } from "../../models";
 import useStyles from "./styles";
 
-const ProductSortOptionSelect = () => {
+interface Props {
+    disabled: boolean;
+}
+
+const ProductSortOptionSelect = (props: Props) => {
     const chosenSortOptionName = useSelector(
         (state: RootState) => state.product.chosenSortOptionName
     );
@@ -22,7 +26,7 @@ const ProductSortOptionSelect = () => {
         dispatch(chooseSortOption(event.target.value as string));
 
     return (
-        <FormControl className={classes.root}>
+        <FormControl className={classes.root} disabled={props.disabled}>
             <Select
                 value={chosenSortOptionName}
                 onChange={handleChange}

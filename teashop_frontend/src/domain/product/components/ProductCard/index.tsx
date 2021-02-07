@@ -7,8 +7,6 @@ import {
     Divider,
     Grid,
     Typography,
-    useMediaQuery,
-    useTheme,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
@@ -34,8 +32,6 @@ const getPriceTagFor = (product: Product) => {
 const ProductCard = (props: Props) => {
     const { product } = props;
     const history = useHistory();
-    const theme = useTheme();
-    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
     const classes = useStyles();
 
     const handleClicked = () => {
@@ -82,20 +78,14 @@ const ProductCard = (props: Props) => {
                             <Typography
                                 align="center"
                                 gutterBottom
-                                variant={isXsScreen ? "body1" : "h6"}
-                                component="h2"
+                                className={classes.productNameText}
                             >
                                 {product ? product.name : <Skeleton />}
                             </Typography>
-
                             <Box mb={1}>
                                 <Divider />
                             </Box>
-                            <Typography
-                                align="center"
-                                variant="body2"
-                                component="p"
-                            >
+                            <Typography align="center" variant="body2">
                                 {product ? getPriceTagFor(product) : <Skeleton />}
                             </Typography>
                         </Grid>
