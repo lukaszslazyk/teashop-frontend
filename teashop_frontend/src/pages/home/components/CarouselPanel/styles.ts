@@ -3,7 +3,7 @@ import { Theme, createStyles, makeStyles } from "@material-ui/core";
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         media: {
-            minHeight: 500,
+            minHeight: 525,
             [theme.breakpoints.down("sm")]: {
                 minHeight: 400,
             },

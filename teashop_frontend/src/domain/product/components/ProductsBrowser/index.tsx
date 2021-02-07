@@ -2,8 +2,7 @@ import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import React from "react";
 import ErrorInfo from "../../../../shared/components/ErrorInfo";
-import ProductCardTileGroup from "../ProductCardTileGroup";
-import ProductCardTileGroupPlaceholder from "../ProductCardTileGroup/placeholder";
+import ProductCardGroup from "../ProductCardGroup";
 import useLogic from "./logic";
 
 interface Props {
@@ -27,15 +26,16 @@ const ProductsBrowser = (props: Props) => {
         <Grid container justify="center" spacing={3}>
             <Grid item xs={12}>
                 {productsAreFetching && (
-                    <ProductCardTileGroupPlaceholder
-                        numberOfCards={props.productsPageSize}
+                    <ProductCardGroup
+                        isPlaceholder
+                        numberOfPlaceholderCards={props.productsPageSize}
                     />
                 )}
                 {!productsAreFetching && logic.anyErrors() && (
                     <ErrorInfo errorMessage={props.errorMessage} />
                 )}
                 {!productsAreFetching && !logic.anyErrors() && (
-                    <ProductCardTileGroup products={products} />
+                    <ProductCardGroup products={products} />
                 )}
             </Grid>
             {products.length !== 0 && (
