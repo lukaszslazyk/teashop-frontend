@@ -44,7 +44,7 @@ const ProductSearch = (props: Props) => {
     if (!searchInputOpen)
         return (
             <IconButton
-                className={classes.searchIcon}
+                className={classes.searchIconButton}
                 onClick={handleSearchButtonClicked}
             >
                 <SearchIcon />

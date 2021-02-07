@@ -7,7 +7,7 @@ import {
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
-        searchIcon: {
+        searchIconButton: {
             color: "white",
         },
         searchField: {

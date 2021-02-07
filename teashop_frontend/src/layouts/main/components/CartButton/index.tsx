@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../configuration/routing";
-import useStyles from "../../styles";
+import useStyles from "./styles";
 
 const CartButton = () => {
     const cartSize = useSelector(
@@ -17,14 +17,18 @@ const CartButton = () => {
     const classes = useStyles();
 
     const LoadingIndicator = () => (
-        <CircularProgress size={12} thickness={7} style={{ color: "white" }} />
+        <CircularProgress
+            size={12}
+            thickness={7}
+            className={classes.progressIndicator}
+        />
     );
 
     return (
         <IconButton
-            className={classes.appBarIcon}
             component={Link}
             to={routing.cart}
+            className={classes.iconButton}
         >
             {!cartFetchedYet && (
                 <Badge badgeContent={LoadingIndicator()} color="primary">
