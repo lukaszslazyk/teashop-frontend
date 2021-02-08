@@ -6,8 +6,9 @@ import useLogic from "./logic";
 
 const PRODUCTS_PAGE_SIZE = 12;
 
-const BrowsePage = () => {
+const BrowseCategoryPage = () => {
     const {
+        categoryDisplayName,
         handlePaginationChange,
         categoryExists,
         categoryIsEmpty,
@@ -25,11 +26,11 @@ const BrowsePage = () => {
             onPaginationChange={handlePaginationChange}
             headerComponent={
                 <Typography variant="h4" color="primary">
-                    Browse
+                    {categoryDisplayName}
                 </Typography>
             }
         />
     );
 };
 
-export default BrowsePage;
+export default BrowseCategoryPage;

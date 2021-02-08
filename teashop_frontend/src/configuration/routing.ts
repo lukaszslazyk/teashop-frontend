@@ -1,4 +1,4 @@
-export interface BrowsePageParams {
+export interface BrowseCategoryPageParams {
     categoryName: string | undefined;
 }
 
@@ -16,9 +16,9 @@ export interface OrderDetailsPageParams {
 
 const routing = {
     home: "/",
-    browse: {
+    browseCategory: {
         pathPattern: "/browse/:categoryName?",
-        getPathWithParams: (params: BrowsePageParams) =>
+        getPathWithParams: (params: BrowseCategoryPageParams) =>
             `/browse/${params.categoryName}`,
     },
     browseGreenTea: "/browse/GreenTea",

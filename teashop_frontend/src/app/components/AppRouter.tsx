@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import routing from "../../configuration/routing";
 import MainLayout from "../../layouts/main";
-import BrowsePage from "../../pages/browse";
+import BrowseCategoryPage from "../../pages/browseCategory";
 import CartPage from "../../pages/cart";
 import CheckoutPage from "../../pages/checkout";
 import HomePage from "../../pages/home";
@@ -18,8 +18,8 @@ const Router = () => (
                 <Route exact path={routing.home} component={HomePage} />
                 <Route
                     exact
-                    path={routing.browse.pathPattern}
-                    component={BrowsePage}
+                    path={routing.browseCategory.pathPattern}
+                    component={BrowseCategoryPage}
                 />
                 <Route
                     exact

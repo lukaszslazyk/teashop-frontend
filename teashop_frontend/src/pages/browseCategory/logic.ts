@@ -2,11 +2,12 @@ import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { BrowsePageParams } from "../../configuration/routing";
+import { BrowseCategoryPageParams } from "../../configuration/routing";
 import {
     clearProducts,
     fetchProductsInCategory,
 } from "../../domain/product/actions";
+import { getDisplayNameFor } from "../../domain/product/services/productService";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -22,7 +23,10 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
-    const { categoryName } = useParams<BrowsePageParams>();
+    const { categoryName } = useParams<BrowseCategoryPageParams>();
+    const categoryDisplayName = categoryName
+        ? getDisplayNameFor(categoryName)
+        : "";
 
     const categoryNameValid = useCallback(
         (): boolean => categoryName !== undefined,
@@ -84,6 +88,7 @@ const useLogic = (productsPageSize: number) => {
     };
 
     return {
+        categoryDisplayName,
         handlePaginationChange,
         categoryExists,
         categoryIsEmpty,
