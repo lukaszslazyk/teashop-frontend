@@ -50,7 +50,7 @@ const ProductCard = (props: Props) => {
                 className={classes.cardActionArea}
             >
                 <CardMedia className={classes.cardMedia}>
-                    <div className={classes.equalAspectRatioContainer}>
+                    <div className={classes.equalAspectRatioTopContainer}>
                         <div className={classes.equalAspectRatioInnerContainer}>
                             {product ? (
                                 <img

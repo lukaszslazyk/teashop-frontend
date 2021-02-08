@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme: Theme) =>
         cardMedia: {
             width: "100%",
         },
-        equalAspectRatioContainer: {
+        equalAspectRatioTopContainer: {
             position: "relative",
             paddingTop: "100%",
         },
@@ -36,12 +36,12 @@ const useStyles = makeStyles((theme: Theme) =>
             alignContent: "flex-end",
         },
         productNameText: {
-            fontSize: theme.typography.h1.fontFamily,
-            fontWeight: theme.typography.h1.fontWeight,
-            lineHeight: theme.typography.h1.lineHeight,
-            letterSpacing: theme.typography.h1.letterSpacing,
-            [theme.breakpoints.down("xs")]: {
-                fontSize: theme.typography.body1.fontFamily,
+            fontSize: theme.typography.h6.fontSize,
+            fontWeight: theme.typography.h6.fontWeight,
+            lineHeight: theme.typography.h6.lineHeight,
+            letterSpacing: theme.typography.h6.letterSpacing,
+            [theme.breakpoints.down("sm")]: {
+                fontSize: theme.typography.body1.fontSize,
                 fontWeight: theme.typography.body1.fontWeight,
                 lineHeight: theme.typography.body1.lineHeight,
                 letterSpacing: theme.typography.body1.letterSpacing,
