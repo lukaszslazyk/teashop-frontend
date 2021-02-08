@@ -11,6 +11,11 @@ import {
     ContactInfoFormData,
 } from "../../../../../../domain/order/models";
 
+const scrollToTop = () =>
+    window.scrollTo({
+        top: 0,
+    });
+
 const useLogic = (
     onContinueButtonClick: () => void,
     onBackButtonClick: () => void
@@ -70,6 +75,8 @@ const useLogic = (
     const finalizeFormsSubmitionPipeline = (allFormsValid: boolean) => {
         if (allFormsValid)
             onContinueButtonClick();
+        else
+            scrollToTop();
     };
 
     const onContactInfoFormSubmit = () =>
