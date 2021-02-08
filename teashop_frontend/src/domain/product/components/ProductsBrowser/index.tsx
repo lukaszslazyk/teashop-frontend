@@ -24,6 +24,8 @@ const ProductsBrowser = (props: Props) => {
         isMobile,
         anyErrors,
         shouldDisplaySuppliedHeader,
+        shouldDisplaySortOptionSelect,
+        shouldDisplayPagination,
         handlePaginationChange,
     } = useLogic(props.onPaginationChange, props.customErrorOcurred);
     const classes = useStyles();
@@ -36,7 +38,7 @@ const ProductsBrowser = (props: Props) => {
                         {props.headerComponent}
                     </Grid>
                 )}
-                {!anyErrors() && (
+                {shouldDisplaySortOptionSelect() && (
                     <Grid item className={classes.sortOptionSelectContainer}>
                         <ProductSortOptionSelect
                             disabled={productsAreFetching}
@@ -60,7 +62,7 @@ const ProductsBrowser = (props: Props) => {
                     <ProductCardGroup products={products} />
                 </Grid>
             )}
-            {!anyErrors() && products.length !== 0 && (
+            {shouldDisplayPagination() && (
                 <Grid item className={classes.paginationContainer}>
                     <Pagination
                         page={pageNumber}

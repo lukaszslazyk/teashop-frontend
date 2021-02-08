@@ -4,6 +4,11 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 
+const scrollToTop = () =>
+    window.scrollTo({
+        top: 0,
+    });
+
 const useLogic = (
     onPaginationChange: (pageNumber: number) => void,
     customErrorOcurred?: boolean
@@ -35,16 +40,19 @@ const useLogic = (
         page: number
     ) => {
         setPageNumber(page);
-        window.scrollTo({
-            top: 0,
-        });
+        scrollToTop();
         onPaginationChange(page);
     };
 
-    const anyErrors = () => errorOccurred && customErrorOcurred;
+    const anyErrors = () => errorOccurred || customErrorOcurred;
 
     const shouldDisplaySuppliedHeader = () =>
         productsAreFetching || (!productsAreFetching && !anyErrors());
+
+    const shouldDisplaySortOptionSelect = () =>
+        productsAreFetching || !anyErrors();
+
+    const shouldDisplayPagination = () => !anyErrors() && products.length !== 0;
 
     return {
         products,
@@ -54,6 +62,8 @@ const useLogic = (
         isMobile,
         anyErrors,
         shouldDisplaySuppliedHeader,
+        shouldDisplaySortOptionSelect,
+        shouldDisplayPagination,
         handlePaginationChange,
     };
 };
