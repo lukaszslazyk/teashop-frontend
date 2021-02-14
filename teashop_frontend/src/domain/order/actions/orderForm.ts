@@ -10,7 +10,6 @@ export const SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS =
     "SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS";
 export const REQUEST_PLACE_ORDER = "REQUEST_PLACE_ORDER";
 export const RECEIVE_PLACE_ORDER = "RECEIVE_PLACE_ORDER";
-export const RESET_ORDER_PLACED = "RESET_ORDER_PLACED";
 
 interface SetShippingAddressSameAsBillingAddressAction {
     type: typeof SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS;
@@ -29,15 +28,10 @@ interface ReceivePlaceOrderAction {
     errorType: ApiErrorType;
 }
 
-interface ResetOrderPlacedAction {
-    type: typeof RESET_ORDER_PLACED;
-}
-
 export type OrderFormActionTypes =
     | SetShippingAddressSameAsBillingAddressAction
     | RequestPlaceOrderAction
-    | ReceivePlaceOrderAction
-    | ResetOrderPlacedAction;
+    | ReceivePlaceOrderAction;
 
 export const setShippingAddressSameAsBillingAddress = (
     value: boolean
@@ -71,10 +65,6 @@ export const receivePlaceOrderError = (
     orderNo: null,
     errorOccurred: true,
     errorType: errorType,
-});
-
-export const resetOrderPlaced = (): OrderFormActionTypes => ({
-    type: RESET_ORDER_PLACED,
 });
 
 export const placeOrder = (

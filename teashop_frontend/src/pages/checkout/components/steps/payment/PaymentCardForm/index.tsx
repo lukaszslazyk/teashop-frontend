@@ -37,11 +37,10 @@ const PaymentCardForm = () => {
                                 message:
                                     "Name must be at least 2 characters long.",
                             },
-                            maxLength: {
-                                value: 26,
-                                message: "Name must not exceed 26 characters.",
-                            },
                         })}
+                        inputProps={{
+                            maxlength: 26,
+                        }}
                         label="Name"
                         variant="outlined"
                         fullWidth={true}

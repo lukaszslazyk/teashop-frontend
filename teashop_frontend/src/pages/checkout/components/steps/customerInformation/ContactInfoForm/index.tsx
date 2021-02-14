@@ -28,6 +28,9 @@ const ContactInfoForm = () => {
                                     message: "Email is incorrect",
                                 },
                             })}
+                            inputProps={{
+                                maxlength: 254,
+                            }}
                             label="Email"
                             variant="outlined"
                             fullWidth={true}

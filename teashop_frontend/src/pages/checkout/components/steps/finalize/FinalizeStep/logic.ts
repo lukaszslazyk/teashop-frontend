@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../../../configuration/routing";
 import {
+    closeCheckout,
     placeOrder,
-    resetOrderPlaced,
 } from "../../../../../../domain/order/actions";
 import { createRequestCancelToken } from "../../../../../../shared/services/requestCancelTokenService";
 
@@ -45,7 +45,7 @@ const useLogic = () => {
     useEffect(
         () => () => {
             setRequestWasSent(false);
-            dispatch(resetOrderPlaced());
+            dispatch(closeCheckout());
         },
         [dispatch]
     );

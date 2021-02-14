@@ -14,7 +14,7 @@ const useLogic = () => {
         (state: RootState) => state.order.orderMetaErrorOccurred
     );
     const orderMetaErrorType = useSelector(
-        (state: RootState) => state.order.orderErrorType
+        (state: RootState) => state.order.orderMetaErrorType
     );
     const cart = useSelector((state: RootState) => state.cart.cart);
     const cartFetchedYet = useSelector(
@@ -55,6 +55,7 @@ const useLogic = () => {
     const getErrorMessage = (): string => {
         if (
             orderMetaErrorType === ApiErrorType.Unexpected ||
+            orderMetaErrorType === ApiErrorType.InvalidResponse ||
             cartErrorType === ApiErrorType.Unexpected
         )
             return "We've encountered some issues on our servers.\nPlease try again later.";

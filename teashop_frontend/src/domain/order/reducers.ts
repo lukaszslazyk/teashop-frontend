@@ -16,8 +16,10 @@ import {
     SET_CART_PRICE,
     SET_SHIPPING_FEE,
     SET_PAYMENT_FEE,
-    RESET_ORDER_PLACED,
     SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
+    INCREMENT_CHECKOUT_STEP,
+    DECREMENT_CHECKOUT_STEP,
+    CLOSE_CHECKOUT,
 } from "./actions";
 import { OrderMeta, OrderFormData, Order } from "./models";
 
@@ -41,6 +43,7 @@ export interface OrderState {
     orderPlaced: boolean;
     placedOrderId: string;
     placedOrderNo: number;
+    checkoutStep: number;
 }
 
 const initialState: OrderState = {
@@ -152,6 +155,7 @@ const initialState: OrderState = {
     orderPlaced: false,
     placedOrderId: "",
     placedOrderNo: 0,
+    checkoutStep: 0,
 };
 
 export const orderReducer = (
@@ -171,10 +175,12 @@ export const orderReducer = (
                 ...state,
                 orderIsFetching: false,
                 orderErrorOccurred: action.errorOccurred,
-                order: action.order ? {
-                    ...action.order,
-                    placementDate: new Date(action.order.placementDate),
-                } : initialState.order,
+                order: action.order
+                    ? {
+                        ...action.order,
+                        placementDate: new Date(action.order.placementDate),
+                    }
+                    : initialState.order,
                 orderErrorType: action.errorType,
             };
         }
@@ -255,11 +261,6 @@ export const orderReducer = (
                     paymentFee: 0,
                 };
             return newState;
-        case RESET_ORDER_PLACED:
-            return {
-                ...state,
-                orderPlaced: false,
-            };
         case SET_CONTACT_INFO_FORM_DATA:
             return {
                 ...state,
@@ -325,6 +326,22 @@ export const orderReducer = (
                 ...state,
                 paymentFee: action.value,
                 totalPrice: state.cartPrice + state.shippingFee + action.value,
+            };
+        case INCREMENT_CHECKOUT_STEP:
+            return {
+                ...state,
+                checkoutStep: state.checkoutStep + 1,
+            };
+        case DECREMENT_CHECKOUT_STEP:
+            return {
+                ...state,
+                checkoutStep: state.checkoutStep - 1,
+            };
+        case CLOSE_CHECKOUT:
+            return {
+                ...state,
+                orderPlaced: false,
+                checkoutStep: 0,
             };
         default:
             return state;
