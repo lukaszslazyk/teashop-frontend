@@ -29,6 +29,7 @@ export interface OrderState {
     orderErrorOccurred: boolean;
     orderErrorType: ApiErrorType;
     orderMeta: OrderMeta;
+    orderMetaFetchedSuccessfully: boolean;
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
     orderMetaErrorType: ApiErrorType;
@@ -101,6 +102,7 @@ const initialState: OrderState = {
     orderIsFetching: false,
     orderErrorOccurred: false,
     orderErrorType: ApiErrorType.None,
+    orderMetaFetchedSuccessfully: false,
     orderMetaIsFetching: false,
     orderMetaErrorOccurred: false,
     orderMetaErrorType: ApiErrorType.None,
@@ -194,6 +196,7 @@ export const orderReducer = (
         case RECEIVE_ORDER_META:
             return {
                 ...state,
+                orderMetaFetchedSuccessfully: !action.errorOccurred,
                 orderMetaIsFetching: false,
                 orderMetaErrorOccurred: action.errorOccurred,
                 orderMetaErrorType: action.errorType,

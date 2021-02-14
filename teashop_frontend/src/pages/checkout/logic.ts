@@ -7,6 +7,9 @@ import { createRequestCancelToken } from "../../shared/services/requestCancelTok
 import { ApiErrorType } from "../../shared/types";
 
 const useLogic = () => {
+    const orderMetaFetchedSuccessfully = useSelector(
+        (state: RootState) => state.order.orderMetaFetchedSuccessfully
+    );
     const orderMetaIsFetching = useSelector(
         (state: RootState) => state.order.orderMetaIsFetching
     );
@@ -30,9 +33,10 @@ const useLogic = () => {
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchOrderMeta(cancelToken));
+        if (!orderMetaFetchedSuccessfully)
+            dispatch(fetchOrderMeta(cancelToken));
         return () => cancelToken.cancel();
-    }, [dispatch]);
+    }, [orderMetaFetchedSuccessfully, dispatch]);
 
     useEffect(() => {
         if (cartFetchedYet && cart.items.length > 0)
