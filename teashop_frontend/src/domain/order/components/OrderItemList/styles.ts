@@ -17,6 +17,13 @@ const useStyles = makeStyles((theme: Theme) =>
         grow: {
             flexGrow: 1,
         },
+        productNameText: {
+            color: "black",
+            textDecoration: "none",
+            "&:hover": {
+                textDecoration: "underline",
+            },
+        },
         quantityText: {
             marginRight: theme.spacing(2),
             whiteSpace: "nowrap",

@@ -1,5 +1,7 @@
 import { Box, Divider, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
@@ -59,7 +61,14 @@ const OrderItemsList = (props: Props) => {
                             className={classes.grow}
                         >
                             <Grid item sm={8} xs={12}>
-                                <Typography variant="body1">
+                                <Typography
+                                    variant="body1"
+                                    component={Link}
+                                    to={routing.productDetails.getPathWithParams({
+                                        productId: item.product.id,
+                                    })}
+                                    className={classes.productNameText}
+                                >
                                     {item.product.name}
                                 </Typography>
                             </Grid>
