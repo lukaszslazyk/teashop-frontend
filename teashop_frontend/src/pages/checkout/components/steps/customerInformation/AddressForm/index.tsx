@@ -29,7 +29,7 @@ const AddressForm = () => {
                             required: "First name is required.",
                         })}
                         inputProps={{
-                            maxlength: 255,
+                            maxLength: 255,
                         }}
                         label="First name"
                         variant="outlined"
@@ -45,7 +45,7 @@ const AddressForm = () => {
                             required: "Last name is required.",
                         })}
                         inputProps={{
-                            maxlength: 255,
+                            maxLength: 255,
                         }}
                         label="Last name"
                         variant="outlined"
@@ -59,7 +59,7 @@ const AddressForm = () => {
                         name="company"
                         inputRef={register()}
                         inputProps={{
-                            maxlength: 255,
+                            maxLength: 255,
                         }}
                         label="Company (optional)"
                         variant="outlined"
@@ -75,7 +75,7 @@ const AddressForm = () => {
                             required: "Address first line is required",
                         })}
                         inputProps={{
-                            maxlength: 255,
+                            maxLength: 255,
                         }}
                         label="Address line 1"
                         variant="outlined"
@@ -89,7 +89,7 @@ const AddressForm = () => {
                         name="addressLine2"
                         inputRef={register()}
                         inputProps={{
-                            maxlength: 255,
+                            maxLength: 255,
                         }}
                         label="Address line 2 (optional)"
                         variant="outlined"
@@ -103,7 +103,7 @@ const AddressForm = () => {
                         name="postalCode"
                         inputRef={register()}
                         inputProps={{
-                            maxlength: 10,
+                            maxLength: 10,
                         }}
                         label="Postal code"
                         variant="outlined"
@@ -119,7 +119,7 @@ const AddressForm = () => {
                             required: "City is required"
                         })}
                         inputProps={{
-                            maxlength: 255,
+                            maxLength: 255,
                         }}
                         label="City"
                         variant="outlined"

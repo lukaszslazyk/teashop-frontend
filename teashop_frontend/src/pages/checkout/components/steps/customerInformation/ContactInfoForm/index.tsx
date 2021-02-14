@@ -29,7 +29,7 @@ const ContactInfoForm = () => {
                                 },
                             })}
                             inputProps={{
-                                maxlength: 254,
+                                maxLength: 254,
                             }}
                             label="Email"
                             variant="outlined"

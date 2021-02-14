@@ -39,7 +39,7 @@ const PaymentCardForm = () => {
                             },
                         })}
                         inputProps={{
-                            maxlength: 26,
+                            maxLength: 26,
                         }}
                         label="Name"
                         variant="outlined"
