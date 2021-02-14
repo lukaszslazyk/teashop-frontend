@@ -3,7 +3,7 @@ import React from "react";
 import { CheckoutSteps } from "../../../../domain/order/models";
 import CheckoutStepper from "../CheckoutStepper";
 import CheckoutStepTitle from "../CheckoutStepTitle";
-import ProgressStepLayout from "../ProgressStepLayout";
+import CustomerProvidedInfoStepLayout from "../CustomerProvidedInfoStepLayout";
 import CustomerInformationStep from "../steps/customerInformation/CustomerInformationStep";
 import FinalizeStep from "../steps/finalize/FinalizeStep";
 import PaymentStep from "../steps/payment/PaymentStep";
@@ -30,7 +30,7 @@ const CheckoutMainView = () => {
             </Grid>
             <Grid item xs={12}>
                 {activeStep < CheckoutSteps.Summary && (
-                    <ProgressStepLayout>
+                    <CustomerProvidedInfoStepLayout>
                         {activeStep === CheckoutSteps.Information && (
                             <CustomerInformationStep
                                 onContinueButtonClick={
@@ -55,7 +55,7 @@ const CheckoutMainView = () => {
                                 onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                    </ProgressStepLayout>
+                    </CustomerProvidedInfoStepLayout>
                 )}
                 {activeStep === CheckoutSteps.Summary && (
                     <SummaryStep
