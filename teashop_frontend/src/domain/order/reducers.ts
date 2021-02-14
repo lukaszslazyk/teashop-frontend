@@ -194,7 +194,7 @@ export const orderReducer = (
                 orderMetaErrorType: ApiErrorType.None,
             };
         case RECEIVE_ORDER_META:
-            return {
+            let receiveOrderMetaState = {
                 ...state,
                 orderMetaFetchedSuccessfully: !action.errorOccurred,
                 orderMetaIsFetching: false,
@@ -203,28 +203,12 @@ export const orderReducer = (
                 orderMeta: action.orderMeta
                     ? action.orderMeta
                     : initialState.orderMeta,
-                orderFormData: {
-                    ...state.orderFormData,
-                    chosenShippingMethodName: action.orderMeta
-                        ? action.orderMeta.shippingMethods[0].name
-                        : "",
-                    chosenPaymentMethodName: action.orderMeta
-                        ? action.orderMeta.paymentMethods[0].name
-                        : "",
-                    shippingAddressFormData: {
-                        ...state.orderFormData.shippingAddressFormData,
-                        countryCode: action.orderMeta
-                            ? action.orderMeta.countries[0].code
-                            : "",
-                    },
-                    billingAddressFormData: {
-                        ...state.orderFormData.billingAddressFormData,
-                        countryCode: action.orderMeta
-                            ? action.orderMeta.countries[0].code
-                            : "",
-                    },
-                },
             };
+            if (!action.errorOccurred)
+                receiveOrderMetaState = setInitialOrderFormDataValues(
+                    receiveOrderMetaState
+                );
+            return receiveOrderMetaState;
         case SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS:
             return {
                 ...state,
@@ -241,7 +225,7 @@ export const orderReducer = (
                 orderFormErrorType: ApiErrorType.None,
             };
         case RECEIVE_PLACE_ORDER:
-            let newState = {
+            let receivePlaceOrderState = {
                 ...state,
                 orderFormIsSending: false,
                 orderFormErrorOccurred: action.errorOccurred,
@@ -254,16 +238,20 @@ export const orderReducer = (
                     ? action.orderNo
                     : initialState.placedOrderNo,
             };
-            if (!action.errorOccurred)
-                newState = {
-                    ...newState,
+            if (!action.errorOccurred) {
+                receivePlaceOrderState = {
+                    ...receivePlaceOrderState,
                     orderFormData: initialState.orderFormData,
                     totalPrice: 0,
                     cartPrice: 0,
                     shippingFee: 0,
                     paymentFee: 0,
                 };
-            return newState;
+                receivePlaceOrderState = setInitialOrderFormDataValues(
+                    receivePlaceOrderState
+                );
+            }
+            return receivePlaceOrderState;
         case SET_CONTACT_INFO_FORM_DATA:
             return {
                 ...state,
@@ -350,3 +338,20 @@ export const orderReducer = (
             return state;
     }
 };
+
+const setInitialOrderFormDataValues = (state: OrderState): OrderState => ({
+    ...state,
+    orderFormData: {
+        ...state.orderFormData,
+        chosenShippingMethodName: state.orderMeta.shippingMethods[0].name,
+        chosenPaymentMethodName: state.orderMeta.paymentMethods[0].name,
+        shippingAddressFormData: {
+            ...state.orderFormData.shippingAddressFormData,
+            countryCode: state.orderMeta.countries[0].code,
+        },
+        billingAddressFormData: {
+            ...state.orderFormData.billingAddressFormData,
+            countryCode: state.orderMeta.countries[0].code,
+        },
+    },
+});
