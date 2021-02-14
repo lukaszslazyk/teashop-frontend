@@ -101,7 +101,9 @@ const AddressForm = () => {
                 <Grid item sm={6} xs={12}>
                     <TextField
                         name="postalCode"
-                        inputRef={register()}
+                        inputRef={register({
+                            required: "Postal code is required",
+                        })}
                         inputProps={{
                             maxLength: 10,
                         }}

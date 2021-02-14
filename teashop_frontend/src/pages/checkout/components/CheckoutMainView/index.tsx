@@ -1,5 +1,6 @@
 import { Grid, Hidden } from "@material-ui/core";
 import React from "react";
+import { CheckoutSteps } from "../../../../domain/order/models";
 import CheckoutStepper from "../CheckoutStepper";
 import CheckoutStepTitle from "../CheckoutStepTitle";
 import ProgressStepLayout from "../ProgressStepLayout";
@@ -28,9 +29,9 @@ const CheckoutMainView = () => {
                 </Hidden>
             </Grid>
             <Grid item xs={12}>
-                {activeStep < 3 && (
+                {activeStep < CheckoutSteps.Summary && (
                     <ProgressStepLayout>
-                        {activeStep === 0 && (
+                        {activeStep === CheckoutSteps.Information && (
                             <CustomerInformationStep
                                 onContinueButtonClick={
                                     handleContinueButtonClicked
@@ -38,7 +39,7 @@ const CheckoutMainView = () => {
                                 onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                        {activeStep === 1 && (
+                        {activeStep === CheckoutSteps.Shipping && (
                             <ShippingStep
                                 onContinueButtonClick={
                                     handleContinueButtonClicked
@@ -46,7 +47,7 @@ const CheckoutMainView = () => {
                                 onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                        {activeStep === 2 && (
+                        {activeStep === CheckoutSteps.Payment && (
                             <PaymentStep
                                 onContinueButtonClick={
                                     handleContinueButtonClicked
@@ -56,13 +57,13 @@ const CheckoutMainView = () => {
                         )}
                     </ProgressStepLayout>
                 )}
-                {activeStep === 3 && (
+                {activeStep === CheckoutSteps.Summary && (
                     <SummaryStep
                         onContinueButtonClick={handleContinueButtonClicked}
                         onBackButtonClick={handleBackButtonClicked}
                     />
                 )}
-                {activeStep === 4 && <FinalizeStep />}
+                {activeStep === CheckoutSteps.Finalize && <FinalizeStep />}
             </Grid>
         </Grid>
     );

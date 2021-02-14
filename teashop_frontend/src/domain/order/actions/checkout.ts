@@ -28,5 +28,5 @@ export const decrementCheckoutStep = (): CheckoutActionTypes => ({
 });
 
 export const closeCheckout = (): CheckoutActionTypes => ({
-    type: DECREMENT_CHECKOUT_STEP,
+    type: CLOSE_CHECKOUT,
 });

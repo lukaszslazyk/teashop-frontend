@@ -5,13 +5,21 @@ import CheckoutMainView from "./components/CheckoutMainView";
 import useLogic from "./logic";
 
 const CheckoutPage = () => {
-    const { dataIsFetching, anyErrors, noErrors, getErrorMessage } = useLogic();
+    const {
+        orderMetaIsFetching,
+        orderMetaErrorOccurred,
+        getErrorMessage,
+    } = useLogic();
 
     return (
         <div>
-            {dataIsFetching() && <PageLoadingProgress />}
-            {anyErrors() && <ErrorInfo errorMessage={getErrorMessage()} />}
-            {noErrors() && <CheckoutMainView />}
+            {orderMetaIsFetching && <PageLoadingProgress />}
+            {!orderMetaIsFetching && orderMetaErrorOccurred && (
+                <ErrorInfo errorMessage={getErrorMessage()} />
+            )}
+            {!orderMetaIsFetching && !orderMetaErrorOccurred && (
+                <CheckoutMainView />
+            )}
         </div>
     );
 };

@@ -11,8 +11,8 @@ const CartButton = () => {
     const cartSize = useSelector(
         (state: RootState) => state.cart.cart.items.length
     );
-    const cartFetchedYet = useSelector(
-        (state: RootState) => state.cart.cartFetchedYet
+    const cartIsFetching = useSelector(
+        (state: RootState) => state.cart.cartIsFetching
     );
     const classes = useStyles();
 
@@ -22,7 +22,7 @@ const CartButton = () => {
             to={routing.cart}
             className={classes.iconButton}
         >
-            {!cartFetchedYet && (
+            {cartIsFetching && (
                 <Badge
                     badgeContent={
                         <CircularProgress
@@ -36,8 +36,8 @@ const CartButton = () => {
                     <ShoppingCartIcon />
                 </Badge>
             )}
-            {cartFetchedYet && cartSize === 0 && <ShoppingCartIcon />}
-            {cartFetchedYet && cartSize > 0 && (
+            {!cartIsFetching && cartSize === 0 && <ShoppingCartIcon />}
+            {!cartIsFetching && cartSize > 0 && (
                 <Badge badgeContent={cartSize} color="secondary">
                     <ShoppingCartIcon />
                 </Badge>

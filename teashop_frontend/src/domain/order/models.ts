@@ -85,3 +85,11 @@ export interface PaymentCardFormData {
     expirationDate: string;
     securityCode: string;
 }
+
+export enum CheckoutSteps {
+    Information,
+    Shipping,
+    Payment,
+    Summary,
+    Finalize,
+}
