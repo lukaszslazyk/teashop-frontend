@@ -7,7 +7,7 @@ import useLogic from "./logic";
 const CartPage = () => {
     const {
         cart,
-        cartFetchedYet,
+        cartIsFetching,
         cartUpdateIsSending,
         errorOccurred,
         getErrorMessage,
@@ -16,11 +16,11 @@ const CartPage = () => {
 
     return (
         <div>
-            {!cartFetchedYet && <PageLoadingProgress />}
-            {cartFetchedYet && !cartUpdateIsSending && errorOccurred && (
+            {cartIsFetching && <PageLoadingProgress />}
+            {!cartIsFetching && !cartUpdateIsSending && errorOccurred && (
                 <ErrorInfo errorMessage={getErrorMessage()} />
             )}
-            {cartFetchedYet && !errorOccurred && (
+            {!cartIsFetching && !errorOccurred && (
                 <div>
                     {cartIsEmpty() ? (
                         <ErrorInfo
