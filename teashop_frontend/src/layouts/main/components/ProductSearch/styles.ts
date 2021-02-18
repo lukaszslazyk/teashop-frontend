@@ -29,6 +29,9 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         searchFieldInputRoot: {
             color: "white",
+            "& input[type='search']::-webkit-search-cancel-button": {
+                display: "none",
+            },
         },
         searchFieldInput: {
             padding: theme.spacing(1),

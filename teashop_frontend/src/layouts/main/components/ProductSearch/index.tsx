@@ -37,6 +37,7 @@ const ProductSearch = (props: Props) => {
                 <SearchIcon />
             </div>
             <InputBase
+                type="search"
                 placeholder="Search..."
                 autoFocus
                 onBlur={handleSearchInputBlurred}
