@@ -38,7 +38,7 @@ const FinalizeStep = () => {
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="h4" align="center">
+                    <Typography className={classes.titleText}>
                         {orderFormIsSending && "Please wait"}
                         {!orderFormIsSending && errorOccurred && "Sorry :("}
                         {!orderFormIsSending &&
@@ -48,12 +48,12 @@ const FinalizeStep = () => {
                 </Grid>
                 <Grid item xs={12}>
                     {orderFormIsSending && (
-                        <Typography variant="h6" align="center">
+                        <Typography className={classes.secondaryText}>
                             We are processing your order
                         </Typography>
                     )}
                     {!orderFormIsSending && errorOccurred && (
-                        <Typography variant="h6" align="center">
+                        <Typography className={classes.secondaryText}>
                             We've encountered some issues while processing your
                             order.
                             <br />
@@ -64,12 +64,16 @@ const FinalizeStep = () => {
                         <Grid item xs={12}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" align="center">
+                                    <Typography
+                                        className={classes.secondaryText}
+                                    >
                                         Your order number is: {placedOrderNo}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" align="center">
+                                    <Typography
+                                        className={classes.secondaryText}
+                                    >
                                         You can see order details{" "}
                                         <Link
                                             to={orderDetailsRoutePath}

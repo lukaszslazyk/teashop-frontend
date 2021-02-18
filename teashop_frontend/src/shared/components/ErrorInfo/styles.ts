@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme: Theme) =>
                 letterSpacing: theme.typography.h4.letterSpacing,
             },
         },
-        lineText: {
+        secondaryText: {
             fontSize: theme.typography.h6.fontSize,
             fontWeight: theme.typography.h6.fontWeight,
             lineHeight: theme.typography.h6.lineHeight,
