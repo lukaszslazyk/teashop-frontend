@@ -12,14 +12,14 @@ interface Props {
 
 const RecommendedProductsCardGroup = (props: Props) => {
     const theme = useTheme();
-    const isMdScreen = useMediaQuery(theme.breakpoints.up("md"));
+    const isUpMdScreen = useMediaQuery(theme.breakpoints.up("md"));
     const classes = useStyles();
 
     return (
         <Grid
             container
-            justify={isMdScreen ? "space-between" : "center"}
-            spacing={isMdScreen ? 0 : 3}
+            justify={isUpMdScreen ? "space-between" : "center"}
+            spacing={isUpMdScreen ? 0 : 2}
         >
             {props.isPlaceholder &&
                 [...Array(props.numberOfPlaceholderCards)].map((_, index) => (

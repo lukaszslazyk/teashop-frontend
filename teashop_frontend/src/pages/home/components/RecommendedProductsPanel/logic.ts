@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 import {
@@ -7,7 +7,12 @@ import {
 } from "../../../../domain/product/actions";
 import { createRequestCancelToken } from "../../../../shared/services/requestCancelTokenService";
 
-const useLogic = () => {
+const recommendedCategoryName = "Recommended";
+
+const useLogic = (
+    numberOfProductsOnRegularScreen: number,
+    numberOfProductsOnXsScreen: number
+) => {
     const products = useSelector((state: RootState) => state.product.products);
     const productsAreFetching = useSelector(
         (state: RootState) => state.product.isFetching
@@ -17,18 +22,32 @@ const useLogic = () => {
     );
     const dispatch = useDispatch();
 
+    const numberOfProductsToFetch = useMemo((): number => {
+        if (numberOfProductsOnRegularScreen > numberOfProductsOnXsScreen)
+            return numberOfProductsOnRegularScreen;
+        return numberOfProductsOnXsScreen;
+    }, [numberOfProductsOnRegularScreen, numberOfProductsOnXsScreen]);
+
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchProductsInCategory("Recommended", 0, 5, cancelToken));
+        dispatch(
+            fetchProductsInCategory(
+                recommendedCategoryName,
+                0,
+                numberOfProductsToFetch,
+                cancelToken
+            )
+        );
         return () => {
             cancelToken.cancel();
             dispatch(clearProducts());
         };
-    }, [dispatch]);
+    }, [numberOfProductsToFetch, dispatch]);
 
     const anyErrors = () => errorOccurred || insufficientNumberOfProducts();
 
-    const insufficientNumberOfProducts = (): boolean => products.length < 5;
+    const insufficientNumberOfProducts = (): boolean =>
+        products.length < numberOfProductsToFetch;
 
     return {
         products,

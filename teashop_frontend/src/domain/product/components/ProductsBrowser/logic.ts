@@ -29,7 +29,7 @@ const useLogic = (
     const location = useLocation();
     const [pageNumber, setPageNumber] = useState(1);
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
     useEffect(() => {
         setPageNumber(1);
@@ -59,7 +59,7 @@ const useLogic = (
         pagesInTotal,
         productsAreFetching,
         pageNumber,
-        isMobile,
+        isXsScreen,
         anyErrors,
         shouldDisplaySuppliedHeader,
         shouldDisplaySortOptionSelect,

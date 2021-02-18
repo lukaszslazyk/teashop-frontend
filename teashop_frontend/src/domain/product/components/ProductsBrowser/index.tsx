@@ -2,8 +2,8 @@ import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
 import React, { ReactNode } from "react";
 import ErrorInfo from "../../../../shared/components/ErrorInfo";
-import ProductCardGroup from "../ProductCardGroup";
 import ProductSortOptionSelect from "../ProductSortOptionSelect";
+import ResponsiveProductCardGroup from "../ResponsiveProductCardGroup";
 import useLogic from "./logic";
 import useStyles from "./styles";
 
@@ -21,7 +21,7 @@ const ProductsBrowser = (props: Props) => {
         pagesInTotal,
         productsAreFetching,
         pageNumber,
-        isMobile,
+        isXsScreen,
         anyErrors,
         shouldDisplaySuppliedHeader,
         shouldDisplaySortOptionSelect,
@@ -48,7 +48,7 @@ const ProductsBrowser = (props: Props) => {
             </Grid>
             {productsAreFetching && (
                 <Grid item xs={12}>
-                    <ProductCardGroup
+                    <ResponsiveProductCardGroup
                         isPlaceholder
                         numberOfPlaceholderCards={props.productsPageSize}
                     />
@@ -59,7 +59,7 @@ const ProductsBrowser = (props: Props) => {
             )}
             {!productsAreFetching && !anyErrors() && (
                 <Grid item xs={12}>
-                    <ProductCardGroup products={products} />
+                    <ResponsiveProductCardGroup products={products} />
                 </Grid>
             )}
             {shouldDisplayPagination() && (
@@ -70,7 +70,7 @@ const ProductsBrowser = (props: Props) => {
                         onChange={handlePaginationChange}
                         disabled={productsAreFetching}
                         color="primary"
-                        size={isMobile ? "medium" : "large"}
+                        size={isXsScreen ? "medium" : "large"}
                     />
                 </Grid>
             )}

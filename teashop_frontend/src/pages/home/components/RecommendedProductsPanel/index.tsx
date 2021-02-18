@@ -5,11 +5,20 @@ import RecommendedProductsCardGroup from "../RecommendedProductsCardGroup";
 import useLogic from "./logic";
 import useStyles from "./styles";
 
+const numberOfProductsOnRegularScreen = 5;
+const numberOfProductsOnXsScreen = 4;
+
 const RecommendedProductsPanel = () => {
-    const { products, productsAreFetching, anyErrors } = useLogic();
+    const { products, productsAreFetching, anyErrors } = useLogic(
+        numberOfProductsOnRegularScreen,
+        numberOfProductsOnXsScreen
+    );
     const classes = useStyles();
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
+    const numberOfProductsToDisplay = isXsScreen
+        ? numberOfProductsOnXsScreen
+        : numberOfProductsOnRegularScreen;
 
     return (
         <Grid container spacing={2}>
@@ -37,10 +46,12 @@ const RecommendedProductsPanel = () => {
                 {productsAreFetching || anyErrors() ? (
                     <RecommendedProductsCardGroup
                         isPlaceholder
-                        numberOfPlaceholderCards={5}
+                        numberOfPlaceholderCards={numberOfProductsToDisplay}
                     />
                 ) : (
-                    <RecommendedProductsCardGroup products={products} />
+                    <RecommendedProductsCardGroup
+                        products={products.slice(0, numberOfProductsToDisplay)}
+                    />
                 )}
             </Grid>
         </Grid>
