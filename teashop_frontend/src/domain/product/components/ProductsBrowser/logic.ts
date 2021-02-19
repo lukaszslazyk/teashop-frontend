@@ -50,7 +50,7 @@ const useLogic = (
         productsAreFetching || (!productsAreFetching && !anyErrors());
 
     const shouldDisplaySortOptionSelect = () =>
-        productsAreFetching || !anyErrors();
+        productsAreFetching || (!anyErrors() && products.length !== 0);
 
     const shouldDisplayPagination = () => !anyErrors() && products.length !== 0;
 

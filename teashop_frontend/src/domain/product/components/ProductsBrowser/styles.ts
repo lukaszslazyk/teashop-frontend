@@ -14,7 +14,12 @@ const useStyles = makeStyles((theme: Theme) =>
             marginTop: theme.spacing(3),
         },
         sortOptionSelectContainer: {
+            alignSelf: "start",
             minWidth: 175,
+            marginBottom: theme.spacing(1),
+            [theme.breakpoints.down("xs")]: {
+                width: "100%",
+            },
         },
     })
 );

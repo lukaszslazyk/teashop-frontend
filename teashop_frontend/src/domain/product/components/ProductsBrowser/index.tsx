@@ -32,7 +32,13 @@ const ProductsBrowser = (props: Props) => {
 
     return (
         <Grid container justify="center">
-            <Grid item xs={12} container className={classes.header}>
+            <Grid
+                item
+                xs={12}
+                container
+                className={classes.header}
+                alignItems="center"
+            >
                 {shouldDisplaySuppliedHeader() && (
                     <Grid item className={classes.suppliedHeader}>
                         {props.headerComponent}
