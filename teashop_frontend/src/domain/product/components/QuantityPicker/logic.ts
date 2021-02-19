@@ -40,8 +40,11 @@ const useLogic = (
     };
 
     const handleSubtractClicked = () => {
-        setQuantityText((Number(quantityText) - step).toString());
-        onQuantityChange(Number(quantityText) - step, true);
+        let newQuantity = Number(quantityText) - step;
+        if (newQuantity < lowThreshold)
+            newQuantity = lowThreshold;
+        setQuantityText(newQuantity.toString());
+        onQuantityChange(newQuantity, true);
     };
 
     const hasError = (): boolean => errorText !== "";
