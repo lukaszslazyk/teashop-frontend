@@ -43,13 +43,13 @@ export interface OrderState {
     paymentFee: number;
     orderPlaced: boolean;
     placedOrderId: string;
-    placedOrderNo: number;
+    placedOrderNumber: number;
     checkoutStep: number;
 }
 
 const initialState: OrderState = {
     order: {
-        orderNo: 0,
+        orderNumber: 0,
         placementDate: new Date(),
         contactInfo: {
             email: "",
@@ -156,7 +156,7 @@ const initialState: OrderState = {
     paymentFee: 0,
     orderPlaced: false,
     placedOrderId: "",
-    placedOrderNo: 0,
+    placedOrderNumber: 0,
     checkoutStep: 0,
 };
 
@@ -234,9 +234,9 @@ export const orderReducer = (
                 placedOrderId: action.orderId
                     ? action.orderId
                     : initialState.placedOrderId,
-                placedOrderNo: action.orderNo
-                    ? action.orderNo
-                    : initialState.placedOrderNo,
+                placedOrderNumber: action.orderNumber
+                    ? action.orderNumber
+                    : initialState.placedOrderNumber,
             };
             if (!action.errorOccurred) {
                 receivePlaceOrderState = {

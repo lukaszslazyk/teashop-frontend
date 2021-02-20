@@ -24,8 +24,8 @@ const useLogic = () => {
     const placedOrderId = useSelector(
         (state: RootState) => state.order.placedOrderId
     );
-    const placedOrderNo = useSelector(
-        (state: RootState) => state.order.placedOrderNo
+    const placedOrderNumber = useSelector(
+        (state: RootState) => state.order.placedOrderNumber
     );
     const dispatch = useDispatch();
     const [requestWasSent, setRequestWasSent] = useState(false);
@@ -54,7 +54,7 @@ const useLogic = () => {
         requestWasSent,
         orderFormIsSending,
         errorOccurred,
-        placedOrderNo,
+        placedOrderNumber,
         orderDetailsRoutePath,
     };
 };

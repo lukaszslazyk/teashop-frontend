@@ -12,7 +12,7 @@ const FinalizeStep = () => {
         requestWasSent,
         orderFormIsSending,
         errorOccurred,
-        placedOrderNo,
+        placedOrderNumber,
         orderDetailsRoutePath,
     } = useLogic();
     const classes = useStyles();
@@ -67,7 +67,7 @@ const FinalizeStep = () => {
                                     <Typography
                                         className={classes.secondaryText}
                                     >
-                                        Your order number is: {placedOrderNo}
+                                        Your order number is: {placedOrderNumber}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>

@@ -23,7 +23,7 @@ interface RequestPlaceOrderAction {
 interface ReceivePlaceOrderAction {
     type: typeof RECEIVE_PLACE_ORDER;
     orderId: string | null;
-    orderNo: number | null;
+    orderNumber: number | null;
     errorOccurred: boolean;
     errorType: ApiErrorType;
 }
@@ -46,13 +46,13 @@ export const requestPlaceOrder = (): OrderFormActionTypes => ({
 
 export const receivePlaceOrder = (
     orderId: string | null,
-    orderNo: number | null,
+    orderNumber: number | null,
     errorOccurred: boolean = false,
     errorType: ApiErrorType = ApiErrorType.None
 ): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
     orderId: orderId,
-    orderNo: orderNo,
+    orderNumber: orderNumber,
     errorOccurred: errorOccurred,
     errorType: errorType,
 });
@@ -62,7 +62,7 @@ export const receivePlaceOrderError = (
 ): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
     orderId: null,
-    orderNo: null,
+    orderNumber: null,
     errorOccurred: true,
     errorType: errorType,
 });
@@ -94,7 +94,7 @@ export const placeOrder = (
         .then(response => {
             dispatch(clearCart());
             dispatch(
-                receivePlaceOrder(response.data.orderId, response.data.orderNo)
+                receivePlaceOrder(response.data.orderId, response.data.orderNumber)
             );
         })
         .catch(error => {
