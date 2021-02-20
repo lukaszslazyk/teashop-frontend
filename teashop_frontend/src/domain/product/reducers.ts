@@ -5,10 +5,10 @@ import {
     ProductActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
-    RECEIVE_PRODUCT_BY_ID,
+    RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
     REQUEST_PRODUCTS_IN_CATEGORY,
     REQUEST_PRODUCTS_WITH_SEARCH_PHRASE,
-    REQUEST_PRODUCT_BY_ID,
+    REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
 } from "./actions";
 import { Product, productsSortOptions } from "./models";
 
@@ -41,7 +41,7 @@ export const productReducer = (
     switch (action.type) {
         case REQUEST_PRODUCTS_IN_CATEGORY:
         case REQUEST_PRODUCTS_WITH_SEARCH_PHRASE:
-        case REQUEST_PRODUCT_BY_ID:
+        case REQUEST_PRODUCT_BY_PRODUCT_NUMBER:
             return {
                 ...state,
                 isFetching: true,
@@ -67,7 +67,7 @@ export const productReducer = (
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
             };
-        case RECEIVE_PRODUCT_BY_ID:
+        case RECEIVE_PRODUCT_BY_PRODUCT_NUMBER:
             return {
                 ...state,
                 isFetching: false,

@@ -7,7 +7,7 @@ export interface SearchResultsPageParams {
 }
 
 export interface ProductDetailsPageParams {
-    productId: string;
+    productNumber: string;
 }
 
 export interface OrderDetailsPageParams {
@@ -36,9 +36,9 @@ const routing = {
         },
     },
     productDetails: {
-        pathPattern: "/products/:productId",
+        pathPattern: "/products/:productNumber",
         getPathWithParams: (params: ProductDetailsPageParams) =>
-            `/products/${params.productId}`,
+            `/products/${params.productNumber}`,
     },
     cart: "/cart",
     checkout: "/checkout",

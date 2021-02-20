@@ -65,7 +65,7 @@ const OrderItemsList = (props: Props) => {
                                     variant="body1"
                                     component={Link}
                                     to={routing.productDetails.getPathWithParams({
-                                        productId: item.product.id,
+                                        productNumber: item.product.productNumber.toString(),
                                     })}
                                     className={classes.productNameText}
                                 >

@@ -55,7 +55,7 @@ const CartItemListElement = (props: Props) => {
                             variant="h6"
                             component={Link}
                             to={routing.productDetails.getPathWithParams({
-                                productId: props.cartItem.product.id,
+                                productNumber: props.cartItem.product.productNumber.toString(),
                             })}
                             className={classes.productNameText}
                         >

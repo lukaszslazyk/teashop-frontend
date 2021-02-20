@@ -2,6 +2,7 @@ import { Dictionary } from "../../shared/types";
 
 export interface Product {
     id: string;
+    productNumber: number;
     name: string;
     price: number;
     quantityPerPrice: number;

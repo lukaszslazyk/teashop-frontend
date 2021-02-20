@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { ProductDetailsPageParams } from "../../configuration/routing";
-import { fetchProductById } from "../../domain/product/actions";
+import { fetchProductByProductNumber } from "../../domain/product/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -19,13 +19,13 @@ const useLogic = () => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
-    const { productId } = useParams<ProductDetailsPageParams>();
+    const { productNumber } = useParams<ProductDetailsPageParams>();
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchProductById(productId, cancelToken));
+        dispatch(fetchProductByProductNumber(productNumber, cancelToken));
         return () => cancelToken.cancel();
-    }, [productId, dispatch]);
+    }, [productNumber, dispatch]);
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.NotFound)

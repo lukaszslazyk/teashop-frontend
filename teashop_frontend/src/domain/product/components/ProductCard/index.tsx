@@ -38,7 +38,7 @@ const ProductCard = (props: Props) => {
         if (product)
             history.push(
                 routing.productDetails.getPathWithParams({
-                    productId: product.id,
+                    productNumber: product.productNumber.toString(),
                 })
             );
     };

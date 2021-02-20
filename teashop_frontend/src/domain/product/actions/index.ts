@@ -4,11 +4,11 @@ import {
     clearProducts,
 } from "./clearProducts";
 import {
-    FetchProductByIdActionTypes,
-    RECEIVE_PRODUCT_BY_ID,
-    REQUEST_PRODUCT_BY_ID,
-    fetchProductById,
-} from "./fetchProductById";
+    FetchProductByProductNumberActionTypes,
+    REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
+    RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
+    fetchProductByProductNumber,
+} from "./fetchProductByProductNumber";
 import {
     FetchProductsInCategoryActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
@@ -30,7 +30,7 @@ import {
 export {
     fetchProductsInCategory,
     fetchProductsWithSearchPhrase,
-    fetchProductById,
+    fetchProductByProductNumber,
     clearProducts,
     chooseSortOption,
 };
@@ -40,8 +40,8 @@ export {
     RECEIVE_PRODUCTS_IN_CATEGORY,
     REQUEST_PRODUCTS_WITH_SEARCH_PHRASE,
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
-    REQUEST_PRODUCT_BY_ID,
-    RECEIVE_PRODUCT_BY_ID,
+    REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
+    RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
     CLEAR_PRODUCTS,
     CHOOSE_SORT_OPTION,
 };
@@ -49,6 +49,6 @@ export {
 export type ProductActionTypes =
     | FetchProductsInCategoryActionTypes
     | FetchProductsWithSearchPhraseActionTypes
-    | FetchProductByIdActionTypes
+    | FetchProductByProductNumberActionTypes
     | ClearProductsActionTypes
     | SortOptionsActionTypes;
