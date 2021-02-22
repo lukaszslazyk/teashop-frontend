@@ -5,12 +5,13 @@ import ProductCard from "../ProductCard";
 
 interface Props {
     products?: Product[];
+    isMobile?: boolean;
     isPlaceholder?: boolean;
     numberOfPlaceholderCards?: number;
 }
 
 const ProductCardGroup = (props: Props) => (
-    <Grid container spacing={3} justify="center">
+    <Grid container spacing={props.isMobile ? 2 : 3} justify="center">
         {props.isPlaceholder &&
             [...Array(props.numberOfPlaceholderCards)].map((_, index) => (
                 <Grid item xs={6} sm={4} md={3} key={index}>

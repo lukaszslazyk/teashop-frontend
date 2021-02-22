@@ -2,7 +2,6 @@ import { Hidden } from "@material-ui/core";
 import React from "react";
 import { Product } from "../../models";
 import ProductCardGroup from "../ProductCardGroup";
-import ProductCardGroupForMobile from "../ProductCardGroupForMobile";
 
 interface Props {
     products?: Product[];
@@ -20,7 +19,8 @@ const ResponsiveProductCardGroup = (props: Props) => (
             />
         </Hidden>
         <Hidden smUp>
-            <ProductCardGroupForMobile
+            <ProductCardGroup
+                isMobile
                 products={props.products}
                 isPlaceholder={props.isPlaceholder}
                 numberOfPlaceholderCards={props.numberOfPlaceholderCards}
