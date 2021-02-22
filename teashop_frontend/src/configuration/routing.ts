@@ -1,25 +1,29 @@
-export interface BrowseCategoryPageParams {
-    categoryName: string | undefined;
+export interface BrowseCategoryPagePathParams {
+    categoryName: string;
 }
 
-export interface SearchResultsPageParams {
-    phrase: string;
-}
-
-export interface ProductDetailsPageParams {
+export interface ProductDetailsPagePathParams {
     productNumber: string;
 }
 
-export interface OrderDetailsPageParams {
+export interface OrderDetailsPagePathParams {
     orderId: string;
+}
+
+export interface SearchResultsPageQueryParams {
+    phrase: string;
+}
+
+export enum SearchResultsPageQueryParamKeys {
+    Phrase = "phrase",
 }
 
 const routing = {
     home: "/",
     browseCategory: {
-        pathPattern: "/browse/:categoryName?",
-        getPathWithParams: (params: BrowseCategoryPageParams) =>
-            `/browse/${params.categoryName}`,
+        pathPattern: "/browse/:categoryName",
+        getPathWithParams: (pathParams: BrowseCategoryPagePathParams) =>
+            `/browse/${pathParams.categoryName}`,
     },
     browseGreenTea: "/browse/GreenTea",
     browseBlackTea: "/browse/BlackTea",
@@ -29,24 +33,28 @@ const routing = {
     browseAccessories: "/browse/Accessories",
     searchResults: {
         pathPattern: "/search",
-        getPathWithParams: (params: SearchResultsPageParams) => {
-            const queryParams = new URLSearchParams();
-            queryParams.set("phrase", params.phrase);
-            return `/search?${queryParams.toString()}`;
-        },
+        getPathWithParams: (queryParams: SearchResultsPageQueryParams) =>
+            `/search?${mapToQueryParamsURLPart(queryParams)}`,
     },
     productDetails: {
         pathPattern: "/products/:productNumber",
-        getPathWithParams: (params: ProductDetailsPageParams) =>
-            `/products/${params.productNumber}`,
+        getPathWithParams: (pathParams: ProductDetailsPagePathParams) =>
+            `/products/${pathParams.productNumber}`,
     },
     cart: "/cart",
     checkout: "/checkout",
     orderDetails: {
         pathPattern: "/orders/:orderId",
-        getPathWithParams: (params: OrderDetailsPageParams) =>
-            `/orders/${params.orderId}`,
+        getPathWithParams: (pathParams: OrderDetailsPagePathParams) =>
+            `/orders/${pathParams.orderId}`,
     },
+};
+
+const mapToQueryParamsURLPart = (queryParams: any) => {
+    const builder = new URLSearchParams();
+    Object.keys(queryParams).map(key => builder.set(key, queryParams[key]));
+
+    return builder.toString();
 };
 
 export default routing;

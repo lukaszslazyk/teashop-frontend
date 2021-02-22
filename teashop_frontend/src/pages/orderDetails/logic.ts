@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { OrderDetailsPageParams } from "../../configuration/routing";
+import { OrderDetailsPagePathParams } from "../../configuration/routing";
 import { fetchOrder } from "../../domain/order/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
@@ -19,7 +19,7 @@ const useLogic = () => {
         (state: RootState) => state.order.orderErrorType
     );
     const dispatch = useDispatch();
-    const { orderId } = useParams<OrderDetailsPageParams>();
+    const { orderId } = useParams<OrderDetailsPagePathParams>();
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();

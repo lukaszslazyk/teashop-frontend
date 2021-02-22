@@ -1,8 +1,8 @@
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { BrowseCategoryPageParams } from "../../configuration/routing";
+import { BrowseCategoryPagePathParams } from "../../configuration/routing";
 import {
     clearProducts,
     fetchProductsInCategory,
@@ -23,23 +23,17 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
-    const { categoryName } = useParams<BrowseCategoryPageParams>();
+    const { categoryName } = useParams<BrowseCategoryPagePathParams>();
     const categoryDisplayName = categoryName
         ? getDisplayNameFor(categoryName)
         : "";
 
-    const categoryNameValid = useCallback(
-        (): boolean => categoryName !== undefined,
-        [categoryName]
-    );
-
     const categoryExists = () =>
-        categoryNameValid() &&
         !(errorOccurred && errorType === ApiErrorType.InvalidResponse);
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (categoryName && categoryNameValid())
+        if (categoryName)
             dispatch(
                 fetchProductsInCategory(
                     categoryName,
@@ -53,13 +47,7 @@ const useLogic = (productsPageSize: number) => {
             cancelToken.cancel();
             dispatch(clearProducts());
         };
-    }, [
-        categoryName,
-        productsPageSize,
-        chosenSortOptionName,
-        categoryNameValid,
-        dispatch,
-    ]);
+    }, [categoryName, productsPageSize, chosenSortOptionName, dispatch]);
 
     const handlePaginationChange = (pageNumber: number) => {
         if (categoryName)

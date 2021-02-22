@@ -1,11 +1,12 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
+import { SearchResultsPageQueryParamKeys } from "../../configuration/routing";
 import {
     clearProducts,
     fetchProductsWithSearchPhrase,
 } from "../../domain/product/actions";
+import useQueryParams from "../../shared/hooks/useQueryParams";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -20,14 +21,12 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
-    const location = useLocation();
-    const searchPhrase = new URLSearchParams(location.search).get("phrase");
+    const queryParams = useQueryParams();
+    const searchPhrase = queryParams.get(SearchResultsPageQueryParamKeys.Phrase);
 
     const searchPhraseValid = useCallback(
         (): boolean =>
-            searchPhrase === undefined ||
-            searchPhrase === null ||
-            searchPhrase.trim().length === 0,
+            searchPhrase === null || searchPhrase.trim().length === 0,
         [searchPhrase]
     );
 
