@@ -22,6 +22,12 @@ import {
     fetchProductsWithSearchPhrase,
 } from "./fetchProductsWithSearchPhrase";
 import {
+    FetchRecommendedProductsActionTypes,
+    REQUEST_RECOMMENDED_PRODUCTS,
+    RECEIVE_RECOMMENDED_PRODUCTS,
+    fetchRecommendedProducts,
+} from "./fetchRecommendedProducts";
+import {
     SortOptionsActionTypes,
     CHOOSE_SORT_OPTION,
     chooseSortOption,
@@ -29,6 +35,7 @@ import {
 
 export {
     fetchProductsInCategory,
+    fetchRecommendedProducts,
     fetchProductsWithSearchPhrase,
     fetchProductByProductNumber,
     clearProducts,
@@ -38,6 +45,8 @@ export {
 export {
     REQUEST_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_IN_CATEGORY,
+    REQUEST_RECOMMENDED_PRODUCTS,
+    RECEIVE_RECOMMENDED_PRODUCTS,
     REQUEST_PRODUCTS_WITH_SEARCH_PHRASE,
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
     REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
@@ -48,6 +57,7 @@ export {
 
 export type ProductActionTypes =
     | FetchProductsInCategoryActionTypes
+    | FetchRecommendedProductsActionTypes
     | FetchProductsWithSearchPhraseActionTypes
     | FetchProductByProductNumberActionTypes
     | ClearProductsActionTypes

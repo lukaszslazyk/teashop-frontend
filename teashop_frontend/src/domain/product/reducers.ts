@@ -6,14 +6,17 @@ import {
     RECEIVE_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
     RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
+    RECEIVE_RECOMMENDED_PRODUCTS,
     REQUEST_PRODUCTS_IN_CATEGORY,
     REQUEST_PRODUCTS_WITH_SEARCH_PHRASE,
     REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
+    REQUEST_RECOMMENDED_PRODUCTS,
 } from "./actions";
 import { Product, productsSortOptions } from "./models";
 
 export interface ProductState {
     products: Product[];
+    recommendedProducts: Product[];
     product: Product | null;
     pagesInTotal: number;
     totalCount: number;
@@ -25,6 +28,7 @@ export interface ProductState {
 
 const initialState: ProductState = {
     products: [],
+    recommendedProducts: [],
     product: null,
     pagesInTotal: 0,
     totalCount: 0,
@@ -40,6 +44,7 @@ export const productReducer = (
 ): ProductState => {
     switch (action.type) {
         case REQUEST_PRODUCTS_IN_CATEGORY:
+        case REQUEST_RECOMMENDED_PRODUCTS:
         case REQUEST_PRODUCTS_WITH_SEARCH_PHRASE:
         case REQUEST_PRODUCT_BY_PRODUCT_NUMBER:
             return {
@@ -57,6 +62,19 @@ export const productReducer = (
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
             };
+        case RECEIVE_RECOMMENDED_PRODUCTS:
+            let receiveRecommendedProductsState = {
+                ...state,
+                isFetching: false,
+                errorOccurred: action.errorOccurred,
+                errorType: action.errorType,
+            };
+            if (!action.errorOccurred)
+                receiveRecommendedProductsState = {
+                    ...receiveRecommendedProductsState,
+                    recommendedProducts: action.products,
+                };
+            return receiveRecommendedProductsState;
         case RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE:
             return {
                 ...state,

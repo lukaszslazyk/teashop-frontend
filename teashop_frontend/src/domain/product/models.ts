@@ -24,6 +24,8 @@ export interface SortOption {
     displayName: string;
 }
 
+export const recommendedProductsCategoryName = "Recommended";
+
 export const knownCategoryNamesToDisplayNames: Dictionary<string> = {
     GreenTea: "Green tea",
     BlackTea: "Black tea",
