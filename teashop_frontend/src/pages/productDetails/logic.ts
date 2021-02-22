@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
@@ -21,11 +21,17 @@ const useLogic = () => {
     const dispatch = useDispatch();
     const { productNumber } = useParams<ProductDetailsPageParams>();
 
+    const shouldFetchProduct = useCallback(
+        () => !product || productNumber !== product.productNumber.toString(),
+        [product, productNumber]
+    );
+
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchProductByProductNumber(productNumber, cancelToken));
+        if (shouldFetchProduct())
+            dispatch(fetchProductByProductNumber(productNumber, cancelToken));
         return () => cancelToken.cancel();
-    }, [productNumber, dispatch]);
+    }, [productNumber, shouldFetchProduct, dispatch]);
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.NotFound)
