@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router";
+import { useHistory, useLocation, useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import routing, {
     BrowseCategoryPagePathParams,
@@ -23,6 +23,14 @@ const isKnownSortOptionName = (sortOptionName: string) =>
     productsSortOptions.find(o => o.displayName === sortOptionName) !==
     undefined;
 
+const getPageIndexFrom = (page: string | null) =>
+    page && pageIsValid(page) ? Number(page) - 1 : 0;
+
+const getSortOptionNameFrom = (
+    orderBy: string | null,
+    chosenSortOptionName: string
+) => (orderBy && orderByIsValid(orderBy) ? orderBy : chosenSortOptionName);
+
 const useLogic = (productsPageSize: number) => {
     const products = useSelector((state: RootState) => state.product.products);
     const chosenSortOptionName = useSelector(
@@ -34,30 +42,41 @@ const useLogic = (productsPageSize: number) => {
     const errorType = useSelector(
         (state: RootState) => state.product.errorType
     );
+    const lastSuccessfullyFetchedProductsUrl = useSelector(
+        (state: RootState) => state.product.lastSuccessfullyFetchedProductsUrl
+    );
     const dispatch = useDispatch();
+    const location = useLocation();
     const history = useHistory();
     const queryParams = useQueryParams();
     const { categoryName } = useParams<BrowseCategoryPagePathParams>();
     const page = queryParams.get(BrowseCategoryPageQueryParamKeys.Page);
     const orderBy = queryParams.get(BrowseCategoryPageQueryParamKeys.OrderBy);
-    const pageIndex = page && pageIsValid(page) ? Number(page) - 1 : 0;
-    const sortOptionName =
-        orderBy && orderByIsValid(orderBy) ? orderBy : chosenSortOptionName;
+    const pageIndex = getPageIndexFrom(page);
+    const sortOptionName = getSortOptionNameFrom(orderBy, chosenSortOptionName);
 
     const paramsAreValid = useCallback(
         () => pageIsValid(page) && orderByIsValid(sortOptionName),
         [page, sortOptionName]
     );
 
+    const productsWasAlreadyFetched = useCallback(
+        () =>
+            location.pathname + location.search ===
+            lastSuccessfullyFetchedProductsUrl,
+        [location, lastSuccessfullyFetchedProductsUrl]
+    );
+
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (paramsAreValid())
+        if (paramsAreValid() && !productsWasAlreadyFetched())
             dispatch(
                 fetchProductsInCategory(
                     categoryName,
                     pageIndex,
                     productsPageSize,
                     cancelToken,
+                    location.pathname + location.search,
                     sortOptionName
                 )
             );
@@ -67,7 +86,9 @@ const useLogic = (productsPageSize: number) => {
         pageIndex,
         productsPageSize,
         sortOptionName,
+        location,
         paramsAreValid,
+        productsWasAlreadyFetched,
         dispatch,
     ]);
 

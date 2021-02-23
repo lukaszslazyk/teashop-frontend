@@ -26,7 +26,7 @@ const ProductSortOptionSelect = (props: Props) => {
     const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         dispatch(chooseSortOption(event.target.value as string));
         props.onSortOptionChange(event.target.value as string);
-    }      
+    };
 
     return (
         <FormControl className={classes.root} disabled={props.disabled}>

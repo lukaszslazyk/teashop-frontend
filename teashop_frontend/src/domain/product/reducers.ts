@@ -1,7 +1,6 @@
 import { ApiErrorType } from "../../shared/types";
 import {
     CHOOSE_SORT_OPTION,
-    CLEAR_PRODUCTS,
     ProductActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
@@ -24,6 +23,7 @@ export interface ProductState {
     errorOccurred: boolean;
     errorType: ApiErrorType;
     chosenSortOptionName: string;
+    lastSuccessfullyFetchedProductsUrl: string;
 }
 
 const initialState: ProductState = {
@@ -36,6 +36,7 @@ const initialState: ProductState = {
     errorOccurred: false,
     errorType: ApiErrorType.None,
     chosenSortOptionName: productsSortOptions[0].name,
+    lastSuccessfullyFetchedProductsUrl: "",
 };
 
 export const productReducer = (
@@ -71,6 +72,11 @@ export const productReducer = (
                     ...receiveProductsInCategoryState,
                     chosenSortOptionName: action.sortOptionName,
                 };
+            if (!action.errorOccurred)
+                receiveProductsInCategoryState = {
+                    ...receiveProductsInCategoryState,
+                    lastSuccessfullyFetchedProductsUrl: action.url,
+                };
             return receiveProductsInCategoryState;
         case RECEIVE_RECOMMENDED_PRODUCTS:
             let receiveRecommendedProductsState = {
@@ -86,7 +92,7 @@ export const productReducer = (
                 };
             return receiveRecommendedProductsState;
         case RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE:
-            return {
+            let receiveProductsWithSearchPhraseState = {
                 ...state,
                 isFetching: false,
                 products: action.products,
@@ -95,6 +101,12 @@ export const productReducer = (
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
             };
+            if (!action.errorOccurred)
+                receiveProductsWithSearchPhraseState = {
+                    ...receiveProductsWithSearchPhraseState,
+                    lastSuccessfullyFetchedProductsUrl: action.url,
+                };
+            return receiveProductsWithSearchPhraseState;
         case RECEIVE_PRODUCT_BY_PRODUCT_NUMBER:
             return {
                 ...state,
@@ -102,11 +114,6 @@ export const productReducer = (
                 product: action.product,
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
-            };
-        case CLEAR_PRODUCTS:
-            return {
-                ...state,
-                products: [],
             };
         case CHOOSE_SORT_OPTION:
             return {

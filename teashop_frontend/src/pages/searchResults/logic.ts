@@ -24,6 +24,14 @@ const isKnownSortOptionName = (sortOptionName: string) =>
     productsSortOptions.find(o => o.displayName === sortOptionName) !==
     undefined;
 
+const getPageIndexFrom = (page: string | null) =>
+    page && pageIsValid(page) ? Number(page) - 1 : 0;
+
+const getSortOptionNameFrom = (
+    orderBy: string | null,
+    chosenSortOptionName: string
+) => (orderBy && orderByIsValid(orderBy) ? orderBy : chosenSortOptionName);
+
 const useLogic = (productsPageSize: number) => {
     const chosenSortOptionName = useSelector(
         (state: RootState) => state.product.chosenSortOptionName
@@ -42,9 +50,8 @@ const useLogic = (productsPageSize: number) => {
     );
     const page = queryParams.get(SearchResultsPageQueryParamKeys.Page);
     const orderBy = queryParams.get(SearchResultsPageQueryParamKeys.OrderBy);
-    const pageIndex = page && pageIsValid(page) ? Number(page) - 1 : 0;
-    const sortOptionName =
-        orderBy && orderByIsValid(orderBy) ? orderBy : chosenSortOptionName;
+    const pageIndex = getPageIndexFrom(page);
+    const sortOptionName = getSortOptionNameFrom(orderBy, chosenSortOptionName);
 
     const paramsAreValid = useCallback(
         () =>

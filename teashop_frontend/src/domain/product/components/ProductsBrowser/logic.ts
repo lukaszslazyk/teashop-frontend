@@ -25,8 +25,6 @@ const useLogic = (
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-    useEffect(() => scrollToTop(), []);
-
     useEffect(() => {
         if (productsAreFetching)
             scrollToTop();

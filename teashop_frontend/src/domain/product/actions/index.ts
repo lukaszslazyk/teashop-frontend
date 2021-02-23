@@ -1,9 +1,4 @@
 import {
-    ClearProductsActionTypes,
-    CLEAR_PRODUCTS,
-    clearProducts,
-} from "./clearProducts";
-import {
     FetchProductByProductNumberActionTypes,
     REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
     RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
@@ -38,7 +33,6 @@ export {
     fetchRecommendedProducts,
     fetchProductsWithSearchPhrase,
     fetchProductByProductNumber,
-    clearProducts,
     chooseSortOption,
 };
 
@@ -51,7 +45,6 @@ export {
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
     REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
     RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
-    CLEAR_PRODUCTS,
     CHOOSE_SORT_OPTION,
 };
 
@@ -60,5 +53,4 @@ export type ProductActionTypes =
     | FetchRecommendedProductsActionTypes
     | FetchProductsWithSearchPhraseActionTypes
     | FetchProductByProductNumberActionTypes
-    | ClearProductsActionTypes
     | SortOptionsActionTypes;
