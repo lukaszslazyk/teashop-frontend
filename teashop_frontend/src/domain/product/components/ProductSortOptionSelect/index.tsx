@@ -13,6 +13,7 @@ import useStyles from "./styles";
 
 interface Props {
     disabled: boolean;
+    onSortOptionChange: (sortOptionName: string) => void;
 }
 
 const ProductSortOptionSelect = (props: Props) => {
@@ -22,8 +23,10 @@ const ProductSortOptionSelect = (props: Props) => {
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) =>
+    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         dispatch(chooseSortOption(event.target.value as string));
+        props.onSortOptionChange(event.target.value as string);
+    }      
 
     return (
         <FormControl className={classes.root} disabled={props.disabled}>

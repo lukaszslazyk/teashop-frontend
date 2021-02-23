@@ -9,21 +9,26 @@ const PRODUCTS_PAGE_SIZE = 12;
 const BrowseCategoryPage = () => {
     const {
         categoryDisplayName,
+        pageIndex,
         handlePaginationChange,
+        handleSortOptionChange,
+        paramsAreValid,
         categoryExists,
         categoryIsEmpty,
         getErrorMessage,
     } = useLogic(PRODUCTS_PAGE_SIZE);
 
-    if (!categoryExists())
+    if (!paramsAreValid() || !categoryExists())
         return <NotFoundPage />;
 
     return (
         <ProductsBrowser
+            pageIndex={pageIndex}
             productsPageSize={PRODUCTS_PAGE_SIZE}
             customErrorOcurred={categoryIsEmpty()}
             errorMessage={getErrorMessage()}
             onPaginationChange={handlePaginationChange}
+            onSortOptionChange={handleSortOptionChange}
             headerComponent={
                 <Typography variant="h4" color="primary">
                     {categoryDisplayName}

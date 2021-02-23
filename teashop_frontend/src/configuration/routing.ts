@@ -2,6 +2,28 @@ export interface BrowseCategoryPagePathParams {
     categoryName: string;
 }
 
+export interface BrowseCategoryPageQueryParams {
+    page?: string;
+    orderBy?: string;
+}
+
+export enum BrowseCategoryPageQueryParamKeys {
+    Page = "page",
+    OrderBy = "orderBy",
+}
+
+export interface SearchResultsPageQueryParams {
+    phrase: string;
+    page?: string;
+    orderBy?: string;
+}
+
+export enum SearchResultsPageQueryParamKeys {
+    Phrase = "phrase",
+    Page = "page",
+    OrderBy = "orderBy",
+}
+
 export interface ProductDetailsPagePathParams {
     productNumber: string;
 }
@@ -10,20 +32,16 @@ export interface OrderDetailsPagePathParams {
     orderId: string;
 }
 
-export interface SearchResultsPageQueryParams {
-    phrase: string;
-}
-
-export enum SearchResultsPageQueryParamKeys {
-    Phrase = "phrase",
-}
-
 const routing = {
     home: "/",
     browseCategory: {
         pathPattern: "/browse/:categoryName",
-        getPathWithParams: (pathParams: BrowseCategoryPagePathParams) =>
-            `/browse/${pathParams.categoryName}`,
+        getPathWithParams: (
+            pathParams: BrowseCategoryPagePathParams,
+            queryParams?: BrowseCategoryPageQueryParams
+        ) =>
+            `/browse/${pathParams.categoryName}` +
+            `?${mapToQueryParamsURLPart(queryParams)}`,
     },
     browseGreenTea: "/browse/GreenTea",
     browseBlackTea: "/browse/BlackTea",

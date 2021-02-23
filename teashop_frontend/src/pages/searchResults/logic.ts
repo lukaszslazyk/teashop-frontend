@@ -1,14 +1,28 @@
 import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { SearchResultsPageQueryParamKeys } from "../../configuration/routing";
-import {
-    clearProducts,
-    fetchProductsWithSearchPhrase,
-} from "../../domain/product/actions";
+import routing, {
+    SearchResultsPageQueryParamKeys,
+} from "../../configuration/routing";
+import { fetchProductsWithSearchPhrase } from "../../domain/product/actions";
+import { productsSortOptions } from "../../domain/product/models";
 import useQueryParams from "../../shared/hooks/useQueryParams";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
+
+const searchPhraseValid = (searchPhrase: string | null) =>
+    searchPhrase !== null && searchPhrase.trim().length !== 0;
+
+const pageIsValid = (page: string | null) =>
+    page === null || (!isNaN(Number(page)) && Number(page) > 0);
+
+const orderByIsValid = (orderBy: string | null) =>
+    orderBy === null || !isKnownSortOptionName(orderBy);
+
+const isKnownSortOptionName = (sortOptionName: string) =>
+    productsSortOptions.find(o => o.displayName === sortOptionName) !==
+    undefined;
 
 const useLogic = (productsPageSize: number) => {
     const chosenSortOptionName = useSelector(
@@ -21,49 +35,65 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
+    const history = useHistory();
     const queryParams = useQueryParams();
-    const searchPhrase = queryParams.get(SearchResultsPageQueryParamKeys.Phrase);
+    const searchPhrase = queryParams.get(
+        SearchResultsPageQueryParamKeys.Phrase
+    );
+    const page = queryParams.get(SearchResultsPageQueryParamKeys.Page);
+    const orderBy = queryParams.get(SearchResultsPageQueryParamKeys.OrderBy);
+    const pageIndex = page && pageIsValid(page) ? Number(page) - 1 : 0;
+    const sortOptionName =
+        orderBy && orderByIsValid(orderBy) ? orderBy : chosenSortOptionName;
 
-    const searchPhraseValid = useCallback(
-        (): boolean =>
-            searchPhrase === null || searchPhrase.trim().length === 0,
-        [searchPhrase]
+    const paramsAreValid = useCallback(
+        () =>
+            searchPhraseValid(searchPhrase) &&
+            pageIsValid(page) &&
+            orderByIsValid(sortOptionName),
+        [searchPhrase, page, sortOptionName]
     );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (searchPhrase && !searchPhraseValid())
+        if (searchPhrase && paramsAreValid())
             dispatch(
                 fetchProductsWithSearchPhrase(
                     searchPhrase,
-                    0,
+                    pageIndex,
                     productsPageSize,
                     cancelToken,
-                    chosenSortOptionName
+                    sortOptionName
                 )
             );
-        return () => {
-            cancelToken.cancel();
-            dispatch(clearProducts());
-        };
+        return () => cancelToken.cancel();
     }, [
-        productsPageSize,
         searchPhrase,
-        chosenSortOptionName,
-        searchPhraseValid,
+        pageIndex,
+        productsPageSize,
+        sortOptionName,
+        paramsAreValid,
         dispatch,
     ]);
 
-    const handlePaginationChange = (pageNumber: number) => {
+    const handlePaginationChange = (pageIndex: number) => {
         if (searchPhrase)
-            dispatch(
-                fetchProductsWithSearchPhrase(
-                    searchPhrase,
-                    pageNumber - 1,
-                    productsPageSize,
-                    createRequestCancelToken(),
-                    chosenSortOptionName
-                )
+            history.push(
+                routing.searchResults.getPathWithParams({
+                    phrase: searchPhrase,
+                    page: (pageIndex + 1).toString(),
+                    orderBy: chosenSortOptionName,
+                })
+            );
+    };
+
+    const handleSortOptionChange = (sortOptionName: string) => {
+        if (searchPhrase)
+            history.push(
+                routing.searchResults.getPathWithParams({
+                    phrase: searchPhrase,
+                    orderBy: sortOptionName,
+                })
             );
     };
 
@@ -79,8 +109,10 @@ const useLogic = (productsPageSize: number) => {
 
     return {
         searchPhrase,
+        pageIndex,
         handlePaginationChange,
-        searchPhraseValid,
+        handleSortOptionChange,
+        paramsAreValid,
         getErrorMessage,
     };
 };

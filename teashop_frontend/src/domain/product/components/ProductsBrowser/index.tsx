@@ -8,9 +8,11 @@ import useLogic from "./logic";
 import useStyles from "./styles";
 
 interface Props {
+    pageIndex: number;
     productsPageSize: number;
     errorMessage: string;
-    onPaginationChange: (pageNumber: number) => void;
+    onPaginationChange: (pageIndex: number) => void;
+    onSortOptionChange: (sortOptionName: string) => void;
     customErrorOcurred?: boolean;
     headerComponent?: ReactNode;
 }
@@ -20,7 +22,6 @@ const ProductsBrowser = (props: Props) => {
         products,
         pagesInTotal,
         productsAreFetching,
-        pageNumber,
         isXsScreen,
         anyErrors,
         shouldDisplaySuppliedHeader,
@@ -48,6 +49,7 @@ const ProductsBrowser = (props: Props) => {
                     <Grid item className={classes.sortOptionSelectContainer}>
                         <ProductSortOptionSelect
                             disabled={productsAreFetching}
+                            onSortOptionChange={props.onSortOptionChange}
                         />
                     </Grid>
                 )}
@@ -71,7 +73,7 @@ const ProductsBrowser = (props: Props) => {
             {shouldDisplayPagination() && (
                 <Grid item className={classes.paginationContainer}>
                     <Pagination
-                        page={pageNumber}
+                        page={props.pageIndex + 1}
                         count={pagesInTotal}
                         onChange={handlePaginationChange}
                         disabled={productsAreFetching}

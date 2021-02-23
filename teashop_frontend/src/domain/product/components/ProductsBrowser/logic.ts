@@ -1,7 +1,6 @@
 import { useMediaQuery, useTheme } from "@material-ui/core";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
 
 const scrollToTop = () =>
@@ -10,13 +9,10 @@ const scrollToTop = () =>
     });
 
 const useLogic = (
-    onPaginationChange: (pageNumber: number) => void,
+    onPaginationChange: (pageIndex: number) => void,
     customErrorOcurred?: boolean
 ) => {
     const products = useSelector((state: RootState) => state.product.products);
-    const chosenSortOptionName = useSelector(
-        (state: RootState) => state.product.chosenSortOptionName
-    );
     const pagesInTotal = useSelector(
         (state: RootState) => state.product.pagesInTotal
     );
@@ -26,23 +22,20 @@ const useLogic = (
     const errorOccurred = useSelector(
         (state: RootState) => state.product.errorOccurred
     );
-    const location = useLocation();
-    const [pageNumber, setPageNumber] = useState(1);
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
+    useEffect(() => scrollToTop(), []);
+
     useEffect(() => {
-        setPageNumber(1);
-    }, [location, chosenSortOptionName]);
+        if (productsAreFetching)
+            scrollToTop();
+    }, [productsAreFetching]);
 
     const handlePaginationChange = (
         _event: ChangeEvent<unknown>,
         page: number
-    ) => {
-        setPageNumber(page);
-        scrollToTop();
-        onPaginationChange(page);
-    };
+    ) => onPaginationChange(page - 1);
 
     const anyErrors = () => errorOccurred || customErrorOcurred;
 
@@ -58,7 +51,6 @@ const useLogic = (
         products,
         pagesInTotal,
         productsAreFetching,
-        pageNumber,
         isXsScreen,
         anyErrors,
         shouldDisplaySuppliedHeader,

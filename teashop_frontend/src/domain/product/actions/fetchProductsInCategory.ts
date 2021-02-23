@@ -18,6 +18,7 @@ interface ReceiveProductsInCategoryAction {
     pagesInTotal: number;
     errorOccurred: boolean;
     errorType: ApiErrorType;
+    sortOptionName?: string;
 }
 
 export type FetchProductsInCategoryActionTypes =
@@ -31,14 +32,16 @@ export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes 
 export const receiveProductsInCategory = (
     products: Product[],
     pagesInTotal: number,
+    sortOptionName?: string,
     errorOccurred: boolean = false,
-    errorType: ApiErrorType = ApiErrorType.None
+    errorType: ApiErrorType = ApiErrorType.None,
 ): FetchProductsInCategoryActionTypes => ({
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: products,
     pagesInTotal: pagesInTotal,
     errorOccurred: errorOccurred,
     errorType: errorType,
+    sortOptionName: sortOptionName,
 });
 
 export const receiveProductsInCategoryError = (
@@ -67,7 +70,8 @@ export const fetchProductsInCategory = (
             dispatch(
                 receiveProductsInCategory(
                     response.data.products,
-                    response.data.pagesInTotal
+                    response.data.pagesInTotal,
+                    sortOptionName
                 )
             )
         )

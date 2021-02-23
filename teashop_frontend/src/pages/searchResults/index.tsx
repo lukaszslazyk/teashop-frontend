@@ -9,19 +9,23 @@ const PRODUCTS_PAGE_SIZE = 12;
 const SearchResultsPage = () => {
     const {
         searchPhrase,
+        pageIndex,
         handlePaginationChange,
-        searchPhraseValid,
+        handleSortOptionChange,
+        paramsAreValid,
         getErrorMessage,
     } = useLogic(PRODUCTS_PAGE_SIZE);
 
-    if (searchPhraseValid())
+    if (!paramsAreValid())
         return <NotFoundPage />;
 
     return (
         <ProductsBrowser
+            pageIndex={pageIndex}
             productsPageSize={PRODUCTS_PAGE_SIZE}
             errorMessage={getErrorMessage()}
             onPaginationChange={handlePaginationChange}
+            onSortOptionChange={handleSortOptionChange}
             headerComponent={
                 <SearchResultsPageHeader
                     searchPhrase={searchPhrase ? searchPhrase : ""}

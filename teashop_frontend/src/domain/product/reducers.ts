@@ -54,7 +54,7 @@ export const productReducer = (
                 errorType: ApiErrorType.None,
             };
         case RECEIVE_PRODUCTS_IN_CATEGORY:
-            return {
+            let receiveProductsInCategoryState = {
                 ...state,
                 isFetching: false,
                 products: action.products,
@@ -62,6 +62,16 @@ export const productReducer = (
                 errorOccurred: action.errorOccurred,
                 errorType: action.errorType,
             };
+            if (
+                !action.errorOccurred &&
+                action.sortOptionName &&
+                action.sortOptionName !== state.chosenSortOptionName
+            )
+                receiveProductsInCategoryState = {
+                    ...receiveProductsInCategoryState,
+                    chosenSortOptionName: action.sortOptionName,
+                };
+            return receiveProductsInCategoryState;
         case RECEIVE_RECOMMENDED_PRODUCTS:
             let receiveRecommendedProductsState = {
                 ...state,

@@ -1,15 +1,27 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useHistory, useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { BrowseCategoryPagePathParams } from "../../configuration/routing";
-import {
-    clearProducts,
-    fetchProductsInCategory,
-} from "../../domain/product/actions";
+import routing, {
+    BrowseCategoryPagePathParams,
+    BrowseCategoryPageQueryParamKeys,
+} from "../../configuration/routing";
+import { fetchProductsInCategory } from "../../domain/product/actions";
+import { productsSortOptions } from "../../domain/product/models";
 import { getDisplayNameFor } from "../../domain/product/services/productService";
+import useQueryParams from "../../shared/hooks/useQueryParams";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
+
+const pageIsValid = (page: string | null) =>
+    page === null || (!isNaN(Number(page)) && Number(page) > 0);
+
+const orderByIsValid = (orderBy: string | null) =>
+    orderBy === null || !isKnownSortOptionName(orderBy);
+
+const isKnownSortOptionName = (sortOptionName: string) =>
+    productsSortOptions.find(o => o.displayName === sortOptionName) !==
+    undefined;
 
 const useLogic = (productsPageSize: number) => {
     const products = useSelector((state: RootState) => state.product.products);
@@ -23,44 +35,65 @@ const useLogic = (productsPageSize: number) => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
+    const history = useHistory();
+    const queryParams = useQueryParams();
     const { categoryName } = useParams<BrowseCategoryPagePathParams>();
-    const categoryDisplayName = categoryName
-        ? getDisplayNameFor(categoryName)
-        : "";
+    const page = queryParams.get(BrowseCategoryPageQueryParamKeys.Page);
+    const orderBy = queryParams.get(BrowseCategoryPageQueryParamKeys.OrderBy);
+    const pageIndex = page && pageIsValid(page) ? Number(page) - 1 : 0;
+    const sortOptionName =
+        orderBy && orderByIsValid(orderBy) ? orderBy : chosenSortOptionName;
 
-    const categoryExists = () =>
-        !(errorOccurred && errorType === ApiErrorType.InvalidResponse);
+    const paramsAreValid = useCallback(
+        () => pageIsValid(page) && orderByIsValid(sortOptionName),
+        [page, sortOptionName]
+    );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        if (categoryName)
+        if (paramsAreValid())
             dispatch(
                 fetchProductsInCategory(
                     categoryName,
-                    0,
+                    pageIndex,
                     productsPageSize,
                     cancelToken,
-                    chosenSortOptionName
+                    sortOptionName
                 )
             );
-        return () => {
-            cancelToken.cancel();
-            dispatch(clearProducts());
-        };
-    }, [categoryName, productsPageSize, chosenSortOptionName, dispatch]);
+        return () => cancelToken.cancel();
+    }, [
+        categoryName,
+        pageIndex,
+        productsPageSize,
+        sortOptionName,
+        paramsAreValid,
+        dispatch,
+    ]);
 
-    const handlePaginationChange = (pageNumber: number) => {
-        if (categoryName)
-            dispatch(
-                fetchProductsInCategory(
-                    categoryName,
-                    pageNumber - 1,
-                    productsPageSize,
-                    createRequestCancelToken(),
-                    chosenSortOptionName
-                )
-            );
-    };
+    const handlePaginationChange = (pageIndex: number) =>
+        history.push(
+            routing.browseCategory.getPathWithParams(
+                { categoryName: categoryName },
+                {
+                    page: (pageIndex + 1).toString(),
+                    orderBy: chosenSortOptionName,
+                }
+            )
+        );
+
+    const handleSortOptionChange = (sortOptionName: string) =>
+        history.push(
+            routing.browseCategory.getPathWithParams(
+                { categoryName: categoryName },
+                {
+                    orderBy: sortOptionName,
+                }
+            )
+        );
+
+    const categoryExists = () =>
+        !(errorOccurred && errorType === ApiErrorType.InvalidResponse);
 
     const categoryIsEmpty = (): boolean => products.length === 0;
 
@@ -75,9 +108,16 @@ const useLogic = (productsPageSize: number) => {
         return "";
     };
 
+    const categoryDisplayName = categoryName
+        ? getDisplayNameFor(categoryName)
+        : "";
+
     return {
         categoryDisplayName,
+        pageIndex,
         handlePaginationChange,
+        handleSortOptionChange,
+        paramsAreValid,
         categoryExists,
         categoryIsEmpty,
         getErrorMessage,
