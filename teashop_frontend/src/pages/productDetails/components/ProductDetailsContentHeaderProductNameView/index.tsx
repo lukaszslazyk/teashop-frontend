@@ -12,12 +12,9 @@ const ProductDetailsContentHeaderProductNameView = (props: Props) => {
     const theme = useTheme();
     const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
-    const getProductNameTypographyVariant = () => {
-        if (!isXsScreen && props.productName.length <= 25)
-            return "h3";
-        return "h4";
-    };
-
+    const getProductNameTypographyVariant = () =>
+        (!isXsScreen && props.productName.length <= 25 ? "h3" : "h4");
+        
     return (
         <Grid
             item

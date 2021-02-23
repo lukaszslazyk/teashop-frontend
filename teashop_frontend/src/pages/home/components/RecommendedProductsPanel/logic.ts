@@ -19,11 +19,13 @@ const useLogic = (
     );
     const dispatch = useDispatch();
 
-    const numberOfProductsToFetch = useMemo((): number => {
-        if (numberOfProductsOnRegularScreen > numberOfProductsOnXsScreen)
-            return numberOfProductsOnRegularScreen;
-        return numberOfProductsOnXsScreen;
-    }, [numberOfProductsOnRegularScreen, numberOfProductsOnXsScreen]);
+    const numberOfProductsToFetch = useMemo(
+        (): number =>
+            (numberOfProductsOnRegularScreen > numberOfProductsOnXsScreen
+                ? numberOfProductsOnRegularScreen
+                : numberOfProductsOnXsScreen),
+        [numberOfProductsOnRegularScreen, numberOfProductsOnXsScreen]
+    );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();

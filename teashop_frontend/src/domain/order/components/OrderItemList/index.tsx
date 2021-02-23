@@ -13,11 +13,8 @@ interface Props {
     items: CartItem[];
 }
 
-const getItemQuantityText = (item: CartItem) => {
-    if (pricedByWeight(item.product))
-        return `${item.quantity}g`;
-    return item.quantity;
-};
+const getItemQuantityText = (item: CartItem) =>
+    (pricedByWeight(item.product) ? `${item.quantity}g` : item.quantity);
 
 const OrderItemsList = (props: Props) => {
     const classes = useStyles();

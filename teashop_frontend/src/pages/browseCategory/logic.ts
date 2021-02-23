@@ -24,7 +24,7 @@ const isKnownSortOptionName = (sortOptionName: string) =>
     undefined;
 
 const getPageIndexFrom = (page: string | null) =>
-    page && pageIsValid(page) ? Number(page) - 1 : 0;
+    (page && pageIsValid(page) ? Number(page) - 1 : 0);
 
 const getSortOptionNameFrom = (
     orderBy: string | null,

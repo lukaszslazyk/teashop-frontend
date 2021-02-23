@@ -32,11 +32,7 @@ const CarouselPanel = (props: Props) => {
         return "h2";
     };
 
-    const getSecondaryTypographyVariant = () => {
-        if (isSmScreen)
-            return "body1";
-        return "h6";
-    };
+    const getSecondaryTypographyVariant = () => (isSmScreen ? "body1" : "h6");
 
     const handleCaptionClicked = () => history.push(props.routePath);
 

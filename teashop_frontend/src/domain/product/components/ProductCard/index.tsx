@@ -24,9 +24,10 @@ interface Props {
 
 const getPriceTagFor = (product: Product) => {
     const priceText = getPriceTextWithCurrency(product.price);
-    if (pricedByWeight(product))
-        return `${priceText} / ${product.quantityPerPrice}g`;
-    return priceText;
+
+    return pricedByWeight(product)
+        ? `${priceText} / ${product.quantityPerPrice}g`
+        : priceText;
 };
 
 const ProductCard = (props: Props) => {

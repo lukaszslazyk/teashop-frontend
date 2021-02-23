@@ -53,7 +53,7 @@ export const fetchRecommendedProducts = (
 ): AppThunk<void> => async dispatch => {
     dispatch(requestRecommendedProducts());
     await axios
-        .get(prepareUrl(numberOfProducts), {
+        .get(prepareApiUrl(numberOfProducts), {
             cancelToken: cancelToken.tokenSource.token,
         })
         .then(response =>
@@ -72,7 +72,7 @@ export const fetchRecommendedProducts = (
         });
 };
 
-const prepareUrl = (numberOfProducts: number) =>
+const prepareApiUrl = (numberOfProducts: number) =>
     `${API_ROOT}/products` +
     `?categoryName=${recommendedProductsCategoryName}` +
     "&pageIndex=0" +

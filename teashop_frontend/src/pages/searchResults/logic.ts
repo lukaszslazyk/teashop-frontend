@@ -25,7 +25,7 @@ const isKnownSortOptionName = (sortOptionName: string) =>
     undefined;
 
 const getPageIndexFrom = (page: string | null) =>
-    page && pageIsValid(page) ? Number(page) - 1 : 0;
+    (page && pageIsValid(page) ? Number(page) - 1 : 0);
 
 const getSortOptionNameFrom = (
     orderBy: string | null,
@@ -110,7 +110,6 @@ const useLogic = (productsPageSize: number) => {
                 return "Searching products is currently unavailable.\nPlease try again later.";
             else if (errorType === ApiErrorType.Unexpected)
                 return "We've encountered some issues on our servers.\nPlease try again later.";
-
         return "";
     };
 
