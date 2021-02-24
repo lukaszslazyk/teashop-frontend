@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import routing from "../../../../configuration/routing";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
@@ -30,24 +30,22 @@ const getPriceTagFor = (product: Product) => {
         : priceText;
 };
 
+const getLinkUrl = (product?: Product) =>
+    (product
+        ? routing.productDetails.getPathWithParams({
+            productNumber: product.productNumber.toString(),
+        })
+        : "#");
+
 const ProductCard = (props: Props) => {
     const { product } = props;
-    const history = useHistory();
     const classes = useStyles();
-
-    const handleClicked = () => {
-        if (product)
-            history.push(
-                routing.productDetails.getPathWithParams({
-                    productNumber: product.productNumber.toString(),
-                })
-            );
-    };
 
     return (
         <Card className={classes.card}>
             <CardActionArea
-                onClick={handleClicked}
+                component={Link}
+                to={getLinkUrl(product)}
                 className={classes.cardActionArea}
             >
                 <CardMedia className={classes.cardMedia}>
