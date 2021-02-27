@@ -80,9 +80,7 @@ export const addItemToSessionCart = (
             if (!axios.isCancel(error))
                 if (error.message === "Network Error")
                     dispatch(
-                        receiveAddItemToSessionCartError(
-                            ApiErrorType.Timeout
-                        )
+                        receiveAddItemToSessionCartError(ApiErrorType.Timeout)
                     );
                 else
                     dispatch(

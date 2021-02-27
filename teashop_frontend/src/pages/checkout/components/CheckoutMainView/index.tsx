@@ -1,8 +1,9 @@
 import { Grid, Hidden } from "@material-ui/core";
 import React from "react";
+import { CheckoutSteps } from "../../../../domain/order/models";
 import CheckoutStepper from "../CheckoutStepper";
 import CheckoutStepTitle from "../CheckoutStepTitle";
-import ProgressStepLayout from "../ProgressStepLayout";
+import CustomerProvidedInfoStepLayout from "../CustomerProvidedInfoStepLayout";
 import CustomerInformationStep from "../steps/customerInformation/CustomerInformationStep";
 import FinalizeStep from "../steps/finalize/FinalizeStep";
 import PaymentStep from "../steps/payment/PaymentStep";
@@ -11,8 +12,11 @@ import SummaryStep from "../steps/summary/SummaryStep";
 import useLogic from "./logic";
 
 const CheckoutMainView = () => {
-    const logic = useLogic();
-    const { activeStep } = logic;
+    const {
+        activeStep,
+        handleContinueButtonClicked,
+        handleBackButtonClicked,
+    } = useLogic();
 
     return (
         <Grid container spacing={1}>
@@ -25,49 +29,41 @@ const CheckoutMainView = () => {
                 </Hidden>
             </Grid>
             <Grid item xs={12}>
-                {activeStep < 3 && (
-                    <ProgressStepLayout>
-                        {activeStep === 0 && (
+                {activeStep < CheckoutSteps.Summary && (
+                    <CustomerProvidedInfoStepLayout>
+                        {activeStep === CheckoutSteps.Information && (
                             <CustomerInformationStep
                                 onContinueButtonClick={
-                                    logic.handleContinueButtonClicked
+                                    handleContinueButtonClicked
                                 }
-                                onBackButtonClick={
-                                    logic.handleBackButtonClicked
-                                }
+                                onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                        {activeStep === 1 && (
+                        {activeStep === CheckoutSteps.Shipping && (
                             <ShippingStep
                                 onContinueButtonClick={
-                                    logic.handleContinueButtonClicked
+                                    handleContinueButtonClicked
                                 }
-                                onBackButtonClick={
-                                    logic.handleBackButtonClicked
-                                }
+                                onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                        {activeStep === 2 && (
+                        {activeStep === CheckoutSteps.Payment && (
                             <PaymentStep
                                 onContinueButtonClick={
-                                    logic.handleContinueButtonClicked
+                                    handleContinueButtonClicked
                                 }
-                                onBackButtonClick={
-                                    logic.handleBackButtonClicked
-                                }
+                                onBackButtonClick={handleBackButtonClicked}
                             />
                         )}
-                    </ProgressStepLayout>
+                    </CustomerProvidedInfoStepLayout>
                 )}
-                {activeStep === 3 && (
+                {activeStep === CheckoutSteps.Summary && (
                     <SummaryStep
-                        onContinueButtonClick={
-                            logic.handleContinueButtonClicked
-                        }
-                        onBackButtonClick={logic.handleBackButtonClicked}
+                        onContinueButtonClick={handleContinueButtonClicked}
+                        onBackButtonClick={handleBackButtonClicked}
                     />
                 )}
-                {activeStep === 4 && <FinalizeStep />}
+                {activeStep === CheckoutSteps.Finalize && <FinalizeStep />}
             </Grid>
         </Grid>
     );

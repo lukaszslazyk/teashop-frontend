@@ -10,7 +10,6 @@ export const SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS =
     "SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS";
 export const REQUEST_PLACE_ORDER = "REQUEST_PLACE_ORDER";
 export const RECEIVE_PLACE_ORDER = "RECEIVE_PLACE_ORDER";
-export const RESET_ORDER_PLACED = "RESET_ORDER_PLACED";
 
 interface SetShippingAddressSameAsBillingAddressAction {
     type: typeof SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS;
@@ -24,20 +23,15 @@ interface RequestPlaceOrderAction {
 interface ReceivePlaceOrderAction {
     type: typeof RECEIVE_PLACE_ORDER;
     orderId: string | null;
-    orderNo: number | null;
+    orderNumber: number | null;
     errorOccurred: boolean;
     errorType: ApiErrorType;
-}
-
-interface ResetOrderPlacedAction {
-    type: typeof RESET_ORDER_PLACED;
 }
 
 export type OrderFormActionTypes =
     | SetShippingAddressSameAsBillingAddressAction
     | RequestPlaceOrderAction
-    | ReceivePlaceOrderAction
-    | ResetOrderPlacedAction;
+    | ReceivePlaceOrderAction;
 
 export const setShippingAddressSameAsBillingAddress = (
     value: boolean
@@ -52,13 +46,13 @@ export const requestPlaceOrder = (): OrderFormActionTypes => ({
 
 export const receivePlaceOrder = (
     orderId: string | null,
-    orderNo: number | null,
+    orderNumber: number | null,
     errorOccurred: boolean = false,
     errorType: ApiErrorType = ApiErrorType.None
 ): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
     orderId: orderId,
-    orderNo: orderNo,
+    orderNumber: orderNumber,
     errorOccurred: errorOccurred,
     errorType: errorType,
 });
@@ -68,13 +62,9 @@ export const receivePlaceOrderError = (
 ): OrderFormActionTypes => ({
     type: RECEIVE_PLACE_ORDER,
     orderId: null,
-    orderNo: null,
+    orderNumber: null,
     errorOccurred: true,
     errorType: errorType,
-});
-
-export const resetOrderPlaced = (): OrderFormActionTypes => ({
-    type: RESET_ORDER_PLACED,
 });
 
 export const placeOrder = (
@@ -104,7 +94,7 @@ export const placeOrder = (
         .then(response => {
             dispatch(clearCart());
             dispatch(
-                receivePlaceOrder(response.data.orderId, response.data.orderNo)
+                receivePlaceOrder(response.data.orderId, response.data.orderNumber)
             );
         })
         .catch(error => {

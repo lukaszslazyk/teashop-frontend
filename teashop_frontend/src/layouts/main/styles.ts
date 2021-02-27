@@ -1,7 +1,8 @@
 import { green, red } from "@material-ui/core/colors";
 import { Theme, createStyles, makeStyles } from "@material-ui/core/styles";
 
-const drawerWidth = 300;
+const drawerMinWidth = 300;
+const drawerMaxWidth = "75%";
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -24,16 +25,21 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         drawer: {
             [theme.breakpoints.up("sm")]: {
-                width: drawerWidth,
+                minWidth: drawerMinWidth,
+                maxWidth: drawerMaxWidth,
                 flexShrink: 0,
             },
         },
         drawerPaper: {
-            width: drawerWidth,
+            width: drawerMinWidth,
+            maxWidth: drawerMaxWidth,
         },
         content: {
             flexGrow: 1,
             padding: theme.spacing(3),
+            [theme.breakpoints.down("xs")]: {
+                padding: theme.spacing(2),
+            },
         },
         nestedListItem: {
             paddingLeft: theme.spacing(4),

@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
 import routing from "../../../../../../configuration/routing";
 import {
+    closeCheckout,
     placeOrder,
-    resetOrderPlaced,
 } from "../../../../../../domain/order/actions";
 import { createRequestCancelToken } from "../../../../../../shared/services/requestCancelTokenService";
 
@@ -24,8 +24,8 @@ const useLogic = () => {
     const placedOrderId = useSelector(
         (state: RootState) => state.order.placedOrderId
     );
-    const placedOrderNo = useSelector(
-        (state: RootState) => state.order.placedOrderNo
+    const placedOrderNumber = useSelector(
+        (state: RootState) => state.order.placedOrderNumber
     );
     const dispatch = useDispatch();
     const [requestWasSent, setRequestWasSent] = useState(false);
@@ -45,7 +45,7 @@ const useLogic = () => {
     useEffect(
         () => () => {
             setRequestWasSent(false);
-            dispatch(resetOrderPlaced());
+            dispatch(closeCheckout());
         },
         [dispatch]
     );
@@ -54,7 +54,7 @@ const useLogic = () => {
         requestWasSent,
         orderFormIsSending,
         errorOccurred,
-        placedOrderNo,
+        placedOrderNumber,
         orderDetailsRoutePath,
     };
 };

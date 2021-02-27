@@ -9,9 +9,7 @@ const PriceInfoPanel = () => {
     const totalPrice = useSelector(
         (state: RootState) => state.order.totalPrice
     );
-    const cartPrice = useSelector(
-        (state: RootState) => state.order.cartPrice
-    );
+    const cartPrice = useSelector((state: RootState) => state.order.cartPrice);
     const shippingFee = useSelector(
         (state: RootState) => state.order.shippingFee
     );

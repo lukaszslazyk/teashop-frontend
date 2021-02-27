@@ -1,9 +1,10 @@
 import { IconButton, InputBase } from "@material-ui/core";
 import SearchIcon from "@material-ui/icons/Search";
-import React, { useState } from "react";
-import { useHistory } from "react-router";
-import routing from "../../../../configuration/routing";
+import React from "react";
+import useLogic from "./logic";
 import useStyles from "./styles";
+
+const maxLength = 32;
 
 interface Props {
     onSearchButtonClick?: () => void;
@@ -11,40 +12,19 @@ interface Props {
 }
 
 const ProductSearch = (props: Props) => {
-    const [searchInputOpen, setSearchInputOpen] = useState(false);
-    const [searchInputValue, setSearchInputValue] = useState("");
-    const history = useHistory();
+    const {
+        searchInputOpen,
+        handleSearchButtonClicked,
+        handleSearchInputBlurred,
+        handleSearchInputChanged,
+        handleSearchInputKeyPressed,
+    } = useLogic(props.onSearchButtonClick, props.onSearchInputBlur);
     const classes = useStyles();
-
-    const handleSearchButtonClicked = () => {
-        setSearchInputOpen(true);
-        if (props.onSearchButtonClick)
-            props.onSearchButtonClick();
-    };
-
-    const handleSearchInputBlurred = () => {
-        setSearchInputOpen(false);
-        if (props.onSearchInputBlur)
-            props.onSearchInputBlur();
-    };
-
-    const handleSearchInputChanged = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ) => setSearchInputValue(event.target.value);
-
-    const handleSearchInputKeyPressed = (event: React.KeyboardEvent) => {
-        if (event.key === "Enter" && searchInputValue.trim().length !== 0)
-            history.push(
-                routing.searchResults.getPathWithParams({
-                    phrase: searchInputValue,
-                })
-            );
-    };
 
     if (!searchInputOpen)
         return (
             <IconButton
-                className={classes.searchIcon}
+                className={classes.searchIconButton}
                 onClick={handleSearchButtonClicked}
             >
                 <SearchIcon />
@@ -57,6 +37,7 @@ const ProductSearch = (props: Props) => {
                 <SearchIcon />
             </div>
             <InputBase
+                type="search"
                 placeholder="Search..."
                 autoFocus
                 onBlur={handleSearchInputBlurred}
@@ -65,6 +46,9 @@ const ProductSearch = (props: Props) => {
                 classes={{
                     root: classes.searchFieldInputRoot,
                     input: classes.searchFieldInput,
+                }}
+                inputProps={{
+                    maxLength: maxLength,
                 }}
             />
         </div>

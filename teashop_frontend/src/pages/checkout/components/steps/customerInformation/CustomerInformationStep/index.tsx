@@ -13,15 +13,13 @@ interface Props {
 }
 
 const CustomerInformationStep = (props: Props) => {
-    const logic = useLogic(
-        props.onContinueButtonClick,
-        props.onBackButtonClick
-    );
     const {
         contactInfoFormMethods,
         shippingAddressFormMethods,
         billingAddressFormMethods,
-    } = logic;
+        handleContinueButtonClicked,
+        handleBackButtonClicked,
+    } = useLogic(props.onContinueButtonClick, props.onBackButtonClick);
 
     return (
         <Grid container spacing={3}>
@@ -42,8 +40,8 @@ const CustomerInformationStep = (props: Props) => {
             </Grid>
             <Grid item xs={12}>
                 <NavButtonsPanel
-                    onContinueButtonClick={logic.handleContinueButtonClicked}
-                    onBackButtonClick={logic.handleBackButtonClicked}
+                    onContinueButtonClick={handleContinueButtonClicked}
+                    onBackButtonClick={handleBackButtonClicked}
                     backButtonLabel="Back to cart"
                 />
             </Grid>

@@ -4,6 +4,15 @@ import {
     setBillingAddressFormData,
 } from "./billingAddressForm";
 import {
+    CheckoutActionTypes,
+    INCREMENT_CHECKOUT_STEP,
+    DECREMENT_CHECKOUT_STEP,
+    CLOSE_CHECKOUT,
+    incrementCheckoutStep,
+    decrementCheckoutStep,
+    closeCheckout,
+} from "./checkout";
+import {
     ContactInfoFormActionTypes,
     SET_CONTACT_INFO_FORM_DATA,
     setContactInfoFormData,
@@ -25,10 +34,8 @@ import {
     SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
-    RESET_ORDER_PLACED,
     setShippingAddressSameAsBillingAddress,
     placeOrder,
-    resetOrderPlaced,
 } from "./orderForm";
 import {
     PaymentCardFormActionTypes,
@@ -65,7 +72,6 @@ export {
     fetchOrderMeta,
     setShippingAddressSameAsBillingAddress,
     placeOrder,
-    resetOrderPlaced,
     setContactInfoFormData,
     setShippingAddressFormData,
     setBillingAddressFormData,
@@ -75,6 +81,9 @@ export {
     setCartPrice,
     setShippingFee,
     setPaymentFee,
+    incrementCheckoutStep,
+    decrementCheckoutStep,
+    closeCheckout,
 };
 
 export {
@@ -85,7 +94,6 @@ export {
     SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
     REQUEST_PLACE_ORDER,
     RECEIVE_PLACE_ORDER,
-    RESET_ORDER_PLACED,
     SET_CONTACT_INFO_FORM_DATA,
     SET_SHIPPING_ADDRESS_FORM_DATA,
     SET_BILLING_ADDRESS_FORM_DATA,
@@ -95,6 +103,9 @@ export {
     SET_CART_PRICE,
     SET_SHIPPING_FEE,
     SET_PAYMENT_FEE,
+    INCREMENT_CHECKOUT_STEP,
+    DECREMENT_CHECKOUT_STEP,
+    CLOSE_CHECKOUT,
 };
 
 export type OrderActionTypes =
@@ -107,4 +118,5 @@ export type OrderActionTypes =
     | BillingAddressFormActionTypes
     | PaymentMethodFormActionTypes
     | PaymentCardFormActionTypes
-    | PriceActionTypes;
+    | PriceActionTypes
+    | CheckoutActionTypes;

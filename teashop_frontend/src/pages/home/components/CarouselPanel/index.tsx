@@ -32,34 +32,36 @@ const CarouselPanel = (props: Props) => {
         return "h2";
     };
 
-    const getSecondaryTypographyVariant = () => {
-        if (isSmScreen)
-            return "body1";
-        return "h6";
-    };
+    const getSecondaryTypographyVariant = () => (isSmScreen ? "body1" : "h6");
 
     const handleCaptionClicked = () => history.push(props.routePath);
 
     return (
-        <Card>
-            <CardMedia
-                image={props.imageSrc}
-                title={props.imageTitle}
-                className={classes.media}
-            >
-                <div
-                    className={classes.mediaCaption}
-                    onClick={handleCaptionClicked}
-                >
-                    <Typography variant={getPrimaryTypographyVariant()}>
-                        {props.titlePrimary}
-                    </Typography>
-                    <Typography variant={getSecondaryTypographyVariant()}>
-                        {props.titleSecondary}
-                    </Typography>
-                </div>
-            </CardMedia>
-        </Card>
+        <div className={classes.aspectRatioTopContainer}>
+            <div className={classes.aspectRatioInnerContainer}>
+                <Card className={classes.card}>
+                    <CardMedia
+                        image={props.imageSrc}
+                        title={props.imageTitle}
+                        className={classes.media}
+                    >
+                        <div
+                            className={classes.mediaCaption}
+                            onClick={handleCaptionClicked}
+                        >
+                            <Typography variant={getPrimaryTypographyVariant()}>
+                                {props.titlePrimary}
+                            </Typography>
+                            <Typography
+                                variant={getSecondaryTypographyVariant()}
+                            >
+                                {props.titleSecondary}
+                            </Typography>
+                        </div>
+                    </CardMedia>
+                </Card>
+            </div>
+        </div>
     );
 };
 

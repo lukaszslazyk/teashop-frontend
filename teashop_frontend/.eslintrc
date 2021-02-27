@@ -10,7 +10,8 @@
         "no-template-curly-in-string": "warn",
         "no-extra-parens": ["warn", "all", {
             "ignoreJSX": "all",
-            "nestedBinaryExpressions": false
+            "nestedBinaryExpressions": false,
+            "enforceForArrowConditionals": false
         }],
         "array-callback-return": "warn",
         "consistent-return": "warn",

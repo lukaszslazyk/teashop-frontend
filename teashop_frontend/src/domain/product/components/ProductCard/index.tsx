@@ -7,12 +7,10 @@ import {
     Divider,
     Grid,
     Typography,
-    useMediaQuery,
-    useTheme,
 } from "@material-ui/core";
 import { Skeleton } from "@material-ui/lab";
 import React from "react";
-import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import routing from "../../../../configuration/routing";
 import { getImageFullUrl } from "../../../../shared/services/imageService";
 import { getPriceTextWithCurrency } from "../../../../shared/services/priceService";
@@ -24,40 +22,34 @@ interface Props {
     product?: Product;
 }
 
+const getPriceTagFor = (product: Product) => {
+    const priceText = getPriceTextWithCurrency(product.price);
+
+    return pricedByWeight(product)
+        ? `${priceText} / ${product.quantityPerPrice}g`
+        : priceText;
+};
+
+const getLinkUrl = (product?: Product) =>
+    (product
+        ? routing.productDetails.getPathWithParams({
+            productNumber: product.productNumber.toString(),
+        })
+        : "#");
+
 const ProductCard = (props: Props) => {
     const { product } = props;
-    const history = useHistory();
-    const theme = useTheme();
-    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
     const classes = useStyles();
-
-    const getPriceTag = () => {
-        if (product) {
-            const priceText = getPriceTextWithCurrency(product.price);
-            if (pricedByWeight(product))
-                return `${priceText} / ${product.quantityPerPrice}g`;
-            return priceText;
-        }
-        return "";
-    };
-
-    const handleClicked = () => {
-        if (product)
-            history.push(
-                routing.productDetails.getPathWithParams({
-                    productId: product.id,
-                })
-            );
-    };
 
     return (
         <Card className={classes.card}>
             <CardActionArea
-                onClick={handleClicked}
+                component={Link}
+                to={getLinkUrl(product)}
                 className={classes.cardActionArea}
             >
                 <CardMedia className={classes.cardMedia}>
-                    <div className={classes.equalAspectRatioContainer}>
+                    <div className={classes.equalAspectRatioTopContainer}>
                         <div className={classes.equalAspectRatioInnerContainer}>
                             {product ? (
                                 <img
@@ -85,21 +77,15 @@ const ProductCard = (props: Props) => {
                             <Typography
                                 align="center"
                                 gutterBottom
-                                variant={isXsScreen ? "body1" : "h6"}
-                                component="h2"
+                                className={classes.productNameText}
                             >
                                 {product ? product.name : <Skeleton />}
                             </Typography>
-
                             <Box mb={1}>
                                 <Divider />
                             </Box>
-                            <Typography
-                                align="center"
-                                variant="body2"
-                                component="p"
-                            >
-                                {product ? getPriceTag() : <Skeleton />}
+                            <Typography align="center" variant="body2">
+                                {product ? getPriceTagFor(product) : <Skeleton />}
                             </Typography>
                         </Grid>
                     </Grid>

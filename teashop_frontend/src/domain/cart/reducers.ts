@@ -15,7 +15,6 @@ import { Cart, CartItem } from "./models";
 
 export interface CartState {
     cart: Cart;
-    cartFetchedYet: boolean;
     cartIsFetching: boolean;
     cartUpdateIsSending: boolean;
     errorOccurred: boolean;
@@ -24,7 +23,6 @@ export interface CartState {
 
 const initialState: CartState = {
     cart: { items: [] },
-    cartFetchedYet: false,
     cartIsFetching: false,
     cartUpdateIsSending: false,
     errorOccurred: false,
@@ -46,7 +44,6 @@ export const cartReducer = (
         case RECEIVE_SESSION_CART:
             return {
                 ...state,
-                cartFetchedYet: true,
                 cartIsFetching: false,
                 cart: action.cart ? action.cart : initialState.cart,
                 errorOccurred: action.errorOccurred,

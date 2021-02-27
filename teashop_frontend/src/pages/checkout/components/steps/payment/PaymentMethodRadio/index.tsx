@@ -19,10 +19,7 @@ const PaymentMethodRadio = (props: Props) => {
                 label={props.paymentMethod.displayName}
                 className={classes.grow}
             />
-            <Typography
-                variant="body1"
-                align="right"
-            >
+            <Typography variant="body1" align="right">
                 {getPriceTextWithCurrency(props.paymentMethod.fee)}
             </Typography>
         </Paper>

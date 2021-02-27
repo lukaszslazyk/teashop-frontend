@@ -1,5 +1,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 
+const empty = (input: string): boolean => input.length === 0;
+
+const invalidNumber = (input: string): boolean => isNaN(Number(input));
+
 const useLogic = (
     initialValue: number,
     lowThreshold: number,
@@ -36,8 +40,11 @@ const useLogic = (
     };
 
     const handleSubtractClicked = () => {
-        setQuantityText((Number(quantityText) - step).toString());
-        onQuantityChange(Number(quantityText) - step, true);
+        let newQuantity = Number(quantityText) - step;
+        if (newQuantity < lowThreshold)
+            newQuantity = lowThreshold;
+        setQuantityText(newQuantity.toString());
+        onQuantityChange(newQuantity, true);
     };
 
     const hasError = (): boolean => errorText !== "";
@@ -67,11 +74,6 @@ const useLogic = (
             return `Minimum value is ${lowThreshold}`;
         return "";
     };
-
-    const empty = (input: string): boolean => input.length === 0;
-
-    const invalidNumber = (input: string): boolean =>
-        isNaN(Number(input));
 
     const lowerThanLowThreshold = (input: string) =>
         Number(input) < lowThreshold;

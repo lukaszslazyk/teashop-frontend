@@ -22,8 +22,7 @@ const CartItemListElementMobileMenu = (props: Props) => {
     const [menuOpen, setMenuOpen] = useState(false);
     const buttonRef = useRef(null);
 
-    const handleMoreButtonClicked = () =>
-        setMenuOpen(true);
+    const handleMoreButtonClicked = () => setMenuOpen(true);
 
     const handleEditMenuItemClicked = () => {
         setMenuOpen(false);

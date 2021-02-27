@@ -1,14 +1,16 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
-import {
-    clearProducts,
-    fetchProductsInCategory,
-} from "../../../../domain/product/actions";
+import { fetchRecommendedProducts } from "../../../../domain/product/actions";
 import { createRequestCancelToken } from "../../../../shared/services/requestCancelTokenService";
 
-const useLogic = () => {
-    const products = useSelector((state: RootState) => state.product.products);
+const useLogic = (
+    numberOfProductsOnRegularScreen: number,
+    numberOfProductsOnXsScreen: number
+) => {
+    const products = useSelector(
+        (state: RootState) => state.product.recommendedProducts
+    );
     const productsAreFetching = useSelector(
         (state: RootState) => state.product.isFetching
     );
@@ -17,18 +19,27 @@ const useLogic = () => {
     );
     const dispatch = useDispatch();
 
+    const numberOfProductsToFetch = useMemo(
+        (): number =>
+            (numberOfProductsOnRegularScreen > numberOfProductsOnXsScreen
+                ? numberOfProductsOnRegularScreen
+                : numberOfProductsOnXsScreen),
+        [numberOfProductsOnRegularScreen, numberOfProductsOnXsScreen]
+    );
+
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchProductsInCategory("Recommended", 0, 5, cancelToken));
-        return () => {
-            cancelToken.cancel();
-            dispatch(clearProducts());
-        };
-    }, [dispatch]);
+        if (products.length === 0)
+            dispatch(
+                fetchRecommendedProducts(numberOfProductsToFetch, cancelToken)
+            );
+        return () => cancelToken.cancel();
+    }, [products, numberOfProductsToFetch, dispatch]);
 
     const anyErrors = () => errorOccurred || insufficientNumberOfProducts();
 
-    const insufficientNumberOfProducts = (): boolean => products.length < 5;
+    const insufficientNumberOfProducts = (): boolean =>
+        products.length < numberOfProductsToFetch;
 
     return {
         products,

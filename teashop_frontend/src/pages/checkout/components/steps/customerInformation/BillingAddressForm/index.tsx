@@ -1,6 +1,4 @@
 import {
-    Box,
-    Divider,
     FormControlLabel,
     Grid,
     Paper,
@@ -13,9 +11,11 @@ import useLogic from "./logic";
 import useStyles from "./styles";
 
 const BillingAddressForm = () => {
-    const logic = useLogic();
+    const {
+        billingAddressSameAsShippingAddress,
+        handleCheckboxChange,
+    } = useLogic();
     const classes = useStyles();
-    const { billingAddressSameAsShippingAddress } = logic;
 
     return (
         <Paper className={classes.surface}>
@@ -24,16 +24,13 @@ const BillingAddressForm = () => {
                     <Typography variant="h6" color="primary">
                         Billing address
                     </Typography>
-                    <Box my={1}>
-                        <Divider />
-                    </Box>
                 </Grid>
                 <Grid item xs={12}>
                     <FormControlLabel
                         control={
                             <Switch
                                 checked={billingAddressSameAsShippingAddress}
-                                onChange={logic.handleCheckboxChange}
+                                onChange={handleCheckboxChange}
                                 name="billingAddressSameAsShippingAddress"
                                 color="primary"
                             />

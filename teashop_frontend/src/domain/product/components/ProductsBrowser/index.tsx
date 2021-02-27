@@ -1,52 +1,84 @@
 import { Grid } from "@material-ui/core";
 import { Pagination } from "@material-ui/lab";
-import React from "react";
+import React, { ReactNode } from "react";
 import ErrorInfo from "../../../../shared/components/ErrorInfo";
-import ProductCardGroup from "../ProductCardGroup";
+import ProductSortOptionSelect from "../ProductSortOptionSelect";
+import ResponsiveProductCardGroup from "../ResponsiveProductCardGroup";
 import useLogic from "./logic";
+import useStyles from "./styles";
 
 interface Props {
+    pageIndex: number;
     productsPageSize: number;
     errorMessage: string;
-    onPaginationChange: (pageNumber: number) => void;
+    onPaginationChange: (pageIndex: number) => void;
+    onSortOptionChange: (sortOptionName: string) => void;
     customErrorOcurred?: boolean;
+    headerComponent?: ReactNode;
 }
 
 const ProductsBrowser = (props: Props) => {
-    const logic = useLogic(props.onPaginationChange, props.customErrorOcurred);
     const {
         products,
         pagesInTotal,
         productsAreFetching,
-        pageNumber,
-        isMobile,
-    } = logic;
+        isXsScreen,
+        anyErrors,
+        shouldDisplaySuppliedHeader,
+        shouldDisplaySortOptionSelect,
+        shouldDisplayPagination,
+        handlePaginationChange,
+    } = useLogic(props.onPaginationChange, props.customErrorOcurred);
+    const classes = useStyles();
 
     return (
-        <Grid container justify="center" spacing={3}>
-            <Grid item xs={12}>
-                {productsAreFetching && (
-                    <ProductCardGroup
+        <Grid container justify="center">
+            <Grid
+                item
+                xs={12}
+                container
+                className={classes.header}
+                alignItems="center"
+            >
+                {shouldDisplaySuppliedHeader() && (
+                    <Grid item className={classes.suppliedHeader}>
+                        {props.headerComponent}
+                    </Grid>
+                )}
+                {shouldDisplaySortOptionSelect() && (
+                    <Grid item className={classes.sortOptionSelectContainer}>
+                        <ProductSortOptionSelect
+                            disabled={productsAreFetching}
+                            onSortOptionChange={props.onSortOptionChange}
+                        />
+                    </Grid>
+                )}
+            </Grid>
+            {productsAreFetching && (
+                <Grid item xs={12}>
+                    <ResponsiveProductCardGroup
                         isPlaceholder
                         numberOfPlaceholderCards={props.productsPageSize}
                     />
-                )}
-                {!productsAreFetching && logic.anyErrors() && (
-                    <ErrorInfo errorMessage={props.errorMessage} />
-                )}
-                {!productsAreFetching && !logic.anyErrors() && (
-                    <ProductCardGroup products={products} />
-                )}
-            </Grid>
-            {products.length !== 0 && (
-                <Grid item>
+                </Grid>
+            )}
+            {!productsAreFetching && anyErrors() && (
+                <ErrorInfo errorMessage={props.errorMessage} />
+            )}
+            {!productsAreFetching && !anyErrors() && (
+                <Grid item xs={12}>
+                    <ResponsiveProductCardGroup products={products} />
+                </Grid>
+            )}
+            {shouldDisplayPagination() && (
+                <Grid item className={classes.paginationContainer}>
                     <Pagination
-                        page={pageNumber}
+                        page={props.pageIndex + 1}
                         count={pagesInTotal}
-                        onChange={logic.handlePaginationChange}
+                        onChange={handlePaginationChange}
                         disabled={productsAreFetching}
                         color="primary"
-                        size={isMobile ? "medium" : "large"}
+                        size={isXsScreen ? "medium" : "large"}
                     />
                 </Grid>
             )}

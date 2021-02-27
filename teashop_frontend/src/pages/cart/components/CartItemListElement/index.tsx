@@ -18,9 +18,14 @@ interface Props {
 }
 
 const CartItemListElement = (props: Props) => {
-    const logic = useLogic(props.cartItem);
+    const {
+        showProgress,
+        openEditQuantityDialog,
+        handleEditClicked,
+        handleEditQuantityDialogClose,
+        handleRemoveClicked,
+    } = useLogic(props.cartItem);
     const classes = useStyles();
-    const { showProgress, openEditQuantityDialog } = logic;
 
     return (
         <Grid container className={classes.root}>
@@ -50,7 +55,7 @@ const CartItemListElement = (props: Props) => {
                             variant="h6"
                             component={Link}
                             to={routing.productDetails.getPathWithParams({
-                                productId: props.cartItem.product.id,
+                                productNumber: props.cartItem.product.productNumber.toString(),
                             })}
                             className={classes.productNameText}
                         >
@@ -61,8 +66,8 @@ const CartItemListElement = (props: Props) => {
                         <Grid item className={classes.mobileMenuContainer}>
                             <CartItemListElementMobileMenu
                                 showProgress={showProgress}
-                                onEditMenuItemClick={logic.handleEditClicked}
-                                onRemoveMenuItemClick={logic.handleRemoveClicked}
+                                onEditMenuItemClick={handleEditClicked}
+                                onRemoveMenuItemClick={handleRemoveClicked}
                             />
                         </Grid>
                     </Hidden>
@@ -96,11 +101,10 @@ const CartItemListElement = (props: Props) => {
                     </Grid>
                     <Hidden smDown>
                         <Grid item>
-                            {" "}
                             <CartItemListElementMenuButtonGroup
                                 showProgress={showProgress}
-                                onEditButtonClick={logic.handleEditClicked}
-                                onRemoveButtonClick={logic.handleRemoveClicked}
+                                onEditButtonClick={handleEditClicked}
+                                onRemoveButtonClick={handleRemoveClicked}
                             />
                         </Grid>
                     </Hidden>
@@ -109,7 +113,7 @@ const CartItemListElement = (props: Props) => {
             <EditItemQuantityDialog
                 open={openEditQuantityDialog}
                 cartItem={props.cartItem}
-                onClose={logic.handleEditQuantityDialogClose}
+                onClose={handleEditQuantityDialogClose}
             />
         </Grid>
     );

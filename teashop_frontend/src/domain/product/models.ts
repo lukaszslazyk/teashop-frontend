@@ -1,5 +1,8 @@
+import { Dictionary } from "../../shared/types";
+
 export interface Product {
     id: string;
+    productNumber: number;
     name: string;
     price: number;
     quantityPerPrice: number;
@@ -20,6 +23,17 @@ export interface SortOption {
     name: string;
     displayName: string;
 }
+
+export const recommendedProductsCategoryName = "Recommended";
+
+export const knownCategoryNamesToDisplayNames: Dictionary<string> = {
+    GreenTea: "Green tea",
+    BlackTea: "Black tea",
+    RedTea: "Red tea",
+    WhiteTea: "White tea",
+    Herbs: "Herbs",
+    Accessories: "Accessories",
+};
 
 export const productsSortOptions: SortOption[] = [
     {

@@ -1,9 +1,9 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
-import { ProductDetailsPageParams } from "../../configuration/routing";
-import { fetchProductById } from "../../domain/product/actions";
+import { ProductDetailsPagePathParams } from "../../configuration/routing";
+import { fetchProductByProductNumber } from "../../domain/product/actions";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -19,13 +19,19 @@ const useLogic = () => {
         (state: RootState) => state.product.errorType
     );
     const dispatch = useDispatch();
-    const { productId } = useParams<ProductDetailsPageParams>();
+    const { productNumber } = useParams<ProductDetailsPagePathParams>();
+
+    const shouldFetchProduct = useCallback(
+        () => !product || productNumber !== product.productNumber.toString(),
+        [product, productNumber]
+    );
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
-        dispatch(fetchProductById(productId, cancelToken));
+        if (shouldFetchProduct())
+            dispatch(fetchProductByProductNumber(productNumber, cancelToken));
         return () => cancelToken.cancel();
-    }, [productId, dispatch]);
+    }, [productNumber, shouldFetchProduct, dispatch]);
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.NotFound)

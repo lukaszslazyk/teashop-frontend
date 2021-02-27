@@ -1,7 +1,7 @@
 import { Cart } from "../cart/models";
 
 export interface Order {
-    orderNo: number;
+    orderNumber: number;
     placementDate: Date;
     contactInfo: ContactInfo;
     shippingAddress: Address;
@@ -59,7 +59,7 @@ export interface OrderFormData {
     billingAddressFormData: AddressFormData;
     billingAddressSameAsShippingAddress: boolean;
     chosenShippingMethodName: string;
-    chosenPaymentMethodName: string
+    chosenPaymentMethodName: string;
     paymentCardFormData: PaymentCardFormData;
 }
 
@@ -84,4 +84,12 @@ export interface PaymentCardFormData {
     name: string;
     expirationDate: string;
     securityCode: string;
+}
+
+export enum CheckoutSteps {
+    Information,
+    Shipping,
+    Payment,
+    Summary,
+    Finalize,
 }

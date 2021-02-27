@@ -4,6 +4,11 @@ import { RootState } from "../../../../../../configuration/reduxSetup/rootReduce
 import { setPaymentCardFormData } from "../../../../../../domain/order/actions";
 import { PaymentCardFormData } from "../../../../../../domain/order/models";
 
+const scrollToTop = () =>
+    window.scrollTo({
+        top: 0,
+    });
+
 const useLogic = (
     onContinueButtonClick: () => void,
     onBackButtonClick: () => void
@@ -21,7 +26,10 @@ const useLogic = (
 
     const handleContinueButtonClicked = () => {
         if (chosenPaymentMethodName === "card")
-            paymentCardFormMethods.handleSubmit(onPaymentCardFormSubmit)();
+            paymentCardFormMethods.handleSubmit(
+                onPaymentCardFormSubmit,
+                onFormError
+            )();
         else
             onContinueButtonClick();
     };
@@ -32,6 +40,8 @@ const useLogic = (
         dispatch(setPaymentCardFormData(paymentCardFormMethods.getValues()));
         onContinueButtonClick();
     };
+
+    const onFormError = () => scrollToTop();
 
     return {
         paymentCardFormMethods,

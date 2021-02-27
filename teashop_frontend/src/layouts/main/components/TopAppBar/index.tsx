@@ -24,10 +24,10 @@ const TopAppBar = (props: Props) => {
     const [titleDisplayed, setTitleDisplayed] = useState(true);
     const classes = useStyles();
     const theme = useTheme();
-    const isMobile = useMediaQuery(theme.breakpoints.down("xs"));
+    const isXsScreen = useMediaQuery(theme.breakpoints.down("xs"));
 
     const handleSearchButtonClicked = () => {
-        if (isMobile)
+        if (isXsScreen)
             setTitleDisplayed(false);
     };
 

@@ -18,6 +18,8 @@ interface ReceiveProductsInCategoryAction {
     pagesInTotal: number;
     errorOccurred: boolean;
     errorType: ApiErrorType;
+    sortOptionName?: string;
+    url: string;
 }
 
 export type FetchProductsInCategoryActionTypes =
@@ -31,14 +33,18 @@ export const requestProductsInCategory = (): FetchProductsInCategoryActionTypes 
 export const receiveProductsInCategory = (
     products: Product[],
     pagesInTotal: number,
+    url: string,
+    sortOptionName?: string,
     errorOccurred: boolean = false,
     errorType: ApiErrorType = ApiErrorType.None
 ): FetchProductsInCategoryActionTypes => ({
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: products,
     pagesInTotal: pagesInTotal,
+    url: url,
     errorOccurred: errorOccurred,
     errorType: errorType,
+    sortOptionName: sortOptionName,
 });
 
 export const receiveProductsInCategoryError = (
@@ -47,6 +53,7 @@ export const receiveProductsInCategoryError = (
     type: RECEIVE_PRODUCTS_IN_CATEGORY,
     products: [],
     pagesInTotal: 0,
+    url: "",
     errorOccurred: true,
     errorType: errorType,
 });
@@ -56,18 +63,21 @@ export const fetchProductsInCategory = (
     pageIndex: number,
     pageSize: number,
     cancelToken: RequestCancelToken,
+    url: string,
     sortOptionName?: string
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductsInCategory());
     await axios
-        .get(prepareUrl(categoryName, pageIndex, pageSize, sortOptionName), {
+        .get(prepareApiUrl(categoryName, pageIndex, pageSize, sortOptionName), {
             cancelToken: cancelToken.tokenSource.token,
         })
         .then(response =>
             dispatch(
                 receiveProductsInCategory(
                     response.data.products,
-                    response.data.pagesInTotal
+                    response.data.pagesInTotal,
+                    url,
+                    sortOptionName
                 )
             )
         )
@@ -90,7 +100,7 @@ export const fetchProductsInCategory = (
         });
 };
 
-const prepareUrl = (
+const prepareApiUrl = (
     categoryName: string,
     pageIndex: number,
     pageSize: number,

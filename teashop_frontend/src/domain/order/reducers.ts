@@ -16,8 +16,10 @@ import {
     SET_CART_PRICE,
     SET_SHIPPING_FEE,
     SET_PAYMENT_FEE,
-    RESET_ORDER_PLACED,
     SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
+    INCREMENT_CHECKOUT_STEP,
+    DECREMENT_CHECKOUT_STEP,
+    CLOSE_CHECKOUT,
 } from "./actions";
 import { OrderMeta, OrderFormData, Order } from "./models";
 
@@ -27,6 +29,7 @@ export interface OrderState {
     orderErrorOccurred: boolean;
     orderErrorType: ApiErrorType;
     orderMeta: OrderMeta;
+    orderMetaFetchedSuccessfully: boolean;
     orderMetaIsFetching: boolean;
     orderMetaErrorOccurred: boolean;
     orderMetaErrorType: ApiErrorType;
@@ -40,12 +43,13 @@ export interface OrderState {
     paymentFee: number;
     orderPlaced: boolean;
     placedOrderId: string;
-    placedOrderNo: number;
+    placedOrderNumber: number;
+    checkoutStep: number;
 }
 
 const initialState: OrderState = {
     order: {
-        orderNo: 0,
+        orderNumber: 0,
         placementDate: new Date(),
         contactInfo: {
             email: "",
@@ -98,6 +102,7 @@ const initialState: OrderState = {
     orderIsFetching: false,
     orderErrorOccurred: false,
     orderErrorType: ApiErrorType.None,
+    orderMetaFetchedSuccessfully: false,
     orderMetaIsFetching: false,
     orderMetaErrorOccurred: false,
     orderMetaErrorType: ApiErrorType.None,
@@ -151,7 +156,8 @@ const initialState: OrderState = {
     paymentFee: 0,
     orderPlaced: false,
     placedOrderId: "",
-    placedOrderNo: 0,
+    placedOrderNumber: 0,
+    checkoutStep: 0,
 };
 
 export const orderReducer = (
@@ -171,10 +177,12 @@ export const orderReducer = (
                 ...state,
                 orderIsFetching: false,
                 orderErrorOccurred: action.errorOccurred,
-                order: action.order ? {
-                    ...action.order,
-                    placementDate: new Date(action.order.placementDate),
-                } : initialState.order,
+                order: action.order
+                    ? {
+                        ...action.order,
+                        placementDate: new Date(action.order.placementDate),
+                    }
+                    : initialState.order,
                 orderErrorType: action.errorType,
             };
         }
@@ -186,36 +194,21 @@ export const orderReducer = (
                 orderMetaErrorType: ApiErrorType.None,
             };
         case RECEIVE_ORDER_META:
-            return {
+            let receiveOrderMetaState = {
                 ...state,
+                orderMetaFetchedSuccessfully: !action.errorOccurred,
                 orderMetaIsFetching: false,
                 orderMetaErrorOccurred: action.errorOccurred,
                 orderMetaErrorType: action.errorType,
                 orderMeta: action.orderMeta
                     ? action.orderMeta
                     : initialState.orderMeta,
-                orderFormData: {
-                    ...state.orderFormData,
-                    chosenShippingMethodName: action.orderMeta
-                        ? action.orderMeta.shippingMethods[0].name
-                        : "",
-                    chosenPaymentMethodName: action.orderMeta
-                        ? action.orderMeta.paymentMethods[0].name
-                        : "",
-                    shippingAddressFormData: {
-                        ...state.orderFormData.shippingAddressFormData,
-                        countryCode: action.orderMeta
-                            ? action.orderMeta.countries[0].code
-                            : "",
-                    },
-                    billingAddressFormData: {
-                        ...state.orderFormData.billingAddressFormData,
-                        countryCode: action.orderMeta
-                            ? action.orderMeta.countries[0].code
-                            : "",
-                    },
-                },
             };
+            if (!action.errorOccurred)
+                receiveOrderMetaState = setInitialOrderFormDataValues(
+                    receiveOrderMetaState
+                );
+            return receiveOrderMetaState;
         case SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS:
             return {
                 ...state,
@@ -232,7 +225,7 @@ export const orderReducer = (
                 orderFormErrorType: ApiErrorType.None,
             };
         case RECEIVE_PLACE_ORDER:
-            let newState = {
+            let receivePlaceOrderState = {
                 ...state,
                 orderFormIsSending: false,
                 orderFormErrorOccurred: action.errorOccurred,
@@ -241,25 +234,24 @@ export const orderReducer = (
                 placedOrderId: action.orderId
                     ? action.orderId
                     : initialState.placedOrderId,
-                placedOrderNo: action.orderNo
-                    ? action.orderNo
-                    : initialState.placedOrderNo,
+                placedOrderNumber: action.orderNumber
+                    ? action.orderNumber
+                    : initialState.placedOrderNumber,
             };
-            if (!action.errorOccurred)
-                newState = {
-                    ...newState,
+            if (!action.errorOccurred) {
+                receivePlaceOrderState = {
+                    ...receivePlaceOrderState,
                     orderFormData: initialState.orderFormData,
                     totalPrice: 0,
                     cartPrice: 0,
                     shippingFee: 0,
                     paymentFee: 0,
                 };
-            return newState;
-        case RESET_ORDER_PLACED:
-            return {
-                ...state,
-                orderPlaced: false,
-            };
+                receivePlaceOrderState = setInitialOrderFormDataValues(
+                    receivePlaceOrderState
+                );
+            }
+            return receivePlaceOrderState;
         case SET_CONTACT_INFO_FORM_DATA:
             return {
                 ...state,
@@ -326,7 +318,40 @@ export const orderReducer = (
                 paymentFee: action.value,
                 totalPrice: state.cartPrice + state.shippingFee + action.value,
             };
+        case INCREMENT_CHECKOUT_STEP:
+            return {
+                ...state,
+                checkoutStep: state.checkoutStep + 1,
+            };
+        case DECREMENT_CHECKOUT_STEP:
+            return {
+                ...state,
+                checkoutStep: state.checkoutStep - 1,
+            };
+        case CLOSE_CHECKOUT:
+            return {
+                ...state,
+                orderPlaced: false,
+                checkoutStep: 0,
+            };
         default:
             return state;
     }
 };
+
+const setInitialOrderFormDataValues = (state: OrderState): OrderState => ({
+    ...state,
+    orderFormData: {
+        ...state.orderFormData,
+        chosenShippingMethodName: state.orderMeta.shippingMethods[0].name,
+        chosenPaymentMethodName: state.orderMeta.paymentMethods[0].name,
+        shippingAddressFormData: {
+            ...state.orderFormData.shippingAddressFormData,
+            countryCode: state.orderMeta.countries[0].code,
+        },
+        billingAddressFormData: {
+            ...state.orderFormData.billingAddressFormData,
+            countryCode: state.orderMeta.countries[0].code,
+        },
+    },
+});

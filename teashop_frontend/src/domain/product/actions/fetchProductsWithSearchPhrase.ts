@@ -19,6 +19,7 @@ interface ReceiveProductsWithSearchPhraseAction {
     products: Product[];
     pagesInTotal: number;
     totalCount: number;
+    url: string;
     errorOccurred: boolean;
     errorType: ApiErrorType;
 }
@@ -35,6 +36,7 @@ export const receiveProductsWithSearchPhrase = (
     products: Product[],
     pagesInTotal: number,
     totalCount: number,
+    url: string,
     errorOccurred: boolean = false,
     errorType: ApiErrorType = ApiErrorType.None
 ): FetchProductsWithSearchPhraseActionTypes => ({
@@ -42,6 +44,7 @@ export const receiveProductsWithSearchPhrase = (
     products: products,
     pagesInTotal: pagesInTotal,
     totalCount: totalCount,
+    url: url,
     errorOccurred: errorOccurred,
     errorType: errorType,
 });
@@ -53,6 +56,7 @@ export const receiveProductsWithSearchPhraseError = (
     products: [],
     pagesInTotal: 0,
     totalCount: 0,
+    url: "",
     errorOccurred: true,
     errorType: errorType,
 });
@@ -62,11 +66,12 @@ export const fetchProductsWithSearchPhrase = (
     pageIndex: number,
     pageSize: number,
     cancelToken: RequestCancelToken,
+    url: string,
     sortOptionName?: string
 ): AppThunk<void> => async dispatch => {
     dispatch(requestProductsWithSearchPhrase());
     await axios
-        .get(prepareUrl(phrase, pageIndex, pageSize, sortOptionName), {
+        .get(prepareApiUrl(phrase, pageIndex, pageSize, sortOptionName), {
             cancelToken: cancelToken.tokenSource.token,
         })
         .then(response =>
@@ -74,7 +79,8 @@ export const fetchProductsWithSearchPhrase = (
                 receiveProductsWithSearchPhrase(
                     response.data.products,
                     response.data.pagesInTotal,
-                    response.data.totalCount
+                    response.data.totalCount,
+                    url
                 )
             )
         )
@@ -95,7 +101,7 @@ export const fetchProductsWithSearchPhrase = (
         });
 };
 
-const prepareUrl = (
+const prepareApiUrl = (
     phrase: string,
     pageIndex: number,
     pageSize: number,

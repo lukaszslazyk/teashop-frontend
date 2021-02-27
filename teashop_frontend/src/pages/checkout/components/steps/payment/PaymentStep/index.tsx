@@ -12,29 +12,27 @@ interface Props {
 }
 
 const PaymentStep = (props: Props) => {
-    const logic = useLogic(
-        props.onContinueButtonClick,
-        props.onBackButtonClick
-    );
-    const { paymentCardFormMethods } = logic;
-
-    const paymentCardFormComponent = () => (
-        <FormProvider {...paymentCardFormMethods}>
-            <PaymentCardForm />
-        </FormProvider>
-    );
+    const {
+        paymentCardFormMethods,
+        handleContinueButtonClicked,
+        handleBackButtonClicked,
+    } = useLogic(props.onContinueButtonClick, props.onBackButtonClick);
 
     return (
         <Grid container spacing={4}>
             <Grid item xs={12}>
                 <PaymentMethodForm
-                    paymentCardFormComponent={paymentCardFormComponent()}
+                    paymentCardFormComponent={
+                        <FormProvider {...paymentCardFormMethods}>
+                            <PaymentCardForm />
+                        </FormProvider>
+                    }
                 />
             </Grid>
             <Grid item xs={12}>
                 <NavButtonsPanel
-                    onContinueButtonClick={logic.handleContinueButtonClicked}
-                    onBackButtonClick={logic.handleBackButtonClicked}
+                    onContinueButtonClick={handleContinueButtonClicked}
+                    onBackButtonClick={handleBackButtonClicked}
                     backButtonLabel="Back to Shipping"
                 />
             </Grid>

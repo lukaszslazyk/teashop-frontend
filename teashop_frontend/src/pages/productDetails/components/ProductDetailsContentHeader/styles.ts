@@ -9,22 +9,16 @@ const useStyles = makeStyles((theme: Theme) =>
         },
         imageWrapper: {
             height: "100%",
-            padding: theme.spacing(2),
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
         },
         image: {
-            height: 300,
-            width: "auto",
             display: "flex",
-        },
-        topProductNameTextContainer: {
-            marginBottom: -theme.spacing(1),
-        },
-        productNameText: {
-            [theme.breakpoints.down("sm")]: {
-                textAlign: "center",
+            width: "auto",
+            height: 300,
+            [theme.breakpoints.down("xs")]: {
+                height: 275,
             },
         },
         priceText: {

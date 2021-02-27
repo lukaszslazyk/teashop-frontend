@@ -7,8 +7,8 @@ import useStyles from "./styles";
 export type Status = "success" | "info" | "error" | "warning";
 
 const useStatusSnackbar = (status: Status) => {
-    const classes = useStyles();
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+    const classes = useStyles();
 
     const enqueueStatusSnackbar = (message: string) => {
         enqueueSnackbar(message, {
@@ -17,13 +17,11 @@ const useStatusSnackbar = (status: Status) => {
                 vertical: "bottom",
                 horizontal: "center",
             },
-            autoHideDuration: 3000,
+            autoHideDuration: 1500,
             action: key => (
                 <IconButton
                     className={classes.snackBarCloseButton}
-                    onClick={() => {
-                        closeSnackbar(key);
-                    }}
+                    onClick={() => closeSnackbar(key)}
                 >
                     <CloseIcon className={classes.icon} />
                 </IconButton>

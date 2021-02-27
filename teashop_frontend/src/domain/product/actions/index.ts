@@ -1,14 +1,9 @@
 import {
-    ClearProductsActionTypes,
-    CLEAR_PRODUCTS,
-    clearProducts,
-} from "./clearProducts";
-import {
-    FetchProductByIdActionTypes,
-    RECEIVE_PRODUCT_BY_ID,
-    REQUEST_PRODUCT_BY_ID,
-    fetchProductById,
-} from "./fetchProductById";
+    FetchProductByProductNumberActionTypes,
+    REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
+    RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
+    fetchProductByProductNumber,
+} from "./fetchProductByProductNumber";
 import {
     FetchProductsInCategoryActionTypes,
     RECEIVE_PRODUCTS_IN_CATEGORY,
@@ -22,6 +17,12 @@ import {
     fetchProductsWithSearchPhrase,
 } from "./fetchProductsWithSearchPhrase";
 import {
+    FetchRecommendedProductsActionTypes,
+    REQUEST_RECOMMENDED_PRODUCTS,
+    RECEIVE_RECOMMENDED_PRODUCTS,
+    fetchRecommendedProducts,
+} from "./fetchRecommendedProducts";
+import {
     SortOptionsActionTypes,
     CHOOSE_SORT_OPTION,
     chooseSortOption,
@@ -29,26 +30,27 @@ import {
 
 export {
     fetchProductsInCategory,
+    fetchRecommendedProducts,
     fetchProductsWithSearchPhrase,
-    fetchProductById,
-    clearProducts,
+    fetchProductByProductNumber,
     chooseSortOption,
 };
 
 export {
     REQUEST_PRODUCTS_IN_CATEGORY,
     RECEIVE_PRODUCTS_IN_CATEGORY,
+    REQUEST_RECOMMENDED_PRODUCTS,
+    RECEIVE_RECOMMENDED_PRODUCTS,
     REQUEST_PRODUCTS_WITH_SEARCH_PHRASE,
     RECEIVE_PRODUCTS_WITH_SEARCH_PHRASE,
-    REQUEST_PRODUCT_BY_ID,
-    RECEIVE_PRODUCT_BY_ID,
-    CLEAR_PRODUCTS,
+    REQUEST_PRODUCT_BY_PRODUCT_NUMBER,
+    RECEIVE_PRODUCT_BY_PRODUCT_NUMBER,
     CHOOSE_SORT_OPTION,
 };
 
 export type ProductActionTypes =
     | FetchProductsInCategoryActionTypes
+    | FetchRecommendedProductsActionTypes
     | FetchProductsWithSearchPhraseActionTypes
-    | FetchProductByIdActionTypes
-    | ClearProductsActionTypes
+    | FetchProductByProductNumberActionTypes
     | SortOptionsActionTypes;

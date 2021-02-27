@@ -11,8 +11,13 @@ import { Controller } from "react-hook-form";
 import useLogic from "./logic";
 
 const AddressForm = () => {
-    const logic = useLogic();
-    const { countries, errors, control, register, validatePhoneNumber } = logic;
+    const {
+        countries,
+        errors,
+        control,
+        register,
+        validatePhoneNumber,
+    } = useLogic();
 
     return (
         <form noValidate>
@@ -22,12 +27,10 @@ const AddressForm = () => {
                         name="firstName"
                         inputRef={register({
                             required: "First name is required.",
-                            maxLength: {
-                                value: 255,
-                                message:
-                                    "First name must not exceed 255 characters.",
-                            },
                         })}
+                        inputProps={{
+                            maxLength: 255,
+                        }}
                         label="First name"
                         variant="outlined"
                         fullWidth
@@ -40,12 +43,10 @@ const AddressForm = () => {
                         name="lastName"
                         inputRef={register({
                             required: "Last name is required.",
-                            maxLength: {
-                                value: 255,
-                                message:
-                                    "Last name must not exceed 255 characters.",
-                            },
                         })}
+                        inputProps={{
+                            maxLength: 255,
+                        }}
                         label="Last name"
                         variant="outlined"
                         fullWidth
@@ -56,13 +57,10 @@ const AddressForm = () => {
                 <Grid item xs={12}>
                     <TextField
                         name="company"
-                        inputRef={register({
-                            maxLength: {
-                                value: 255,
-                                message:
-                                    "Company name must not exceed 255 characters.",
-                            },
-                        })}
+                        inputRef={register()}
+                        inputProps={{
+                            maxLength: 255,
+                        }}
                         label="Company (optional)"
                         variant="outlined"
                         fullWidth
@@ -75,12 +73,10 @@ const AddressForm = () => {
                         name="addressLine1"
                         inputRef={register({
                             required: "Address first line is required",
-                            maxLength: {
-                                value: 255,
-                                message:
-                                    "Address line must not exceed 255 characters.",
-                            },
                         })}
+                        inputProps={{
+                            maxLength: 255,
+                        }}
                         label="Address line 1"
                         variant="outlined"
                         fullWidth
@@ -91,13 +87,10 @@ const AddressForm = () => {
                 <Grid item xs={12}>
                     <TextField
                         name="addressLine2"
-                        inputRef={register({
-                            maxLength: {
-                                value: 255,
-                                message:
-                                    "Address line must not exceed 255 characters.",
-                            },
-                        })}
+                        inputRef={register()}
+                        inputProps={{
+                            maxLength: 255,
+                        }}
                         label="Address line 2 (optional)"
                         variant="outlined"
                         fullWidth
@@ -110,12 +103,10 @@ const AddressForm = () => {
                         name="postalCode"
                         inputRef={register({
                             required: "Postal code is required",
-                            maxLength: {
-                                value: 10,
-                                message:
-                                    "Postal code must not exceed 10 characters.",
-                            },
                         })}
+                        inputProps={{
+                            maxLength: 10,
+                        }}
                         label="Postal code"
                         variant="outlined"
                         fullWidth
@@ -127,13 +118,11 @@ const AddressForm = () => {
                     <TextField
                         name="city"
                         inputRef={register({
-                            required: "City is required",
-                            maxLength: {
-                                value: 255,
-                                message:
-                                    "City name must not exceed 255 characters.",
-                            },
+                            required: "City is required"
                         })}
+                        inputProps={{
+                            maxLength: 255,
+                        }}
                         label="City"
                         variant="outlined"
                         fullWidth

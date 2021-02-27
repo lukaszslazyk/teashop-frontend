@@ -11,18 +11,17 @@ const useLogic = () => {
     );
     const { register, errors, control } = useFormContext();
 
-    const validatePhoneNumber = (input: string): string | undefined => {
-        if (!input.match(internationalPhoneNumberPattern))
-            return "Phone number is incorrect";
-        return undefined;
-    };
+    const validatePhoneNumber = (input: string): string | undefined =>
+        (!input.match(internationalPhoneNumberPattern)
+            ? "Phone number is incorrect"
+            : undefined);
 
     return {
         countries,
         errors,
         control,
         register,
-        validatePhoneNumber
+        validatePhoneNumber,
     };
 };
 

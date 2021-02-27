@@ -11,19 +11,30 @@ import { chooseSortOption } from "../../actions";
 import { productsSortOptions } from "../../models";
 import useStyles from "./styles";
 
-const ProductSortOptionSelect = () => {
+interface Props {
+    disabled: boolean;
+    onSortOptionChange: (sortOptionName: string) => void;
+}
+
+const ProductSortOptionSelect = (props: Props) => {
     const chosenSortOptionName = useSelector(
         (state: RootState) => state.product.chosenSortOptionName
     );
     const dispatch = useDispatch();
     const classes = useStyles();
 
-    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) =>
+    const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
         dispatch(chooseSortOption(event.target.value as string));
+        props.onSortOptionChange(event.target.value as string);
+    };
 
     return (
-        <FormControl className={classes.root}>
-            <Select value={chosenSortOptionName} onChange={handleChange}>
+        <FormControl className={classes.root} disabled={props.disabled}>
+            <Select
+                value={chosenSortOptionName}
+                onChange={handleChange}
+                classes={{ select: classes.select }}
+            >
                 {productsSortOptions.map(sortOption => (
                     <MenuItem key={sortOption.name} value={sortOption.name}>
                         {sortOption.displayName}

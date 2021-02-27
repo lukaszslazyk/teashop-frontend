@@ -17,16 +17,15 @@ const ProductQuantityPicker = (props: Props) => {
     if (pricedByWeight(props.product))
         return (
             <QuantityPicker
-                inputLabel="Grams"
                 initialValue={initialValue}
                 lowThreshold={50}
                 step={25}
                 onQuantityChange={props.onQuantityChange}
+                unit="g"
             />
         );
     return (
         <QuantityPicker
-            inputLabel=""
             initialValue={initialValue}
             lowThreshold={1}
             step={1}

@@ -15,7 +15,7 @@ const mapToAddressProps = (address: Address) => ({
     postalCode: address.postalCode,
     city: address.city,
     countryName: address.country.name,
-    phone: address.phone
+    phone: address.phone,
 });
 
 const OrderDetailsCustomerProvidedInfoView = (props: Props) => {

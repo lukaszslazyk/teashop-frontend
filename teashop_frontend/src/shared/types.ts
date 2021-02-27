@@ -9,6 +9,10 @@ export type AppThunk<ReturnType = void> = ThunkAction<
     Action<string>
 >;
 
+export interface Dictionary<T> {
+    [Key: string]: T;
+}
+
 export enum ApiErrorType {
     None,
     NotFound,

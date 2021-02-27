@@ -11,6 +11,7 @@ Single page application working as a frontend in Teashop application environment
 - [Notistack](https://github.com/iamhosseindhv/notistack) - notification display library
 - [React Hook Form](https://react-hook-form.com/) - form validation library
 - [React Material UI Carousel](https://github.com/Learus/react-material-ui-carousel) - UI carousel component library
+- [React Font Awesome](https://fontawesome.com/how-to-use/on-the-web/using-with/react) - popular icon library with React support
 - [Docker](https://www.docker.com/) - containerization
 
 ## Usage

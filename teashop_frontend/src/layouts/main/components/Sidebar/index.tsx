@@ -28,7 +28,6 @@ const Sidebar = (props: Props) => {
                 keepMounted: true,
             }}
         >
-            {/* <div className={props.classes.toolbar} > </div> */}
             <SidebarContent closeDrawer={props.onDrawerClose}></SidebarContent>
         </SwipeableDrawer>
     );

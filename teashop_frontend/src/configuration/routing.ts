@@ -1,25 +1,47 @@
-export interface BrowsePageParams {
-    categoryName: string | undefined;
+export interface BrowseCategoryPagePathParams {
+    categoryName: string;
 }
 
-export interface SearchResultsPageParams {
+export interface BrowseCategoryPageQueryParams {
+    page?: string;
+    orderBy?: string;
+}
+
+export enum BrowseCategoryPageQueryParamKeys {
+    Page = "page",
+    OrderBy = "orderBy",
+}
+
+export interface SearchResultsPageQueryParams {
     phrase: string;
+    page?: string;
+    orderBy?: string;
 }
 
-export interface ProductDetailsPageParams {
-    productId: string;
+export enum SearchResultsPageQueryParamKeys {
+    Phrase = "phrase",
+    Page = "page",
+    OrderBy = "orderBy",
 }
 
-export interface OrderDetailsPageParams {
+export interface ProductDetailsPagePathParams {
+    productNumber: string;
+}
+
+export interface OrderDetailsPagePathParams {
     orderId: string;
 }
 
 const routing = {
     home: "/",
-    browse: {
-        pathPattern: "/browse/:categoryName?",
-        getPathWithParams: (params: BrowsePageParams) =>
-            `/browse/${params.categoryName}`,
+    browseCategory: {
+        pathPattern: "/browse/:categoryName",
+        getPathWithParams: (
+            pathParams: BrowseCategoryPagePathParams,
+            queryParams?: BrowseCategoryPageQueryParams
+        ) =>
+            `/browse/${pathParams.categoryName}` +
+            `?${mapToQueryParamsURLPart(queryParams)}`,
     },
     browseGreenTea: "/browse/GreenTea",
     browseBlackTea: "/browse/BlackTea",
@@ -29,24 +51,28 @@ const routing = {
     browseAccessories: "/browse/Accessories",
     searchResults: {
         pathPattern: "/search",
-        getPathWithParams: (params: SearchResultsPageParams) => {
-            const queryParams = new URLSearchParams();
-            queryParams.set("phrase", params.phrase);
-            return `/search?${queryParams.toString()}`;
-        },
+        getPathWithParams: (queryParams: SearchResultsPageQueryParams) =>
+            `/search?${mapToQueryParamsURLPart(queryParams)}`,
     },
     productDetails: {
-        pathPattern: "/products/:productId",
-        getPathWithParams: (params: ProductDetailsPageParams) =>
-            `/products/${params.productId}`,
+        pathPattern: "/products/:productNumber",
+        getPathWithParams: (pathParams: ProductDetailsPagePathParams) =>
+            `/products/${pathParams.productNumber}`,
     },
     cart: "/cart",
     checkout: "/checkout",
     orderDetails: {
         pathPattern: "/orders/:orderId",
-        getPathWithParams: (params: OrderDetailsPageParams) =>
-            `/orders/${params.orderId}`,
+        getPathWithParams: (pathParams: OrderDetailsPagePathParams) =>
+            `/orders/${pathParams.orderId}`,
     },
+};
+
+const mapToQueryParamsURLPart = (queryParams: any) => {
+    const builder = new URLSearchParams();
+    Object.keys(queryParams).map(key => builder.set(key, queryParams[key]));
+
+    return builder.toString();
 };
 
 export default routing;

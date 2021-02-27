@@ -1,11 +1,14 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
+import { fetchSessionCart } from "../../domain/cart/actions";
+import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
 const useLogic = () => {
     const cart = useSelector((state: RootState) => state.cart.cart);
-    const cartFetchedYet = useSelector(
-        (state: RootState) => state.cart.cartFetchedYet
+    const cartIsFetching = useSelector(
+        (state: RootState) => state.cart.cartIsFetching
     );
     const cartUpdateIsSending = useSelector(
         (state: RootState) => state.cart.cartUpdateIsSending
@@ -14,9 +17,15 @@ const useLogic = () => {
         (state: RootState) => state.cart.errorOccurred
     );
     const errorType = useSelector((state: RootState) => state.cart.errorType);
+    const dispatch = useDispatch();
 
-    const cartIsEmpty = (): boolean =>
-        cart.items.length === 0;
+    useEffect(() => {
+        const cancelToken = createRequestCancelToken();
+        dispatch(fetchSessionCart(cancelToken));
+        return () => cancelToken.cancel();
+    }, [dispatch]);
+
+    const cartIsEmpty = (): boolean => cart.items.length === 0;
 
     const getErrorMessage = (): string => {
         if (errorType === ApiErrorType.Timeout)
@@ -28,7 +37,7 @@ const useLogic = () => {
 
     return {
         cart,
-        cartFetchedYet,
+        cartIsFetching,
         cartUpdateIsSending,
         errorOccurred,
         cartIsEmpty,

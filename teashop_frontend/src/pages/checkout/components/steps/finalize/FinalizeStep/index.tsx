@@ -8,15 +8,14 @@ import useLogic from "./logic";
 import useStyles from "./styles";
 
 const FinalizeStep = () => {
-    const logic = useLogic();
-    const classes = useStyles();
     const {
         requestWasSent,
         orderFormIsSending,
         errorOccurred,
-        placedOrderNo,
+        placedOrderNumber,
         orderDetailsRoutePath,
-    } = logic;
+    } = useLogic();
+    const classes = useStyles();
 
     if (!requestWasSent)
         return <div></div>;
@@ -39,7 +38,7 @@ const FinalizeStep = () => {
                     )}
                 </Grid>
                 <Grid item xs={12}>
-                    <Typography variant="h4" align="center">
+                    <Typography className={classes.titleText}>
                         {orderFormIsSending && "Please wait"}
                         {!orderFormIsSending && errorOccurred && "Sorry :("}
                         {!orderFormIsSending &&
@@ -49,14 +48,14 @@ const FinalizeStep = () => {
                 </Grid>
                 <Grid item xs={12}>
                     {orderFormIsSending && (
-                        <Typography variant="h6" align="center">
+                        <Typography className={classes.secondaryText}>
                             We are processing your order
                         </Typography>
                     )}
                     {!orderFormIsSending && errorOccurred && (
-                        <Typography variant="h6" align="center">
-                            We've encountered some issues while processing
-                            your order.
+                        <Typography className={classes.secondaryText}>
+                            We've encountered some issues while processing your
+                            order.
                             <br />
                             Please reload page and try again.
                         </Typography>
@@ -65,12 +64,16 @@ const FinalizeStep = () => {
                         <Grid item xs={12}>
                             <Grid container spacing={2} justify="center">
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" align="center">
-                                        Your order number is: {placedOrderNo}
+                                    <Typography
+                                        className={classes.secondaryText}
+                                    >
+                                        Your order number is: {placedOrderNumber}
                                     </Typography>
                                 </Grid>
                                 <Grid item xs={12}>
-                                    <Typography variant="h6" align="center">
+                                    <Typography
+                                        className={classes.secondaryText}
+                                    >
                                         You can see order details{" "}
                                         <Link
                                             to={orderDetailsRoutePath}

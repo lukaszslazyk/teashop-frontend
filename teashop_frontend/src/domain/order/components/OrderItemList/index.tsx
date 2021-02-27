@@ -1,5 +1,7 @@
 import { Box, Divider, Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
+import { Link } from "react-router-dom";
+import routing from "../../../../configuration/routing";
 import { CartItem } from "../../../../domain/cart/models";
 import { calculateItemPrice } from "../../../../domain/cart/services/cartService";
 import { pricedByWeight } from "../../../../domain/product/services/productService";
@@ -11,26 +13,21 @@ interface Props {
     items: CartItem[];
 }
 
+const getItemQuantityText = (item: CartItem) =>
+    (pricedByWeight(item.product) ? `${item.quantity}g` : item.quantity);
+
 const OrderItemsList = (props: Props) => {
     const classes = useStyles();
-
-    const getItemQuantityText = (item: CartItem) => {
-        if (pricedByWeight(item.product))
-            return `${item.quantity}g`;
-        return item.quantity;
-    };
 
     return (
         <div>
             {props.items.map((item, index) => (
                 <Grid key={item.product.id} container>
-                    {index !== 0 && (
-                        <Grid item xs={12}>
-                            <Box my={1}>
-                                <Divider />
-                            </Box>
-                        </Grid>
-                    )}
+                    <Grid item xs={12}>
+                        <Box my={1}>
+                            <Divider />
+                        </Box>
+                    </Grid>
                     <Grid
                         item
                         xs={12}
@@ -61,7 +58,14 @@ const OrderItemsList = (props: Props) => {
                             className={classes.grow}
                         >
                             <Grid item sm={8} xs={12}>
-                                <Typography variant="body1">
+                                <Typography
+                                    variant="body1"
+                                    component={Link}
+                                    to={routing.productDetails.getPathWithParams({
+                                        productNumber: item.product.productNumber.toString(),
+                                    })}
+                                    className={classes.productNameText}
+                                >
                                     {item.product.name}
                                 </Typography>
                             </Grid>

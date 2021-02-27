@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
         },
         addToCartButton: {
-            width: 187,
+            width: 192,
         },
         progressIndicator: {
             color: "white",

@@ -20,7 +20,7 @@ interface Props {
     children: ReactNode;
 }
 
-const ProgressStepLayout = (props: Props) => {
+const CustomerProvidedInfoStepLayout = (props: Props) => {
     const totalPrice = useSelector(
         (state: RootState) => state.order.totalPrice
     );
@@ -63,4 +63,4 @@ const ProgressStepLayout = (props: Props) => {
     );
 };
 
-export default ProgressStepLayout;
+export default CustomerProvidedInfoStepLayout;

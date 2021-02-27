@@ -18,7 +18,7 @@ const PaymentCardForm = () => {
                         inputRef={register({
                             required: "Number is required",
                             validate: validatePaymentCardNumber,
-                            setValueAs: value => value.replace(/\s/g, "")
+                            setValueAs: value => value.replace(/\s/g, ""),
                         })}
                         label="Number"
                         variant="outlined"
@@ -34,13 +34,13 @@ const PaymentCardForm = () => {
                             required: "Name is required",
                             minLength: {
                                 value: 2,
-                                message: "Name must be at least 2 characters long.",
-                            },
-                            maxLength: {
-                                value: 26,
-                                message: "Name must not exceed 26 characters.",
+                                message:
+                                    "Name must be at least 2 characters long.",
                             },
                         })}
+                        inputProps={{
+                            maxLength: 26,
+                        }}
                         label="Name"
                         variant="outlined"
                         fullWidth={true}
@@ -48,7 +48,7 @@ const PaymentCardForm = () => {
                         helperText={errors.name?.message}
                     />
                 </Grid>
-                <Grid item sm={6}xs={12}>
+                <Grid item sm={6} xs={12}>
                     <TextField
                         name="expirationDate"
                         inputRef={register({
