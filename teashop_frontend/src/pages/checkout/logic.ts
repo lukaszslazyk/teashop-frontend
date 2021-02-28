@@ -1,12 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import routing from "../../configuration/routing";
 import { Cart } from "../../domain/cart/models";
-import { calculateCartPrice } from "../../domain/cart/services/cartService";
-import { fetchOrderMeta, setCartPrice } from "../../domain/order/actions";
+import {
+    fetchOrderMeta,
+    setOrderLines,
+    setSubtotalPrice,
+} from "../../domain/order/actions";
 import { CheckoutSteps } from "../../domain/order/models";
+import {
+    calculateOrderSubtotalPrice,
+    mapToOrderLines,
+} from "../../domain/order/services/orderService";
 import { createRequestCancelToken } from "../../shared/services/requestCancelTokenService";
 import { ApiErrorType } from "../../shared/types";
 
@@ -32,7 +39,17 @@ const useLogic = () => {
         (state: RootState) => state.order.checkoutStep
     );
     const dispatch = useDispatch();
+    const [checkoutInitialized, setCheckoutInitialized] = useState(false);
     const history = useHistory();
+
+    useEffect(() => {
+        if (!checkoutInitialized && !isEmpty(cart)) {
+            const orderLines = mapToOrderLines(cart);
+            dispatch(setOrderLines(orderLines));
+            dispatch(setSubtotalPrice(calculateOrderSubtotalPrice(orderLines)));
+            setCheckoutInitialized(true);
+        }
+    }, [cart, checkoutInitialized, setCheckoutInitialized, dispatch]);
 
     useEffect(() => {
         if (isEmpty(cart) && !isFinalizeStep(checkoutStep))
@@ -45,11 +62,6 @@ const useLogic = () => {
             dispatch(fetchOrderMeta(cancelToken));
         return () => cancelToken.cancel();
     }, [orderMetaFetchedSuccessfully, dispatch]);
-
-    useEffect(() => {
-        if (isEmpty(cart))
-            dispatch(setCartPrice(calculateCartPrice(cart)));
-    }, [cart, dispatch]);
 
     const getErrorMessage = (): string => {
         if (

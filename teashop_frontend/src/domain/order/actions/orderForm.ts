@@ -2,7 +2,7 @@ import axios from "axios";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
 import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { clearCart } from "../../cart/actions";
-import { OrderFormData } from "../models";
+import { OrderFormData, OrderLine } from "../models";
 
 const API_ROOT = process.env.REACT_APP_API_ROOT;
 
@@ -69,6 +69,7 @@ export const receivePlaceOrderError = (
 
 export const placeOrder = (
     orderFormData: OrderFormData,
+    orderLines: OrderLine[],
     cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
     dispatch(requestPlaceOrder());
@@ -85,6 +86,7 @@ export const placeOrder = (
                     orderFormData.chosenShippingMethodName,
                 chosenPaymentMethodName: orderFormData.chosenPaymentMethodName,
                 paymentCard: orderFormData.paymentCardFormData,
+                orderLines: mapToRequestOrderLines(orderLines),
             },
             {
                 cancelToken: cancelToken.tokenSource.token,
@@ -94,7 +96,10 @@ export const placeOrder = (
         .then(response => {
             dispatch(clearCart());
             dispatch(
-                receivePlaceOrder(response.data.orderId, response.data.orderNumber)
+                receivePlaceOrder(
+                    response.data.orderId,
+                    response.data.orderNumber
+                )
             );
         })
         .catch(error => {
@@ -105,3 +110,9 @@ export const placeOrder = (
                     dispatch(receivePlaceOrderError(ApiErrorType.Unexpected));
         });
 };
+
+const mapToRequestOrderLines = (orderLines: OrderLine[]) =>
+    orderLines.map(line => ({
+        productId: line.product.id,
+        quantity: line.quantity,
+    }));

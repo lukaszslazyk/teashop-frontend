@@ -1,9 +1,9 @@
-export const SET_CART_PRICE = "SET_CART_PRICE";
+export const SET_SUBTOTAL_PRICE = "SET_SUBTOTAL_PRICE";
 export const SET_SHIPPING_FEE = "SET_SHIPPING_FEE";
 export const SET_PAYMENT_FEE = "SET_PAYMENT_FEE";
 
-interface SetCartPriceAction {
-    type: typeof SET_CART_PRICE;
+interface SetSubtotalPriceAction {
+    type: typeof SET_SUBTOTAL_PRICE;
     value: number;
 }
 
@@ -18,12 +18,12 @@ interface SetPaymentFeeAction {
 }
 
 export type PriceActionTypes =
-    | SetCartPriceAction
+    | SetSubtotalPriceAction
     | SetShippingFeeAction
     | SetPaymentFeeAction;
 
-export const setCartPrice = (value: number): PriceActionTypes => ({
-    type: SET_CART_PRICE,
+export const setSubtotalPrice = (value: number): PriceActionTypes => ({
+    type: SET_SUBTOTAL_PRICE,
     value: value,
 });
 

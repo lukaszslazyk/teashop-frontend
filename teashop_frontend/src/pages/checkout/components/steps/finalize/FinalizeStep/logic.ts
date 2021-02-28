@@ -12,6 +12,9 @@ const useLogic = () => {
     const orderFormData = useSelector(
         (state: RootState) => state.order.orderFormData
     );
+    const orderLines = useSelector(
+        (state: RootState) => state.order.orderLines
+    );
     const orderFormIsSending = useSelector(
         (state: RootState) => state.order.orderFormIsSending
     );
@@ -36,11 +39,11 @@ const useLogic = () => {
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         if (!orderPlaced) {
-            dispatch(placeOrder(orderFormData, cancelToken));
+            dispatch(placeOrder(orderFormData, orderLines, cancelToken));
             setRequestWasSent(true);
         }
         return () => cancelToken.cancel();
-    }, [orderFormData, orderPlaced, dispatch]);
+    }, [orderFormData, orderLines, orderPlaced, dispatch]);
 
     useEffect(
         () => () => {

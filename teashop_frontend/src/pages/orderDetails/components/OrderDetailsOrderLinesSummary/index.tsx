@@ -1,18 +1,18 @@
 import React from "react";
-import OrderItemsSummary from "../../../../domain/order/components/OrderItemsSummary";
+import OrderLinesSummary from "../../../../domain/order/components/OrderLinesSummary";
 import { Order } from "../../../../domain/order/models";
 
 interface Props {
     order: Order;
 }
 
-const OrderDetailsItemsSummary = (props: Props) => (
-    <OrderItemsSummary
-        cart={props.order.cart}
+const OrderDetailsOrderLinesSummary = (props: Props) => (
+    <OrderLinesSummary
+        orderLines={props.order.orderLines}
         totalPrice={props.order.totalPrice}
         shippingFee={props.order.shippingFee}
         paymentFee={props.order.paymentFee}
     />
 );
 
-export default OrderDetailsItemsSummary;
+export default OrderDetailsOrderLinesSummary;

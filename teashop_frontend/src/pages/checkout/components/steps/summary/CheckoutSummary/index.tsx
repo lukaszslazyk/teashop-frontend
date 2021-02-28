@@ -3,7 +3,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../../../configuration/reduxSetup/rootReducer";
 import CheckoutSummaryCustomerProvidedInfoView from "../CheckoutSummaryCustomerProvidedInfoView";
-import CheckoutSummaryItemsView from "../CheckoutSummaryItemsView";
+import CheckoutSummaryOrderLinesView from "../CheckoutSummaryOrderLinesView";
 
 const CheckoutSummary = () => {
     const chosenShippingMethodName = useSelector(
@@ -22,7 +22,7 @@ const CheckoutSummary = () => {
                 <CheckoutSummaryCustomerProvidedInfoView />
             </Grid>
             <Grid item xs={12}>
-                <CheckoutSummaryItemsView />
+                <CheckoutSummaryOrderLinesView />
             </Grid>
         </Grid>
     );
