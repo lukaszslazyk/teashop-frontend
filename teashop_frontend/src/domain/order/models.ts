@@ -1,4 +1,4 @@
-import { Cart } from "../cart/models";
+import { Product } from "../product/models";
 
 export interface Order {
     orderNumber: number;
@@ -8,7 +8,7 @@ export interface Order {
     billingAddress: Address;
     chosenShippingMethod: ShippingMethod;
     chosenPaymentMethod: PaymentMethod;
-    cart: Cart;
+    orderLines: OrderLine[];
     totalPrice: number;
     shippingFee: number;
     paymentFee: number;
@@ -28,6 +28,11 @@ export interface Address {
     city: string;
     country: Country;
     phone: string;
+}
+
+export interface OrderLine {
+    product: Product;
+    quantity: number;
 }
 
 export interface OrderMeta {

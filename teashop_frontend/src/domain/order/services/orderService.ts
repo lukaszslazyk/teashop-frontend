@@ -1,3 +1,6 @@
+import { Cart } from "../../cart/models";
+import { OrderLine } from "../models";
+
 const acceptedPaymentCardIssuers = ["Visa", "MasterCard", "American Express"];
 
 const paymentCardNumberPatterns = [
@@ -16,4 +19,25 @@ export const validatePaymentCardNumber = (
         input.match(pattern)
     );
     return anyMatch ? undefined : "Number is incorrect";
+};
+
+export const mapToOrderLines = (cart: Cart): OrderLine[] =>
+    cart.items.map(item => ({
+        productId: item.product.id,
+        product: item.product,
+        quantity: item.quantity,
+    }));
+
+export const calculateOrderSubtotalPrice = (orderLines: OrderLine[]) =>
+    orderLines
+        .map(calculateOrderLinePrice)
+        .reduce((x, y) => x + y, 0);
+
+export const calculateOrderLinePrice = (orderLine: OrderLine) => {
+    if (!orderLine.product)
+        return 0;
+    return (
+        (orderLine.product.price * orderLine.quantity) /
+        orderLine.product.quantityPerPrice
+    );
 };

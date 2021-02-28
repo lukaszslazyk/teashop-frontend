@@ -13,15 +13,16 @@ import {
     SET_PAYMENT_CARD_FORM_DATA,
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
-    SET_CART_PRICE,
+    SET_SUBTOTAL_PRICE,
     SET_SHIPPING_FEE,
     SET_PAYMENT_FEE,
     SET_SHIPPING_ADDRESS_SAME_AS_BILLING_ADDRESS,
     INCREMENT_CHECKOUT_STEP,
     DECREMENT_CHECKOUT_STEP,
     CLOSE_CHECKOUT,
+    SET_ORDER_LINES,
 } from "./actions";
-import { OrderMeta, OrderFormData, Order } from "./models";
+import { OrderMeta, OrderFormData, Order, OrderLine } from "./models";
 
 export interface OrderState {
     order: Order;
@@ -37,8 +38,9 @@ export interface OrderState {
     orderFormIsSending: boolean;
     orderFormErrorOccurred: boolean;
     orderFormErrorType: ApiErrorType;
+    orderLines: OrderLine[];
     totalPrice: number;
-    cartPrice: number;
+    subtotalPrice: number;
     shippingFee: number;
     paymentFee: number;
     orderPlaced: boolean;
@@ -92,9 +94,7 @@ const initialState: OrderState = {
             displayName: "",
             fee: 0,
         },
-        cart: {
-            items: [],
-        },
+        orderLines: [],
         totalPrice: 0,
         shippingFee: 0,
         paymentFee: 0,
@@ -150,8 +150,9 @@ const initialState: OrderState = {
     orderFormIsSending: false,
     orderFormErrorOccurred: false,
     orderFormErrorType: ApiErrorType.None,
+    orderLines: [],
     totalPrice: 0,
-    cartPrice: 0,
+    subtotalPrice: 0,
     shippingFee: 0,
     paymentFee: 0,
     orderPlaced: false,
@@ -242,8 +243,9 @@ export const orderReducer = (
                 receivePlaceOrderState = {
                     ...receivePlaceOrderState,
                     orderFormData: initialState.orderFormData,
+                    orderLines: [],
                     totalPrice: 0,
-                    cartPrice: 0,
+                    subtotalPrice: 0,
                     shippingFee: 0,
                     paymentFee: 0,
                 };
@@ -300,23 +302,30 @@ export const orderReducer = (
                     chosenPaymentMethodName: action.paymentMethodName,
                 },
             };
-        case SET_CART_PRICE:
+        case SET_ORDER_LINES:
             return {
                 ...state,
-                cartPrice: action.value,
+                orderLines: action.orderLines,
+            };
+        case SET_SUBTOTAL_PRICE:
+            return {
+                ...state,
+                subtotalPrice: action.value,
                 totalPrice: action.value + state.shippingFee + state.paymentFee,
             };
         case SET_SHIPPING_FEE:
             return {
                 ...state,
                 shippingFee: action.value,
-                totalPrice: state.cartPrice + state.paymentFee + action.value,
+                totalPrice:
+                    state.subtotalPrice + state.paymentFee + action.value,
             };
         case SET_PAYMENT_FEE:
             return {
                 ...state,
                 paymentFee: action.value,
-                totalPrice: state.cartPrice + state.shippingFee + action.value,
+                totalPrice:
+                    state.subtotalPrice + state.shippingFee + action.value,
             };
         case INCREMENT_CHECKOUT_STEP:
             return {

@@ -1,18 +1,18 @@
 import { Grid, Paper, Typography } from "@material-ui/core";
 import React from "react";
-import { Cart } from "../../../cart/models";
-import OrderItemsList from "../OrderItemList";
+import { OrderLine } from "../../models";
+import OrderLinesList from "../OrderLinesList";
 import OrderPriceView from "../OrderPriceView";
 import useStyles from "./styles";
 
 interface Props {
-    cart: Cart;
+    orderLines: OrderLine[];
     totalPrice: number;
     shippingFee: number;
     paymentFee: number;
 }
 
-const OrderItemsSummary = (props: Props) => {
+const OrderLinesSummary = (props: Props) => {
     const classes = useStyles();
 
     return (
@@ -25,7 +25,7 @@ const OrderItemsSummary = (props: Props) => {
                         </Typography>
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderItemsList items={props.cart.items} />
+                        <OrderLinesList orderLines={props.orderLines} />
                     </Grid>
                     <Grid item xs={12} className={classes.priceViewContainer}>
                         <OrderPriceView
@@ -40,4 +40,4 @@ const OrderItemsSummary = (props: Props) => {
     );
 };
 
-export default OrderItemsSummary;
+export default OrderLinesSummary;

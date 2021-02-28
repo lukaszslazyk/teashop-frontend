@@ -9,7 +9,7 @@ const PriceInfoPanel = () => {
     const totalPrice = useSelector(
         (state: RootState) => state.order.totalPrice
     );
-    const cartPrice = useSelector((state: RootState) => state.order.cartPrice);
+    const subtotalPrice = useSelector((state: RootState) => state.order.subtotalPrice);
     const shippingFee = useSelector(
         (state: RootState) => state.order.shippingFee
     );
@@ -27,7 +27,7 @@ const PriceInfoPanel = () => {
                     align="right"
                     className={classes.grow}
                 >
-                    {getPriceTextWithCurrency(cartPrice)}
+                    {getPriceTextWithCurrency(subtotalPrice)}
                 </Typography>
             </Grid>
             <Grid item container>

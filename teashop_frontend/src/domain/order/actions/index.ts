@@ -38,6 +38,11 @@ import {
     placeOrder,
 } from "./orderForm";
 import {
+    OrderLinesActionTypes,
+    SET_ORDER_LINES,
+    setOrderLines,
+} from "./orderLines";
+import {
     PaymentCardFormActionTypes,
     SET_PAYMENT_CARD_FORM_DATA,
     setPaymentCardFormData,
@@ -49,10 +54,10 @@ import {
 } from "./paymentMethodForm";
 import {
     PriceActionTypes,
-    SET_CART_PRICE,
+    SET_SUBTOTAL_PRICE,
     SET_SHIPPING_FEE,
     SET_PAYMENT_FEE,
-    setCartPrice,
+    setSubtotalPrice,
     setShippingFee,
     setPaymentFee,
 } from "./price";
@@ -78,7 +83,8 @@ export {
     setChosenShippingMethod,
     setChosenPaymentMethod,
     setPaymentCardFormData,
-    setCartPrice,
+    setOrderLines,
+    setSubtotalPrice,
     setShippingFee,
     setPaymentFee,
     incrementCheckoutStep,
@@ -100,7 +106,8 @@ export {
     SET_CHOSEN_SHIPPING_METHOD,
     SET_CHOSEN_PAYMENT_METHOD,
     SET_PAYMENT_CARD_FORM_DATA,
-    SET_CART_PRICE,
+    SET_ORDER_LINES,
+    SET_SUBTOTAL_PRICE,
     SET_SHIPPING_FEE,
     SET_PAYMENT_FEE,
     INCREMENT_CHECKOUT_STEP,
@@ -118,5 +125,6 @@ export type OrderActionTypes =
     | BillingAddressFormActionTypes
     | PaymentMethodFormActionTypes
     | PaymentCardFormActionTypes
+    | OrderLinesActionTypes
     | PriceActionTypes
     | CheckoutActionTypes;

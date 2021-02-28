@@ -3,7 +3,7 @@ import React from "react";
 import ErrorInfo from "../../shared/components/ErrorInfo";
 import PageLoadingProgress from "../../shared/components/LoadingProgress";
 import OrderDetailsCustomerProvidedInfoView from "./components/OrderDetailsCustomerProvidedInfoView";
-import OrderDetailsItemsSummary from "./components/OrderDetailsItemsSummary";
+import OrderDetailsOrderLinesSummary from "./components/OrderDetailsOrderLinesSummary";
 import OrderDetailsTopInfoView from "./components/OrderDetailsTopInfoView";
 import useLogic from "./logic";
 
@@ -37,7 +37,7 @@ const OrderDetailsPage = () => {
                         <OrderDetailsCustomerProvidedInfoView order={order} />
                     </Grid>
                     <Grid item xs={12}>
-                        <OrderDetailsItemsSummary order={order} />
+                        <OrderDetailsOrderLinesSummary order={order} />
                     </Grid>
                 </Grid>
             )}
