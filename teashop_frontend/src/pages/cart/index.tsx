@@ -6,6 +6,7 @@ import useLogic from "./logic";
 
 const CartPage = () => {
     const {
+        pageInitialized,
         cart,
         cartIsFetching,
         cartUpdateIsSending,
@@ -13,6 +14,9 @@ const CartPage = () => {
         getErrorMessage,
         cartIsEmpty,
     } = useLogic();
+
+    if (!pageInitialized)
+        return null;
 
     return (
         <div>

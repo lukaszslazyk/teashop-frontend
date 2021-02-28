@@ -6,10 +6,14 @@ import useLogic from "./logic";
 
 const CheckoutPage = () => {
     const {
+        pageInitialized,
         orderMetaIsFetching,
         orderMetaErrorOccurred,
         getErrorMessage,
     } = useLogic();
+
+    if (!pageInitialized)
+        return null;
 
     return (
         <div>

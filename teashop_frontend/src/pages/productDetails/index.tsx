@@ -8,11 +8,15 @@ import useLogic from "./logic";
 
 const ProductDetailsPage = () => {
     const {
+        pageInitialized,
         product,
         productIsFetching,
         errorOccurred,
         getErrorMessage,
     } = useLogic();
+
+    if (!pageInitialized)
+        return null;
 
     return (
         <Container maxWidth="md" disableGutters>

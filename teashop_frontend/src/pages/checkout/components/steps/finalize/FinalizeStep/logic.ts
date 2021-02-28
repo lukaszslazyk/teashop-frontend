@@ -31,7 +31,7 @@ const useLogic = () => {
         (state: RootState) => state.order.placedOrderNumber
     );
     const dispatch = useDispatch();
-    const [requestWasSent, setRequestWasSent] = useState(false);
+    const [placeOrderRequestWasSent, setPlaceOrderRequestWasSent] = useState(false);
     const orderDetailsRoutePath = routing.orderDetails.getPathWithParams({
         orderId: placedOrderId,
     });
@@ -40,21 +40,20 @@ const useLogic = () => {
         const cancelToken = createRequestCancelToken();
         if (!orderPlaced) {
             dispatch(placeOrder(orderFormData, orderLines, cancelToken));
-            setRequestWasSent(true);
+            setPlaceOrderRequestWasSent(true);
         }
         return () => cancelToken.cancel();
     }, [orderFormData, orderLines, orderPlaced, dispatch]);
 
     useEffect(
         () => () => {
-            setRequestWasSent(false);
             dispatch(closeCheckout());
         },
         [dispatch]
     );
 
     return {
-        requestWasSent,
+        placeOrderRequestWasSent,
         orderFormIsSending,
         errorOccurred,
         placedOrderNumber,

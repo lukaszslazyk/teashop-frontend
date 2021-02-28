@@ -39,8 +39,17 @@ const useLogic = () => {
         (state: RootState) => state.order.checkoutStep
     );
     const dispatch = useDispatch();
-    const [checkoutInitialized, setCheckoutInitialized] = useState(false);
     const history = useHistory();
+    const [pageInitialized, setPageInitialized] = useState(false);
+    const [checkoutInitialized, setCheckoutInitialized] = useState(false);
+
+    useEffect(() => {
+        const cancelToken = createRequestCancelToken();
+        if (!orderMetaFetchedSuccessfully)
+            dispatch(fetchOrderMeta(cancelToken));
+        setPageInitialized(true);
+        return () => cancelToken.cancel();
+    }, [orderMetaFetchedSuccessfully, dispatch]);
 
     useEffect(() => {
         if (!checkoutInitialized && !isEmpty(cart)) {
@@ -56,13 +65,6 @@ const useLogic = () => {
             history.push(routing.cart);
     }, [history, checkoutStep, cart]);
 
-    useEffect(() => {
-        const cancelToken = createRequestCancelToken();
-        if (!orderMetaFetchedSuccessfully)
-            dispatch(fetchOrderMeta(cancelToken));
-        return () => cancelToken.cancel();
-    }, [orderMetaFetchedSuccessfully, dispatch]);
-
     const getErrorMessage = (): string => {
         if (
             orderMetaErrorType === ApiErrorType.InvalidResponse ||
@@ -75,6 +77,7 @@ const useLogic = () => {
     };
 
     return {
+        pageInitialized,
         orderMetaIsFetching,
         orderMetaErrorOccurred,
         getErrorMessage,

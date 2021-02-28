@@ -9,11 +9,15 @@ import useLogic from "./logic";
 
 const OrderDetailsPage = () => {
     const {
+        pageInitialized,
         order,
         orderIsFetching,
         errorOccurred,
         getErrorMessage,
     } = useLogic();
+
+    if (!pageInitialized)
+        return null;
 
     return (
         <div>
