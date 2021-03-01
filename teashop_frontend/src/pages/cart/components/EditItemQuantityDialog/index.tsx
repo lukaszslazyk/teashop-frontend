@@ -30,7 +30,11 @@ const EditItemQuantityDialog = (props: Props) => {
     const classes = useStyles();
 
     return (
-        <Dialog open={props.open} onClose={handleClose}>
+        <Dialog
+            disableBackdropClick
+            open={props.open}
+            onClose={handleClose}
+        >
             <DialogTitle>Edit quantity</DialogTitle>
             <DialogContent>
                 <Grid container className={classes.content}>
@@ -48,10 +52,7 @@ const EditItemQuantityDialog = (props: Props) => {
             <DialogActions>
                 <Grid container>
                     <Grid item className={classes.grow}>
-                        <Button
-                            onClick={props.onClose}
-                            disabled={displayLoading}
-                        >
+                        <Button onClick={handleClose} disabled={displayLoading}>
                             Cancel
                         </Button>
                     </Grid>
