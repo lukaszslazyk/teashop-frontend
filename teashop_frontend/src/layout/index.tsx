@@ -1,7 +1,7 @@
 import { Container, CssBaseline } from "@material-ui/core";
 import React, { ReactNode, useState } from "react";
 import { useSelector } from "react-redux";
-import { RootState } from "../../configuration/reduxSetup/rootReducer";
+import { RootState } from "../configuration/reduxSetup/rootReducer";
 import Sidebar from "./components/Sidebar";
 import TopAppBar from "./components/TopAppBar";
 import useStyles from "./styles";
@@ -10,7 +10,7 @@ interface Props {
     children: ReactNode;
 }
 
-const MainLayout = (props: Props) => {
+const Layout = (props: Props) => {
     const interactionDisabledForLoading = useSelector(
         (state: RootState) => state.shared.interactionDisabledForLoading
     );
@@ -48,4 +48,4 @@ const MainLayout = (props: Props) => {
     );
 };
 
-export default MainLayout;
+export default Layout;

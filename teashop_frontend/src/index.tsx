@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import App from "./app";
 import configureStore from "./configuration/reduxSetup/configureStore";
 import { unregister } from "./configuration/serviceWorker";
-import { mainTheme } from "./layouts/main/themes";
+import { mainTheme } from "./configuration/themes";
 
 const store = configureStore();
 
