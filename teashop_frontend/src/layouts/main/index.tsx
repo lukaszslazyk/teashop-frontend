@@ -1,5 +1,7 @@
 import { Container, CssBaseline } from "@material-ui/core";
 import React, { ReactNode, useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import Sidebar from "./components/Sidebar";
 import TopAppBar from "./components/TopAppBar";
 import useStyles from "./styles";
@@ -9,8 +11,11 @@ interface Props {
 }
 
 const MainLayout = (props: Props) => {
-    const classes = useStyles();
+    const interactionDisabledForLoading = useSelector(
+        (state: RootState) => state.shared.interactionDisabledForLoading
+    );
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const classes = useStyles();
 
     const handleMenuButtonClicked = () => setDrawerOpen(true);
 
@@ -19,7 +24,13 @@ const MainLayout = (props: Props) => {
     const handleDrawerClose = () => setDrawerOpen(false);
 
     return (
-        <div className={classes.root}>
+        <div
+            className={`${classes.root} ${
+                interactionDisabledForLoading
+                    ? classes.loadingWithInteractionBlocking
+                    : ""
+            }`}
+        >
             <CssBaseline />
             <TopAppBar onMenuButtonClick={handleMenuButtonClicked} />
             <Sidebar

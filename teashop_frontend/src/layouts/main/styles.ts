@@ -9,6 +9,12 @@ const useStyles = makeStyles((theme: Theme) =>
         root: {
             display: "flex",
         },
+        loadingWithInteractionBlocking: {
+            cursor: "wait",
+            "& *": {
+                pointerEvents: "none",
+            },
+        },
         toolbar: theme.mixins.toolbar,
         appBar: {
             zIndex: theme.zIndex.drawer + 1,

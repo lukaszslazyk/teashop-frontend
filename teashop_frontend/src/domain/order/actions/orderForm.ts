@@ -1,4 +1,5 @@
 import axios from "axios";
+import { toggleDisableInteractionForLoading } from "../../../shared/actions";
 import { RequestCancelToken } from "../../../shared/services/requestCancelTokenService";
 import { ApiErrorType, AppThunk } from "../../../shared/types";
 import { clearCart } from "../../cart/actions";
@@ -72,6 +73,7 @@ export const placeOrder = (
     orderLines: OrderLine[],
     cancelToken: RequestCancelToken
 ): AppThunk<void> => async dispatch => {
+    dispatch(toggleDisableInteractionForLoading());
     dispatch(requestPlaceOrder());
     await axios
         .post(
@@ -101,6 +103,7 @@ export const placeOrder = (
                     response.data.orderNumber
                 )
             );
+            dispatch(toggleDisableInteractionForLoading());
         })
         .catch(error => {
             if (!axios.isCancel(error))
@@ -108,6 +111,7 @@ export const placeOrder = (
                     dispatch(receivePlaceOrderError(ApiErrorType.Timeout));
                 else
                     dispatch(receivePlaceOrderError(ApiErrorType.Unexpected));
+            dispatch(toggleDisableInteractionForLoading());
         });
 };
 
