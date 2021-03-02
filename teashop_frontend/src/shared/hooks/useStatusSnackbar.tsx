@@ -2,13 +2,11 @@ import { IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { useSnackbar } from "notistack";
 import React from "react";
-import useStyles from "./styles";
 
 export type Status = "success" | "info" | "error" | "warning";
 
 const useStatusSnackbar = (status: Status) => {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-    const classes = useStyles();
 
     const enqueueStatusSnackbar = (message: string) => {
         enqueueSnackbar(message, {
@@ -20,10 +18,10 @@ const useStatusSnackbar = (status: Status) => {
             autoHideDuration: 1500,
             action: key => (
                 <IconButton
-                    className={classes.snackBarCloseButton}
+                    style={{color: "white"}}
                     onClick={() => closeSnackbar(key)}
                 >
-                    <CloseIcon className={classes.icon} />
+                    <CloseIcon style={{width: 20}} />
                 </IconButton>
             ),
         });
