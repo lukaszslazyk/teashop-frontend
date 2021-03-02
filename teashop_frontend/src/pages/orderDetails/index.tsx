@@ -1,7 +1,7 @@
 import { Box, Grid, Typography } from "@material-ui/core";
 import React from "react";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import PageLoadingProgress from "../../shared/components/LoadingProgress";
+import PageLoadingIndicator from "../../shared/components/PageLoadingIndicator";
 import OrderDetailsCustomerProvidedInfoView from "./components/OrderDetailsCustomerProvidedInfoView";
 import OrderDetailsOrderLinesSummary from "./components/OrderDetailsOrderLinesSummary";
 import OrderDetailsTopInfoView from "./components/OrderDetailsTopInfoView";
@@ -21,7 +21,7 @@ const OrderDetailsPage = () => {
 
     return (
         <div>
-            {orderIsFetching && <PageLoadingProgress />}
+            {orderIsFetching && <PageLoadingIndicator />}
             {!orderIsFetching && errorOccurred && (
                 <ErrorInfo errorMessage={getErrorMessage()} />
             )}
