@@ -77,7 +77,7 @@ export const placeOrder = (
     dispatch(requestPlaceOrder());
     await axios
         .post(
-            `${API_ROOT}/order`,
+            `${API_ROOT}/orders`,
             {
                 contactInfo: orderFormData.contactInfoFormData,
                 shippingAddress: orderFormData.shippingAddressFormData,

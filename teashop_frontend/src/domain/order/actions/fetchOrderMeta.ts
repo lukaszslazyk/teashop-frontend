@@ -52,7 +52,7 @@ export const fetchOrderMeta = (
 ): AppThunk<void> => async dispatch => {
     dispatch(requestOrderMeta());
     await axios
-        .get(`${API_ROOT}/order/meta`, {
+        .get(`${API_ROOT}/orders/meta`, {
             cancelToken: cancelToken.tokenSource.token,
         })
         .then(response => {
