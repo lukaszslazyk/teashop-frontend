@@ -16,28 +16,26 @@ const NavButtonsPanel = (props: Props) => {
 
     return (
         <Grid container spacing={1} className={classes.root}>
-            <Grid item>
+            <Grid item className={classes.button}>
                 <Button onClick={props.onBackButtonClick}>
                     <ArrowBackIosIcon className={classes.backButtonIcon} />
                     {props.backButtonLabel ? props.backButtonLabel : "Back"}
                 </Button>
             </Grid>
-            <Grid item style={{ flexGrow: 1 }}>
-                <Grid container justify="flex-end">
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        onClick={props.onContinueButtonClick}
-                    >
-                        {props.continueButtonLabel
-                            ? props.continueButtonLabel
-                            : "Continue"}
-                        <ArrowForwardIosIcon
-                            className={classes.forwardButtonIcon}
-                        />
-                    </Button>
-                </Grid>
+            <Grid item className={classes.button}>
+                <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    onClick={props.onContinueButtonClick}
+                >
+                    {props.continueButtonLabel
+                        ? props.continueButtonLabel
+                        : "Continue"}
+                    <ArrowForwardIosIcon
+                        className={classes.forwardButtonIcon}
+                    />
+                </Button>
             </Grid>
         </Grid>
     );
