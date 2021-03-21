@@ -14,7 +14,7 @@ interface Props {
     imageTitle: string;
     titlePrimary: string;
     titleSecondary: string;
-    routePath: any;
+    routePath: string;
 }
 
 const CarouselPanel = (props: Props) => {

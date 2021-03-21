@@ -8,6 +8,7 @@ const PRODUCTS_PAGE_SIZE = 12;
 
 const BrowseCategoryPage = () => {
     const {
+        pageInitialized,
         categoryDisplayName,
         pageIndex,
         handlePaginationChange,
@@ -17,6 +18,9 @@ const BrowseCategoryPage = () => {
         categoryIsEmpty,
         getErrorMessage,
     } = useLogic(PRODUCTS_PAGE_SIZE);
+
+    if (!pageInitialized)
+        return null;
 
     if (!paramsAreValid() || !categoryExists())
         return <NotFoundPage />;

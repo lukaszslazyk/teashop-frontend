@@ -4,7 +4,7 @@ import useStyles from "./styles";
 
 const delayRenderTimeMillis = 1000;
 
-const PageLoadingProgress = () => {
+const PageLoadingIndicator = () => {
     const classes = useStyles();
     const [timeoutPassed, setTimeoutPassed] = React.useState(false);
 
@@ -25,4 +25,4 @@ const PageLoadingProgress = () => {
     );
 };
 
-export default PageLoadingProgress;
+export default PageLoadingIndicator;

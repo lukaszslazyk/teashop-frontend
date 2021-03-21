@@ -4,8 +4,11 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
             flexWrap: "nowrap",
-            alignContent: "center",
+            justifyContent: "space-between",
             alignItems: "center",
+        },
+        button: {
+            maxWidth: "50%",
         },
         backButtonIcon: {
             fontSize: theme.typography.button.fontSize,

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
 import { fetchSessionCart } from "../../domain/cart/actions";
@@ -18,10 +18,12 @@ const useLogic = () => {
     );
     const errorType = useSelector((state: RootState) => state.cart.errorType);
     const dispatch = useDispatch();
+    const [pageInitialized, setPageInitialized] = useState(false);
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         dispatch(fetchSessionCart(cancelToken));
+        setPageInitialized(true);
         return () => cancelToken.cancel();
     }, [dispatch]);
 
@@ -36,6 +38,7 @@ const useLogic = () => {
     };
 
     return {
+        pageInitialized,
         cart,
         cartIsFetching,
         cartUpdateIsSending,

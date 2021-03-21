@@ -3,8 +3,8 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { RootState } from "../../../../configuration/reduxSetup/rootReducer";
-import routing from "../../../../configuration/routing";
+import { RootState } from "../../../configuration/reduxSetup/rootReducer";
+import routing from "../../../configuration/routing";
 import useStyles from "./styles";
 
 const CartButton = () => {

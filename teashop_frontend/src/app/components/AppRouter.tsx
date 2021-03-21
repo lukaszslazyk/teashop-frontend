@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import routing from "../../configuration/routing";
-import MainLayout from "../../layouts/main";
+import Layout from "../../layout";
 import BrowseCategoryPage from "../../pages/browseCategory";
 import CartPage from "../../pages/cart";
 import CheckoutPage from "../../pages/checkout";
@@ -11,9 +11,9 @@ import OrderDetailsPage from "../../pages/orderDetails";
 import ProductDetailsPage from "../../pages/productDetails";
 import SearchResultsPage from "../../pages/searchResults";
 
-const Router = () => (
+const AppRouter = () => (
     <BrowserRouter>
-        <MainLayout>
+        <Layout>
             <Switch>
                 <Route exact path={routing.home} component={HomePage} />
                 <Route
@@ -40,8 +40,8 @@ const Router = () => (
                 />
                 <Route component={NotFoundPage} />
             </Switch>
-        </MainLayout>
+        </Layout>
     </BrowserRouter>
 );
 
-export default Router;
+export default AppRouter;

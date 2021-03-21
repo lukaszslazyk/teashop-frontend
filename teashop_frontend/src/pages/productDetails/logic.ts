@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
@@ -20,6 +20,7 @@ const useLogic = () => {
     );
     const dispatch = useDispatch();
     const { productNumber } = useParams<ProductDetailsPagePathParams>();
+    const [pageInitialized, setPageInitialized] = useState(false);
 
     const shouldFetchProduct = useCallback(
         () => !product || productNumber !== product.productNumber.toString(),
@@ -30,6 +31,7 @@ const useLogic = () => {
         const cancelToken = createRequestCancelToken();
         if (shouldFetchProduct())
             dispatch(fetchProductByProductNumber(productNumber, cancelToken));
+        setPageInitialized(true);
         return () => cancelToken.cancel();
     }, [productNumber, shouldFetchProduct, dispatch]);
 
@@ -44,6 +46,7 @@ const useLogic = () => {
     };
 
     return {
+        pageInitialized,
         product,
         productIsFetching,
         errorOccurred,

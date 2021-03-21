@@ -8,6 +8,7 @@ const PRODUCTS_PAGE_SIZE = 12;
 
 const SearchResultsPage = () => {
     const {
+        pageInitialized,
         searchPhrase,
         pageIndex,
         handlePaginationChange,
@@ -15,6 +16,9 @@ const SearchResultsPage = () => {
         paramsAreValid,
         getErrorMessage,
     } = useLogic(PRODUCTS_PAGE_SIZE);
+
+    if (!pageInitialized)
+        return null;
 
     if (!paramsAreValid())
         return <NotFoundPage />;

@@ -9,7 +9,7 @@ import useStyles from "./styles";
 
 const FinalizeStep = () => {
     const {
-        requestWasSent,
+        placeOrderRequestWasSent,
         orderFormIsSending,
         errorOccurred,
         placedOrderNumber,
@@ -17,8 +17,8 @@ const FinalizeStep = () => {
     } = useLogic();
     const classes = useStyles();
 
-    if (!requestWasSent)
-        return <div></div>;
+    if (!placeOrderRequestWasSent)
+        return null;
 
     return (
         <Grid container spacing={1} className={classes.root}>

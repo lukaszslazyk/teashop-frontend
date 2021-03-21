@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
@@ -20,10 +20,12 @@ const useLogic = () => {
     );
     const dispatch = useDispatch();
     const { orderId } = useParams<OrderDetailsPagePathParams>();
+    const [pageInitialized, setPageInitialized] = useState(false);
 
     useEffect(() => {
         const cancelToken = createRequestCancelToken();
         dispatch(fetchOrder(orderId, cancelToken));
+        setPageInitialized(true);
         return () => cancelToken.cancel();
     }, [orderId, dispatch]);
 
@@ -36,6 +38,7 @@ const useLogic = () => {
     };
 
     return {
+        pageInitialized,
         order,
         orderIsFetching,
         errorOccurred,

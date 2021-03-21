@@ -10,7 +10,7 @@ const PaymentCardForm = () => {
     const { register, errors } = useFormContext();
 
     return (
-        <form noValidate>
+        <form noValidate onSubmit={e => e.preventDefault()}>
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <TextField

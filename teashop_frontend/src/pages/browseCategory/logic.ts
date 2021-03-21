@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation, useParams } from "react-router";
 import { RootState } from "../../configuration/reduxSetup/rootReducer";
@@ -54,6 +54,7 @@ const useLogic = (productsPageSize: number) => {
     const orderBy = queryParams.get(BrowseCategoryPageQueryParamKeys.OrderBy);
     const pageIndex = getPageIndexFrom(page);
     const sortOptionName = getSortOptionNameFrom(orderBy, chosenSortOptionName);
+    const [pageInitialized, setPageInitialized] = useState(false);
 
     const paramsAreValid = useCallback(
         () => pageIsValid(page) && orderByIsValid(sortOptionName),
@@ -80,6 +81,7 @@ const useLogic = (productsPageSize: number) => {
                     sortOptionName
                 )
             );
+        setPageInitialized(true);
         return () => cancelToken.cancel();
     }, [
         categoryName,
@@ -134,6 +136,7 @@ const useLogic = (productsPageSize: number) => {
         : "";
 
     return {
+        pageInitialized,
         categoryDisplayName,
         pageIndex,
         handlePaginationChange,

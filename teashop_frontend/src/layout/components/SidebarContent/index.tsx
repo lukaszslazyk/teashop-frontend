@@ -8,8 +8,8 @@ import EmojiFoodBeverageTwoToneIcon from "@material-ui/icons/EmojiFoodBeverageTw
 import HomeRoundedIcon from "@material-ui/icons/HomeRounded";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import routing from "../../../../configuration/routing";
-import usePrevious from "../../../../shared/hooks/usePrevious";
+import routing from "../../../configuration/routing";
+import usePrevious from "../../../shared/hooks/usePrevious";
 import useStyles from "../../styles";
 
 interface Props {

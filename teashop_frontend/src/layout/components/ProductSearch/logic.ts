@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
-import routing from "../../../../configuration/routing";
+import routing from "../../../configuration/routing";
 
 const useLogic = (
     onSearchButtonClick?: () => void,

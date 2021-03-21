@@ -51,7 +51,7 @@ export const fetchOrder = (
 ): AppThunk<void> => async dispatch => {
     dispatch(requestOrder());
     await axios
-        .get(`${API_ROOT}/order/${orderId}`, {
+        .get(`${API_ROOT}/orders/${orderId}`, {
             cancelToken: cancelToken.tokenSource.token,
         })
         .then(response => dispatch(receiveOrder(response.data)))

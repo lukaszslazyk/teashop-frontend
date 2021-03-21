@@ -11,7 +11,7 @@ import EcoIcon from "@material-ui/icons/Eco";
 import MenuIcon from "@material-ui/icons/Menu";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import routing from "../../../../configuration/routing";
+import routing from "../../../configuration/routing";
 import useStyles from "../../styles";
 import CartButton from "../CartButton";
 import ProductSearch from "../ProductSearch";

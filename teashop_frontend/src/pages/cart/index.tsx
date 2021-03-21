@@ -1,11 +1,12 @@
 import React from "react";
 import ErrorInfo from "../../shared/components/ErrorInfo";
-import PageLoadingProgress from "../../shared/components/LoadingProgress";
+import PageLoadingIndicator from "../../shared/components/PageLoadingIndicator";
 import CartView from "./components/CartView";
 import useLogic from "./logic";
 
 const CartPage = () => {
     const {
+        pageInitialized,
         cart,
         cartIsFetching,
         cartUpdateIsSending,
@@ -14,9 +15,12 @@ const CartPage = () => {
         cartIsEmpty,
     } = useLogic();
 
+    if (!pageInitialized)
+        return null;
+
     return (
         <div>
-            {cartIsFetching && <PageLoadingProgress />}
+            {cartIsFetching && <PageLoadingIndicator />}
             {!cartIsFetching && !cartUpdateIsSending && errorOccurred && (
                 <ErrorInfo errorMessage={getErrorMessage()} />
             )}

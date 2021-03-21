@@ -10,7 +10,7 @@ const ContactInfoForm = () => {
     const classes = useStyles();
 
     return (
-        <form noValidate>
+        <form noValidate onSubmit={e => e.preventDefault()}>
             <Paper className={classes.surface}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>

@@ -20,7 +20,7 @@ const AddressForm = () => {
     } = useLogic();
 
     return (
-        <form noValidate>
+        <form noValidate onSubmit={e => e.preventDefault()}>
             <Grid container spacing={2}>
                 <Grid item sm={6} xs={12}>
                     <TextField
@@ -118,7 +118,7 @@ const AddressForm = () => {
                     <TextField
                         name="city"
                         inputRef={register({
-                            required: "City is required"
+                            required: "City is required",
                         })}
                         inputProps={{
                             maxLength: 255,
